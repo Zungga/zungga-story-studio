@@ -9,3 +9,12 @@ exports/
 *.mp4
 node_modules/
 .DS_Store
+
+# local listening samples / generated audio (not committed)
+voice-samples/
+*.wav
+.venv/
+selected-voices/*/out/
+
+# baked weather sounds are real assets (tools/make_sfx.py can re-make them)
+!studio/assets/sfx/*.wav

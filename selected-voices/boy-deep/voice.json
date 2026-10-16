@@ -1,0 +1,23 @@
+{
+  "name": "boy-deep",
+  "selected": "2026-10-11",
+  "chosen_from": "voice-samples/boy-17-options/option-2.wav",
+  "engine": "Qwen3-TTS via mlx-audio 0.5.8 (local, Apple Silicon)",
+  "language": "english",
+  "design": {
+    "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-VoiceDesign-8bit",
+    "instruct": "An Indian young man, about seventeen years old, with a deep teenage male voice, speaking English with a light Indian accent, warm, confident and slightly playful, like telling a story to friends.",
+    "note": "Designing again with this text gives a SIMILAR voice, not the identical one. For the exact voice, always clone reference.wav (below)."
+  },
+  "reproduce": {
+    "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-Base-8bit",
+    "ref_audio": "reference.wav",
+    "ref_text": "My parents gave me pocket money, and by Wednesday itself, it was gone. When I think about where I spent it? On Monday, I bought chips during recess.",
+    "speed": 1.0
+  },
+  "reference": {
+    "file": "reference.wav",
+    "sample_rate": 24000,
+    "median_pitch_hz": 137
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "note": "Characters. Stories reference them by id; options pick the variant.",
+  "characters": [
+    {
+      "id": "kid",
+      "file": "studio/characters/kid.js",
+      "role": "main character (the story's 'I')",
+      "variants": [
+        "boy",
+        "girl"
+      ],
+      "expressions": [
+        "neutral",
+        "smile",
+        "big_smile",
+        "sad",
+        "surprised",
+        "thinking",
+        "worried",
+        "determined",
+        "idea"
+      ],
+      "animations": [
+        "idle",
+        "talk",
+        "walk",
+        "run",
+        "sit",
+        "sit_sad",
+        "wave",
+        "think",
+        "cheer",
+        "count",
+        "point"
+      ],
+      "api": "ZCharacters.kid({ variant }) → { group, setExpression, play, setTalk, hold(prop, 'R'|'L'), update(dt) }"
+    },
+    {
+      "id": "person",
+      "file": "studio/characters/person.js",
+      "role": "everyone else: the cast is one adjustable body plus a wardrobe",
+      "presets": [
+        "kai",
+        "rio",
+        "tara",
+        "mira",
+        "jax",
+        "older_sister",
+        "older_brother",
+        "mom",
+        "dad",
+        "shopkeeper"
+      ],
+      "wardrobe": {
+        "top": [
+          "tshirt",
+          "shirt",
+          "top",
+          "mini_top",
+          "tank_top"
+        ],
+        "layer": [
+          "hoodie",
+          "jacket",
+          "vest"
+        ],
+        "bottom": [
+          "jeans",
+          "pants",
+          "trousers",
+          "shorts",
+          "mini_skirt",
+          "skirt",
+          "saree"
+        ],
+        "shoes": [
+          "sneakers",
+          "formal",
+          "boots",
+          "sandals"
+        ],
+        "extras": [
+          "tie",
+          "dupatta",
+          "glasses",
+          "sunglasses",
+          "wigs (hair style + any colour)"
+        ]
+      },
+      "rules": [
+        "No school uniforms (the user's choice): everyday clothes only",
+        "Every t-shirt and hoodie carries the Zungga mascot (assets/brand/zungga-mascot.png)"
+      ],
+      "api": "ZCharacters.person({ height, weight, build, age, sex, hair, hairColor, skin, mustache, wear: { top, layer, bottom, shoes, tie, dupatta, eyewear } }) → same API as kid"
+    },
+    {
+      "id": "toon",
+      "file": "studio/characters/toons.js",
+      "role": "cartoon cast (plush look, consistent across videos)",
+      "kinds": {
+        "cat": "Yellow cat: round body, blue belly, blue-tipped ears, tuft, ball tail",
+        "boxkid": "Box kid: purple box head, cream face, orange cap + overalls (pencil, wrench)",
+        "planet": "Planet buddy: glowing pink-purple planet with a ring, bubble antenna, floating bubbles"
+      },
+      "api": "ZCharacters.toon({ kind, colors }) → same API as person; in story.json cast use { \"toon\": \"cat\" }",
+      "viewer": "studio/toons.html (PAGE=toons studio/serve.sh)",
+      "world": "Box-folk (kind 'folk'): everyone shares the hero's box-head design with different heights, outfits, hats, hair and colours",
+      "presets": [
+        "hero",
+        "helper_cat",
+        "idea_planet",
+        "friend_boy",
+        "friend_girl",
+        "best_friend",
+        "friend_girl2",
+        "little_sister",
+        "dad",
+        "mom",
+        "teacher",
+        "bus_driver",
+        "shop_owner",
+        "road_worker",
+        "pilot",
+        "engineer",
+        "it_specialist",
+        "grandpa",
+        "grandma"
+      ],
+      "story": "In story.json cast: { \"cast\": \"teacher\" }"
+    }
+  ],
+  "planned": [
+    "Mr. Choco, Captain Cocoa, Nova, Misty (need chef / captain / inventor costumes)",
+    "backpacks"
+  ]
+}

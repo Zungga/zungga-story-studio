@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cartoon Cast — Zungga Story Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#1f1a33; --purple:#7c3aed; --pink:#ec4899; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #1b1830; font-family: "Fredoka", system-ui, sans-serif; color: var(--ink); }
+  #stage { position: fixed; inset: 0 300px 0 0; }
+  canvas { display: block; }
+  aside { position: fixed; top: 0; right: 0; bottom: 0; width: 300px; background: #fff; overflow: auto; padding: 16px 16px 30px; }
+  h1 { margin: 0 0 2px; font-size: 20px; } h1 span { color: var(--pink); }
+  .sub { margin: 0 0 10px; color: #64748b; font-size: 13px; }
+  h2 { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #64748b; margin: 14px 0 7px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  button { font: inherit; font-size: 13px; font-weight: 600; border: 0; border-radius: 10px; padding: 7px 8px; background: #f1f0f7; color: var(--ink); cursor: pointer; }
+  button:hover { background: #e9e5fb; } button.on { background: linear-gradient(120deg, var(--purple), var(--pink)); color: #fff; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<aside>
+  <h1>Cartoon cast<span>.</span></h1>
+  <p class="sub">The hero, his two helpers, and the box-head people of their world.</p>
+  <div class="grid" id="who"></div>
+  <h2>Expression</h2><div class="grid" id="expr"></div>
+  <h2>Animation</h2><div class="grid" id="anim"></div>
+</aside>
+<script src="../vendor/three.min.js"></script>
+<script src="characters/toons.js"></script>
+<script type="module">
+const T = THREE, $ = (s) => document.querySelector(s);
+await document.fonts.load('700 40px Fredoka').catch(() => {});
+const stage = $('#stage');
+const renderer = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.shadowMap.enabled = true; renderer.shadowMap.type = T.VSMShadowMap;
+renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05; renderer.outputColorSpace = T.SRGBColorSpace;
+stage.appendChild(renderer.domElement);
+const scene = new T.Scene();
+// soft sky: vertical gradient on a big sphere
+const skyT = (() => { const c = document.createElement('canvas'); c.width = 4; c.height = 256; const g = c.getContext('2d'); const gr = g.createLinearGradient(0, 0, 0, 256); gr.addColorStop(0, '#5aa6ef'); gr.addColorStop(0.55, '#bfe0ff'); gr.addColorStop(1, '#ffe7cf'); g.fillStyle = gr; g.fillRect(0, 0, 4, 256); const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; return t; })();
+scene.add(new T.Mesh(new T.SphereGeometry(60, 32, 16), new T.MeshBasicMaterial({ map: skyT, side: T.BackSide, fog: false })));
+scene.fog = new T.Fog(0xffe9d6, 8, 40);
+const camera = new T.PerspectiveCamera(32, 1, 0.05, 200);
+scene.add(new T.HemisphereLight(0xdcecff, 0xd9b48a, 1.0));
+const sun = new T.DirectionalLight(0xffd9a8, 3.0); sun.position.set(-3, 5, 4); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.radius = 8; sun.shadow.blurSamples = 16; sun.shadow.bias = -0.0005;
+Object.assign(sun.shadow.camera, { left: -7, right: 7, top: 4, bottom: -4, near: 0.5, far: 25 }); scene.add(sun);
+const rim = new T.DirectionalLight(0xffffff, 1.2); rim.position.set(2, 3, -4); scene.add(rim);
+// warm stone tiles
+const tileT = (() => { const c = document.createElement('canvas'); c.width = c.height = 512; const g = c.getContext('2d'); g.fillStyle = '#c99b72'; g.fillRect(0, 0, 512, 512); let s = 7; const r = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+  for (let y = 0; y < 4; y++) for (let x = 0; x < 4; x++) { const off = (y % 2) * 64; g.fillStyle = `hsl(${24 + r() * 8}, ${32 + r() * 12}%, ${56 + r() * 10}%)`; g.fillRect(x * 128 + off + 4, y * 128 + 4, 120, 120); }
+  g.strokeStyle = 'rgba(90,60,40,0.35)'; g.lineWidth = 2; for (let i = 0; i < 40; i++) { g.beginPath(); const x = r() * 512, y = r() * 512; g.moveTo(x, y); g.lineTo(x + (r() - 0.5) * 40, y + (r() - 0.5) * 40); g.stroke(); }
+  const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; t.wrapS = t.wrapT = T.RepeatWrapping; t.repeat.set(6, 6); return t; })();
+const floor = new T.Mesh(new T.CircleGeometry(20, 64), new T.MeshStandardMaterial({ map: tileT, roughness: 0.9 })); floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+// a few leafy plants at the edges
+for (const [x, z] of [[-1.6, 0.9], [1.8, 1.1], [-2.2, -1.2], [2.3, -1]]) for (let k = 0; k < 7; k++) { const l = new T.Mesh(new T.SphereGeometry(1, 12, 8), new T.MeshStandardMaterial({ color: [0x4c9a3c, 0x5aa646, 0x3f8f3a][k % 3], roughness: 0.6 })); l.scale.set(0.05, 0.012, 0.16); l.position.set(x + Math.cos(k) * 0.12, 0.08 + (k % 3) * 0.04, z + Math.sin(k) * 0.12); l.rotation.set(0.6, k * 0.9, 0.2); l.castShadow = true; scene.add(l); }
+
+const PR = ZCharacters.TOON_PRESETS, ids = Object.keys(PR);
+const heroes = ids.filter((id) => PR[id].kind !== 'folk'), folk = ids.filter((id) => PR[id].kind === 'folk');
+const people = {}, spot = {};
+function label(text) { const c = document.createElement('canvas'); c.width = 512; c.height = 96; const g = c.getContext('2d'); g.fillStyle = '#ffffffe6'; g.beginPath(); g.roundRect(4, 4, 504, 88, 40); g.fill(); g.fillStyle = '#1f1a33'; g.font = '700 44px Fredoka'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(text, 256, 50); const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; const sp = new T.Sprite(new T.SpriteMaterial({ map: t, depthWrite: false })); sp.scale.set(0.5, 0.095, 1); return sp; }
+heroes.forEach((id, i) => { const ch = ZCharacters.toon(PR[id]); ch.group.position.set((i - 1) * 0.78, 0, 1.2); ch.group.rotation.y = [0.35, 0, -0.35][i]; scene.add(ch.group); people[id] = ch; spot[id] = { x: (i - 1) * 0.78, z: 1.2, h: ch.params.height }; });
+folk.forEach((id, i) => { const ch = ZCharacters.toon(PR[id]), x = (i - (folk.length - 1) / 2) * 0.62; ch.group.position.set(x, 0, -0.6); scene.add(ch.group); people[id] = ch; spot[id] = { x, z: -0.6, h: ch.params.height };
+  const l = label(PR[id].label); l.position.set(x, ch.params.height + 0.12, -0.6); scene.add(l); });
+let focus = 'heroes';
+people.helper_cat.setExpression('smile'); people.hero.setExpression('big_smile'); people.hero.play('wave'); people.helper_cat.play('think'); people.idea_planet.setExpression('big_smile');
+for (const id of folk) { people[id].setExpression(['smile', 'big_smile', 'neutral'][id.length % 3]); }
+$('#who').innerHTML = `<button data-k="heroes" class="on">The 3 heroes</button><button data-k="world">The whole world</button>` + ids.map((id) => `<button data-k="${id}">${PR[id].label}</button>`).join('');
+document.querySelectorAll('#who button').forEach((b) => b.onclick = () => { focus = b.dataset.k; dist = null; document.querySelectorAll('#who button').forEach((x) => x.classList.toggle('on', x === b)); });
+const probe = people.hero;
+$('#expr').innerHTML = probe.EXPRESSIONS.map((e) => `<button data-e="${e}">${e.replace('_', ' ')}</button>`).join('');
+$('#anim').innerHTML = probe.ANIMATIONS.map((a) => `<button data-a="${a}">${a.replace(/_/g, ' ')}</button>`).join('');
+const targets = () => (focus === 'heroes' ? heroes : focus === 'world' ? ids : [focus]);
+document.querySelectorAll('#expr button').forEach((b) => b.onclick = () => { for (const k of targets()) people[k].setExpression(b.dataset.e); });
+document.querySelectorAll('#anim button').forEach((b) => b.onclick = () => { for (const k of targets()) people[k].play(b.dataset.a); });
+let yaw = 0, pitch = 0.12, drag = null, dist = null;
+renderer.domElement.addEventListener('pointerdown', (e) => { drag = { x: e.clientX, y: e.clientY }; });
+addEventListener('pointerup', () => { drag = null; });
+addEventListener('pointermove', (e) => { if (!drag) return; yaw -= (e.clientX - drag.x) * 0.006; pitch = Math.max(-0.1, Math.min(1.0, pitch + (e.clientY - drag.y) * 0.004)); drag.x = e.clientX; drag.y = e.clientY; });
+renderer.domElement.addEventListener('wheel', (e) => { e.preventDefault(); dist = (dist || 4) * Math.exp(e.deltaY * 0.0012); }, { passive: false });
+function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+addEventListener('resize', resize); resize();
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame); const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  for (const k of ids) people[k].update(dt);
+  let lx = 0, lz = 0.4, ly = 0.62, d0 = 4.3;
+  if (focus === 'world') { lx = 0; lz = -0.2; ly = 0.75; d0 = 11.5; }
+  else if (focus !== 'heroes') { const sp = spot[focus]; lx = sp.x; lz = sp.z; ly = sp.h * 0.55; d0 = sp.h * 1.9 + 0.6; }
+  else { lz = 1.2; }
+  const d = dist || d0;
+  camera.position.set(lx + Math.sin(yaw) * Math.cos(pitch) * d, ly + Math.sin(pitch) * d, lz + Math.cos(yaw) * Math.cos(pitch) * d); camera.lookAt(lx, ly, lz);
+  renderer.render(scene, camera);
+}
+requestAnimationFrame(frame);
+window.__tt = { people, ids, cam: (y, p, d) => { yaw = y; pitch = p; dist = d; }, focus: (k) => document.querySelector(`#who button[data-k="${k}"]`).click() };
+</script>
+</body>
+</html>

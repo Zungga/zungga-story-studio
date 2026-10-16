@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prop playground — Zungga Story Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#1f1a33; --purple:#7c3aed; --pink:#ec4899; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #1b1830; font-family: "Fredoka", system-ui, sans-serif; color: var(--ink); }
+  #stage { position: fixed; inset: 0 320px 0 0; display: flex; align-items: center; justify-content: center; background: #1b1830; }
+  #stage canvas { display: block; touch-action: none; }
+  body.vertical #stage canvas { box-shadow: 0 0 0 2px #ffffff33, 0 20px 60px #0008; }
+  #safe { position: absolute; pointer-events: none; display: none; border: 2px dashed #ffffff66; }
+  body.vertical #safe { display: block; }
+  aside { position: fixed; top: 0; right: 0; bottom: 0; width: 320px; background: #fff; overflow: auto; padding: 16px 16px 30px; box-shadow: -8px 0 30px #0004; }
+  h1 { margin: 0 0 2px; font-size: 20px; } h1 span { color: var(--pink); }
+  .sub { margin: 0 0 12px; color: #64748b; font-size: 13px; }
+  h2 { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #64748b; margin: 16px 0 8px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  button { font: inherit; font-size: 13px; font-weight: 600; border: 0; border-radius: 10px; padding: 8px 10px; background: #f1f0f7; color: var(--ink); cursor: pointer; text-align: left; }
+  button:hover { background: #e9e5fb; }
+  button.on { background: linear-gradient(120deg, var(--purple), var(--pink)); color: #fff; }
+  button.wide { grid-column: 1 / -1; text-align: center; }
+  .props-list { display: grid; gap: 5px; }
+  .props-list .cat { font-size: 12px; font-weight: 700; color: #7c3aed; margin: 8px 0 0; }
+  .props-list button { display: flex; justify-content: space-between; gap: 6px; width: 100%; }
+  .props-list code { font-size: 11px; color: #94a3b8; font-weight: 500; }
+  label { display: flex; justify-content: space-between; align-items: center; font-size: 13px; margin: 6px 0; gap: 10px; }
+  input[type=range] { flex: 1; } select { font: inherit; font-size: 13px; padding: 4px 6px; border-radius: 8px; border: 1px solid #e2e8f0; }
+  #status { position: fixed; left: 14px; bottom: 12px; color: #fff; font-size: 13px; background: #0008; padding: 6px 12px; border-radius: 999px; }
+  #hint { position: fixed; left: 14px; top: 12px; color: #fff; font-size: 12.5px; background: #0006; padding: 6px 12px; border-radius: 12px; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div id="stage"><div id="safe"></div></div>
+<div id="hint">Drag to orbit · right-drag / Shift-drag to pan · scroll to zoom · click a prop to focus it</div>
+<div id="status">Loading…</div>
+<aside>
+  <h1>Prop playground<span>.</span></h1>
+  <p class="sub">Every asset for “My Parents Gave Me Pocket Money”, lined up for review. Click to inspect.</p>
+
+  <h2>Props</h2>
+  <div class="props-list" id="propList"></div>
+
+  <h2>Camera moves</h2>
+  <div class="grid" id="moves"></div>
+  <label>Duration <input type="range" id="dur" min="2" max="12" step="0.5" value="5"><b id="durV">5 s</b></label>
+  <label>Angle <input type="range" id="ang" min="-90" max="90" step="5" value="20"><b id="angV">20°</b></label>
+  <label>Pan direction <select id="dir"><option value="left_to_right">left → right</option><option value="right_to_left">right → left</option></select></label>
+  <label>Push from / to <select id="from"><option>wide</option><option>mid</option><option>close</option></select><select id="to"><option>close</option><option>mid</option><option>wide</option></select></label>
+
+  <h2>Physics</h2>
+  <div class="grid">
+    <button id="phCoins">🪙 Drop coins in tin</button>
+    <button id="phPencils">✏️ Scatter 10 pencils</button>
+    <button id="phBall">⚽ Kick the football</button>
+    <button id="phNotes">💸 Notes flutter down</button>
+    <button id="phSnacks">🥤 Toss chips + juice</button>
+    <button id="phReset">↺ Clear physics</button>
+  </div>
+
+  <h2>View</h2>
+  <div class="grid">
+    <button id="vVertical">📱 9:16 frame</button>
+    <button id="vLabels" class="on">🏷 Labels</button>
+    <button id="vBulb">💡 Bulb on</button>
+    <button id="vDoor">🚪 Open door</button>
+    <button id="vOverview" class="wide">🗺 Overview</button>
+  </div>
+</aside>
+
+<script src="../vendor/three.min.js"></script>
+<script src="assets/core.js"></script>
+<script src="assets/money.js"></script>
+<script src="assets/food.js"></script>
+<script src="assets/toys.js"></script>
+<script src="assets/school.js"></script>
+<script src="assets/furniture.js"></script>
+<script src="assets/shop.js"></script>
+<script src="assets/brand.js"></script>
+<script src="assets/nature.js"></script>
+<script src="assets/sets.js"></script>
+<script src="js/camera-moves.js"></script>
+<script type="module">
+import * as CANNON from '../vendor/cannon-es.js';
+const T = THREE, $ = (s) => document.querySelector(s);
+await document.fonts.load('700 40px Fredoka').catch(() => {});
+await document.fonts.ready;
+
+// ---------- renderer / scene ----------
+const stage = $('#stage');
+const renderer = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = T.PCFSoftShadowMap;
+renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05; renderer.outputColorSpace = T.SRGBColorSpace;
+stage.prepend(renderer.domElement);
+const scene = new T.Scene();
+scene.background = new T.Color(0xbfe3ff); scene.fog = new T.Fog(0xbfe3ff, 40, 120);
+const camera = new T.PerspectiveCamera(40, 1, 0.01, 300);
+scene.add(new T.HemisphereLight(0xe8f4ff, 0x9c8a6a, 1.25));
+const sun = new T.DirectionalLight(0xfff1d6, 2.6);
+sun.position.set(12, 20, 10); sun.castShadow = true; sun.shadow.mapSize.set(4096, 4096); sun.shadow.bias = -0.0003; sun.shadow.normalBias = 0.01;
+Object.assign(sun.shadow.camera, { left: -26, right: 26, top: 22, bottom: -22, near: 1, far: 70 }); scene.add(sun);
+const { mat, mesh, tex } = ZAssets.helpers, P = ZAssets.palette;
+
+// schoolyard ground
+const groundT = tex((g, W, H) => { g.fillStyle = '#d8c39a'; g.fillRect(0, 0, W, H); for (let i = 0; i < 6000; i++) { g.fillStyle = ['#cdb68a', '#e2cfa8', '#c4ab7d', '#bfa577'][i % 4]; g.globalAlpha = 0.5; g.fillRect(Math.random() * W, Math.random() * H, 2 + Math.random() * 3, 2 + Math.random() * 3); } g.globalAlpha = 1; }, 512, 512);
+groundT.wrapS = groundT.wrapT = T.RepeatWrapping; groundT.repeat.set(30, 30);
+const ground = mesh(new T.PlaneGeometry(160, 160), new T.MeshStandardMaterial({ map: groundT, roughness: 1 }), scene); ground.rotation.x = -Math.PI / 2; ground.castShadow = false;
+
+// ---------- physics world ----------
+const world = new CANNON.World({ gravity: new CANNON.Vec3(0, -9.82, 0) });
+world.broadphase = new CANNON.SAPBroadphase(world); world.allowSleep = true;
+world.defaultContactMaterial.friction = 0.45; world.defaultContactMaterial.restitution = 0.2;
+const groundBody = new CANNON.Body({ mass: 0, shape: new CANNON.Plane() }); groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0); world.addBody(groundBody);
+const staticBox = (w, h, d, x, y, z) => { const b = new CANNON.Body({ mass: 0, shape: new CANNON.Box(new CANNON.Vec3(w / 2, h / 2, d / 2)) }); b.position.set(x, y, z); world.addBody(b); return b; };
+
+// ---------- label sprites ----------
+const labels = [];
+function label(text, sub, pos, scale = 1) {
+  const t = tex((g, W, H) => {
+    g.fillStyle = '#ffffffee'; g.beginPath(); g.roundRect(4, 4, W - 8, H - 8, 40); g.fill();
+    g.fillStyle = '#1f1a33'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = '700 54px Fredoka'; g.fillText(text, W / 2, H * 0.4);
+    g.fillStyle = '#7c3aed'; g.font = '500 34px Fredoka'; g.fillText(sub, W / 2, H * 0.75);
+  }, 640, 170);
+  const s = new T.Sprite(new T.SpriteMaterial({ map: t, depthWrite: false })); s.scale.set(0.64 * scale, 0.17 * scale, 1); s.position.copy(pos); scene.add(s); labels.push(s); return s;
+}
+
+// ---------- lay out the props ----------
+const placed = {};   // id -> { group, box }
+const plinthM = mat(0xffffff, { roughness: 0.5 });
+const small = ZAssets.list.filter((a) => !['furniture', 'shop', 'sets', 'nature'].includes(a.cat));
+const PLINTH_H = 0.9;
+small.forEach((a, i) => {
+  const x = (i - (small.length - 1) / 2) * 0.75, z = 2.2;
+  mesh(new T.CylinderGeometry(0.25, 0.28, PLINTH_H, 32), plinthM, scene, x, PLINTH_H / 2, z);
+  staticBox(0.46, PLINTH_H, 0.46, x, PLINTH_H / 2, z);
+  const r = ZAssets.build(a.id); r.group.position.set(x, PLINTH_H, z);
+  if (a.id === 'football') r.group.userData.tag.rotation.y = 0.4;
+  scene.add(r.group); placed[a.id] = { group: r.group, r };
+  label(a.label, a.id, new T.Vector3(x, PLINTH_H + 0.5, z), 0.8);
+});
+const large = ZAssets.list.filter((a) => ['furniture', 'shop', 'nature'].includes(a.cat));
+let lx = -9;
+large.forEach((a) => {
+  const r = ZAssets.build(a.id), bb = new T.Box3().setFromObject(r.group), w = bb.max.x - bb.min.x;
+  lx += w / 2; r.group.position.set(lx, 0, -2.5); scene.add(r.group); placed[a.id] = { group: r.group, r };
+  if (r.phys && r.phys.mass === 0) { const s = r.phys.size; staticBox(s[0], s[1], s[2], lx, r.phys.yOffset ?? s[1] / 2, -2.5 + (r.phys.zOffset || 0)); }
+  const top = new T.Box3().setFromObject(r.group).max.y;
+  label(a.label, a.id, new T.Vector3(lx, top + 0.45, -2.5), 1.4);
+  lx += w / 2 + 1.4;
+});
+// the savings tin sits on the shop counter (coins drop into it)
+const counter = placed.shop_counter;
+const tinR = ZAssets.build('coin_box'); const tinPos = new T.Vector3(counter.group.position.x - 0.05, counter.r.top, counter.group.position.z + 0.12);
+tinR.group.position.copy(tinPos); scene.add(tinR.group);
+{ const { w, h, d, t } = tinR.walls; staticBox(w, t, d, tinPos.x, tinPos.y + t / 2, tinPos.z); for (const [ww, dd, x, z] of [[w, t, 0, d / 2], [w, t, 0, -d / 2], [t, d, w / 2, 0], [t, d, -w / 2, 0]]) staticBox(ww, h, dd, tinPos.x + x, tinPos.y + h / 2, tinPos.z + z); }
+
+// sets
+const room = ZAssets.build('classroom'); room.group.position.set(-6, 0, -12); scene.add(room.group); placed.classroom = { group: room.group, r: room };
+label('Classroom (full set)', 'classroom', new T.Vector3(-6, 3.9, -12 + 3.5), 2.4);
+const yard = ZAssets.build('school_ground'); yard.group.position.set(8, 0, -11); scene.add(yard.group); placed.school_ground = { group: yard.group, r: yard };
+label('School ground (set)', 'school_ground', new T.Vector3(8, 3.6, -11), 2.4);
+
+// ---------- dynamic physics objects ----------
+const dynamic = [];
+function spawn(id, pos, opts = {}) {
+  const r = ZAssets.build(id), p = r.phys; if (!p) return null;
+  const holder = new T.Group(); scene.add(holder);
+  let shape, yOff;
+  if (p.shape === 'box') { shape = new CANNON.Box(new CANNON.Vec3(p.size[0] / 2, p.size[1] / 2, p.size[2] / 2)); yOff = p.size[1] / 2; }
+  else if (p.shape === 'sphere') { shape = new CANNON.Sphere(p.r); yOff = p.yOffset ?? p.r; }
+  else { shape = new CANNON.Cylinder(p.r, p.r, p.h, 16); yOff = p.h / 2; }
+  r.group.position.y = -yOff; holder.add(r.group);
+  const body = new CANNON.Body({ mass: p.mass, shape, linearDamping: p.flutter ? 0.92 : 0.05, angularDamping: p.flutter ? 0.6 : 0.1, sleepSpeedLimit: 0.05 });
+  body.position.set(pos.x, pos.y, pos.z);
+  if (opts.rot) body.quaternion.setFromEuler(...opts.rot);
+  if (opts.vel) body.velocity.set(...opts.vel);
+  if (opts.spin) body.angularVelocity.set(...opts.spin);
+  world.addBody(body); const d = { holder, body, flutter: p.flutter, seed: Math.random() * 10 }; dynamic.push(d); return d;
+}
+function clearPhysics() { for (const d of dynamic) { world.removeBody(d.body); scene.remove(d.holder); } dynamic.length = 0; }
+const rnd = (a, b) => a + Math.random() * (b - a);
+$('#phCoins').onclick = () => { for (let i = 0; i < 10; i++) setTimeout(() => spawn('coin_5', { x: tinPos.x + rnd(-0.03, 0.03), y: tinPos.y + 0.35, z: tinPos.z + rnd(-0.03, 0.03) }, { rot: [rnd(0, 3), rnd(0, 3), rnd(0, 3)], spin: [rnd(-8, 8), rnd(-8, 8), rnd(-8, 8)] }), i * 160); focusOn(new T.Box3().setFromCenterAndSize(tinPos.clone().add(new T.Vector3(0, 0.08, 0)), new T.Vector3(0.3, 0.3, 0.3)), 'top_down', 4); };
+$('#phPencils').onclick = () => { const c = counter.group.position; for (let i = 0; i < 10; i++) setTimeout(() => spawn('pencil', { x: c.x - 0.45 + rnd(-0.05, 0.05), y: counter.r.top + 0.25, z: c.z + 0.05 + rnd(-0.05, 0.05) }, { rot: [rnd(-0.4, 0.4), rnd(0, 6), rnd(-0.4, 0.4)], vel: [rnd(0.2, 0.8), 0, rnd(-0.3, 0.3)], spin: [rnd(-6, 6), rnd(-6, 6), rnd(-6, 6)] }), i * 90); focusOn(new T.Box3().setFromCenterAndSize(new T.Vector3(c.x - 0.2, counter.r.top + 0.05, c.z + 0.05), new T.Vector3(0.8, 0.2, 0.5)), 'hold', 4); };
+let ballD = null;
+$('#phBall').onclick = () => {
+  const start = new T.Vector3(placed.desk.group.position.x, 0.12, 1.0);
+  if (!ballD || !dynamic.includes(ballD)) ballD = spawn('football', { x: start.x, y: 0.3, z: start.z });
+  ballD.body.wakeUp(); ballD.body.velocity.set(rnd(-1.5, 1.5), 2.4, rnd(-5.5, -4)); ballD.body.angularVelocity.set(-14, rnd(-3, 3), 0);
+  followTarget = ballD.holder; camMode = 'follow';
+};
+$('#phNotes').onclick = () => { const p = placed.note_100.group.position; ['note_100', 'note_50', 'note_20', 'note_10', 'note_100', 'note_50'].forEach((id, i) => setTimeout(() => spawn(id, { x: p.x + rnd(-0.6, 0.6), y: 2.6 + rnd(0, 0.8), z: p.z + rnd(-0.4, 0.4) }, { rot: [rnd(-1, 1), rnd(0, 6), rnd(-1, 1)], spin: [rnd(-3, 3), rnd(-2, 2), rnd(-3, 3)] }), i * 200)); focusOn(new T.Box3().setFromCenterAndSize(new T.Vector3(p.x, 1.6, p.z), new T.Vector3(1.6, 2.2, 1)), 'hold', 5); };
+$('#phSnacks').onclick = () => { const c = counter.group.position; spawn('chips', { x: c.x - 1.4, y: 1.6, z: c.z + 0.4 }, { vel: [2.2, 1.5, -0.4], spin: [rnd(-4, 4), rnd(-4, 4), rnd(-4, 4)] }); setTimeout(() => spawn('juice', { x: c.x - 1.4, y: 1.6, z: c.z + 0.4 }, { vel: [2.4, 1.4, -0.3], spin: [rnd(-6, 6), rnd(-6, 6), rnd(-6, 6)] }), 300); focusOn(new T.Box3().setFromCenterAndSize(new T.Vector3(c.x - 0.3, counter.r.top + 0.2, c.z), new T.Vector3(1.6, 0.6, 0.8)), 'hold', 4); };
+$('#phReset').onclick = () => { clearPhysics(); ballD = null; if (camMode === 'follow') camMode = 'free'; };
+
+// ---------- camera: free orbit + scripted moves ----------
+const orbit = { target: new T.Vector3(0, 1, 0), yaw: 0.35, pitch: 0.32, dist: 22 };
+let camMode = 'free', move = null, moveT = 0, followTarget = null, focusBox = null, selected = 'note_100';
+const canvas = renderer.domElement;
+let drag = null;
+canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+canvas.addEventListener('pointerdown', (e) => { drag = { x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY, pan: e.button === 2 || e.shiftKey }; canvas.setPointerCapture(e.pointerId); });
+canvas.addEventListener('pointermove', (e) => {
+  if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag.x = e.clientX; drag.y = e.clientY;
+  if (Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) > 4) { if (camMode !== 'free') syncOrbitFromCamera(); camMode = 'free'; }
+  if (drag.pan) { const k = orbit.dist * 0.0015, r = new T.Vector3(Math.cos(orbit.yaw), 0, -Math.sin(orbit.yaw)); orbit.target.addScaledVector(r, -dx * k); orbit.target.y = Math.max(0, orbit.target.y + dy * k); }
+  else { orbit.yaw -= dx * 0.006; orbit.pitch = Math.max(-0.1, Math.min(1.5, orbit.pitch + dy * 0.005)); }
+});
+canvas.addEventListener('pointerup', (e) => { if (drag && Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) < 5) pick(e); drag = null; });
+canvas.addEventListener('wheel', (e) => { e.preventDefault(); if (camMode !== 'free') syncOrbitFromCamera(); camMode = 'free'; orbit.dist = Math.max(0.12, Math.min(80, orbit.dist * Math.exp(e.deltaY * 0.0012))); }, { passive: false });
+function syncOrbitFromCamera() { const d = camera.position.clone().sub(orbit.target); orbit.dist = d.length(); orbit.yaw = Math.atan2(d.x, d.z); orbit.pitch = Math.asin(Math.max(-1, Math.min(1, d.y / orbit.dist))); }
+const ray = new T.Raycaster();
+function pick(e) {
+  const r = canvas.getBoundingClientRect(); ray.setFromCamera(new T.Vector2((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1), camera);
+  const hits = ray.intersectObjects(Object.values(placed).map((p) => p.group), true);
+  for (const h of hits) { let o = h.object; while (o && !o.userData.propId) o = o.parent; if (o) { select(o.userData.propId); return; } }
+}
+function boxOf(id) { return new T.Box3().setFromObject(placed[id].group); }
+function select(id) { selected = id; document.querySelectorAll('.props-list button').forEach((b) => b.classList.toggle('on', b.dataset.id === id)); focusOn(boxOf(id), 'hold', 2.5, true); status(`${ZAssets.list.find((a) => a.id === id).label} · ${id}`); }
+function focusOn(box, moveName, dur, quick) {
+  focusBox = box; const aspect = camera.aspect;
+  const target = ZCamera.plan(moveName, box, { duration: dur, angle: +$('#ang').value, aspect, fov: camera.fov });
+  const from = { pos: camera.position.clone(), look: currentLook.clone() };
+  move = { plan: target, from, blend: quick ? 0.9 : 0.6 }; moveT = 0; camMode = 'move';
+}
+function runMove(name) {
+  const box = boxOf(selected);
+  const p = ZCamera.plan(name, box, { duration: +$('#dur').value, angle: +$('#ang').value, direction: $('#dir').value, from: $('#from').value, to: $('#to').value, aspect: camera.aspect, fov: camera.fov });
+  const first = p.at(0); camera.position.copy(first.pos); currentLook.copy(first.look);
+  move = { plan: p, from: null }; moveT = 0; camMode = 'move';
+  document.querySelectorAll('#moves button').forEach((b) => b.classList.toggle('on', b.dataset.m === name));
+  status(`${name.replace('_', ' ')} on ${selected} · ${p.duration}s`);
+}
+const currentLook = orbit.target.clone();
+function updateCamera(dt) {
+  if (camMode === 'move' && move) {
+    moveT += dt; const s = move.plan.at(moveT);
+    if (move.from) { const k = Math.min(1, moveT / move.blend), e = ZCamera.ease(k); camera.position.copy(move.from.pos.clone().lerp(s.pos, e)); currentLook.copy(move.from.look.clone().lerp(s.look, e)); }
+    else { camera.position.copy(s.pos); currentLook.copy(s.look); }
+    if (moveT > move.plan.duration + 0.4) { orbit.target.copy(currentLook); syncOrbitFromCamera(); camMode = 'free'; document.querySelectorAll('#moves button').forEach((b) => b.classList.remove('on')); }
+  } else if (camMode === 'follow' && followTarget) {
+    const p = followTarget.getWorldPosition(new T.Vector3());
+    currentLook.lerp(p, 1 - Math.exp(-6 * dt)); camera.position.lerp(p.clone().add(new T.Vector3(1.6, 1.0, 2.4)), 1 - Math.exp(-3 * dt));
+  } else {
+    const cp = Math.cos(orbit.pitch);
+    const want = orbit.target.clone().add(new T.Vector3(Math.sin(orbit.yaw) * cp, Math.sin(orbit.pitch), Math.cos(orbit.yaw) * cp).multiplyScalar(orbit.dist));
+    camera.position.lerp(want, 1 - Math.exp(-12 * dt)); currentLook.lerp(orbit.target, 1 - Math.exp(-12 * dt));
+  }
+  camera.position.y = Math.max(0.02, camera.position.y);
+  camera.near = Math.max(0.005, camera.position.distanceTo(currentLook) * 0.02); camera.updateProjectionMatrix();
+  camera.lookAt(currentLook);
+}
+
+// ---------- UI ----------
+const status = (t) => { $('#status').textContent = t; };
+const CAT_NAMES = { money: '💰 Money', food: '🍟 Food & drink', toys: '⚽ Toys', school: '✏️ School', furniture: '🪑 Furniture', shop: '🏪 Shop', brand: '✨ Brand', sets: '🏫 Sets' };
+$('#propList').innerHTML = Object.keys(CAT_NAMES).map((c) => `<div class="cat">${CAT_NAMES[c]}</div>` + ZAssets.list.filter((a) => a.cat === c).map((a) => `<button data-id="${a.id}">${a.label}<code>${a.id}</code></button>`).join('')).join('');
+document.querySelectorAll('.props-list button').forEach((b) => { b.onclick = () => select(b.dataset.id); });
+$('#moves').innerHTML = ZCamera.MOVES.map((m) => `<button data-m="${m}">${m.replace('_', ' ')}</button>`).join('');
+document.querySelectorAll('#moves button').forEach((b) => { b.onclick = () => runMove(b.dataset.m); });
+for (const [id, out, unit] of [['dur', 'durV', ' s'], ['ang', 'angV', '°']]) $('#' + id).oninput = () => { $('#' + out).textContent = $('#' + id).value + unit; };
+$('#vVertical').onclick = (e) => { document.body.classList.toggle('vertical'); e.target.classList.toggle('on'); resize(); };
+$('#vLabels').onclick = (e) => { const on = e.target.classList.toggle('on'); labels.forEach((l) => { l.visible = on; }); };
+let bulbOn = false; $('#vBulb').onclick = (e) => { bulbOn = !bulbOn; e.target.classList.toggle('on', bulbOn); placed.lightbulb.group.userData.setOn(bulbOn); select('lightbulb'); };
+let doorOpen = false; $('#vDoor').onclick = (e) => { doorOpen = !doorOpen; e.target.classList.toggle('on', doorOpen); select('classroom_door'); };
+$('#vOverview').onclick = () => { camMode = 'free'; orbit.target.set(0, 1, -3); orbit.yaw = 0.35; orbit.pitch = 0.32; orbit.dist = 22; };
+
+function resize() {
+  const W = stage.clientWidth, H = stage.clientHeight;
+  let w = W, h = H;
+  if (document.body.classList.contains('vertical')) { h = H - 24; w = Math.round(h * 9 / 16); if (w > W - 24) { w = W - 24; h = Math.round(w * 16 / 9); } }
+  renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix();
+  const safe = $('#safe'); safe.style.width = w * 0.84 + 'px'; safe.style.height = h * 0.74 + 'px';   // caption / UI-safe area for Reels & Shorts
+}
+addEventListener('resize', resize); resize();
+
+// ---------- loop ----------
+let last = performance.now();
+const doorHinge = placed.classroom_door.group.userData.hinge;
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  world.step(1 / 120, dt, 6);
+  for (const d of dynamic) {
+    if (d.flutter && !d.body.sleepState) { const t = now / 1000 + d.seed; d.body.applyForce(new CANNON.Vec3(Math.sin(t * 2.3) * 0.004, 0.0085, Math.cos(t * 1.7) * 0.004)); }   // air drag on paper
+    d.holder.position.copy(d.body.position); d.holder.quaternion.copy(d.body.quaternion);
+  }
+  doorHinge.rotation.y += ((doorOpen ? -1.2 : 0) - doorHinge.rotation.y) * Math.min(1, dt * 3);
+  if (room.group.userData.fan) room.group.userData.fan.rotation.y += dt * 6;
+  if (placed.football) placed.football.group.rotation.y += dt * 0.4;
+  updateCamera(dt);
+  renderer.render(scene, camera);
+}
+requestAnimationFrame(frame);
+status(`${ZAssets.list.length} props ready · click any prop or pick a camera move`);
+window.__pg = { select, runMove, placed, spawn, camera, dynamic, world, focusOn: (id, m) => focusOn(boxOf(id), m || 'hold', 2.5, true) };
+</script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cast — Zungga Story Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#1f1a33; --purple:#7c3aed; --pink:#ec4899; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #1b1830; font-family: "Fredoka", system-ui, sans-serif; color: var(--ink); }
+  #stage { position: fixed; inset: 0 330px 0 0; }
+  canvas { display: block; touch-action: none; }
+  aside { position: fixed; top: 0; right: 0; bottom: 0; width: 330px; background: #fff; overflow: auto; padding: 16px 16px 30px; box-shadow: -8px 0 30px #0004; }
+  h1 { margin: 0 0 2px; font-size: 20px; } h1 span { color: var(--pink); }
+  .sub { margin: 0 0 10px; color: #64748b; font-size: 13px; }
+  h2 { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #64748b; margin: 14px 0 7px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  button { font: inherit; font-size: 13px; font-weight: 600; border: 0; border-radius: 10px; padding: 7px 8px; background: #f1f0f7; color: var(--ink); cursor: pointer; }
+  button:hover { background: #e9e5fb; } button.on { background: linear-gradient(120deg, var(--purple), var(--pink)); color: #fff; }
+  label { display: grid; grid-template-columns: 70px 1fr 44px; align-items: center; gap: 8px; font-size: 13px; margin: 5px 0; }
+  select { font: inherit; font-size: 13px; padding: 4px 6px; border-radius: 8px; border: 1px solid #e2e8f0; width: 100%; }
+  .row { display: grid; grid-template-columns: 80px 1fr 30px 30px; align-items: center; gap: 6px; font-size: 13px; margin: 5px 0; }
+  .row.opts { grid-template-columns: 80px 1fr; color: #475569; font-size: 12px; } .row.opts span:last-child { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+  .row.opts select { width: auto; font-size: 12px; padding: 2px 4px; }
+  input[type=color] { width: 30px; height: 26px; padding: 0; border: 1px solid #e2e8f0; border-radius: 7px; background: none; cursor: pointer; }
+  .hint { font-size: 11px; color: #94a3b8; margin: 2px 0 0; }
+  #status { position: fixed; left: 14px; bottom: 12px; color: #fff; font-size: 13px; background: #0008; padding: 6px 12px; border-radius: 999px; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="status">Loading…</div>
+<aside>
+  <h1>The cast<span>.</span></h1>
+  <p class="sub">One adjustable person and a wardrobe. Every character is the same body in different clothes.</p>
+  <div class="grid"><button id="lineup" class="on">👥 Line-up</button><button id="solo">🧍 Edit one</button></div>
+  <h2>Characters</h2>
+  <div class="grid" id="presets"></div>
+  <h2>Body</h2>
+  <label>Height <input type="range" id="height" min="1.1" max="1.95" step="0.01"><b id="heightV"></b></label>
+  <label>Weight <input type="range" id="weight" min="0" max="1" step="0.01"><b id="weightV"></b></label>
+  <label>Build <input type="range" id="build" min="0" max="1" step="0.01"><b id="buildV"></b></label>
+  <label>Age <input type="range" id="age" min="0" max="1" step="0.01"><b id="ageV"></b></label>
+  <h2>Look</h2>
+  <label>Sex <select id="sex"><option value="m">male</option><option value="f">female</option></select><span></span></label>
+  <div class="row"><span>Hair / wig</span><select id="hair"></select><input type="color" id="hairColor" title="hair colour"><span></span></div>
+  <label>Skin <select id="skin"><option>light</option><option>wheat</option><option>medium</option><option>tan</option><option>deep</option></select><span></span></label>
+  <label>Extras <span><input type="checkbox" id="mustache"> moustache</span><span></span></label>
+  <h2>Wardrobe</h2>
+  <div class="row"><span>Top</span><select data-k="top.type"></select><input type="color" data-c="top.color" title="colour"><input type="color" data-c="top.color2" title="pattern colour"></div>
+  <div class="row opts"><span></span><span><select data-k="top.pattern"></select><select data-k="top.sleeves"><option>short</option><option>puff</option><option>long</option><option>none</option></select><label style="display:contents"><input type="checkbox" data-b="top.logo"> logo</label><label style="display:contents"><input type="checkbox" data-b="top.tuck"> tucked</label><label style="display:contents"><input type="checkbox" data-b="top.long"> long</label></span></div>
+  <div class="row"><span>Layer</span><select data-k="layer.type"></select><input type="color" data-c="layer.color"><span></span></div>
+  <div class="row opts"><span></span><span><label style="display:contents"><input type="checkbox" data-b="layer.open"> open front (shows the top underneath)</label></span></div>
+  <div class="row"><span>Bottom</span><select data-k="bottom.type"></select><input type="color" data-c="bottom.color"><span></span></div>
+  <div class="row"><span>Shoes</span><select data-k="shoes.type"></select><input type="color" data-c="shoes.color"><input type="color" data-c="shoes.color2" title="accent"></div>
+  <div class="row"><span>Eyewear</span><select data-k="eyewear.type"></select><input type="color" data-c="eyewear.color"><span></span></div>
+  <div class="row"><span><input type="checkbox" data-on="tie"> Tie</span><span></span><input type="color" data-c="tie.color"><input type="color" data-c="tie.color2"></div>
+  <div class="row"><span><input type="checkbox" data-on="dupatta"> Dupatta</span><span></span><input type="color" data-c="dupatta.color"><input type="color" data-c="dupatta.color2" title="border"></div>
+  <p class="hint">Every t-shirt and hoodie carries the Zungga mascot. Untick “logo” to hide it.</p>
+  <h2>Expression</h2>
+  <div class="grid" id="expr"></div>
+  <h2>Animation</h2>
+  <div class="grid" id="anim"></div>
+</aside>
+<script src="../vendor/three.min.js"></script>
+<script src="characters/person.js"></script>
+<script type="module">
+const T = THREE, $ = (s) => document.querySelector(s);
+await document.fonts.load('700 40px Fredoka').catch(() => {});
+const stage = $('#stage');
+const renderer = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.shadowMap.enabled = true; renderer.shadowMap.type = T.PCFSoftShadowMap;
+renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.08; renderer.outputColorSpace = T.SRGBColorSpace;
+stage.appendChild(renderer.domElement);
+const scene = new T.Scene(); scene.background = new T.Color(0xf3eefe);
+const camera = new T.PerspectiveCamera(30, 1, 0.05, 200);
+scene.add(new T.HemisphereLight(0xeaf2ff, 0xb59a7a, 0.95));
+const key = new T.DirectionalLight(0xfff0dc, 2.4); key.position.set(3, 6, 5); key.castShadow = true; key.shadow.mapSize.set(4096, 2048); key.shadow.bias = -0.0002; key.shadow.normalBias = 0.02;
+Object.assign(key.shadow.camera, { left: -10, right: 10, top: 5, bottom: -2, near: 0.5, far: 30 }); scene.add(key);
+const fill = new T.DirectionalLight(0xbcd4ff, 0.7); fill.position.set(-4, 3, 3); scene.add(fill);
+const rim = new T.DirectionalLight(0xffffff, 1.4); rim.position.set(-1, 4, -5); scene.add(rim);
+const floor = new T.Mesh(new T.CircleGeometry(40, 64), new T.MeshStandardMaterial({ color: 0xece6fb, roughness: 1 })); floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+
+const P = ZCharacters.PRESETS, ids = Object.keys(P);
+const clone = (v) => JSON.parse(JSON.stringify(v));
+let people = [], mode = 'lineup', current = ids[0], params = clone(P[ids[0]]), expr = 'neutral', anim = 'idle';
+function labelSprite(text) {
+  const c = document.createElement('canvas'); c.width = 512; c.height = 96; const g = c.getContext('2d');
+  g.fillStyle = '#ffffffee'; g.beginPath(); g.roundRect(4, 4, 504, 88, 40); g.fill(); g.fillStyle = '#1f1a33'; g.font = '700 46px Fredoka'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(text, 256, 50);
+  const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; const s = new T.Sprite(new T.SpriteMaterial({ map: t, depthWrite: false })); s.scale.set(0.9, 0.17, 1); return s;
+}
+function clear() { for (const p of people) scene.remove(p.holder); people = []; }
+function build() {
+  clear();
+  const list = mode === 'lineup' ? ids.map((id) => ({ id, ...P[id] })) : [{ id: current, ...params, wear: wearOut(params.wear) }];
+  let x = -(list.length - 1) * 0.55;
+  for (const cfg of list) {
+    const ch = ZCharacters.person(cfg), holder = new T.Group(); holder.add(ch.group); holder.position.x = mode === 'lineup' ? x : 0; scene.add(holder);
+    ch.setExpression(expr); ch.play(anim);
+    if (mode === 'lineup') { const l = labelSprite(cfg.label || cfg.id); l.position.set(0, cfg.height + 0.25, 0); holder.add(l); }
+    people.push({ ch, holder, cfg }); x += 1.1;
+  }
+  frameCam();
+  $('#status').textContent = mode === 'lineup' ? `${list.length} characters · same body, different settings` : `${P[current]?.label || current} · height ${params.height.toFixed(2)} m · weight ${params.weight.toFixed(2)}`;
+}
+let yaw = 0, pitch = 0.08, dist = 10, look = new T.Vector3(0, 0.9, 0);
+function frameCam() { if (mode === 'lineup') { dist = 11.5; look.set(0, 0.85, 0); yaw = 0; pitch = 0.06; } else { dist = 4.2; look.set(0, params.height * 0.55, 0); yaw = 0.3; pitch = 0.06; } }
+let drag = null;
+renderer.domElement.addEventListener('pointerdown', (e) => { drag = { x: e.clientX, y: e.clientY }; });
+addEventListener('pointerup', () => { drag = null; });
+addEventListener('pointermove', (e) => { if (!drag) return; yaw -= (e.clientX - drag.x) * 0.006; pitch = Math.max(-0.3, Math.min(1.2, pitch + (e.clientY - drag.y) * 0.004)); drag.x = e.clientX; drag.y = e.clientY; });
+renderer.domElement.addEventListener('wheel', (e) => { e.preventDefault(); dist = Math.max(0.6, Math.min(30, dist * Math.exp(e.deltaY * 0.0012))); }, { passive: false });
+
+// UI
+const WT = ZCharacters.WEAR_TYPES, HC = ZCharacters.HAIRC;
+const sliders = ['height', 'weight', 'build', 'age'], selects = ['sex', 'hair', 'skin'];
+$('#hair').innerHTML = ['short', 'side_part', 'spiky', 'spikes', 'curly', 'long', 'bun', 'plaits', 'ponytail', 'receding'].map((h) => `<option>${h}</option>`).join('');
+const fillSel = (k, list) => { const el = document.querySelector(`[data-k="${k}"]`); el.innerHTML = list.map((v) => `<option>${v}</option>`).join(''); };
+fillSel('top.type', WT.top); fillSel('top.pattern', WT.pattern); fillSel('layer.type', WT.layer); fillSel('bottom.type', WT.bottom); fillSel('shoes.type', WT.shoes); fillSel('eyewear.type', WT.eyewear);
+const hex = (n) => '#' + new T.Color(n).getHexString(), num = (h) => parseInt(h.slice(1), 16);
+// fill a preset's wear with the defaults the body resolved, so every control shows a real value
+function fullWear(cfg) {
+  const w = clone(ZCharacters.person(cfg).params.wear);
+  for (const k of ['wrap', 'untuck']) delete w[k];
+  w.top.tuck = w.top.tuck ?? (w.top.type === 'shirt');
+  w.top.color2 = w.top.color2 ?? new T.Color(w.top.color).multiplyScalar(0.7).getHex();
+  if (!w.layer) w.layer = { type: 'none', color: ZCharacters.BRAND_COLORS.purple };
+  if (!w.eyewear) w.eyewear = { type: 'none', color: 0x1f1f24 };
+  w.tie = w.tie ? { on: true, ...w.tie } : { on: false, color: 0x1f2a52, color2: 0xfacc15 };
+  w.dupatta = w.dupatta ? { on: true, ...w.dupatta } : { on: false, color: ZCharacters.BRAND_COLORS.pink, color2: ZCharacters.BRAND_COLORS.yellow };
+  return w;
+}
+// what we hand to ZCharacters.person (switched-off pieces removed)
+function wearOut(w) { const o = clone(w); if (!o.tie.on) delete o.tie; if (!o.dupatta.on) delete o.dupatta; return o; }
+const getP = (path) => path.split('.').reduce((a, k) => a?.[k], params.wear), setP = (path, v) => { const [a, b] = path.split('.'); params.wear[a][b] = v; };
+function syncUI() {
+  for (const k of sliders) { $('#' + k).value = params[k]; $('#' + k + 'V').textContent = k === 'height' ? params[k].toFixed(2) + 'm' : Math.round(params[k] * 100) + '%'; }
+  for (const k of selects) $('#' + k).value = params[k] ?? $('#' + k).value;
+  $('#hairColor').value = hex(HC[params.hairColor] ?? params.hairColor ?? HC.black); $('#mustache').checked = !!params.mustache;
+  document.querySelectorAll('[data-k]').forEach((el) => el.value = getP(el.dataset.k));
+  document.querySelectorAll('[data-c]').forEach((el) => el.value = hex(getP(el.dataset.c) ?? 0xffffff));
+  document.querySelectorAll('[data-b]').forEach((el) => el.checked = !!getP(el.dataset.b));
+  document.querySelectorAll('[data-on]').forEach((el) => el.checked = !!params.wear[el.dataset.on].on);
+}
+function choose(id) { current = id; params = clone(P[id]); params.wear = fullWear(params); delete params.glasses; }
+$('#presets').innerHTML = ids.map((id) => `<button data-id="${id}">${P[id].label}</button>`).join('');
+document.querySelectorAll('#presets button').forEach((b) => b.onclick = () => { choose(b.dataset.id); mode = 'solo'; setMode(); syncUI(); build(); document.querySelectorAll('#presets button').forEach((x) => x.classList.toggle('on', x === b)); });
+let rebuildT = null; const rebuildSoon = () => { clearTimeout(rebuildT); rebuildT = setTimeout(build, 120); };
+const edited = () => { if (mode !== 'solo') { mode = 'solo'; setMode(); } rebuildSoon(); };
+for (const k of sliders) $('#' + k).oninput = () => { params[k] = +$('#' + k).value; syncUI(); edited(); };
+for (const k of selects) $('#' + k).onchange = () => { params[k] = $('#' + k).value; edited(); };
+$('#hairColor').oninput = () => { params.hairColor = num($('#hairColor').value); edited(); };
+$('#mustache').onchange = () => { params.mustache = $('#mustache').checked; edited(); };
+document.querySelectorAll('[data-k]').forEach((el) => el.onchange = () => {
+  setP(el.dataset.k, el.value);
+  if (el.dataset.k === 'top.type') { const d = ZCharacters.TOP_DEF[el.value]; Object.assign(params.wear.top, { sleeves: d.sleeves, logo: d.logo, tuck: !d.untuck, long: false }); }
+  if (el.dataset.k === 'bottom.type') delete params.wear.bottom.length;          // each bottom starts at its own natural length
+  syncUI(); edited();
+});
+document.querySelectorAll('[data-c]').forEach((el) => el.oninput = () => { setP(el.dataset.c, num(el.value)); edited(); });
+document.querySelectorAll('[data-b]').forEach((el) => el.onchange = () => { setP(el.dataset.b, el.checked); edited(); });
+document.querySelectorAll('[data-on]').forEach((el) => el.onchange = () => { params.wear[el.dataset.on].on = el.checked; edited(); });
+function setMode() { $('#lineup').classList.toggle('on', mode === 'lineup'); $('#solo').classList.toggle('on', mode === 'solo'); }
+$('#lineup').onclick = () => { mode = 'lineup'; setMode(); build(); };
+$('#solo').onclick = () => { mode = 'solo'; setMode(); build(); };
+const probe = ZCharacters.person(P[ids[0]]);
+$('#expr').innerHTML = probe.EXPRESSIONS.map((e) => `<button data-e="${e}" class="${e === 'neutral' ? 'on' : ''}">${e.replace('_', ' ')}</button>`).join('');
+$('#anim').innerHTML = probe.ANIMATIONS.map((a) => `<button data-a="${a}" class="${a === 'idle' ? 'on' : ''}">${a.replace('_', ' ')}</button>`).join('');
+document.querySelectorAll('#expr button').forEach((b) => b.onclick = () => { expr = b.dataset.e; people.forEach((p) => p.ch.setExpression(expr)); document.querySelectorAll('#expr button').forEach((x) => x.classList.toggle('on', x === b)); });
+document.querySelectorAll('#anim button').forEach((b) => b.onclick = () => { anim = b.dataset.a; people.forEach((p) => p.ch.play(anim)); document.querySelectorAll('#anim button').forEach((x) => x.classList.toggle('on', x === b)); });
+
+function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+addEventListener('resize', resize); resize(); choose(ids[0]); syncUI(); build();
+let last = performance.now();
+function frame(now) { requestAnimationFrame(frame); const dt = Math.min(0.05, (now - last) / 1000); last = now; for (const p of people) p.ch.update(dt);
+  camera.position.copy(look).add(new T.Vector3(Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), Math.cos(yaw) * Math.cos(pitch)).multiplyScalar(dist)); camera.lookAt(look); renderer.render(scene, camera); }
+requestAnimationFrame(frame);
+window.__pp = { get people() { return people; }, select: (id) => document.querySelector(`#presets button[data-id="${id}"]`).click(), lineup: () => $('#lineup').click(), cam: (y, p, d, ly) => { yaw = y; pitch = p; dist = d; if (ly != null) look.y = ly; }, set: (k, v) => { params[k] = v; build(); }, wear: (path, v) => { const el = document.querySelector(`[data-k="${path}"]`); if (el) { el.value = v; el.onchange(); } else { setP(path, v); syncUI(); } clearTimeout(rebuildT); build(); } };
+</script>
+</body>
+</html>

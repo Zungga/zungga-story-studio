@@ -1,0 +1,18 @@
+{
+  "name": "girl",
+  "selected": "2026-10-11",
+  "engine": "Qwen3-TTS via mlx-audio 0.5.8 (local, Apple Silicon)",
+  "language": "english",
+  "design": {
+    "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-VoiceDesign-8bit",
+    "instruct": "A nine-year-old Indian girl speaking English with a light Indian accent, bright, warm and excited, high-pitched young child's voice, natural storytelling pace.",
+    "note": "Designing again with this text gives a SIMILAR voice, not the identical one. For the exact voice, always clone reference.wav (below)."
+  },
+  "reproduce": {
+    "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-Base-8bit",
+    "ref_audio": "reference.wav",
+    "ref_text": "And that moment, an idea came. What if someone's problem is my chance? After school, I ran to the stationery shop. Pencils were three rupees each.",
+    "speed": 1.0
+  },
+  "reference": { "file": "reference.wav", "seconds": 11.9, "sample_rate": 24000, "median_pitch_hz": 414 }
+}

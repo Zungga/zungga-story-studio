@@ -1,0 +1,14 @@
+{
+  "name": "narrator",
+  "selected": "2026-10-11",
+  "chosen_from": "This Wasn't My Baby 😳.mp3 (user-supplied, first 10 s). Check you have the speaker's permission before publishing anything made with this voice.",
+  "engine": "Qwen3-TTS via mlx-audio 0.5.8 (local, Apple Silicon)",
+  "language": "english",
+  "reproduce": {
+    "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-Base-8bit",
+    "ref_audio": "reference.wav",
+    "ref_text": "I was holding my wife's hand through the last push when our baby finally cried, but then the nurse froze. My heart started pounding with fear. Is he okay? She nodded slowly and handed me my son,",
+    "speed": 1.0
+  },
+  "reference": { "file": "reference.wav", "sample_rate": 24000 }
+}

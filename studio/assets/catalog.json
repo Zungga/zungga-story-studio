@@ -1,0 +1,473 @@
+{
+  "note": "Prop library. Stories reference props by id; reuse any id listed here.",
+  "props": [
+    {
+      "id": "note_100",
+      "label": "₹100 note",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "note",
+        "rupee",
+        "100"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "note_50",
+      "label": "₹50 note",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "note",
+        "rupee",
+        "50"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "note_20",
+      "label": "₹20 note",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "note",
+        "rupee",
+        "20"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "note_10",
+      "label": "₹10 note",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "note",
+        "rupee",
+        "10"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "notes_30",
+      "label": "₹30 (₹20 + ₹10)",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "notes",
+        "rupee",
+        "30"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "coin_5",
+      "label": "₹5 coin",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "coin",
+        "rupee",
+        "5",
+        "physics"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "coin_box",
+      "label": "Savings tin",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "tin",
+        "box",
+        "savings",
+        "physics"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "chips",
+      "label": "Chips packet",
+      "category": "food",
+      "file": "studio/assets/food.js",
+      "tags": [
+        "snack",
+        "packet",
+        "recess"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "juice",
+      "label": "Juice box",
+      "category": "food",
+      "file": "studio/assets/food.js",
+      "tags": [
+        "drink",
+        "mango",
+        "straw"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "football",
+      "label": "Football + ₹150 tag",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "ball",
+        "sport",
+        "price tag",
+        "physics"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "pencil",
+      "label": "Pencil",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "stationery",
+        "physics"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "pencils_10",
+      "label": "Ten pencils",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "stationery",
+        "bundle"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "pencil_box_empty",
+      "label": "Empty pencil box",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "geometry box",
+        "stationery"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "question_papers",
+      "label": "Question papers",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "exam",
+        "test",
+        "paper"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "lightbulb",
+      "label": "Idea lightbulb",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "idea",
+        "glow",
+        "light"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "bench",
+      "label": "Ground bench",
+      "category": "furniture",
+      "file": "studio/assets/furniture.js",
+      "tags": [
+        "seat",
+        "outdoor"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "desk",
+      "label": "Classroom desk + bench",
+      "category": "furniture",
+      "file": "studio/assets/furniture.js",
+      "tags": [
+        "classroom",
+        "seat",
+        "desk"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "teacher_table",
+      "label": "Teacher's table",
+      "category": "furniture",
+      "file": "studio/assets/furniture.js",
+      "tags": [
+        "classroom",
+        "table"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "blackboard",
+      "label": "Blackboard",
+      "category": "furniture",
+      "file": "studio/assets/furniture.js",
+      "tags": [
+        "classroom",
+        "board",
+        "chalk"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "classroom_door",
+      "label": "Classroom door",
+      "category": "furniture",
+      "file": "studio/assets/furniture.js",
+      "tags": [
+        "classroom",
+        "door",
+        "opens"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "shop_counter",
+      "label": "Stationery shop counter",
+      "category": "shop",
+      "file": "studio/assets/shop.js",
+      "tags": [
+        "shop",
+        "counter",
+        "stationery"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "zungga_logo",
+      "label": "Zungga logo",
+      "category": "brand",
+      "file": "studio/assets/brand.js",
+      "tags": [
+        "logo",
+        "brand",
+        "end card"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "classroom",
+      "label": "Classroom (full set)",
+      "category": "sets",
+      "file": "studio/assets/sets.js",
+      "tags": [
+        "set",
+        "classroom",
+        "indoor"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "school_ground",
+      "label": "School ground (set)",
+      "category": "sets",
+      "file": "studio/assets/sets.js",
+      "tags": [
+        "set",
+        "outdoor",
+        "playground"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "home_room",
+      "label": "Home living room (set)",
+      "category": "sets",
+      "file": "studio/assets/sets.js",
+      "tags": [
+        "set",
+        "home",
+        "indoor",
+        "parents"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "tree_oak",
+      "label": "Tree (oak)",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "tree",
+        "nature",
+        "outdoor"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ],
+      "source": "drive-portfolio (Play-mode island)"
+    },
+    {
+      "id": "tree_pine",
+      "label": "Tree (pine)",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "tree",
+        "nature",
+        "outdoor"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ],
+      "source": "drive-portfolio (Play-mode island)"
+    },
+    {
+      "id": "tree_birch",
+      "label": "Tree (birch)",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "tree",
+        "nature",
+        "outdoor"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ],
+      "source": "drive-portfolio (Play-mode island)"
+    },
+    {
+      "id": "tree_maple",
+      "label": "Tree (maple)",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "tree",
+        "nature",
+        "outdoor"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ],
+      "source": "drive-portfolio (Play-mode island)"
+    },
+    {
+      "id": "bush",
+      "label": "Bush",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "bush",
+        "nature",
+        "outdoor"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ],
+      "source": "drive-portfolio (Play-mode island)"
+    },
+    {
+      "id": "rock",
+      "label": "Rock",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "rock",
+        "nature",
+        "outdoor"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ],
+      "source": "drive-portfolio (Play-mode island)"
+    },
+    {
+      "id": "flowers",
+      "label": "Flower patch",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "flowers",
+        "nature",
+        "outdoor"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ],
+      "source": "drive-portfolio (Play-mode island)"
+    },
+    {
+      "id": "plant_pot",
+      "label": "Houseplant",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "plant",
+        "indoor",
+        "home"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    }
+  ]
+}

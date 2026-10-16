@@ -1,0 +1,12 @@
+{
+  "name": "zungga-story-studio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "voice": "python3 tools/make_voice.py",
+    "render": "node tools/render_video.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

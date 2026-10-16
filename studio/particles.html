@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Particle Morph — Zungga Story Studio</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #111; overflow: hidden; display: grid; place-items: center; font-family: system-ui, sans-serif; }
+  canvas { height: calc(100vh - 20px); aspect-ratio: 9 / 16; border-radius: 14px; box-shadow: 0 20px 60px #000a; }
+  #ui { position: fixed; top: 12px; left: 12px; display: flex; gap: 6px; }
+  #ui a { background: #fff; color: #222; padding: 6px 10px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; }
+</style>
+</head>
+<body>
+<div id="ui"><a href="?bg=green">Greenery</a><a href="?bg=plain">Plain</a><a href="?bg=dark">Dark centre</a></div>
+<script src="../vendor/three.min.js"></script>
+<script src="assets/core.js"></script>
+<script src="assets/nature.js"></script>
+<script type="module">
+/*
+ * Particle morph: ~16k glowing particles drift, gather into a shape, hold it 2–3 s, then stream into the next one.
+ * bird → fish → butterfly → elephant → fox → person → tree → rocket → the Zungga logo (in its own colours).
+ * ?bg=green  a path between trees leading to a beach (the Play-mode island's trees)    ?bg=plain  brand-colour backdrop    ?bg=dark  black centre fading to purple edges
+ * Deterministic (everything is a function of time) so tools/render_particles.mjs can record it frame by frame.
+ */
+const T = THREE, W = 1080, H = 1920, FPS = 30, N = 16000;
+const params = new URLSearchParams(location.search), BG = ['plain', 'dark'].includes(params.get('bg')) ? params.get('bg') : 'green';   // green | plain | dark (black centre → purple edges)
+const lerp = (a, b, t) => a + (b - a) * t, clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+
+// ---------- the shapes: silhouettes drawn in code (no outside artwork) ----------
+const S = 512;
+// each shape is painted in its real colours, part by part; every particle takes the colour of the spot it lands on
+const fill = (g, c, fn) => { g.fillStyle = c; g.strokeStyle = c; g.beginPath(); fn(); g.fill(); };
+const SHAPES = {
+  bird(g) {   // a bluebird in flight: blue back and wings, orange belly, yellow beak
+    fill(g, '#1e40af', () => { g.moveTo(220, 270); g.bezierCurveTo(180, 160, 120, 90, 60, 70); g.bezierCurveTo(140, 150, 200, 210, 300, 262); });   // back wing (darker)
+    fill(g, '#2f7fe8', () => { g.moveTo(150, 300); g.lineTo(60, 250); g.lineTo(80, 330); g.lineTo(150, 315); });                                    // tail
+    fill(g, '#2f7fe8', () => g.ellipse(256, 290, 120, 48, -0.12, 0, Math.PI * 2));                                                                  // body
+    fill(g, '#f59e0b', () => g.ellipse(275, 312, 85, 26, -0.12, 0, Math.PI * 2));                                                                   // orange belly
+    fill(g, '#2f7fe8', () => g.arc(372, 262, 40, 0, Math.PI * 2));                                                                                  // head
+    fill(g, '#fbbf24', () => { g.moveTo(405, 255); g.lineTo(462, 270); g.lineTo(405, 282); });                                                      // beak
+    fill(g, '#3b8ff0', () => { g.moveTo(240, 280); g.bezierCurveTo(260, 170, 300, 90, 380, 50); g.bezierCurveTo(330, 140, 320, 220, 320, 285); });  // front wing
+    fill(g, '#93c5fd', () => { g.moveTo(330, 120); g.bezierCurveTo(350, 85, 365, 65, 380, 50); g.bezierCurveTo(355, 95, 345, 115, 340, 140); });    // light wing tip
+    fill(g, '#ffffff', () => g.arc(385, 252, 9, 0, 7)); fill(g, '#111111', () => g.arc(387, 252, 5, 0, 7));
+  },
+  fish(g) {   // an orange goldfish with pale fins
+    fill(g, '#fdba74', () => { g.moveTo(390, 256); g.lineTo(480, 180); g.lineTo(455, 256); g.lineTo(480, 332); });                                 // tail
+    fill(g, '#fdba74', () => { g.moveTo(200, 160); g.quadraticCurveTo(260, 90, 320, 165); });                                                       // top fin
+    fill(g, '#fdba74', () => { g.moveTo(230, 340); g.quadraticCurveTo(260, 400, 300, 345); });                                                      // bottom fin
+    const gr = g.createLinearGradient(0, 140, 0, 370); gr.addColorStop(0, '#ea580c'); gr.addColorStop(0.6, '#f97316'); gr.addColorStop(1, '#fcd34d');
+    g.fillStyle = gr; g.beginPath(); g.moveTo(90, 256); g.bezierCurveTo(170, 130, 330, 130, 400, 256); g.bezierCurveTo(330, 382, 170, 382, 90, 256); g.fill();
+    g.strokeStyle = '#c2410c'; g.lineWidth = 7; g.beginPath(); g.arc(200, 256, 60, -0.9, 0.9); g.stroke();                                         // gill
+    fill(g, '#ffffff', () => g.arc(150, 240, 16, 0, 7)); fill(g, '#111111', () => g.arc(147, 240, 8, 0, 7));
+  },
+  butterfly(g) {   // a monarch: orange wings, black veins and borders, white dots, black body
+    const wing = (x, y, rx, ry, rot) => { g.save(); g.translate(x, y); g.rotate(rot); g.fillStyle = '#3a3a46'; g.beginPath(); g.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2); g.fill();
+      g.fillStyle = '#f97316'; g.beginPath(); g.ellipse(0, 0, rx * 0.84, ry * 0.8, 0, 0, Math.PI * 2); g.fill();
+      g.strokeStyle = '#3a3a46'; g.lineWidth = 6; for (const a of [-0.6, 0, 0.6]) { g.beginPath(); g.moveTo(-rx * 0.6 * Math.sign(x - 256 || 1), 0); g.lineTo(Math.cos(a) * rx * 0.8 * Math.sign(x - 256 || 1), Math.sin(a) * ry * 0.7); g.stroke(); }
+      g.fillStyle = '#ffffff'; for (let k = 0; k < 6; k++) { const a = k / 6 * Math.PI * 2; g.beginPath(); g.arc(Math.cos(a) * rx * 0.92, Math.sin(a) * ry * 0.9, 4, 0, 7); g.fill(); } g.restore(); };
+    for (const sgn of [-1, 1]) { wing(256 + sgn * 100, 200, 110, 80, sgn * 0.55); wing(256 + sgn * 78, 335, 72, 52, -sgn * 0.6); }
+    fill(g, '#3a3a46', () => g.ellipse(256, 270, 15, 120, 0, 0, Math.PI * 2));
+    g.strokeStyle = '#3a3a46'; g.lineWidth = 8; g.lineCap = 'round'; for (const sgn of [-1, 1]) { g.beginPath(); g.moveTo(256, 160); g.quadraticCurveTo(256 + sgn * 25, 90, 256 + sgn * 70, 70); g.stroke(); fill(g, '#3a3a46', () => g.arc(256 + sgn * 72, 68, 11, 0, 7)); }
+  },
+  elephant(g) {   // grey elephant, pink inner ear, white tusk
+    for (const x of [120, 280]) fill(g, '#5f6573', () => g.roundRect(x - 26, 300, 52, 130, 18));                                                    // far legs (darker)
+    fill(g, '#7d838f', () => g.ellipse(230, 270, 150, 105, 0, 0, Math.PI * 2));                                                                     // body
+    for (const x of [180, 340]) fill(g, '#7d838f', () => g.roundRect(x - 26, 300, 52, 130, 18));                                                    // near legs
+    fill(g, '#7d838f', () => g.arc(380, 220, 75, 0, Math.PI * 2));                                                                                  // head
+    g.strokeStyle = '#7d838f'; g.lineWidth = 46; g.lineCap = 'round'; g.beginPath(); g.moveTo(425, 250); g.bezierCurveTo(470, 320, 440, 400, 478, 430); g.stroke();   // trunk
+    fill(g, '#6c727e', () => g.ellipse(345, 225, 58, 70, 0.2, 0, Math.PI * 2));                                                                    // ear
+    fill(g, '#f4a7b9', () => g.ellipse(345, 228, 36, 48, 0.2, 0, Math.PI * 2));                                                                     // pink inner ear
+    g.strokeStyle = '#f8fafc'; g.lineWidth = 14; g.beginPath(); g.moveTo(420, 268); g.quadraticCurveTo(445, 300, 470, 292); g.stroke();             // tusk
+    g.strokeStyle = '#5f6573'; g.lineWidth = 8; g.beginPath(); g.moveTo(84, 250); g.quadraticCurveTo(55, 300, 66, 340); g.stroke();                 // tail
+    fill(g, '#111111', () => g.arc(405, 200, 8, 0, 7));
+  },
+  fox(g) {   // red fox: orange coat, white chest + tail tip + muzzle, black socks and ear tips
+    fill(g, '#ea580c', () => { g.moveTo(170, 420); g.bezierCurveTo(40, 430, 40, 280, 100, 250); g.bezierCurveTo(110, 330, 150, 380, 220, 400); });  // tail
+    fill(g, '#fff7ed', () => { g.moveTo(60, 330); g.bezierCurveTo(50, 290, 70, 260, 100, 250); g.bezierCurveTo(95, 285, 92, 310, 80, 340); });     // white tail tip
+    for (const x of [245, 300]) { fill(g, '#f97316', () => g.roundRect(x - 14, 380, 28, 45, 10)); fill(g, '#3a3a46', () => g.roundRect(x - 14, 410, 28, 40, 10)); }   // legs with black socks
+    fill(g, '#f97316', () => { g.moveTo(230, 440); g.bezierCurveTo(150, 430, 150, 260, 240, 230); g.bezierCurveTo(310, 220, 330, 330, 320, 440); });   // body
+    fill(g, '#fff7ed', () => { g.moveTo(262, 250); g.bezierCurveTo(300, 260, 310, 330, 290, 380); g.bezierCurveTo(270, 350, 255, 300, 262, 250); });   // white chest
+    for (const [x1, x2] of [[225, 255], [275, 305]]) { fill(g, '#f97316', () => { g.moveTo(x1, 140); g.lineTo((x1 + x2) / 2 - 8, 60); g.lineTo(x2, 132); }); fill(g, '#3a3a46', () => { g.moveTo((x1 + x2) / 2 - 18, 85); g.lineTo((x1 + x2) / 2 - 8, 60); g.lineTo((x1 + x2) / 2 + 4, 85); }); }   // ears, black tips
+    fill(g, '#f97316', () => g.ellipse(275, 175, 70, 58, 0, 0, Math.PI * 2));                                                                       // head
+    fill(g, '#fff7ed', () => { g.moveTo(300, 185); g.lineTo(405, 200); g.lineTo(318, 225); g.quadraticCurveTo(290, 215, 300, 185); });             // white muzzle
+    fill(g, '#f97316', () => { g.moveTo(320, 165); g.lineTo(405, 198); g.lineTo(318, 195); });                                                      // top of snout
+    fill(g, '#3a3a46', () => g.arc(403, 199, 8, 0, 7)); fill(g, '#3a3a46', () => g.ellipse(300, 165, 7, 9, 0, 0, 7));                                // nose, eye
+  },
+  person(g) {   // a person waving: skin, dark hair, red shirt, blue jeans, dark shoes
+    g.lineCap = 'round';
+    g.strokeStyle = '#2563eb'; g.lineWidth = 46; g.beginPath(); g.moveTo(230, 330); g.lineTo(215, 455); g.stroke(); g.beginPath(); g.moveTo(282, 330); g.lineTo(298, 455); g.stroke();   // jeans
+    fill(g, '#1f2937', () => g.ellipse(212, 472, 32, 14, 0, 0, 7)); fill(g, '#1f2937', () => g.ellipse(302, 472, 32, 14, 0, 0, 7));                   // shoes
+    g.strokeStyle = '#ef4444'; g.lineWidth = 40; g.beginPath(); g.moveTo(205, 200); g.lineTo(165, 290); g.stroke(); g.beginPath(); g.moveTo(305, 200); g.lineTo(370, 160); g.stroke();   // sleeves
+    g.strokeStyle = '#e0a77f'; g.beginPath(); g.moveTo(165, 290); g.lineTo(150, 330); g.stroke(); g.beginPath(); g.moveTo(370, 160); g.lineTo(405, 60); g.stroke();                   // forearms
+    fill(g, '#e0a77f', () => g.arc(410, 48, 26, 0, 7)); fill(g, '#e0a77f', () => g.arc(148, 340, 22, 0, 7));                                         // hands
+    fill(g, '#ef4444', () => g.roundRect(196, 175, 120, 170, 40));                                                                                  // shirt
+    fill(g, '#e0a77f', () => g.arc(256, 112, 52, 0, Math.PI * 2));                                                                                  // face
+    fill(g, '#2b1a12', () => { g.arc(256, 100, 55, Math.PI, 0); g.lineTo(300, 92); g.quadraticCurveTo(256, 70, 210, 98); });                        // hair
+    fill(g, '#2b1a12', () => g.arc(238, 118, 5, 0, 7)); fill(g, '#2b1a12', () => g.arc(274, 118, 5, 0, 7));
+  },
+  tree(g) {   // brown trunk, green crown, a few red fruits
+    fill(g, '#7c4a24', () => { g.moveTo(230, 480); g.lineTo(240, 300); g.lineTo(272, 300); g.lineTo(285, 480); });
+    g.strokeStyle = '#7c4a24'; g.lineWidth = 16; g.lineCap = 'round'; g.beginPath(); g.moveTo(256, 340); g.lineTo(200, 280); g.moveTo(258, 320); g.lineTo(320, 270); g.stroke();
+    const greens = ['#15803d', '#16a34a', '#22c55e', '#15803d', '#4ade80', '#16a34a'];
+    [[256, 170, 110], [170, 230, 80], [345, 230, 80], [205, 120, 70], [310, 120, 70], [256, 270, 70]].forEach(([x, y, r], i) => fill(g, greens[i], () => g.arc(x, y, r, 0, Math.PI * 2)));
+    for (const [x, y] of [[200, 200], [310, 170], [260, 250], [355, 255], [165, 250], [240, 110]]) fill(g, '#ef4444', () => g.arc(x, y, 11, 0, 7));
+  },
+  rocket(g) {   // white body, red nose + fins, blue window, fiery flame
+    const fl = g.createLinearGradient(0, 360, 0, 515); fl.addColorStop(0, '#fde047'); fl.addColorStop(0.5, '#f97316'); fl.addColorStop(1, '#ef4444');
+    g.fillStyle = fl; g.beginPath(); g.moveTo(212, 365); g.quadraticCurveTo(256, 525, 300, 365); g.fill();                                          // flame
+    for (const s of [-1, 1]) fill(g, '#ef4444', () => { g.moveTo(256 + s * 58, 270); g.lineTo(256 + s * 120, 390); g.lineTo(256 + s * 55, 360); });  // fins
+    fill(g, '#f1f5f9', () => { g.moveTo(256, 30); g.bezierCurveTo(330, 110, 330, 250, 315, 360); g.lineTo(197, 360); g.bezierCurveTo(182, 250, 182, 110, 256, 30); });   // body
+    fill(g, '#ef4444', () => { g.moveTo(256, 30); g.bezierCurveTo(290, 65, 305, 90, 312, 110); g.lineTo(200, 110); g.bezierCurveTo(207, 90, 222, 65, 256, 30); });     // red nose
+    fill(g, '#94a3b8', () => g.arc(256, 180, 38, 0, 7)); fill(g, '#38bdf8', () => g.arc(256, 180, 28, 0, 7));                                         // window
+    fill(g, '#cbd5e1', () => g.rect(200, 330, 112, 30));                                                                                             // base band
+  },
+};
+// each shape's colours (top → bottom gradient); the logo uses its real colours
+const COLORS = {
+  bird: ['#7dd3fc', '#e0f2fe'], fish: ['#22d3ee', '#3b82f6'], butterfly: ['#f472b6', '#a855f7'], elephant: ['#c4b5fd', '#94a3b8'],
+  fox: ['#fb923c', '#ef4444'], person: ['#fde68a', '#f59e0b'], tree: ['#86efac', '#16a34a'], rocket: ['#f8fafc', '#f97316'],
+};
+const ORDER = ['bird', 'fish', 'butterfly', 'elephant', 'fox', 'person', 'tree', 'rocket', 'logo'];
+
+function sampleCanvas(c, colorFn) {   // pixels inside the silhouette → N target points (+ colours)
+  const g = c.getContext('2d'), d = g.getImageData(0, 0, c.width, c.height).data, pts = [];
+  for (let y = 0; y < c.height; y += 2) for (let x = 0; x < c.width; x += 2) { const i = (y * c.width + x) * 4; if (d[i + 3] > 140) pts.push([x, y, d[i], d[i + 1], d[i + 2]]); }
+  const out = new Float32Array(N * 2), col = new Float32Array(N * 3);
+  for (let k = 0; k < N; k++) {
+    const p = pts[Math.floor(rnd() * pts.length)], jx = (rnd() - 0.5) * 2, jy = (rnd() - 0.5) * 2;
+    out[k * 2] = (p[0] + jx) / c.width; out[k * 2 + 1] = (p[1] + jy) / c.height;
+    const cc = colorFn(p); col.set(cc, k * 3);
+  }
+  return { pts: out, col };
+}
+function buildShape(name) {
+  const c = document.createElement('canvas'); c.width = c.height = S; const g = c.getContext('2d');
+  SHAPES[name](g);
+  return sampleCanvas(c, (p) => { const cc = new T.Color().setRGB(p[2] / 255, p[3] / 255, p[4] / 255, T.SRGBColorSpace); return [cc.r, cc.g, cc.b]; });   // the real colour of that spot
+}
+async function buildLogo() {
+  const img = new Image(); img.src = 'assets/brand/zungga-logo.png'; await img.decode();
+  const c = document.createElement('canvas'), k = S / Math.max(img.width, img.height); c.width = Math.round(img.width * k * 1.6); c.height = Math.round(img.height * k * 1.6);
+  c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+  return sampleCanvas(c, (p) => { const cc = new T.Color().setRGB(p[2] / 255, p[3] / 255, p[4] / 255, T.SRGBColorSpace); return [cc.r, cc.g, cc.b]; });
+}
+const targets = {};
+for (const n of ORDER.slice(0, -1)) targets[n] = buildShape(n);
+targets.logo = await buildLogo();
+
+// ---------- timeline: drift in, then morph → hold for every shape, logo holds longest ----------
+const INTRO = 1.0, MORPH = 1.1, HOLD = 1.9, LOGO_HOLD = 3.4;   // ≈ 30 s in all
+const steps = []; let tt = INTRO;
+for (const n of ORDER) { steps.push({ name: n, start: tt, morph: MORPH, hold: n === 'logo' ? LOGO_HOLD : HOLD }); tt += MORPH + (n === 'logo' ? LOGO_HOLD : HOLD); }
+const TOTAL = tt + 0.4;
+
+// ---------- particle state per particle ----------
+const seedA = new Float32Array(N), start = new Float32Array(N * 2), drift = new Float32Array(N * 2), sizes = new Float32Array(N);
+for (let i = 0; i < N; i++) { seedA[i] = rnd(); start[i * 2] = rnd() * W; start[i * 2 + 1] = rnd() * H; drift[i * 2] = (rnd() - 0.5) * 40; drift[i * 2 + 1] = (rnd() - 0.5) * 40; sizes[i] = 4 + rnd() * 5; }
+// where a shape sits on screen (it fills ~82% of the width, a little above centre)
+const BOX = { w: W * 0.82, cx: W / 2, cy: H * 0.56 };
+function shapePos(name, i, t, out) {
+  const tg = targets[name], u = tg.pts[i * 2], v = tg.pts[i * 2 + 1], s = seedA[i];
+  const sc = name === 'logo' ? 0.95 : 1, size = BOX.w * sc;
+  out[0] = BOX.cx + (u - 0.5) * size + Math.sin(t * 1.7 + s * 40) * 2.2;
+  out[1] = BOX.cy - (v - 0.5) * size * (name === 'logo' ? 1 : 1) + Math.cos(t * 1.3 + s * 33) * 2.2;
+}
+const pA = [0, 0], pB = [0, 0];
+const posArr = new Float32Array(N * 3), colArr = new Float32Array(N * 3), sizeArr = new Float32Array(N);
+function frameAt(t) {
+  let k = -1; for (let j = 0; j < steps.length; j++) if (t >= steps[j].start) k = j;
+  for (let i = 0; i < N; i++) {
+    const s = seedA[i];
+    let x, y, r, g, b, sz = sizes[i];
+    if (k < 0) {   // intro: dust drifting in the light
+      x = start[i * 2] + drift[i * 2] * t; y = start[i * 2 + 1] + drift[i * 2 + 1] * t; r = g = b = 1; sz *= 0.8;
+    } else {
+      const st = steps[k], prev = k > 0 ? steps[k - 1].name : null;
+      const u = (t - st.start) / st.morph, delay = s * 0.32, e = ease(clamp((u - delay) / (1 - 0.32), 0, 1));
+      if (prev) shapePos(prev, i, t, pA); else { pA[0] = start[i * 2] + drift[i * 2] * st.start; pA[1] = start[i * 2 + 1] + drift[i * 2 + 1] * st.start; }
+      shapePos(st.name, i, t, pB);
+      if (e < 1) {   // fly along a swirling curve: burst outward, then gather
+        const mx = (pA[0] + pB[0]) / 2, my = (pA[1] + pB[1]) / 2, ox = mx - BOX.cx, oy = my - BOX.cy, ol = Math.hypot(ox, oy) || 1;
+        const spread = 0.35 + s * 0.4, cx = mx + ox / ol * W * 0.18 * spread + Math.sin(s * 91) * W * 0.22, cy = my + oy / ol * W * 0.18 * spread + Math.cos(s * 57) * W * 0.22;
+        const a = 1 - e; x = a * a * pA[0] + 2 * a * e * cx + e * e * pB[0]; y = a * a * pA[1] + 2 * a * e * cy + e * e * pB[1];
+        sz *= 1 + Math.sin(Math.PI * e) * 0.6;
+      } else { x = pB[0]; y = pB[1]; }
+      const tgB = targets[st.name].col, tgA = prev ? targets[prev].col : null;
+      const cA0 = tgA ? tgA[i * 3] : 1, cA1 = tgA ? tgA[i * 3 + 1] : 1, cA2 = tgA ? tgA[i * 3 + 2] : 1;
+      r = lerp(cA0, tgB[i * 3], e); g = lerp(cA1, tgB[i * 3 + 1], e); b = lerp(cA2, tgB[i * 3 + 2], e);
+      if (st.name === 'logo') sz *= 0.85;
+      if (t > TOTAL - 0.4) sz *= clamp((TOTAL - t) / 0.4, 0, 1) * 0.3 + 0.7;
+    }
+    posArr[i * 3] = x; posArr[i * 3 + 1] = y; posArr[i * 3 + 2] = 0;
+    colArr[i * 3] = r; colArr[i * 3 + 1] = g; colArr[i * 3 + 2] = b; sizeArr[i] = sz * (0.85 + 0.3 * Math.sin(t * 3 + s * 20) * 0.5);
+  }
+}
+
+// ---------- renderer ----------
+const renderer = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H, false); renderer.autoClear = false;
+renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05; renderer.outputColorSpace = T.SRGBColorSpace;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = T.VSMShadowMap;
+document.body.appendChild(renderer.domElement);
+
+// particles: an orthographic layer on top (pixel coordinates)
+const pCam = new T.OrthographicCamera(0, W, H, 0, -10, 10), pScene = new T.Scene();
+const pg = new T.BufferGeometry(); pg.setAttribute('position', new T.BufferAttribute(posArr, 3)); pg.setAttribute('color', new T.BufferAttribute(colArr, 3)); pg.setAttribute('aSize', new T.BufferAttribute(sizeArr, 1));
+const mkMat = (scale, alpha, add) => new T.ShaderMaterial({
+  transparent: true, depthWrite: false, depthTest: false, blending: add ? T.AdditiveBlending : T.NormalBlending, vertexColors: true,
+  uniforms: { uScale: { value: scale }, uAlpha: { value: alpha } },
+  vertexShader: 'attribute float aSize; uniform float uScale; varying vec3 vC; void main(){ vC = color; gl_PointSize = aSize * uScale; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+  fragmentShader: 'uniform float uAlpha; varying vec3 vC; void main(){ float d = length(gl_PointCoord - 0.5); if (d > 0.5) discard; float a = smoothstep(0.5, 0.0, d); a = a * a; gl_FragColor = vec4(vC * (1.0 + (1.0 - d * 2.0) * 0.35), a * uAlpha); }',
+});
+const glowM = mkMat(3.6, BG === 'green' ? 0.18 : 0.14, true), dotM = mkMat(1.0, 1.0, false);
+if (BG === 'green') {   // a soft shadow pool behind the shapes so they read against the bright sky
+  const halo = new T.Mesh(new T.PlaneGeometry(W * 1.1, W * 1.1), new T.MeshBasicMaterial({ transparent: true, depthWrite: false, depthTest: false, map: (() => { const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d'); const gr = g.createRadialGradient(128, 128, 0, 128, 128, 128); gr.addColorStop(0, 'rgba(20,30,40,0.42)'); gr.addColorStop(0.6, 'rgba(20,30,40,0.2)'); gr.addColorStop(1, 'rgba(20,30,40,0)'); g.fillStyle = gr; g.fillRect(0, 0, 256, 256); const t = new T.CanvasTexture(c); return t; })() }));
+  halo.position.set(W / 2, H * 0.56, -1); halo.renderOrder = -1; pScene.add(halo);
+}
+pScene.add(new T.Points(pg, glowM)); pScene.add(new T.Points(pg, dotM));
+pScene.children.forEach((p) => (p.frustumCulled = false));
+
+// background
+const bgScene = new T.Scene(), bgCam = new T.PerspectiveCamera(55, W / H, 0.1, 400);
+let water = null, foam = null;
+const tex = (draw, w = 512, h = 512) => { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h); const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; return t; };
+if (BG === 'green') {
+  // sky
+  const sky = tex((g, w, h) => { const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#5aa7ee'); gr.addColorStop(0.42, '#a9d4ff'); gr.addColorStop(0.5, '#ffe7c7'); gr.addColorStop(1, '#ffe7c7'); g.fillStyle = gr; g.fillRect(0, 0, w, h); }, 8, 512);
+  bgScene.add(new T.Mesh(new T.SphereGeometry(300, 32, 16), new T.MeshBasicMaterial({ map: sky, side: T.BackSide, fog: false })));
+  bgScene.fog = new T.Fog(0xffe2c0, 60, 260);
+  const sun = new T.Sprite(new T.SpriteMaterial({ map: tex((g, w, h) => { const gr = g.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2); gr.addColorStop(0, 'rgba(255,250,230,1)'); gr.addColorStop(0.2, 'rgba(255,236,190,0.9)'); gr.addColorStop(1, 'rgba(255,220,170,0)'); g.fillStyle = gr; g.fillRect(0, 0, w, h); }, 256, 256), transparent: true, depthWrite: false, fog: false }));
+  sun.position.set(0, 22, -250); sun.scale.set(120, 120, 1); bgScene.add(sun);
+  for (let i = 0; i < 8; i++) { const cl = new T.Sprite(new T.SpriteMaterial({ map: tex((g, w, h) => { g.fillStyle = 'rgba(255,255,255,0.85)'; for (let k = 0; k < 7; k++) { g.beginPath(); g.arc(w * (0.2 + k * 0.1), h * (0.55 + Math.sin(k * 2) * 0.1), h * (0.18 + (k % 3) * 0.05), 0, 7); g.fill(); } }, 256, 128), transparent: true, opacity: 0.75, depthWrite: false, fog: false })); cl.position.set((i - 3.5) * 40 + (i % 2) * 15, 45 + (i % 3) * 12, -220); cl.scale.set(60, 30, 1); bgScene.add(cl); }
+  // sea + beach + grass + a sandy path
+  water = new T.Mesh(new T.PlaneGeometry(600, 240, 1, 1), new T.MeshStandardMaterial({ color: 0x2aa7c9, roughness: 0.15, metalness: 0.1, map: tex((g, w, h) => { const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#1e7fb0'); gr.addColorStop(1, '#4fd1e0'); g.fillStyle = gr; g.fillRect(0, 0, w, h); g.strokeStyle = 'rgba(255,255,255,0.35)'; g.lineWidth = 2; for (let i = 0; i < 60; i++) { const y = Math.random() * h; g.beginPath(); g.moveTo(Math.random() * w, y); g.lineTo(Math.random() * w, y + 1); g.stroke(); } }) }));
+  water.rotation.x = -Math.PI / 2; water.position.set(0, -0.05, -165); water.material.map.wrapS = water.material.map.wrapT = T.RepeatWrapping; water.material.map.repeat.set(6, 3); bgScene.add(water);
+  const sand = new T.Mesh(new T.PlaneGeometry(600, 30), new T.MeshStandardMaterial({ color: 0xf4d9a6, roughness: 1 })); sand.rotation.x = -Math.PI / 2; sand.position.set(0, 0, -40); bgScene.add(sand);
+  foam = new T.Mesh(new T.PlaneGeometry(600, 1.6), new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 })); foam.rotation.x = -Math.PI / 2; foam.position.set(0, 0.02, -45); bgScene.add(foam);
+  const grassT = tex((g, w, h) => { g.fillStyle = '#5fae46'; g.fillRect(0, 0, w, h); for (let i = 0; i < 9000; i++) { g.fillStyle = ['#4f9d3a', '#6fbe52', '#579f3f', '#7ac85c'][i % 4]; g.fillRect(Math.random() * w, Math.random() * h, 2, 5); } });
+  grassT.wrapS = grassT.wrapT = T.RepeatWrapping; grassT.repeat.set(20, 10);
+  const grass = new T.Mesh(new T.PlaneGeometry(200, 60), new T.MeshStandardMaterial({ map: grassT, roughness: 1 })); grass.rotation.x = -Math.PI / 2; grass.position.set(0, 0.01, -2); grass.receiveShadow = true; bgScene.add(grass);
+  const path = new T.Mesh(new T.PlaneGeometry(3.2, 60), new T.MeshStandardMaterial({ color: 0xe9cf9c, roughness: 1 })); path.rotation.x = -Math.PI / 2; path.position.set(0, 0.02, -2); path.receiveShadow = true; bgScene.add(path);
+  // the island's trees on both sides of the path, bushes and flowers along it
+  const kinds = ['tree_oak', 'tree_pine', 'tree_birch', 'tree_oak', 'tree_maple', 'tree_pine'];
+  let j = 0;
+  for (const s of [-1, 1]) for (let z = 3; z > -32; z -= 4.2) {
+    const t = ZAssets.build(kinds[(j++) % kinds.length]).group; t.position.set(s * (3.6 + (j % 3) * 1.3), 0, z + (j % 2) * 1.5); t.scale.setScalar(1.15 + (j % 4) * 0.12); t.rotation.y = j; bgScene.add(t);
+    const b = ZAssets.build(j % 3 ? 'bush' : 'flowers').group; b.position.set(s * 2.2, 0, z - 1.5); b.scale.setScalar(j % 3 ? 1.4 : 2.2); bgScene.add(b);
+  }
+  bgScene.add(new T.HemisphereLight(0xdcecff, 0x7aa35a, 1.1));
+  const sunL = new T.DirectionalLight(0xffe1b0, 2.6); sunL.position.set(-8, 14, -20); sunL.castShadow = true; sunL.shadow.mapSize.set(2048, 2048); sunL.shadow.radius = 6; sunL.shadow.blurSamples = 12;
+  Object.assign(sunL.shadow.camera, { left: -20, right: 20, top: 20, bottom: -20, near: 1, far: 80 }); bgScene.add(sunL);
+  bgScene.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+} else if (BG === 'dark') {
+  // dark: black in the middle, glowing out to brand purple at the edges
+  bgScene.background = tex((g, w, h) => { g.fillStyle = '#6b3bc9'; g.fillRect(0, 0, w, h); const rg = g.createRadialGradient(w / 2, h * 0.47, 0, w / 2, h * 0.47, h * 0.62); rg.addColorStop(0, '#000000'); rg.addColorStop(0.3, '#05020c'); rg.addColorStop(0.55, '#24104f'); rg.addColorStop(0.78, '#4a259a'); rg.addColorStop(1, '#6b3bc9'); g.fillStyle = rg; g.fillRect(0, 0, w, h); }, 270, 480);
+} else {
+  // plain: deep brand-purple gradient with a soft glow behind the shapes
+  const bgT = tex((g, w, h) => { const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#1a1033'); gr.addColorStop(0.55, '#2b1660'); gr.addColorStop(1, '#120a26'); g.fillStyle = gr; g.fillRect(0, 0, w, h); const rg = g.createRadialGradient(w / 2, h * 0.44, 0, w / 2, h * 0.44, w * 0.7); rg.addColorStop(0, 'rgba(124,92,242,0.35)'); rg.addColorStop(1, 'rgba(124,92,242,0)'); g.fillStyle = rg; g.fillRect(0, 0, w, h); }, 270, 480);
+  bgScene.background = bgT;
+}
+// background softly out of focus so the particles pop (green only)
+const rtBg = new T.WebGLRenderTarget(W / 2, H / 2, { type: T.HalfFloatType, samples: 4 }), rtBlur = new T.WebGLRenderTarget(W / 2, H / 2, { type: T.HalfFloatType });
+const qCam = new T.OrthographicCamera(-1, 1, 1, -1, 0, 1), qScene = new T.Scene(), quad = new T.Mesh(new T.PlaneGeometry(2, 2)); qScene.add(quad);
+const blurM = new T.ShaderMaterial({ uniforms: { tSrc: { value: null }, uDir: { value: new T.Vector2() } }, depthTest: false, depthWrite: false,
+  vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
+  fragmentShader: 'uniform sampler2D tSrc; uniform vec2 uDir; varying vec2 vUv; void main(){ vec3 c = texture2D(tSrc, vUv).rgb * 0.227; c += (texture2D(tSrc, vUv + uDir * 1.38).rgb + texture2D(tSrc, vUv - uDir * 1.38).rgb) * 0.316; c += (texture2D(tSrc, vUv + uDir * 3.23).rgb + texture2D(tSrc, vUv - uDir * 3.23).rgb) * 0.070; gl_FragColor = vec4(c, 1.0); }' });
+const showM = new T.ShaderMaterial({ uniforms: { tSrc: { value: null }, uDim: { value: BG === 'green' ? 0.86 : 1 }, uVig: { value: BG === 'dark' ? 0 : 0.28 } }, depthTest: false, depthWrite: false, toneMapped: true,
+  vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
+  fragmentShader: 'uniform sampler2D tSrc; uniform float uDim, uVig; varying vec2 vUv; void main(){ vec3 c = texture2D(tSrc, vUv).rgb * uDim; vec2 q = vUv - 0.5; c *= 1.0 - uVig * smoothstep(0.2, 0.8, dot(q, q) * 2.2); gl_FragColor = vec4(c, 1.0);\n #include <tonemapping_fragment>\n #include <colorspace_fragment>\n }' });
+
+function render(t) {
+  // background: slow walk down the path toward the sea
+  bgCam.position.set(Math.sin(t * 0.2) * 0.15, 1.7 + Math.sin(t * 0.5) * 0.02, 6 - t * 0.08); bgCam.lookAt(0, 2.4, -60);
+  if (water) { water.material.map.offset.set(t * 0.01, t * 0.03); foam.material.opacity = 0.55 + 0.35 * Math.sin(t * 1.3); foam.position.z = -45 + Math.sin(t * 1.3) * 0.8; }
+  renderer.setRenderTarget(rtBg); renderer.clear(); renderer.render(bgScene, bgCam);
+  if (BG === 'green') for (let k = 0; k < 2; k++) { blurM.uniforms.tSrc.value = rtBg.texture; blurM.uniforms.uDir.value.set(1.8 / (W / 2), 0); quad.material = blurM; renderer.setRenderTarget(rtBlur); renderer.render(qScene, qCam); blurM.uniforms.tSrc.value = rtBlur.texture; blurM.uniforms.uDir.value.set(0, 1.8 / (H / 2)); renderer.setRenderTarget(rtBg); renderer.render(qScene, qCam); }
+  showM.uniforms.tSrc.value = rtBg.texture; quad.material = showM; renderer.setRenderTarget(null); renderer.clear(); renderer.render(qScene, qCam);
+  frameAt(t); pg.attributes.position.needsUpdate = true; pg.attributes.color.needsUpdate = true; pg.attributes.aSize.needsUpdate = true;
+  renderer.render(pScene, pCam);
+}
+
+// offline recorder hook + live preview
+window.__render = { fps: FPS, total: TOTAL, frames: Math.ceil(TOTAL * FPS), bg: BG, morphTimes: steps.map((s) => s.start),
+  frame(i) { render(i / FPS); return renderer.domElement.toDataURL('image/jpeg', 0.93); } };
+if (!params.has('render')) { const t0 = performance.now(); const loop = () => { requestAnimationFrame(loop); render(((performance.now() - t0) / 1000) % TOTAL); }; loop(); }
+</script>
+</body>
+</html>

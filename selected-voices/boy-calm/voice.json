@@ -1,0 +1,23 @@
+{
+  "name": "boy-calm",
+  "selected": "2026-10-11",
+  "chosen_from": "voice-samples/boy-17-options/option-3.wav",
+  "engine": "Qwen3-TTS via mlx-audio 0.5.8 (local, Apple Silicon)",
+  "language": "english",
+  "design": {
+    "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-VoiceDesign-8bit",
+    "instruct": "A seventeen-year-old Indian boy, male baritone teenage voice, calm and expressive, speaking English with a soft Indian accent, clear pronunciation, conversational narration.",
+    "note": "Designing again with this text gives a SIMILAR voice, not the identical one. For the exact voice, always clone reference.wav (below)."
+  },
+  "reproduce": {
+    "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-Base-8bit",
+    "ref_audio": "reference.wav",
+    "ref_text": "My parents gave me pocket money, and by Wednesday itself, it was gone. When I think about where I spent it? On Monday, I bought chips during recess.",
+    "speed": 1.0
+  },
+  "reference": {
+    "file": "reference.wav",
+    "sample_rate": 24000,
+    "median_pitch_hz": 163
+  }
+}

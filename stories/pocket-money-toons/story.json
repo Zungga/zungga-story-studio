@@ -1,0 +1,1357 @@
+{
+  "title": "My Parents Gave Me Pocket Money (cartoon cast)",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "voice": {
+    "engine": "qwen3-tts-local",
+    "voice": "boy-calm",
+    "pauseAfter": 0.7,
+    "sfx": "studio/assets/sfx (coin-register, ball-bounce, kite-wind from drive-portfolio; rain/thunder baked by tools/make_sfx.py)",
+    "defaultDir": "../pocket-money/voice-narrator"
+  },
+  "hero": "rio",
+  "cast": {
+    "rio": {
+      "cast": "hero"
+    },
+    "mom": {
+      "cast": "mom"
+    },
+    "dad": {
+      "cast": "dad"
+    },
+    "shopkeeper": {
+      "cast": "shop_owner"
+    },
+    "teacher": {
+      "cast": "teacher"
+    },
+    "kai": {
+      "cast": "best_friend"
+    },
+    "mira": {
+      "cast": "friend_girl"
+    },
+    "tara": {
+      "cast": "friend_girl2"
+    },
+    "jax": {
+      "cast": "friend_boy"
+    },
+    "cat": {
+      "cast": "helper_cat"
+    },
+    "planet": {
+      "cast": "idea_planet"
+    }
+  },
+  "scenes": [
+    {
+      "id": 1,
+      "title": "Hook",
+      "place": "home",
+      "narration": "My parents gave me pocket money, and by Wednesday itself, it was gone.",
+      "actors": {
+        "mom": {
+          "at": [
+            -0.42,
+            0,
+            0.1
+          ],
+          "face": 0.9,
+          "anim": "give",
+          "expr": "smile",
+          "hold": {
+            "R": "note_100"
+          }
+        },
+        "dad": {
+          "at": [
+            -0.95,
+            0,
+            -0.25
+          ],
+          "face": 0.6,
+          "anim": "idle",
+          "expr": "smile"
+        },
+        "rio": {
+          "at": [
+            0.5,
+            0,
+            0.25
+          ],
+          "face": -0.9,
+          "anim": "wave",
+          "expr": "big_smile"
+        }
+      },
+      "beats": [
+        {
+          "word": "pocket",
+          "actor": "rio",
+          "anim": "idle"
+        },
+        {
+          "word": "money",
+          "offset": 0.1,
+          "move": {
+            "item": "note_100",
+            "from": "mom.R",
+            "to": "rio.R"
+          }
+        },
+        {
+          "word": "money",
+          "offset": 0.1,
+          "actor": "mom",
+          "anim": "idle"
+        },
+        {
+          "word": "and",
+          "actor": "rio",
+          "expr": "big_smile",
+          "face": -0.5
+        },
+        {
+          "word": "Wednesday",
+          "actor": "rio",
+          "anim": "think",
+          "expr": "surprised"
+        },
+        {
+          "word": "gone",
+          "offset": -0.1,
+          "hide": "rio.R"
+        }
+      ],
+      "camera": [
+        {
+          "move": "fixed",
+          "pos": [
+            -0.1,
+            1.2,
+            5.4
+          ],
+          "look": [
+            -0.2,
+            0.85,
+            0.0
+          ],
+          "toPos": [
+            -0.1,
+            1.15,
+            4.7
+          ],
+          "untilWord": "pocket",
+          "untilOffset": -0.15
+        },
+        {
+          "move": "hold",
+          "focus": [
+            "mom.R"
+          ],
+          "distance": "close",
+          "zoom": 1.4,
+          "minSize": 0.32,
+          "angle": 30,
+          "elevation": 10,
+          "untilWord": "Wednesday",
+          "untilOffset": -0.15
+        },
+        {
+          "move": "push_in",
+          "focus": [
+            "rio:head"
+          ],
+          "from": "mid",
+          "to": "close",
+          "angle": -10,
+          "elevation": 5
+        }
+      ],
+      "counter": {
+        "from": 100,
+        "to": 100,
+        "label": "Pocket money",
+        "steps": [
+          {
+            "word": "gone",
+            "v": 0
+          }
+        ]
+      },
+      "props": [
+        {
+          "id": "plant_pot",
+          "at": [
+            0.32,
+            0,
+            3.75
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Where it went",
+      "place": "shop",
+      "narration": "When I think about where I spent it? On Monday, I bought chips during recess. On Tuesday, I wanted something to drink with them, so I bought juice. By Wednesday, my hundred rupees had become only thirty.",
+      "actors": {
+        "shopkeeper": {
+          "at": [
+            0,
+            0,
+            -0.55
+          ],
+          "face": 0,
+          "anim": "idle",
+          "expr": "smile"
+        },
+        "rio": {
+          "at": [
+            0.15,
+            0,
+            0.75
+          ],
+          "face": 3.14,
+          "anim": "idle",
+          "expr": "smile"
+        }
+      },
+      "props": [
+        {
+          "id": "chips",
+          "at": [
+            -0.2,
+            1.04,
+            0.1
+          ],
+          "showWord": "chips",
+          "showOffset": -0.35
+        },
+        {
+          "id": "juice",
+          "at": [
+            0.05,
+            1.04,
+            0.12
+          ],
+          "showWord": "juice",
+          "showOffset": -0.35
+        },
+        {
+          "id": "notes_30",
+          "at": [
+            0.3,
+            1.045,
+            0.15
+          ],
+          "showWord": "Wednesday"
+        }
+      ],
+      "beats": [
+        {
+          "word": "bought",
+          "offset": -0.3,
+          "actor": "rio",
+          "anim": "give"
+        },
+        {
+          "word": "during",
+          "actor": "rio",
+          "anim": "idle"
+        },
+        {
+          "word": "bought#2",
+          "offset": -0.3,
+          "actor": "rio",
+          "anim": "give"
+        },
+        {
+          "word": "juice",
+          "offset": 0.5,
+          "actor": "rio",
+          "anim": "idle"
+        },
+        {
+          "word": "Wednesday",
+          "actor": "rio",
+          "expr": "worried"
+        }
+      ],
+      "camera": [
+        {
+          "move": "hold",
+          "focus": [
+            "rio",
+            "shopkeeper"
+          ],
+          "angle": 25,
+          "elevation": 10,
+          "distance": "mid",
+          "untilWord": "chips",
+          "untilOffset": -0.45
+        },
+        {
+          "move": "push_in",
+          "focus": [
+            "chips"
+          ],
+          "from": "mid",
+          "to": "close",
+          "zoom": 0.8,
+          "angle": 15,
+          "elevation": 25,
+          "untilWord": "Tuesday",
+          "untilOffset": -0.15
+        },
+        {
+          "move": "hold",
+          "focus": [
+            "rio:upper"
+          ],
+          "angle": 35,
+          "elevation": 8,
+          "distance": "mid",
+          "untilWord": "juice",
+          "untilOffset": -0.45
+        },
+        {
+          "move": "push_in",
+          "focus": [
+            "juice"
+          ],
+          "from": "mid",
+          "to": "close",
+          "zoom": 0.8,
+          "angle": -15,
+          "elevation": 25,
+          "untilWord": "Wednesday",
+          "untilOffset": -0.15
+        },
+        {
+          "move": "push_in",
+          "focus": [
+            "notes_30"
+          ],
+          "from": "mid",
+          "to": "close",
+          "zoom": 0.9,
+          "angle": 10,
+          "elevation": 35
+        }
+      ],
+      "counter": {
+        "from": 100,
+        "to": 30,
+        "label": "Pocket money",
+        "steps": [
+          {
+            "word": "chips",
+            "offset": 0.2,
+            "v": 60
+          },
+          {
+            "word": "juice",
+            "offset": 0.2,
+            "v": 30
+          }
+        ]
+      },
+      "sfx": [
+        {
+          "file": "coin-register.mp3",
+          "word": "chips",
+          "offset": 0.1,
+          "vol": 0.5
+        },
+        {
+          "file": "coin-register.mp3",
+          "word": "juice",
+          "offset": 0.1,
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "The dream",
+      "place": "ground",
+      "narration": "And the sad part? I was saving for a football of one hundred and fifty rupees.",
+      "actors": {
+        "rio": {
+          "at": [
+            0.9,
+            0,
+            1.2
+          ],
+          "face": -1.0,
+          "anim": "idle",
+          "expr": "sad"
+        }
+      },
+      "props": [
+        {
+          "id": "football",
+          "at": [
+            -0.2,
+            0,
+            1.9
+          ]
+        }
+      ],
+      "camera": [
+        {
+          "move": "hold",
+          "focus": [
+            "rio"
+          ],
+          "angle": -30,
+          "elevation": 8,
+          "distance": "mid",
+          "untilWord": "football",
+          "untilOffset": -0.3
+        },
+        {
+          "move": "orbit",
+          "focus": [
+            "football"
+          ],
+          "degrees": 40,
+          "angle": -20,
+          "elevation": 10,
+          "distance": "close",
+          "zoom": 0.85
+        }
+      ],
+      "caption": {
+        "text": "Dream: ₹150 football",
+        "atWord": "football"
+      },
+      "weather": {
+        "type": "rain",
+        "thunder": [
+          {
+            "word": "sad",
+            "offset": 0.2
+          }
+        ]
+      },
+      "ambience": {
+        "file": "rain-loop.wav",
+        "vol": 0.12
+      }
+    },
+    {
+      "id": 4,
+      "title": "The pause",
+      "place": "ground",
+      "narration": "What do you do when the money is gone, but the dream is still there? I did not know. I just sat on the bench, looking at my thirty rupees.",
+      "actors": {
+        "rio": {
+          "at": [
+            0,
+            0,
+            0.08
+          ],
+          "face": 0,
+          "anim": "sit_sad",
+          "expr": "sad",
+          "hold": {
+            "R": "notes_30"
+          }
+        },
+        "cat": {
+          "at": [
+            0.55,
+            0,
+            0.35
+          ],
+          "face": -0.4,
+          "anim": "sit_sad",
+          "expr": "sad",
+          "seat": 0.45
+        }
+      },
+      "camera": [
+        {
+          "move": "pull_back",
+          "focus": [
+            "rio"
+          ],
+          "from": "close",
+          "to": "wide",
+          "angle": 15,
+          "elevation": 12,
+          "untilWord": "thirty",
+          "untilOffset": -0.45
+        },
+        {
+          "move": "push_in",
+          "focus": [
+            "rio.R"
+          ],
+          "from": "mid",
+          "to": "close",
+          "zoom": 0.9,
+          "minSize": 0.18,
+          "angle": 10,
+          "elevation": 25
+        }
+      ],
+      "counter": {
+        "from": 30,
+        "to": 30,
+        "label": "Left"
+      },
+      "weather": {
+        "type": "rain",
+        "thunder": [
+          {
+            "word": "know",
+            "offset": 0.0
+          }
+        ]
+      },
+      "ambience": {
+        "file": "rain-loop.wav",
+        "vol": 0.12
+      },
+      "sfx": [
+        {
+          "file": "kite-wind.mp3",
+          "word": "What",
+          "vol": 0.15
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Test day",
+      "place": "classroom",
+      "narration": "Then came Friday, the day of the unit test. When my class teacher entered with the question papers, I heard whispering all over the class. Half the students had forgotten their pencils.",
+      "actors": {
+        "rio": {
+          "at": [
+            1.3,
+            0,
+            0.93
+          ],
+          "face": 3.14,
+          "anim": "sit",
+          "expr": "neutral",
+          "seat": true
+        },
+        "kai": {
+          "at": [
+            0.7,
+            0,
+            0.93
+          ],
+          "face": 3.14,
+          "anim": "sit",
+          "expr": "worried",
+          "seat": true
+        },
+        "mira": {
+          "at": [
+            -1.3,
+            0,
+            -0.42
+          ],
+          "face": 3.14,
+          "anim": "sit",
+          "expr": "worried",
+          "seat": true
+        },
+        "tara": {
+          "at": [
+            -1.9,
+            0,
+            0.93
+          ],
+          "face": 3.14,
+          "anim": "sit",
+          "expr": "surprised",
+          "seat": true
+        },
+        "jax": {
+          "at": [
+            1.3,
+            0,
+            -0.42
+          ],
+          "face": 3.14,
+          "anim": "sit",
+          "expr": "worried",
+          "seat": true
+        },
+        "teacher": {
+          "at": [
+            3.6,
+            0,
+            -2.5
+          ],
+          "face": -1.57,
+          "anim": "walk",
+          "expr": "neutral",
+          "hold": {
+            "R": "question_papers"
+          },
+          "path": [
+            {
+              "at": 0.0,
+              "pos": [
+                3.6,
+                0,
+                -2.5
+              ]
+            },
+            {
+              "at": 0.34,
+              "pos": [
+                -0.7,
+                0,
+                -2.55
+              ]
+            }
+          ]
+        }
+      },
+      "beats": [
+        {
+          "at": 0.0,
+          "door": 1.2
+        },
+        {
+          "at": 0.34,
+          "actor": "teacher",
+          "anim": "idle",
+          "face": 0
+        },
+        {
+          "at": 0.45,
+          "actor": "kai",
+          "anim": "talk",
+          "face": 2.6
+        },
+        {
+          "at": 0.45,
+          "actor": "tara",
+          "anim": "talk"
+        },
+        {
+          "at": 0.62,
+          "actor": "rio",
+          "anim": "think",
+          "expr": "thinking"
+        }
+      ],
+      "camera": [
+        {
+          "move": "fixed",
+          "pos": [
+            -2.7,
+            2.3,
+            3.0
+          ],
+          "look": [
+            1.6,
+            1.0,
+            -2.2
+          ],
+          "toPos": [
+            -2.3,
+            2.15,
+            2.6
+          ],
+          "untilWord": "question",
+          "untilOffset": -0.3
+        },
+        {
+          "move": "hold",
+          "focus": [
+            "teacher.R"
+          ],
+          "distance": "close",
+          "zoom": 1.3,
+          "minSize": 0.4,
+          "angle": 10,
+          "elevation": 10,
+          "untilWord": "heard",
+          "untilOffset": -0.1
+        },
+        {
+          "move": "fixed",
+          "pos": [
+            2.4,
+            1.9,
+            -2.2
+          ],
+          "look": [
+            0.9,
+            0.9,
+            0.9
+          ],
+          "toPos": [
+            1.55,
+            1.3,
+            -0.45
+          ],
+          "toLook": [
+            1.0,
+            0.95,
+            0.93
+          ],
+          "untilWord": "pencils",
+          "untilOffset": -0.9
+        },
+        {
+          "move": "push_in",
+          "focus": [
+            "@pt:0.75,0.8,0.47,0.1"
+          ],
+          "from": "mid",
+          "to": "close",
+          "angle": 30,
+          "elevation": 40
+        }
+      ],
+      "caption": {
+        "text": "Unit test! ✏️❓",
+        "atWord": "unit",
+        "until": 0.3
+      }
+    },
+    {
+      "id": 6,
+      "title": "The idea",
+      "place": "classroom",
+      "narration": "And that moment, an idea came. What if someone's problem is my chance?",
+      "actors": {
+        "rio": {
+          "at": [
+            1.3,
+            0,
+            0.93
+          ],
+          "face": 3.14,
+          "anim": "sit",
+          "expr": "thinking",
+          "seat": true
+        },
+        "kai": {
+          "at": [
+            0.7,
+            0,
+            0.93
+          ],
+          "face": 3.14,
+          "anim": "sit",
+          "expr": "worried",
+          "seat": true
+        },
+        "planet": {
+          "at": [
+            0.45,
+            0.3,
+            0.55
+          ],
+          "face": -0.6,
+          "anim": "idle",
+          "expr": "idea"
+        }
+      },
+      "props": [
+        {
+          "id": "lightbulb",
+          "attach": "rio.head",
+          "at": [
+            0,
+            0.27,
+            0
+          ],
+          "show": 0.12,
+          "on": 0.15
+        }
+      ],
+      "beats": [
+        {
+          "at": 0.15,
+          "actor": "rio",
+          "expr": "idea"
+        }
+      ],
+      "camera": [
+        {
+          "move": "fixed",
+          "pos": [
+            1.9,
+            1.4,
+            -0.9
+          ],
+          "look": [
+            1.25,
+            1.05,
+            0.93
+          ],
+          "toPos": [
+            1.6,
+            1.3,
+            -0.2
+          ],
+          "toLook": [
+            1.28,
+            1.1,
+            0.93
+          ]
+        }
+      ],
+      "caption": {
+        "text": "Someone's problem = my chance",
+        "at": 0.45,
+        "big": true
+      }
+    },
+    {
+      "id": 7,
+      "title": "The shop",
+      "place": "shop",
+      "narration": "After school, I ran to the stationery shop. Pencils were three rupees each. I gave the shopkeeper my thirty rupees and took ten pencils.",
+      "actors": {
+        "shopkeeper": {
+          "at": [
+            0,
+            0,
+            -0.55
+          ],
+          "face": 0,
+          "anim": "idle",
+          "expr": "smile"
+        },
+        "rio": {
+          "at": [
+            2.4,
+            0,
+            1.6
+          ],
+          "face": -2.2,
+          "anim": "run",
+          "expr": "determined",
+          "path": [
+            {
+              "at": 0,
+              "pos": [
+                2.4,
+                0,
+                1.6
+              ]
+            },
+            {
+              "at": 0.2,
+              "pos": [
+                0.15,
+                0,
+                0.75
+              ]
+            }
+          ]
+        }
+      },
+      "beats": [
+        {
+          "at": 0.2,
+          "actor": "rio",
+          "anim": "idle",
+          "face": 3.14
+        },
+        {
+          "word": "gave",
+          "offset": -0.35,
+          "actor": "rio",
+          "anim": "give",
+          "hold": {
+            "R": "notes_30"
+          }
+        },
+        {
+          "word": "shopkeeper",
+          "actor": "shopkeeper",
+          "anim": "give"
+        },
+        {
+          "word": "rupees#2",
+          "move": {
+            "item": "notes_30",
+            "from": "rio.R",
+            "to": "shopkeeper.R"
+          }
+        },
+        {
+          "word": "rupees#2",
+          "actor": "rio",
+          "anim": "idle"
+        },
+        {
+          "word": "took",
+          "offset": -0.45,
+          "actor": "shopkeeper",
+          "anim": "give",
+          "hold": {
+            "R": "pencils_10"
+          }
+        },
+        {
+          "word": "ten",
+          "offset": -0.1,
+          "move": {
+            "item": "pencils_10",
+            "from": "shopkeeper.R",
+            "to": "rio.R"
+          }
+        },
+        {
+          "word": "ten",
+          "offset": -0.1,
+          "actor": "shopkeeper",
+          "anim": "idle"
+        },
+        {
+          "word": "pencils#2",
+          "actor": "rio",
+          "expr": "big_smile"
+        }
+      ],
+      "camera": [
+        {
+          "move": "low_angle",
+          "focus": [
+            "shop_counter"
+          ],
+          "angle": 25,
+          "untilWord": "Pencils",
+          "untilOffset": -0.2
+        },
+        {
+          "move": "push_in",
+          "focus": [
+            "@pt:-0.32,1.1,0.15,0.09"
+          ],
+          "from": "mid",
+          "to": "close",
+          "angle": 10,
+          "elevation": 15,
+          "untilWord": "gave",
+          "untilOffset": -0.25
+        },
+        {
+          "move": "hold",
+          "focus": [
+            "rio.R"
+          ],
+          "distance": "close",
+          "zoom": 1.1,
+          "minSize": 0.25,
+          "angle": 100,
+          "elevation": 12,
+          "untilWord": "rupees#2",
+          "untilOffset": 0.15
+        },
+        {
+          "move": "hold",
+          "focus": [
+            "shopkeeper.R"
+          ],
+          "distance": "close",
+          "zoom": 1.5,
+          "minSize": 0.3,
+          "angle": 70,
+          "elevation": 25,
+          "untilWord": "took",
+          "untilOffset": -0.15
+        },
+        {
+          "move": "push_in",
+          "focus": [
+            "rio.R"
+          ],
+          "from": "mid",
+          "to": "close",
+          "minSize": 0.3,
+          "angle": 150,
+          "elevation": 20
+        }
+      ],
+      "counter": {
+        "from": 30,
+        "to": 0,
+        "label": "Money",
+        "steps": [
+          {
+            "word": "rupees#2",
+            "offset": 0.2,
+            "v": 0
+          }
+        ]
+      },
+      "sfx": [
+        {
+          "file": "coin-register.mp3",
+          "word": "rupees#2",
+          "offset": 0.2,
+          "vol": 0.55
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "The sale",
+      "place": "classroom",
+      "narration": "The next morning, I sold them to my classmates for five rupees each. My best friend was the first to buy. By the second day, my thirty rupees had become fifty.",
+      "actors": {
+        "rio": {
+          "at": [
+            0.15,
+            0,
+            1.2
+          ],
+          "face": -1.57,
+          "anim": "idle",
+          "expr": "big_smile",
+          "hold": {
+            "R": "pencil"
+          }
+        },
+        "kai": {
+          "at": [
+            -0.75,
+            0,
+            1.2
+          ],
+          "face": 1.57,
+          "anim": "idle",
+          "expr": "smile"
+        },
+        "mira": {
+          "at": [
+            -0.8,
+            0,
+            2.0
+          ],
+          "face": 2.3,
+          "anim": "idle",
+          "expr": "smile"
+        },
+        "tara": {
+          "at": [
+            -0.35,
+            0,
+            2.7
+          ],
+          "face": 2.7,
+          "anim": "idle",
+          "expr": "smile"
+        },
+        "cat": {
+          "at": [
+            0.75,
+            0,
+            1.05
+          ],
+          "face": -2.2,
+          "anim": "cheer",
+          "expr": "big_smile"
+        }
+      },
+      "props": [
+        {
+          "id": "coin_box",
+          "at": [
+            0.5,
+            0.79,
+            0.45
+          ],
+          "coins": {
+            "count": 10,
+            "startWord": "buy",
+            "startOffset": 0.3,
+            "endWord": "fifty",
+            "endOffset": 0.2,
+            "sound": "coin-register.mp3",
+            "vol": 0.3
+          }
+        }
+      ],
+      "beats": [
+        {
+          "word": "friend",
+          "offset": -0.4,
+          "actor": "rio",
+          "anim": "give"
+        },
+        {
+          "word": "buy",
+          "offset": -0.35,
+          "move": {
+            "item": "pencil",
+            "from": "rio.R",
+            "to": "kai.R"
+          }
+        },
+        {
+          "word": "buy",
+          "offset": -0.35,
+          "actor": "rio",
+          "anim": "idle"
+        },
+        {
+          "word": "buy",
+          "actor": "kai",
+          "expr": "big_smile"
+        },
+        {
+          "word": "second",
+          "actor": "mira",
+          "anim": "give"
+        }
+      ],
+      "camera": [
+        {
+          "move": "orbit",
+          "focus": [
+            "rio",
+            "kai",
+            "mira",
+            "tara"
+          ],
+          "degrees": 30,
+          "angle": 20,
+          "elevation": 18,
+          "distance": "mid",
+          "untilWord": "friend",
+          "untilOffset": -0.3
+        },
+        {
+          "move": "hold",
+          "focus": [
+            "rio.R",
+            "kai.R"
+          ],
+          "distance": "close",
+          "zoom": 1.3,
+          "minSize": 0.45,
+          "angle": 180,
+          "elevation": 15,
+          "untilWord": "buy",
+          "untilOffset": 0.5
+        },
+        {
+          "move": "push_in",
+          "focus": [
+            "coin_box"
+          ],
+          "from": "mid",
+          "to": "close",
+          "zoom": 1.0,
+          "angle": 20,
+          "elevation": 55
+        }
+      ],
+      "counter": {
+        "from": 0,
+        "to": 50,
+        "label": "Earned",
+        "startWord": "buy",
+        "startOffset": 0.3,
+        "endWord": "fifty",
+        "endOffset": 0.2
+      }
+    },
+    {
+      "id": 9,
+      "title": "The lesson",
+      "place": "ground",
+      "mood": "soft",
+      "narration": "When I think about what I learned? I did not need big money. I only needed to notice what the people around me needed.",
+      "actors": {
+        "rio": {
+          "at": [
+            0,
+            0,
+            0.08
+          ],
+          "face": 0,
+          "anim": "sit",
+          "expr": "smile",
+          "hold": {
+            "R": "pencil"
+          }
+        },
+        "planet": {
+          "at": [
+            0.75,
+            0,
+            0.6
+          ],
+          "face": -0.5,
+          "anim": "idle",
+          "expr": "smile"
+        }
+      },
+      "beats": [
+        {
+          "word": "learned",
+          "actor": "rio",
+          "expr": "thinking"
+        },
+        {
+          "word": "notice",
+          "actor": "rio",
+          "expr": "smile"
+        }
+      ],
+      "camera": [
+        {
+          "move": "hold",
+          "focus": [
+            "rio:upper"
+          ],
+          "angle": 25,
+          "elevation": 6,
+          "distance": "mid",
+          "untilWord": "big",
+          "untilOffset": -0.2
+        },
+        {
+          "move": "push_in",
+          "focus": [
+            "rio.R"
+          ],
+          "from": "mid",
+          "to": "close",
+          "minSize": 0.25,
+          "angle": 20,
+          "elevation": 12,
+          "untilWord": "notice",
+          "untilOffset": -0.2
+        },
+        {
+          "move": "push_in",
+          "focus": [
+            "rio:head"
+          ],
+          "from": "mid",
+          "to": "close",
+          "angle": 20,
+          "elevation": 5
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "The question",
+      "place": "home",
+      "talking": "rio",
+      "narration": "So now I ask you the same thing I asked myself. What do the people around you keep needing?",
+      "actors": {
+        "rio": {
+          "at": [
+            0,
+            0,
+            0.6
+          ],
+          "face": 0,
+          "anim": "talk",
+          "expr": "smile"
+        },
+        "cat": {
+          "at": [
+            0.55,
+            0,
+            0.85
+          ],
+          "face": -0.3,
+          "anim": "wave",
+          "expr": "big_smile"
+        },
+        "planet": {
+          "at": [
+            -0.6,
+            0.15,
+            0.75
+          ],
+          "face": 0.3,
+          "anim": "idle",
+          "expr": "big_smile"
+        }
+      },
+      "props": [
+        {
+          "id": "zungga_logo",
+          "at": [
+            0,
+            0.0,
+            1.6
+          ],
+          "show": 0.82,
+          "endCard": true
+        }
+      ],
+      "beats": [
+        {
+          "at": 0.55,
+          "actor": "rio",
+          "anim": "point"
+        },
+        {
+          "at": 0.8,
+          "actor": "rio",
+          "anim": "wave",
+          "expr": "big_smile"
+        }
+      ],
+      "camera": [
+        {
+          "move": "push_in",
+          "focus": [
+            "rio:upper"
+          ],
+          "from": "wide",
+          "to": "mid",
+          "angle": 0,
+          "elevation": 6,
+          "until": 0.8
+        },
+        {
+          "move": "hold",
+          "focus": [
+            "zungga_logo"
+          ],
+          "angle": 0,
+          "elevation": 4,
+          "distance": "close"
+        }
+      ],
+      "caption": {
+        "text": "What do the people around you keep needing?",
+        "at": 0.45,
+        "big": true
+      }
+    }
+  ],
+  "voices": [
+    {
+      "dir": "../pocket-money/voice-narrator",
+      "label": "Narrator · new voice"
+    },
+    {
+      "dir": "../pocket-money/voice",
+      "label": "Rio · boy-calm"
+    }
+  ],
+  "note": "Same story, voice clips, props, places and shots as stories/pocket-money; only the cast is the cartoon world (studio/characters/toons.js)."
+}

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Story Player — Zungga Story Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#1f1a33; --purple:#7c3aed; --pink:#ec4899; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #1b1830; font-family: "Fredoka", system-ui, sans-serif; color: var(--ink); overflow: hidden; }
+  #wrap { position: fixed; inset: 0 340px 0 0; display: grid; place-items: center; }
+  #wrap canvas { height: calc(100vh - 32px); aspect-ratio: 9 / 16; border-radius: 18px; box-shadow: 0 20px 60px #0008; background: #000; }
+  aside { position: fixed; top: 0; right: 0; bottom: 0; width: 340px; background: #fff; overflow: auto; padding: 16px 16px 30px; }
+  h1 { margin: 0; font-size: 20px; } h1 span { color: var(--pink); }
+  .sub { margin: 2px 0 12px; color: #64748b; font-size: 13px; }
+  .row { display: flex; gap: 6px; margin-bottom: 8px; }
+  button { font: inherit; font-size: 14px; font-weight: 600; border: 0; border-radius: 10px; padding: 9px 10px; background: #f1f0f7; color: var(--ink); cursor: pointer; }
+  button:hover { background: #e9e5fb; } button.on, button.main { background: linear-gradient(120deg, var(--purple), var(--pink)); color: #fff; }
+  button.rec { background: #ef4444; color: #fff; } button:disabled { opacity: .5; cursor: default; }
+  #bar { height: 8px; background: #eee; border-radius: 99px; overflow: hidden; cursor: pointer; margin: 6px 0 4px; } #fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--purple), var(--pink)); }
+  #time { font-size: 12px; color: #64748b; margin-bottom: 10px; }
+  h2 { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #64748b; margin: 14px 0 6px; }
+  .scene { display: grid; grid-template-columns: 26px 1fr auto; gap: 8px; align-items: center; padding: 7px 8px; border-radius: 10px; cursor: pointer; font-size: 13px; }
+  .scene:hover { background: #f5f3ff; } .scene.cur { background: #ede9fe; }
+  .scene b { color: var(--purple); } .scene small { color: #64748b; display: block; font-size: 11px; line-height: 1.3; }
+  .scene button { padding: 4px 8px; font-size: 12px; }
+  #status { font-size: 12px; color: #475569; margin-top: 8px; min-height: 16px; }
+</style>
+</head>
+<body>
+<div id="wrap"></div>
+<aside>
+  <h1 id="title">Story<span>.</span></h1>
+  <p class="sub" id="meta">Loading…</p>
+  <div class="row"><button id="play" class="main" style="flex:1">▶ Play</button><button id="restart">⟲ From start</button></div>
+  <div id="bar"><div id="fill"></div></div>
+  <div id="time">0.0 / 0.0 s</div>
+  <div class="row"><label style="font-size:13px;display:flex;gap:8px;align-items:center;flex:1">Voice <select id="voicePick" style="flex:1;font:inherit;font-size:13px;padding:6px;border-radius:8px;border:1px solid #e2e8f0"></select></label></div>
+  <div class="row"><button id="record" class="rec" style="flex:1">● Record video (1080×1920)</button></div>
+  <div id="status"></div>
+  <h2>Scenes</h2>
+  <div id="scenes"></div>
+</aside>
+<script src="../vendor/three.min.js"></script>
+<script src="assets/core.js"></script>
+<script src="assets/money.js"></script>
+<script src="assets/food.js"></script>
+<script src="assets/toys.js"></script>
+<script src="assets/school.js"></script>
+<script src="assets/furniture.js"></script>
+<script src="assets/shop.js"></script>
+<script src="assets/brand.js"></script>
+<script src="assets/nature.js"></script>
+<script src="assets/sets.js"></script>
+<script src="characters/person.js"></script>
+<script src="characters/toons.js"></script>
+<script src="js/camera-moves.js"></script>
+<script src="js/story-engine.js"></script>
+<script type="module">
+const $ = (s) => document.querySelector(s);
+const params = new URLSearchParams(location.search), storyName = params.get('story') || 'pocket-money', renderMode = params.has('render');
+let savedVoice = null; try { savedVoice = localStorage.getItem('zungga-voice-' + storyName); } catch (e) {}
+const storyMeta = await (await fetch(`../stories/${storyName}/story.json`, { cache: 'no-store' })).json();
+const voiceDir = params.get('voice') || savedVoice || storyMeta.voice?.defaultDir || 'voice';   // a story can borrow another story's clips (e.g. ../pocket-money/voice-narrator)   // ?voice=voice-narrator plays the story with another voice's clips
+const eng = await ZStory.create({ storyDir: `../stories/${storyName}/`, voiceDir });
+$('#wrap').appendChild(eng.canvas);
+$('#title').innerHTML = `${eng.story.title}<span>.</span>`;
+$('#meta').textContent = `${eng.timeline.length} scenes · ${eng.total.toFixed(1)} s`;
+// voice switch: each voice is a folder of clips in the story (voice/, voice-narrator/ …); switching reloads with that voice
+const voices = eng.story.voices || [{ dir: 'voice', label: eng.story.voice.voice }];
+$('#voicePick').innerHTML = voices.map((v) => `<option value="${v.dir}" ${v.dir === voiceDir ? 'selected' : ''}>${v.label}</option>`).join('');
+$('#voicePick').onchange = (e) => { try { localStorage.setItem('zungga-voice-' + storyName, e.target.value); } catch (err) {} const u = new URL(location.href); u.searchParams.set('voice', e.target.value); location.href = u.href; };
+
+// ---------- offline render hook (tools/render_video.mjs steps frame by frame) ----------
+let frameNo = 0;
+window.__render = {
+  total: eng.total, fps: eng.fps, frames: Math.ceil(eng.total * eng.fps),
+  timeline: eng.timeline.map((e) => ({ id: e.scene.id, start: e.start, dur: e.dur })), cues: eng.cues, sfxDir: eng.sfxDir, voiceDir,
+  frame(i) { if (i === 0) { eng.seek(0); frameNo = 0; } else { while (frameNo < i) { eng.step(1 / eng.fps); frameNo++; } } return eng.canvas.toDataURL('image/jpeg', 0.92); },
+};
+window.__eng = eng;
+if (renderMode) { document.body.dataset.ready = '1'; }
+
+// ---------- playback (audio clock drives the picture) ----------
+const ctx = eng.audioContext;
+let playing = false, sources = [], t0 = 0, ctxStart = 0, recDest = null;
+function stopAudio() { for (const s of sources) { try { s.stop(); } catch (e) {} } sources = []; }
+function scheduleAudio(fromT) {
+  stopAudio();
+  eng.timeline.forEach((e, i) => {
+    const buf = eng.audioFor(i); if (!buf) return;
+    const offset = fromT - e.start; if (offset >= buf.duration) return;
+    const src = ctx.createBufferSource(); src.buffer = buf; src.connect(ctx.destination); if (recDest) src.connect(recDest);
+    if (offset >= 0) src.start(ctx.currentTime + 0.05, offset); else src.start(ctx.currentTime + 0.05 - offset);
+    sources.push(src);
+  });
+  // sound effects / ambience (rain, thunder, coins, wind …)
+  for (const c of eng.cues) {
+    const buf = eng.sfxBuffer(c.file); if (!buf) continue;
+    const end = c.start + (c.loop ? c.dur : buf.duration); if (end <= fromT) continue;
+    const src = ctx.createBufferSource(), g = ctx.createGain(); src.buffer = buf; src.loop = !!c.loop; g.gain.value = c.vol;
+    src.connect(g); g.connect(ctx.destination); if (recDest) g.connect(recDest);
+    const when = ctx.currentTime + 0.05 + Math.max(0, c.start - fromT), off = Math.max(0, fromT - c.start);
+    src.start(when, c.loop ? off % buf.duration : off); if (c.loop) src.stop(ctx.currentTime + 0.05 + (end - fromT));
+    sources.push(src);
+  }
+}
+async function play(fromT = eng.time) {
+  await ctx.resume();
+  if (fromT >= eng.total - 0.05) fromT = 0;
+  if (Math.abs(fromT - eng.time) > 1e-3) eng.seek(fromT);
+  scheduleAudio(fromT); t0 = fromT; ctxStart = ctx.currentTime + 0.05; playing = true; $('#play').textContent = '❚❚ Pause';
+}
+function pause() { playing = false; stopAudio(); $('#play').textContent = '▶ Play'; }
+$('#play').onclick = () => (playing ? pause() : play());
+$('#restart').onclick = () => { pause(); eng.seek(0); play(0); };
+$('#bar').onclick = (e) => { const r = e.currentTarget.getBoundingClientRect(), t = (e.clientX - r.left) / r.width * eng.total; const was = playing; pause(); eng.seek(t); if (was) play(t); refreshUI(); };
+
+$('#scenes').innerHTML = eng.timeline.map((e, i) => `<div class="scene" data-i="${i}"><b>${e.scene.id}</b><span>${e.scene.title}<small>${e.scene.narration.slice(0, 62)}…</small></span><button data-replay="${i}">▶</button></div>`).join('');
+document.querySelectorAll('.scene').forEach((el) => el.onclick = (ev) => {
+  const i = +el.dataset.i, t = eng.timeline[i].start;
+  pause(); eng.seek(t); refreshUI();
+  if (ev.target.dataset.replay != null) { play(t); onlyScene = i; } else onlyScene = null;
+});
+let onlyScene = null;
+
+function refreshUI() {
+  $('#fill').style.width = (eng.time / eng.total * 100) + '%';
+  $('#time').textContent = `${eng.time.toFixed(1)} / ${eng.total.toFixed(1)} s · scene ${eng.timeline[eng.sceneIndex].scene.id}`;
+  document.querySelectorAll('.scene').forEach((el) => el.classList.toggle('cur', +el.dataset.i === eng.sceneIndex));
+}
+function frame() {
+  requestAnimationFrame(frame);
+  if (!playing || renderMode) return;
+  const target = t0 + Math.max(0, ctx.currentTime - ctxStart);
+  if (onlyScene != null) { const e = eng.timeline[onlyScene]; if (target >= e.start + e.dur) { pause(); onlyScene = null; return; } }
+  const dt = target - eng.time; if (dt > 0) { const r = eng.step(Math.min(dt, 0.25)); if (r.ended) { pause(); if (recorder) recorder.stop(); } }
+  refreshUI();
+}
+requestAnimationFrame(frame); refreshUI();
+
+// ---------- one-click recording: canvas + voice → MP4 (or WebM if this browser can't make MP4) ----------
+let recorder = null;
+$('#record').onclick = async () => {
+  if (recorder) { recorder.stop(); return; }
+  await ctx.resume();
+  recDest = ctx.createMediaStreamDestination();
+  const stream = new MediaStream([...eng.canvas.captureStream(eng.fps).getVideoTracks(), ...recDest.stream.getAudioTracks()]);
+  const types = ['video/mp4;codecs=avc1.640028,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm'];
+  const mimeType = types.find((t) => MediaRecorder.isTypeSupported(t)) || '';
+  recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 12e6 });
+  const chunks = []; recorder.ondataavailable = (e) => e.data.size && chunks.push(e.data);
+  recorder.onstop = () => {
+    const ext = mimeType.includes('mp4') ? 'mp4' : 'webm', blob = new Blob(chunks, { type: mimeType || 'video/webm' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `zungga-${storyName}.${ext}`; a.click();
+    $('#status').textContent = ext === 'mp4' ? `Saved zungga-${storyName}.mp4` : `Saved .webm (this browser can't record MP4). Convert with: tools/render_video.mjs, or CapCut / HandBrake.`;
+    recorder = null; recDest = null; $('#record').textContent = '● Record video (1080×1920)';
+  };
+  pause(); eng.seek(0); recorder.start(250); $('#record').textContent = '■ Stop recording'; $('#status').textContent = 'Recording… plays the whole story once.';
+  play(0);
+};
+</script>
+</body>
+</html>
