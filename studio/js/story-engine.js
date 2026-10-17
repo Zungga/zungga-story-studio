@@ -17,7 +17,7 @@
   const T = THREE;
   const lerp = (a, b, t) => a + (b - a) * t, clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const easeIO = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
-  const W = 1080, H = 1920, FPS = 30, DT = 1 / FPS;
+  const FPS = 30, DT = 1 / FPS;
 
   // where each place sits in the one shared world (sets are built once)
   const PLACES = {
@@ -25,13 +25,36 @@
     shop:      { origin: [14, 0, 0], set: 'shop_counter', sky: 0xbfe3ff, ground: true },
     ground:    { origin: [-14, 0, 0], set: 'school_ground', sky: 0xbfe3ff, ground: true },
     classroom: { origin: [0, 0, -16], set: 'classroom', sky: 0xfdf2d6 },
+    // added with the big asset pack (sets in assets/places.js); places are built only when a story uses them
+    bank:        { origin: [40, 0, 0], set: 'bank_set', sky: 0xf3efe6 },
+    kitchen:     { origin: [40, 0, -40], set: 'kitchen_set', sky: 0xfff3e6 },
+    bedroom:     { origin: [-40, 0, 0], set: 'bedroom_set', sky: 0xfff3e6 },
+    park:        { origin: [-40, 0, -40], set: 'park_set', sky: 0xbfe3ff, outdoor: true },
+    supermarket: { origin: [40, 0, 40], set: 'supermarket_set', sky: 0xf6f7fb },
+    street:      { origin: [0, 0, 40], set: 'street_set', sky: 0xbfe3ff, outdoor: true },
+    party:       { origin: [-40, 0, 40], set: 'party_set', sky: 0xfde7f3 },
+    festival:    { origin: [80, 0, 0], set: 'festival_set', sky: 0x3b2a55, outdoor: true, evening: true },
+    library:     { origin: [0, 0, -40], set: 'library_set', sky: 0xf5ecdc },
+    night_ground:{ origin: [-80, 0, 0], set: 'night_ground_set', sky: 0x121a33, outdoor: true, night: true },
+    // the resume island's places
+    beach:       { origin: [0, 0, 80], set: 'beach_set', sky: 0xbfe6ff, outdoor: true },
+    market:      { origin: [80, 0, 40], set: 'market_set', sky: 0xbfe3ff, outdoor: true },
+    village:     { origin: [80, 0, -40], set: 'village_set', sky: 0xbfe3ff, outdoor: true },
+    camp:        { origin: [-80, 0, 40], set: 'camp_set', sky: 0x3a2f5c, outdoor: true, evening: true },
+    sports:      { origin: [-80, 0, -40], set: 'sports_set', sky: 0xbfe3ff, outdoor: true },
+    cave:        { origin: [0, 0, -80], set: 'cave_set', sky: 0x0b0c12, night: true },
   };
 
   async function create(opts) {
     const storyDir = opts.storyDir.endsWith('/') ? opts.storyDir : opts.storyDir + '/';
-    const story = await (await fetch(storyDir + 'story.json', { cache: 'no-store' })).json();
+    let story = opts.story ? JSON.parse(JSON.stringify(opts.story)) : await (await fetch(storyDir + 'story.json', { cache: 'no-store' })).json();
+    const W = opts.width || story.format?.width || 1080, H = opts.height || story.format?.height || 1920;
+    const OPT = { subtitles: true, endCard: true, ...(opts.options || {}) };
+    const optv = (k) => (opts.options && opts.options[k] != null ? opts.options[k] : story.options && story.options[k] != null ? story.options[k] : OPT[k]);
+    const FPS = opts.fps || 30, DT = 1 / FPS;   // 24 / 30 / 60
+    const UI = Math.sqrt(W * H / (1080 * 1920)), VW = W / UI, VH = H / UI;   // overlays are laid out on a 1080×1920-sized virtual page, scaled to the output
     let durations = {};
-    const vdir = (opts.voiceDir || 'voice') + '/';
+    let vdir = (opts.voiceDir || 'voice') + '/';
     try { durations = await (await fetch(storyDir + vdir + 'durations.json', { cache: 'no-store' })).json(); } catch (e) { /* no voice yet */ }
     let wordsMap = {};
     try { wordsMap = await (await fetch(storyDir + vdir + 'words.json', { cache: 'no-store' })).json(); } catch (e) { /* no word timings yet */ }
@@ -39,29 +62,36 @@
 
     // ---------- audio (decoded once; the page decides how to play it) ----------
     const actx = opts.audioContext || new (window.AudioContext || window.webkitAudioContext)();
-    const buffers = await Promise.all(story.scenes.map(async (sc) => {
-      const name = `scene-${String(sc.id).padStart(2, '0')}.wav`;
-      if (!durations[name]) return null;
-      try { const ab = await (await fetch(storyDir + vdir + name)).arrayBuffer(); return await actx.decodeAudioData(ab); } catch (e) { return null; }
-    }));
+    const clipById = {};   // scene id → { buf, env }
+    async function loadClips(scenes) {
+      await Promise.all(scenes.map(async (sc) => {
+        const name = `scene-${String(sc.id).padStart(2, '0')}.wav`;
+        if (clipById[sc.id] || !durations[name]) return;
+        try { const buf = await actx.decodeAudioData(await (await fetch(storyDir + vdir + name, { cache: 'no-store' })).arrayBuffer()); clipById[sc.id] = { buf, env: envelopeOf(buf) }; } catch (e) { /* no clip */ }
+      }));
+    }
     // loudness envelope per clip (for the talking mouth + nothing else) — 60 samples a second
-    const envelopes = buffers.map((b) => {
-      if (!b) return null;
+    function envelopeOf(b) {
       const d = b.getChannelData(0), step = Math.floor(b.sampleRate / 60), out = new Float32Array(Math.ceil(d.length / step));
       for (let i = 0; i < out.length; i++) { let s = 0; for (let j = i * step; j < Math.min(d.length, (i + 1) * step); j++) s += d[j] * d[j]; out[i] = Math.sqrt(s / step); }
       const mx = Math.max(...out) || 1; for (let i = 0; i < out.length; i++) out[i] = Math.min(1, out[i] / (mx * 0.6));
       return out;
-    });
+    }
+    await loadClips(story.scenes);
+    let buffers = [], envelopes = [];
 
-    // ---------- timeline ----------
-    const pause = story.voice?.pauseAfter ?? 0.7;
+    // ---------- timeline (re-run by prepare() after every edit) ----------
+    let pause = 0.7, timeline = [], total = 0, cues = [];
+    function prepare() {
+    pause = story.voice?.pauseAfter ?? 0.7;
+    buffers = story.scenes.map((sc) => clipById[sc.id]?.buf || null); envelopes = story.scenes.map((sc) => clipById[sc.id]?.env || null);
     let acc = 0;
-    const timeline = story.scenes.map((sc, i) => {
+    timeline = story.scenes.map((sc, i) => {
       const words = sc.narration.split(/\s+/).length;
       const dur = (buffers[i] ? buffers[i].duration : words / 2.6) + pause + (i === story.scenes.length - 1 ? 1.8 : 0);   // last scene holds the end card a little
-      const e = { scene: sc, start: acc, dur }; acc += dur; return e;
+      const e = { scene: sc, start: acc, dur: dur + (sc.extraTime || 0) }; acc += e.dur; return e;
     });
-    const total = acc;
+    total = acc;
 
     // ---------- word cues: anything can be timed to a spoken word ("word": "chips", "chips#2" = 2nd time, "offset": -0.3) ----------
     const normW = (w) => w.toLowerCase().replace(/[^a-z0-9']/g, '');
@@ -88,8 +118,7 @@
     });
 
     // ---------- sound effects: one list of cues for the page (live) and the renderer (ffmpeg) ----------
-    const sfxBase = new URL('assets/sfx/', document.baseURI).href;
-    const cues = [];
+    cues = [];
     timeline.forEach((e, i) => {
       const sc = e.scene;
       for (const x of sc.sfx || []) cues.push({ file: x.file, start: e.start + x.at * e.dur, vol: x.vol ?? 0.8, dur: null, loop: false });
@@ -99,9 +128,13 @@
         const fk = pr.coins.start + (k + 1) / pr.coins.count * (pr.coins.end - pr.coins.start);
         cues.push({ file: pr.coins.sound, start: e.start + fk * e.dur + 0.28, vol: pr.coins.vol ?? 0.35, dur: null, loop: false });
       }
+      if (story.music && story.music.file && i === 0) cues.push({ file: story.music.file, start: 0, vol: story.music.vol ?? 0.15, dur: total, loop: true, music: true, offset: story.music.start || 0, fadeIn: story.music.fadeIn ?? 0.6, fadeOut: story.music.fadeOut ?? 2 });   // offset = where in the track the story starts
     });
-    const sfxBuffers = {};
-    await Promise.all([...new Set(cues.map((c) => c.file))].map(async (f) => { try { sfxBuffers[f] = await actx.decodeAudioData(await (await fetch(sfxBase + f)).arrayBuffer()); } catch (err) { console.warn('sfx missing', f); } }));
+    }
+    prepare();
+    const sfxBase = new URL('assets/sfx/', document.baseURI).href, sfxBuffers = {};
+    async function loadSfx() { await Promise.all([...new Set(cues.map((c) => c.file))].filter((f) => !sfxBuffers[f]).map(async (f) => { try { sfxBuffers[f] = await actx.decodeAudioData(await (await fetch(sfxBase + f)).arrayBuffer()); } catch (err) { console.warn('sfx missing', f); } })); }
+    await loadSfx();
 
     // ---------- renderer + output canvas ----------
     const renderer = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
@@ -155,6 +188,16 @@
       ground: { warm: [1.04, 1.0, 0.95], bloom: 0.35, aperture: 0.4, vignette: 0.3, sat: 1.05 },
       rain: { warm: [0.92, 0.97, 1.06], bloom: 0.25, aperture: 0.35, vignette: 0.45, sat: 0.82 },
       soft: { warm: [1.08, 1.0, 0.9], bloom: 0.6, aperture: 0.6, vignette: 0.5, sat: 1.0 },
+      night: { warm: [0.9, 0.96, 1.12], bloom: 0.9, aperture: 0.45, vignette: 0.55, sat: 0.95 },
+      evening: { warm: [1.12, 0.98, 0.88], bloom: 0.85, aperture: 0.5, vignette: 0.5, sat: 1.1 },
+      bank: { warm: [1.03, 1.0, 0.97], bloom: 0.35, aperture: 0.45, vignette: 0.3, sat: 1.02 },
+      kitchen: { warm: [1.08, 1.0, 0.9], bloom: 0.5, aperture: 0.5, vignette: 0.35, sat: 1.06 },
+      bedroom: { warm: [1.08, 1.0, 0.9], bloom: 0.5, aperture: 0.55, vignette: 0.38, sat: 1.05 },
+      park: { warm: [1.04, 1.0, 0.95], bloom: 0.35, aperture: 0.4, vignette: 0.3, sat: 1.08 },
+      street: { warm: [1.04, 1.0, 0.95], bloom: 0.35, aperture: 0.4, vignette: 0.3, sat: 1.06 },
+      supermarket: { warm: [1.0, 1.0, 1.0], bloom: 0.35, aperture: 0.4, vignette: 0.28, sat: 1.06 },
+      party: { warm: [1.08, 1.0, 0.95], bloom: 0.6, aperture: 0.5, vignette: 0.35, sat: 1.1 },
+      library: { warm: [1.1, 1.0, 0.88], bloom: 0.45, aperture: 0.55, vignette: 0.4, sat: 1.0 },
     };
     let look = LOOKS.home;
 
@@ -164,27 +207,34 @@
     groundT.wrapS = groundT.wrapT = T.RepeatWrapping; groundT.repeat.set(40, 40);
     const ground = mesh(new T.PlaneGeometry(200, 200), new T.MeshStandardMaterial({ map: groundT, roughness: 1 }), scene, 0, -0.001, 0); ground.rotation.x = -Math.PI / 2; ground.castShadow = false;
     const places = {};
-    for (const [name, p] of Object.entries(PLACES)) {
+    // a place is built the first time a story uses it (unknown / not-yet-built sets fall back to home)
+    function ensurePlace(name) {
+      if (places[name]) return places[name];
+      const p = PLACES[name]; if (!p || !ZAssets.has(p.set)) { if (name !== 'home') console.warn('Place not available:', name); return ensurePlace('home'); }
       const r = ZAssets.build(p.set); r.group.position.set(...p.origin); scene.add(r.group);
       const box = new T.Box3().setFromObject(r.group);
       let door = null; r.group.traverse((o) => { if (o.userData && o.userData.hinge) door = o.userData.hinge; });
-      places[name] = { ...p, group: r.group, r, box, door, o: new T.Vector3(...p.origin) };
+      const pl = places[name] = { ...p, name, group: r.group, r, box, door, o: new T.Vector3(...p.origin), ticks: [] };
+      r.group.traverse((o) => { if (o.userData && typeof o.userData.tick === 'function') pl.ticks.push(o.userData.tick); });   // fans, clocks, flags… in the set
+      if (name === 'shop') {   // the shop gets a little street: pavement + wall behind
+        const pv = mesh(new T.PlaneGeometry(5, 3.5), new T.MeshStandardMaterial({ color: 0xcfcfd4, roughness: 1 }), scene, 14, 0.003, 1.0); pv.rotation.x = -Math.PI / 2; pv.castShadow = false;
+        mesh(new T.BoxGeometry(5, 3, 0.2), new T.MeshStandardMaterial({ color: 0xffd8a8, roughness: 1 }), scene, 14, 1.5, -1.25);
+      }
+      for (const [id, x, z, sc] of DECOR[name] || []) {
+        if (!ZAssets.has(id)) continue;
+        const g = ZAssets.build(id).group; g.position.copy(pl.o).add(new T.Vector3(x, 0, z)); g.scale.multiplyScalar(sc); g.rotation.y = (x * 7 + z * 3) % 6.28; scene.add(g);
+      }
+      r.group.traverse((o) => { if (o.isMesh) { o.castShadow = o.castShadow !== false; o.receiveShadow = true; } });
+      return pl;
     }
-    places.shop.extra = []; { // the shop gets a little street: pavement + wall behind
-      const pv = mesh(new T.PlaneGeometry(5, 3.5), new T.MeshStandardMaterial({ color: 0xcfcfd4, roughness: 1 }), scene, 14, 0.003, 1.0); pv.rotation.x = -Math.PI / 2; pv.castShadow = false;
-      mesh(new T.BoxGeometry(5, 3, 0.2), new T.MeshStandardMaterial({ color: 0xffd8a8, roughness: 1 }), scene, 14, 1.5, -1.25);
-    }
+    const placeOf = (name) => places[name] || ensurePlace(name);
     // outdoor places get the Play-mode island's trees, bushes and flowers around them
     const DECOR = {
       ground: [['tree_pine', -4.2, -4.0, 0.55], ['tree_oak', 0.3, -5.2, 0.6], ['tree_birch', 4.6, -4.4, 0.6], ['tree_maple', -6.2, -0.6, 0.5], ['tree_oak', 6.4, 0.8, 0.55], ['tree_pine', -5.4, 3.8, 0.5],
         ['bush', -3.0, -1.75, 1], ['bush', -1.4, -1.9, 0.9], ['bush', 3.6, -1.8, 1.1], ['flowers', 1.0, -1.55, 1], ['flowers', -2.4, 1.6, 1], ['rock', 3.2, 1.4, 1], ['bush', -4.2, 1.2, 1]],
       shop: [['tree_oak', -3.4, -0.7, 0.5], ['tree_pine', 3.6, -0.9, 0.45], ['bush', -2.7, 0.2, 1], ['bush', 2.9, 0.1, 1], ['flowers', 2.3, 1.7, 1], ['flowers', -2.2, 1.9, 1], ['tree_birch', -5.5, 2.5, 0.55], ['tree_maple', 5.8, 2.2, 0.5]],
     };
-    for (const [pl, items] of Object.entries(DECOR)) for (const [id, x, z, sc] of items) {
-      if (!ZAssets.has(id)) continue;
-      const g = ZAssets.build(id).group; g.position.copy(places[pl].o).add(new T.Vector3(x, 0, z)); g.scale.multiplyScalar(sc); g.rotation.y = (x * 7 + z * 3) % 6.28; scene.add(g);
-    }
-    scene.traverse((o) => { if (o.isMesh) { o.castShadow = o.castShadow !== false; o.receiveShadow = true; } });
+    ensurePlace('home'); for (const sc of story.scenes) ensurePlace(sc.place);
 
     // rain: falling streaks in a box around the camera (same look as the island's rain), plus thunder flashes
     const rain = (() => {
@@ -205,28 +255,79 @@
       const pts = new T.Points(g, m); pts.frustumCulled = false; pts.renderOrder = 5; pts.visible = false; scene.add(pts);
       return { pts, m };
     })();
+    // snow: soft flakes drifting down around the camera (sway, slow) — weather { type: 'snow' } or season 'winter'
+    const snow = (() => {
+      const N = 2600, pos = new Float32Array(N * 3), seed = new Float32Array(N);
+      for (let k = 0; k < N; k++) { const r = (k * 9301 + 49297) % 233280 / 233280, q = (k * 4973 + 1931) % 1000 / 1000, w = (k * 7919 + 3) % 977 / 977; pos.set([(r - 0.5) * 14, q * 9, (w - 0.5) * 14], k * 3); seed[k] = ((k * 2654435761) >>> 0) / 4294967296; }
+      const g = new T.BufferGeometry(); g.setAttribute('position', new T.BufferAttribute(pos, 3)); g.setAttribute('aSeed', new T.BufferAttribute(seed, 1));
+      const m = new T.ShaderMaterial({ transparent: true, depthWrite: false, uniforms: { uTime: { value: 0 }, uCam: { value: new T.Vector3() } },
+        vertexShader: `attribute float aSeed; uniform float uTime; uniform vec3 uCam; varying float vA;
+          void main(){ vec3 p = position; p.y = mod(p.y - uTime * (0.6 + 0.5 * aSeed), 9.0); p.x += sin(uTime * (0.8 + aSeed) + aSeed * 40.0) * 0.35; p.z += cos(uTime * 0.7 + aSeed * 23.0) * 0.25;
+            vec3 w = vec3(uCam.x + mod(p.x - uCam.x + 7.0, 14.0) - 7.0, p.y - 0.5, uCam.z + mod(p.z - uCam.z + 7.0, 14.0) - 7.0);
+            vA = 0.6 + 0.4 * aSeed; vec4 mv = viewMatrix * vec4(w, 1.0); gl_PointSize = clamp(26.0 * (3.0 / max(-mv.z, 0.3)) * (0.6 + aSeed * 0.6), 1.5, 40.0); gl_Position = projectionMatrix * mv; }`,
+        fragmentShader: `varying float vA; void main(){ vec2 c = gl_PointCoord - 0.5; float d = length(c); if (d > 0.5) discard; gl_FragColor = vec4(1.0, 1.0, 1.0, (1.0 - d * 2.0) * vA); }` });
+      const pts = new T.Points(g, m); pts.frustumCulled = false; pts.renderOrder = 5; pts.visible = false; scene.add(pts);
+      return { pts, m };
+    })();
+    // season dressing for outdoor places: a snow blanket (winter) or a carpet of fallen leaves (autumn)
+    const seasonLayer = (() => {
+      const snowT = tex((c, w, h) => { c.fillStyle = '#f4f8ff'; c.fillRect(0, 0, w, h); for (let i = 0; i < 3000; i++) { c.fillStyle = ['#e6eefb', '#ffffff', '#dfe8f7'][i % 3]; c.globalAlpha = 0.7; c.beginPath(); c.arc((i * 73) % w, (i * 151) % h, 2 + (i % 5), 0, 6.3); c.fill(); } c.globalAlpha = 1; }, 512, 512);
+      snowT.wrapS = snowT.wrapT = T.RepeatWrapping; snowT.repeat.set(10, 10);
+      const leafT = tex((c, w, h) => { c.clearRect(0, 0, w, h); for (let i = 0; i < 900; i++) { c.fillStyle = ['#d9622b', '#e8a33d', '#b8441f', '#c98a2c'][i % 4]; c.save(); c.translate((i * 97) % w, (i * 211) % h); c.rotate(i); c.beginPath(); c.ellipse(0, 0, 9, 4, 0, 0, 6.3); c.fill(); c.restore(); } }, 512, 512);
+      leafT.wrapS = leafT.wrapT = T.RepeatWrapping; leafT.repeat.set(8, 8);
+      const geo = new T.CircleGeometry(16, 48);
+      const sn = new T.Mesh(geo, new T.MeshStandardMaterial({ map: snowT, roughness: 0.9 })); sn.rotation.x = -Math.PI / 2; sn.visible = false; sn.receiveShadow = true; scene.add(sn);
+      const lf = new T.Mesh(geo, new T.MeshStandardMaterial({ map: leafT, transparent: true, roughness: 1, depthWrite: false })); lf.rotation.x = -Math.PI / 2; lf.visible = false; lf.receiveShadow = true; scene.add(lf);
+      return { sn, lf };
+    })();
     const groundMat = ground.material, groundDry = groundMat.color.clone();
 
     // ---------- cast (built once, reused across scenes) ----------
     const P = ZCharacters.PRESETS, cast = {};
-    for (const [id, c] of Object.entries(story.cast)) {
+    function buildActor(id, c, asVariant = false) {
+      if (!asVariant && baseCast[id]) { scene.remove(baseCast[id].holder); for (const k of Object.keys(variants)) if (k.startsWith(id + '|')) { scene.remove(variants[k].holder); delete variants[k]; } }
       const cfg = { ...(P[c.preset] || {}), ...c }; delete cfg.preset;
       // cast entries: { "cast": "teacher" } = a cartoon-world preset, { "toon": "cat" } = a cartoon kind, otherwise a person preset
-      const tp = cfg.cast && ZCharacters.TOON_PRESETS ? ZCharacters.TOON_PRESETS[cfg.cast] : null;
+      const tp0 = cfg.cast && ZCharacters.TOON_PRESETS ? ZCharacters.TOON_PRESETS[cfg.cast] : null;
+      const tp = tp0 && (cfg.look || cfg.colors) ? { ...tp0, look: { ...(tp0.look || {}), ...(cfg.look || {}) }, colors: { ...(tp0.colors || {}), ...(cfg.colors || {}) } } : tp0;   // per-story outfit / colour changes
       const ch = tp ? ZCharacters.toon(tp) : cfg.toon ? ZCharacters.toon({ kind: cfg.toon, colors: cfg.colors }) : ZCharacters.person(cfg), holder = new T.Group();
       if (tp || cfg.toon) cfg.height = ch.params.height; holder.add(ch.group); holder.visible = false; scene.add(holder);
       ch.group.traverse((o) => { if (o.isMesh) o.castShadow = true; });
-      cast[id] = { ch, holder, cfg };
+      const entry = { ch, holder, cfg, src: JSON.stringify(c) };
+      if (asVariant) return entry;
+      cast[id] = baseCast[id] = entry;
     }
+    const baseCast = {}, variants = {};   // a scene can dress someone differently: { "look": {...} } on the scene's actor builds a variant once
+    function variantFor(id, a) {
+      const key = id + '|' + JSON.stringify([a.look || null, a.colors || null, a.wear || null]);
+      if (!variants[key]) { const c = JSON.parse(baseCast[id].src); if (a.look) c.look = { ...(c.look || {}), ...a.look }; if (a.colors) c.colors = { ...(c.colors || {}), ...a.colors }; if (a.wear) c.wear = { ...(c.wear || {}), ...a.wear }; variants[key] = buildActor(id, c, true); }
+      return variants[key];
+    }
+    for (const [id, c] of Object.entries(story.cast)) buildActor(id, c);
+    await preloadImages(story);
 
     // ---------- per-scene state ----------
-    let cur = -1, lt = 0, clock = 0, baseHemi = 1.1, flash = 0;
+    let cur = -1, lt = 0, clock = 0, baseHemi = 1.1, flash = 0, lastCam = null;
     let sceneProps = {}, beatsDone = 0, tweens = [], coins = [];
     const grip = (who) => { const [a, hand] = who.split('.'); return hand === 'L' ? cast[a].ch.rig.armL.grip : cast[a].ch.rig.armR.grip; };
     function clearGrip(gr) { while (gr.children.length) gr.remove(gr.children[0]); }
+    // props: catalog ids, or "img:<file>" = an uploaded picture shown as a little standee
+    const imgCache = {};
+    async function preloadImages(st) {
+      const ids = new Set(); for (const sc of st.scenes) { for (const p of sc.props || []) if (String(p.id).startsWith('img:')) ids.add(p.id); for (const a of Object.values(sc.actors || {})) for (const v of Object.values(a.hold || {})) if (String(v).startsWith('img:')) ids.add(v); }
+      await Promise.all([...ids].filter((id) => !imgCache[id]).map((id) => new Promise((res) => { new T.TextureLoader().load(new URL('assets/uploads/' + id.slice(4), document.baseURI).href, (t) => { t.colorSpace = T.SRGBColorSpace; imgCache[id] = t; res(); }, undefined, () => res()); })));
+    }
+    function buildProp(id) {
+      if (String(id).startsWith('img:')) {
+        const t = imgCache[id]; if (!t) throw new Error('image not loaded');
+        const a = t.image.width / t.image.height, h = 0.5, g = new T.Group(), m = new T.Mesh(new T.PlaneGeometry(h * a, h), new T.MeshStandardMaterial({ map: t, transparent: true, alphaTest: 0.05, side: T.DoubleSide, roughness: 0.8 }));
+        m.position.y = h / 2; m.castShadow = true; g.add(m); return { group: g };
+      }
+      return ZAssets.build(id);
+    }
     function holdItem(actor, hand, id) {
       const gr = grip(actor + '.' + hand); clearGrip(gr); if (!id) return null;
-      const obj = ZAssets.build(id).group; gr.add(obj); obj.userData.itemId = id;
+      let obj; try { obj = buildProp(id).group; } catch (err) { console.warn('Unknown prop:', id); return null; } gr.add(obj); obj.userData.itemId = id;
       if (/^note|^notes/.test(id)) { obj.rotation.set(Math.PI / 2, 0, 0); obj.position.set(0, 0.03, 0); }           // notes shown face-on in the hand
       if (id === 'pencils_10' || id === 'question_papers') obj.rotation.set(Math.PI / 2.4, 0, 0);
       return obj;
@@ -237,7 +338,7 @@
       for (const p of Object.values(sceneProps)) p.obj.parent && p.obj.parent.remove(p.obj);
       for (const c of coins) c.mesh.parent && c.mesh.parent.remove(c.mesh); coins = [];
       sceneProps = {};
-      const sc = timeline[i].scene, place = places[sc.place];
+      const sc = timeline[i].scene, place = placeOf(sc.place);
       scene.background = new T.Color(place.sky); scene.fog = new T.Fog(place.sky, 18, 60);
       // lights follow the place
       sun.position.copy(place.o).add(new T.Vector3(4, 9, 6)); sun.target.position.copy(place.o);
@@ -245,10 +346,14 @@
       const soft = sc.mood === 'soft', wet = sc.weather && sc.weather.type === 'rain';
       hemi.intensity = soft ? 0.45 : wet ? 0.6 : 1.1; sun.intensity = soft ? 0.5 : wet ? 0.35 : 2.4; fill.intensity = soft ? 0.25 : wet ? 0.35 : 0.6;
       rain.pts.visible = !!wet;
+      const season = sc.season || null, snowy = (sc.weather && sc.weather.type === 'snow') || season === 'winter', outdoorPl = place.outdoor || ['ground', 'shop'].includes(place.name);
+      snow.pts.visible = !!snowy;
+      seasonLayer.sn.visible = !!(snowy && outdoorPl); seasonLayer.lf.visible = season === 'autumn' && outdoorPl && !snowy;
+      seasonLayer.sn.position.copy(place.o).setY(0.012); seasonLayer.lf.position.copy(place.o).setY(0.011);
       if (wet) { scene.background = new T.Color(0x8d97a3); scene.fog = new T.Fog(0x8d97a3, 6, 30); groundMat.color.copy(groundDry).multiplyScalar(0.62); groundMat.roughness = 0.35; }
       else { groundMat.color.copy(groundDry); groundMat.roughness = 1; }
       baseHemi = hemi.intensity;
-      look = LOOKS[wet ? 'rain' : soft ? 'soft' : sc.place] || LOOKS.home;
+      look = LOOKS[wet ? 'rain' : soft ? 'soft' : place.night ? 'night' : place.evening ? 'evening' : place.name || sc.place] || LOOKS.home;
       renderer.toneMappingExposure = sc.place === 'home' ? 1.18 : wet ? 0.95 : 1.05;
       windowGlow.intensity = 0;
       if (sc.place === 'home') {   // afternoon sun through the window: warm key from the window side, warm bounce, golden sky tint
@@ -256,14 +361,43 @@
         hemi.color.set(0xffe9d2); hemi.groundColor.set(0xb98a62); baseHemi = hemi.intensity = 0.95;
         windowGlow.position.copy(place.o).add(new T.Vector3(1.7, 1.8, -1.6)); windowGlow.intensity = 6;
       } else { sun.color.set(0xfff0dc); hemi.color.set(0xeaf2ff); hemi.groundColor.set(0xb59a7a); }
+      if (place.night) {   // moonlight + warm lamp light from the set's lamps (emissive) — still readable for kids
+        sun.color.set(0xa8bcff); sun.intensity = 0.7; hemi.color.set(0x6b7bb8); hemi.groundColor.set(0x23283d); baseHemi = hemi.intensity = 0.55; fill.intensity = 0.35; renderer.toneMappingExposure = 1.1;
+        windowGlow.position.copy(place.o).add(new T.Vector3(-1.5, 3, 0.5)); windowGlow.intensity = 5;
+      } else if (place.evening) {   // golden dusk with diya glow
+        sun.color.set(0xffb27a); sun.intensity = 1.3; sun.position.copy(place.o).add(new T.Vector3(-6, 3, 4)); hemi.color.set(0xb79ad8); hemi.groundColor.set(0x5a3b2a); baseHemi = hemi.intensity = 0.7; renderer.toneMappingExposure = 1.1;
+        windowGlow.position.copy(place.o).add(new T.Vector3(0, 1.2, 1.5)); windowGlow.intensity = 6;
+      } else if (['kitchen', 'bedroom', 'library', 'party'].includes(place.name)) {   // indoor homes: warm window light like home
+        sun.color.set(0xffd6a0); sun.intensity = 2.6; hemi.color.set(0xffe9d2); hemi.groundColor.set(0xb98a62); baseHemi = hemi.intensity = 0.95; renderer.toneMappingExposure = 1.15;
+      }
       spot.intensity = 0;
+      if (snowy) { sun.color.set(0xeaf2ff); hemi.color.set(0xeef4ff); hemi.groundColor.set(0xc9d6ea); baseHemi = hemi.intensity = 1.0; if (outdoorPl) { scene.background = new T.Color(0xdfe8f2); scene.fog = new T.Fog(0xdfe8f2, 10, 45); } look = { ...look, warm: [0.97, 1.0, 1.06], sat: 0.92 }; }
+      else if (season === 'autumn') { sun.color.set(0xffc58a); look = { ...look, warm: [1.12, 0.99, 0.86], sat: 1.12 }; }
+      else if (season === 'spring') { look = { ...look, warm: [1.04, 1.02, 0.96], sat: 1.15, bloom: (look.bloom || 0.4) + 0.1 }; }
+      else if (season === 'summer') { sun.intensity *= 1.15; look = { ...look, warm: [1.08, 1.0, 0.9], sat: 1.12 }; }
+      if (sc.light) {   // manual lighting from the studio: brightness, warmth, contrast(sat), glow, depth of field, vignette, sun
+        const L = sc.light; look = { ...look };
+        if (L.brightness != null) renderer.toneMappingExposure = lerp(0.55, 1.75, L.brightness);
+        if (L.warmth != null) { const w = (L.warmth - 0.5) * 2; look.warm = [1 + w * 0.12, 1, 1 - w * 0.16]; }
+        if (L.saturation != null) look.sat = lerp(0.4, 1.5, L.saturation);
+        if (L.glow != null) look.bloom = lerp(0, 1.1, L.glow);
+        if (L.dof != null) look.aperture = lerp(0, 1.2, L.dof);
+        if (L.vignette != null) look.vignette = lerp(0, 0.8, L.vignette);
+        if (L.sun != null) sun.intensity = lerp(0, 4.5, L.sun);
+        if (L.sunAngle != null) { const a = L.sunAngle * Math.PI / 180, hgt = L.sunHeight != null ? lerp(2, 12, L.sunHeight) : 8; sun.position.copy(place.o).add(new T.Vector3(Math.sin(a) * 7, hgt, Math.cos(a) * 7)); }
+        if (L.sunColor) sun.color.set(L.sunColor);
+        if (L.ambient != null) { hemi.intensity = lerp(0.2, 2, L.ambient); baseHemi = hemi.intensity; }
+      }
       if (place.door) place.door.rotation.y = 0;
       // actors
-      for (const c of Object.values(cast)) { c.holder.visible = false; clearGrip(c.ch.rig.armR.grip); clearGrip(c.ch.rig.armL.grip); c.ch.setTalk(null); }
+      for (const id of Object.keys(cast)) cast[id] = baseCast[id];
+      for (const id of Object.keys(cast)) if (!story.cast[id]) { scene.remove(cast[id].holder); delete cast[id]; delete baseCast[id]; }   // removed from the cast
+      for (const c of [...Object.values(cast), ...Object.values(variants)]) { c.holder.visible = false; clearGrip(c.ch.rig.armR.grip); clearGrip(c.ch.rig.armL.grip); c.ch.setTalk(null); }
+      for (const [id, a] of Object.entries(sc.actors || {})) if (cast[id] && (a.look || a.colors || a.wear)) cast[id] = variantFor(id, a);
       for (const [id, a] of Object.entries(sc.actors || {})) {
-        const c = cast[id]; if (!c) throw new Error('Actor not in cast: ' + id);
+        const c = cast[id]; if (!c) { console.warn('Actor not in cast:', id); continue; }
         c.holder.visible = true; c.holder.position.copy(place.o).add(new T.Vector3(...a.at)); c.holder.rotation.y = a.face ?? 0;
-        c.ch.setSeat(a.seat == null || a.seat === false ? (sc.place === 'ground' && /^sit/.test(a.anim || '') ? 0.45 : null) : (a.seat === true ? (sc.place === 'classroom' ? 0.44 : 0.45) : a.seat));   // sit ON the bench / desk seat
+        c.ch.setSeat(a.seat == null || a.seat === false ? ((sc.place === 'ground' || sc.place === 'night_ground') && /^sit/.test(a.anim || '') ? 0.45 : null) : (a.seat === true ? (sc.place === 'classroom' ? 0.44 : 0.45) : a.seat));   // sit ON the bench / desk seat
         c.ch.play(a.anim || 'idle', { instant: true }); c.ch.setExpression(a.expr || 'neutral', true);
         if (a.hold) for (const [hand, item] of Object.entries(a.hold)) holdItem(id, hand, item);
       }
@@ -271,10 +405,14 @@
       // props
       for (const p of sc.props || []) {
         if (p.endCard) continue;                                              // drawn as a 2D end card instead
-        const r = ZAssets.build(p.id), obj = r.group;
+        let r; try { r = buildProp(p.id); } catch (err) { console.warn('Unknown prop:', p.id); continue; }
+        const obj = r.group;
+        if (p.attach && !cast[p.attach.split('.')[0]]) continue;
         if (p.attach) { const [a, part] = p.attach.split('.'); const parent = part === 'head' ? cast[a].ch.rig.headC : cast[a].holder; parent.add(obj); obj.position.set(...(p.at || [0, 0, 0])); }
         else { scene.add(obj); obj.position.copy(place.o).add(new T.Vector3(...p.at)); }
         if (p.rot) obj.rotation.set(...p.rot);
+        if (p.scale) obj.scale.multiplyScalar(p.scale);
+        obj.userData.baseScale = obj.scale.x;
         if (p.id === 'football' && obj.userData.tag) obj.userData.tag.rotation.y = 0.5;
         obj.visible = p.show == null; if (obj.userData.setOn) obj.userData.setOn(false);
         obj.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
@@ -287,7 +425,7 @@
     let camSeg = -1, camPlan = null, camSegStart = 0;
     function focusBox(tokens) {
       scene.updateMatrixWorld(true);                                     // positions may have moved since the last render (seek / fast-forward)
-      const box = new T.Box3(), sc = timeline[cur].scene, place = places[sc.place];
+      const box = new T.Box3(), sc = timeline[cur].scene, place = placeOf(sc.place);
       for (const tk of tokens) {
         if (tk === '@room') { box.union(place.box.clone().expandByScalar(-0.6)); continue; }
         if (tk.startsWith('@pt:')) { const [x, y, z, r] = tk.slice(4).split(',').map(Number); const c = place.o.clone().add(new T.Vector3(x, y, z)); box.union(new T.Box3().setFromCenterAndSize(c, new T.Vector3(r * 2, r * 2, r * 2))); continue; }
@@ -326,9 +464,10 @@
       camSeg = k; camSegStart = start;
       const s = segs[k], end = (s.until ?? 1) * dur;
       if (s.move === 'fixed') {   // a placed shot inside a room: pos/look relative to the place, optional slow travel to toPos/toLook
-        const o = places[sc.place].o, P0 = new T.Vector3(...s.pos).add(o), L0 = new T.Vector3(...s.look).add(o);
+        const o = placeOf(sc.place).o, P0 = new T.Vector3(...s.pos).add(o), L0 = new T.Vector3(...s.look).add(o);
         const P1 = s.toPos ? new T.Vector3(...s.toPos).add(o) : P0, L1 = s.toLook ? new T.Vector3(...s.toLook).add(o) : L0, d = Math.max(0.5, end - start);
-        camPlan = { at: (t) => { const k = ZCamera.ease(clamp(t / d, 0, 1)); return { pos: P0.clone().lerp(P1, k), look: L0.clone().lerp(L1, k) }; } };
+        const sp = Math.max(0.2, s.speed ?? 1), sm = s.smooth ?? 1;
+        camPlan = { at: (t) => { const k0 = clamp(t * sp / d, 0, 1), k = sm * ZCamera.ease(k0) + (1 - sm) * k0; return { pos: P0.clone().lerp(P1, k), look: L0.clone().lerp(L1, k) }; } };
       } else {
         let fb = focusBox(s.focus || []);
         if (s.minSize) { const c = fb.getCenter(new T.Vector3()), sz = fb.getSize(new T.Vector3()).max(new T.Vector3(s.minSize, s.minSize, s.minSize)); fb = new T.Box3().setFromCenterAndSize(c, sz); }
@@ -338,14 +477,16 @@
 
     // ---------- beats ----------
     function applyBeat(b) {
-      const sc = timeline[cur].scene, place = places[sc.place];
+      const sc = timeline[cur].scene, place = placeOf(sc.place);
+      if (b.actor && !cast[b.actor]) return;
       if (b.actor) {
         const c = cast[b.actor];
         if (b.anim) c.ch.play(b.anim); if (b.expr) c.ch.setExpression(b.expr);
         if (b.face != null) tweens.push({ kind: 'face', c, from: c.holder.rotation.y, to: b.face, t0: lt, d: 0.4 });
         if (b.hold) for (const [hand, item] of Object.entries(b.hold)) holdItem(b.actor, hand, item);
       }
-      if (b.hide) clearGrip(grip(b.hide));
+      if (b.hide && cast[b.hide.split('.')[0]]) clearGrip(grip(b.hide));
+      if (b.move && (!cast[b.move.from.split('.')[0]] || !cast[b.move.to.split('.')[0]])) return;
       if (b.door != null && place.door) tweens.push({ kind: 'door', o: place.door, from: place.door.rotation.y, to: b.door, t0: lt, d: 0.9 });
       if (b.move) {   // hand an item from one hand to another along a little arc
         const from = grip(b.move.from), to = grip(b.move.to);
@@ -371,12 +512,12 @@
 
     // ---------- one simulation step of the current scene ----------
     function simulate(dt) {
-      const e = timeline[cur], sc = e.scene, f = lt / e.dur, place = places[sc.place];
+      const e = timeline[cur], sc = e.scene, f = lt / e.dur, place = placeOf(sc.place);
       const beats = (sc.beats || []).slice().sort((a, b) => a.at - b.at);
       while (beatsDone < beats.length && beats[beatsDone].at * e.dur <= lt) applyBeat(beats[beatsDone++]);
       // paths (walk / run in)
       for (const [id, a] of Object.entries(sc.actors || {})) {
-        if (!a.path) continue;
+        if (!a.path || !cast[id]) continue;
         const c = cast[id], ks = a.path; let j = 0; while (j < ks.length - 1 && f > ks[j + 1].at) j++;
         const A = ks[j], B = ks[Math.min(j + 1, ks.length - 1)], k = B === A ? 1 : clamp((f - A.at) / (B.at - A.at), 0, 1);
         const pa = new T.Vector3(...A.pos), pb = new T.Vector3(...B.pos), pos = pa.clone().lerp(pb, k);
@@ -387,7 +528,7 @@
       for (const p of Object.values(sceneProps)) {
         const s = p.spec;
         if (s.show != null && !p.obj.visible && f >= s.show) { p.obj.visible = true; p.pop = lt; }
-        if (p.pop != null) { const k = clamp((lt - p.pop) / 0.35, 0, 1), sc2 = k < 1 ? 0.6 + 0.4 * Math.sin(k * Math.PI / 2) * (1 + 0.25 * Math.sin(k * Math.PI)) : 1; p.obj.scale.setScalar(sc2); }
+        if (p.pop != null) { const k = clamp((lt - p.pop) / 0.35, 0, 1), sc2 = k < 1 ? 0.6 + 0.4 * Math.sin(k * Math.PI / 2) * (1 + 0.25 * Math.sin(k * Math.PI)) : 1; p.obj.scale.setScalar(sc2 * (p.obj.userData.baseScale || 1)); }
         if (s.on != null && p.obj.userData.setOn && f >= s.on && !p.lit) { p.obj.userData.setOn(true); p.lit = true; }
         if (s.coins) {
           const cc = s.coins, want = Math.floor(clamp((f - cc.start) / (cc.end - cc.start), 0, 1) * cc.count + 1e-6);
@@ -400,10 +541,13 @@
         }
       }
       for (const c of coins) { if (c.mesh.position.y > c.floor) { c.v -= 9.8 * dt; c.mesh.position.y = Math.max(c.floor, c.mesh.position.y + c.v * dt); c.mesh.rotation.x += c.spin * dt; } else c.mesh.rotation.set(0.05, c.yaw, 0.04); }   // land flat, face up
+      for (const p of Object.values(sceneProps)) if (p.obj.userData.tick) p.obj.userData.tick(lt);   // idle motion: fans, flags, balloons…
+      for (const tk of place.ticks || []) tk(lt);
       runTweens();
       // talking mouth from the voice
-      if (sc.talking && envelopes[cur]) { const env = envelopes[cur], idx = Math.floor(lt * 60); cast[sc.talking].ch.setTalk(idx < env.length ? env[idx] : 0); }
-      for (const [id] of Object.entries(sc.actors || {})) cast[id].ch.update(dt);
+      if (sc.talking && cast[sc.talking] && envelopes[cur]) { const env = envelopes[cur], idx = Math.floor(lt * 60); cast[sc.talking].ch.setTalk(idx < env.length ? env[idx] : 0); }
+      const sl = sc.fx && sc.fx.slow; const rate = sl && f >= (sl.from ?? 0) && f <= (sl.to ?? 1) ? (sl.rate ?? 0.4) : 1;   // slow motion: people move slower, the voice keeps going
+      for (const [id] of Object.entries(sc.actors || {})) if (cast[id]) cast[id].ch.update(dt * rate);
       lt += dt;
     }
 
@@ -413,8 +557,35 @@
     function pill(x, y, w, h, r, fillStyle) { g2.fillStyle = fillStyle; g2.beginPath(); g2.roundRect(x, y, w, h, r); g2.fill(); }
     function wrapLines(text, maxW) { const words = text.split(' '), lines = []; let line = ''; for (const w of words) { const t = line ? line + ' ' + w : w; if (g2.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t; } if (line) lines.push(line); return lines; }
     function drawOverlays() {
+      g2.save(); g2.scale(UI, UI); const W = VW, H = VH;   // layout in virtual units
+      try { overlaysBody(W, H); } finally { g2.restore(); }
+    }
+    function particles2d(W, H, sc, f) {   // confetti / sparkles / leaves / hearts drawn over the picture, same every render
+      const pf = sc.fx && sc.fx.particles; if (!pf || !pf.type || pf.type === 'none') return;
+      const from = pf.from ?? 0, to = pf.to ?? 1; if (f < from || f > to) return;
+      const t = lt - from * timeline[cur].dur, n = Math.round((pf.amount ?? 0.5) * 120), cols = ['#ff4f8b', '#fcc72c', '#13b5c6', '#7c5cf2', '#f8a51b', '#22c55e'];
+      for (let i = 0; i < n; i++) {
+        const r1 = fract(Math.sin(i * 12.9898) * 43758.5), r2 = fract(Math.sin(i * 78.233) * 12543.1), r3 = fract(Math.sin(i * 3.17) * 9871.3);
+        let x = r1 * W, y, a = 1;
+        if (pf.type === 'sparkles') { y = r2 * H * 0.8; a = Math.max(0, Math.sin(t * (2 + r3 * 3) + i)); g2.fillStyle = `rgba(255,240,180,${a})`; const s = 6 + r3 * 10; g2.beginPath(); for (let k = 0; k < 8; k++) { const ang = k * Math.PI / 4, rr = k % 2 ? s * 0.3 : s; g2.lineTo(x + Math.cos(ang) * rr, y + Math.sin(ang) * rr); } g2.fill(); continue; }
+        const speed = pf.type === 'leaves' ? 90 : pf.type === 'hearts' ? -120 : 260;
+        y = ((r2 * H + t * speed * (0.6 + r3 * 0.8)) % (H + 80) + H + 80) % (H + 80) - 40; x += Math.sin(t * (1 + r3) + i) * 40;
+        g2.save(); g2.translate(x, y); g2.rotate(t * (r3 - 0.5) * 6 + i);
+        if (pf.type === 'confetti') { g2.fillStyle = cols[i % cols.length]; g2.fillRect(-9, -5, 18, 10); }
+        else if (pf.type === 'leaves') { g2.fillStyle = ['#e07b24', '#c2410c', '#eab308', '#65a30d'][i % 4]; g2.beginPath(); g2.ellipse(0, 0, 16, 8, 0, 0, Math.PI * 2); g2.fill(); }
+        else if (pf.type === 'hearts') { g2.fillStyle = cols[i % 2 ? 0 : 3]; g2.font = '40px sans-serif'; g2.fillText('♥', -12, 12); }
+        g2.restore();
+      }
+    }
+    const fract = (v) => v - Math.floor(v);
+    function overlaysBody(W, H) {
       // everything sits in a stack at the TOP, kept small, so the story below stays visible
       const e = timeline[cur], sc = e.scene, f = lt / e.dur;
+      particles2d(W, H, sc, f);
+      const tr = sc.fx && sc.fx.transition;   // scene opens with a fade from black / white / a quick zoom-blur flash
+      if (tr && tr !== 'cut' && cur > 0 && lt < 0.45) { const k = 1 - lt / 0.45; g2.fillStyle = tr === 'white' ? `rgba(255,255,255,${k})` : tr === 'flash' ? `rgba(255,250,235,${k * k})` : `rgba(0,0,0,${k})`; g2.fillRect(0, 0, W, H); }
+      const trOut = sc.fx && sc.fx.transitionOut;
+      if (trOut && trOut !== 'cut' && e.dur - lt < 0.4 && cur < timeline.length - 1) { const k = 1 - (e.dur - lt) / 0.4; g2.fillStyle = trOut === 'white' ? `rgba(255,255,255,${k})` : `rgba(0,0,0,${k})`; g2.fillRect(0, 0, W, H); }
       let y = 64;
       // counter
       if (sc.counter) {
@@ -448,14 +619,14 @@
         if (lt >= t0 - 0.05 && lt < nx) { chunk = c2; break; }
         wi += c2.n; acc2 += c2.n;
       }
-      if (chunk) {
+      if (chunk && optv('subtitles') !== false) {
         g2.font = '600 44px Fredoka'; const lines = wrapLines(chunk.text, W - 220), lh = 56, bh = lines.length * lh + 36, y0 = H - 250 - bh;
         pill(80, y0, W - 160, bh, 28, 'rgba(31,26,51,0.75)');
         g2.fillStyle = '#fff'; g2.textAlign = 'center'; g2.textBaseline = 'middle'; lines.forEach((l, i) => g2.fillText(l, W / 2, y0 + 18 + lh / 2 + i * lh));
       }
       // end card (logo) on the last scene
       const endP = (sc.props || []).find((p) => p.endCard);
-      if (endP && f >= endP.show) {
+      if (endP && f >= endP.show && optv('endCard') !== false) {
         const k = clamp((f - endP.show) * e.dur / 0.6, 0, 1);
         g2.fillStyle = `rgba(255,255,255,${0.96 * k})`; g2.fillRect(0, 0, W, H);
         if (logoImg.complete && logoImg.naturalWidth) { const lw = 760 * (0.9 + 0.1 * k), lh2 = lw * logoImg.naturalHeight / logoImg.naturalWidth; g2.globalAlpha = k; g2.drawImage(logoImg, W / 2 - lw / 2, H * 0.42 - lh2 / 2, lw, lh2); g2.globalAlpha = 1; }
@@ -472,14 +643,23 @@
     }
 
     // ---------- draw ----------
+    let freeCam = null;   // editor: { pos: Vector3, look: Vector3 } overrides the planned shot
+    let hiBox = null;     // editor: outline of the selected actor / prop
     function draw() {
       planCamera(lt);
-      const p = camPlan.at(lt - camSegStart); camera.position.copy(p.pos); camera.lookAt(p.look);
+      const p = freeCam || camPlan.at(lt - camSegStart); camera.position.copy(p.pos); camera.lookAt(p.look); lastCam = { pos: p.pos.clone(), look: p.look.clone() };
+      const fx = timeline[cur].scene.fx;
+      if (fx && fx.shake && !freeCam) {   // camera shake (same every render: noise from the clock)
+        const sh = fx.shake, k = typeof sh === 'object' ? sh.amount ?? 0.5 : sh, on = typeof sh !== 'object' || (lt / timeline[cur].dur >= (sh.from ?? 0) && lt / timeline[cur].dur <= (sh.to ?? 1));
+        if (on && k > 0) { const n = (a) => Math.sin(clock * 37 * a) * 0.6 + Math.sin(clock * 61 * a + 1.3) * 0.4; camera.rotateX(n(1) * 0.012 * k); camera.rotateY(n(1.7) * 0.012 * k); camera.rotateZ(n(0.6) * 0.008 * k); }
+      }
+      if (hiBox) { hiBox.box.setFromObject(hiBox.obj); hiBox.helper.visible = true; }
       const sc = timeline[cur].scene, e = timeline[cur];
       flash = 0;
       if (sc.weather && sc.weather.thunder) for (const th of sc.weather.thunder) { const at = (typeof th === 'object' ? th.at : th) * e.dur, d = lt - at; if (d >= 0 && d < 0.6) flash = Math.max(flash, Math.exp(-d * 7) * (d < 0.08 ? 1 : 0.8 + 0.2 * Math.sin(d * 60))); }
       hemi.intensity = baseHemi + flash * 2.2;
       rain.m.uniforms.uTime.value = clock; rain.m.uniforms.uCam.value.copy(camera.position);
+      snow.m.uniforms.uTime.value = clock; snow.m.uniforms.uCam.value.copy(camera.position);
       // scene → (copy) sharp → half-res blur (depth of field) → quarter-res glow (bloom) → final grade to the canvas
       renderer.setRenderTarget(rtScene); renderer.render(scene, camera);
       copyM.uniforms.tSrc.value = rtScene.texture; copyM.uniforms.uThresh.value = 0; pass(copyM, rtSharp);
@@ -497,11 +677,44 @@
     }
     function sceneAt(t) { for (let i = timeline.length - 1; i >= 0; i--) if (t >= timeline[i].start) return i; return 0; }
 
+    const ray = new T.Raycaster();
     const api = {
-      story, timeline, total, canvas: out, voiceDir: opts.voiceDir || 'voice', fps: FPS, width: W, height: H, audioContext: actx,
+      get story() { return story; }, get timeline() { return timeline; }, get total() { return total; }, get cues() { return cues; },
+      canvas: out, voiceDir: opts.voiceDir || 'voice', fps: FPS, width: W, height: H, audioContext: actx, options: OPT, places, PLACES,
       get time() { return clock; }, get sceneIndex() { return cur; }, get sceneTime() { return lt; },
       audioFor: (i) => buffers[i], envelopeFor: (i) => envelopes[i],
-      cues, sfxBuffer: (f) => sfxBuffers[f], sfxDir: 'studio/assets/sfx/', scene, camera,
+      sfxBuffer: (f) => sfxBuffers[f], sfxDir: 'studio/assets/sfx/', scene, camera,
+      // ---- editing (studio) ----
+      async update(next, keepTime = true) {   // apply an edited story: rebuild only characters whose look changed, re-time everything
+        story = JSON.parse(JSON.stringify(next));
+        for (const [id, c] of Object.entries(story.cast)) if (!cast[id] || cast[id].src !== JSON.stringify(c)) buildActor(id, c);
+        for (const sc of story.scenes) ensurePlace(sc.place);
+        await loadClips(story.scenes); await preloadImages(story); prepare(); await loadSfx();
+        const t = keepTime ? Math.min(clock, total - 0.01) : 0; cur = -1; return api.seek(Math.max(0, t));
+      },
+      async reloadVoice(dir) { if (dir) { vdir = dir.replace(/\/?$/, '/'); api.voiceDir = dir; } for (const k of Object.keys(clipById)) delete clipById[k]; try { durations = await (await fetch(storyDir + vdir + 'durations.json', { cache: 'no-store' })).json(); } catch (e) { durations = {}; } try { wordsMap = await (await fetch(storyDir + vdir + 'words.json', { cache: 'no-store' })).json(); } catch (e) { wordsMap = {}; } return api.update(story); },
+      setFreeCamera(pos, look) { freeCam = pos ? { pos: pos.clone(), look: look.clone() } : null; draw(); },
+      get freeCamera() { return freeCam; },
+      cameraNow() { return lastCam && { pos: lastCam.pos.clone(), look: lastCam.look.clone() }; },
+      placeOrigin(i = cur) { return placeOf(timeline[i].scene.place).o.clone(); },
+      sceneStart: (i) => timeline[i].start,
+      redraw() { draw(); },
+      highlight(id) {   // outline an actor / prop in the preview (editor only; never on during renders)
+        if (hiBox) { scene.remove(hiBox.helper); hiBox = null; }
+        const obj = id && (cast[id] ? cast[id].holder : sceneProps[id] ? sceneProps[id].obj : null); if (!obj) return draw();
+        const box = new T.Box3().setFromObject(obj), helper = new T.Box3Helper(box, 0xff4f8b); helper.material.depthTest = false; helper.renderOrder = 99; scene.add(helper); hiBox = { box, helper, obj }; draw();
+      },
+      castIds: () => Object.keys(baseCast),
+      // click in the preview → which actor / prop is under the pointer (ndc −1…1)
+      pick(nx, ny) {
+        ray.setFromCamera(new T.Vector2(nx, ny), camera); const sc = timeline[cur].scene, objs = [];
+        for (const id of Object.keys(sc.actors || {})) objs.push([id, 'actor', cast[id].holder]);
+        for (const [id, p] of Object.entries(sceneProps)) if (p.obj.visible) objs.push([id, 'prop', p.obj]);
+        let best = null; for (const [id, kind, o] of objs) { const hit = ray.intersectObject(o, true)[0]; if (hit && (!best || hit.distance < best.d)) best = { id, kind, d: hit.distance }; }
+        return best;
+      },
+      // a point on the floor under the pointer, relative to the current place (for dragging things around)
+      floorPoint(nx, ny, y = 0) { ray.setFromCamera(new T.Vector2(nx, ny), camera); const p = new T.Vector3(); if (!ray.ray.intersectPlane(new T.Plane(new T.Vector3(0, 1, 0), -y), p)) return null; return p.sub(placeOf(timeline[cur].scene.place).o); },
       // advance by dt (sequential playback); crosses scene boundaries cleanly
       step(dt = DT) {
         clock = Math.min(total, clock + dt);

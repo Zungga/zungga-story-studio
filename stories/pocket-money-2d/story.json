@@ -1,0 +1,549 @@
+{
+  "title": "Pocket Money — 2D test (scenes 1–4)",
+  "engine": "2d",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "voice": {
+    "engine": "qwen3-tts-local",
+    "voice": "boy-calm",
+    "pauseAfter": 0.7,
+    "defaultDir": "../pocket-money/voice"
+  },
+  "voices": [
+    {
+      "dir": "../pocket-money/voice",
+      "label": "Rio · boy-calm"
+    },
+    {
+      "dir": "../pocket-money/voice-narrator",
+      "label": "Narrator · new voice"
+    }
+  ],
+  "note": "2D quality test: same script, voice clips and word timings as stories/pocket-money (scenes 1-4), drawn with studio/js/puppets2d.js + engine2d.js.",
+  "cast": {
+    "rio": {
+      "kind": "kid",
+      "hair": "boy",
+      "size": 600,
+      "colors": {
+        "skin": "#c98a5e",
+        "hair": "#3a2618"
+      },
+      "outfit": {
+        "top": "tshirt",
+        "topCol": "#2563eb",
+        "jacket": "#f8a51b",
+        "logo": true,
+        "bottom": "shorts",
+        "bottomCol": "#3f3f46",
+        "shoe": "#ffffff",
+        "shoe2": "#f97316",
+        "sleeve": "short"
+      }
+    },
+    "mom": {
+      "kind": "adult",
+      "female": true,
+      "hair": "bun",
+      "size": 560,
+      "colors": {
+        "skin": "#c98a5e",
+        "hair": "#1a120c"
+      },
+      "outfit": {
+        "top": "kurti",
+        "topCol": "#7c5cf2",
+        "pattern": "dots",
+        "patternCol": "#fcd34d",
+        "bottom": "pants",
+        "bottomCol": "#f5e6c8",
+        "shoe": "#8a5a33",
+        "shoe2": null,
+        "sleeve": "short"
+      },
+      "extras": [
+        "dupatta"
+      ],
+      "dupatta": "#ff4f8b"
+    },
+    "dad": {
+      "kind": "adult",
+      "hair": "side",
+      "size": 585,
+      "colors": {
+        "skin": "#b97a55",
+        "hair": "#1a120c"
+      },
+      "outfit": {
+        "top": "shirt",
+        "topCol": "#dbeafe",
+        "pattern": "checks",
+        "bottom": "pants",
+        "bottomCol": "#374151",
+        "shoe": "#3b2416",
+        "shoe2": null,
+        "sleeve": "long"
+      },
+      "extras": [
+        "moustache"
+      ]
+    },
+    "shopkeeper": {
+      "kind": "adult",
+      "build": 1.2,
+      "hair": "rim",
+      "size": 560,
+      "colors": {
+        "skin": "#a8714a",
+        "hair": "#9ca3af"
+      },
+      "outfit": {
+        "top": "shirt",
+        "topCol": "#f5f5f4",
+        "jacket": "#92400e",
+        "bottom": "pants",
+        "bottomCol": "#57534e",
+        "shoe": "#3b2416",
+        "shoe2": null,
+        "sleeve": "short"
+      },
+      "extras": [
+        "moustache",
+        "glasses"
+      ],
+      "moustacheCol": "#d4d4d4"
+    }
+  },
+  "scenes": [
+    {
+      "id": 1,
+      "title": "Hook",
+      "place": "home",
+      "narration": "My parents gave me pocket money, and by Wednesday itself, it was gone.",
+      "actors": {
+        "dad": {
+          "at": [
+            560,
+            1600
+          ],
+          "face": 1,
+          "anim": "idle",
+          "expr": "smile"
+        },
+        "mom": {
+          "at": [
+            800,
+            1610
+          ],
+          "face": 1,
+          "anim": "give",
+          "expr": "smile",
+          "hold": {
+            "R": "note_100"
+          }
+        },
+        "rio": {
+          "at": [
+            1080,
+            1620
+          ],
+          "face": -1,
+          "anim": "wave",
+          "expr": "big_smile"
+        }
+      },
+      "beats": [
+        {
+          "word": "pocket",
+          "actor": "rio",
+          "anim": "idle"
+        },
+        {
+          "word": "money",
+          "offset": 0.1,
+          "move": {
+            "item": "note_100",
+            "from": "mom.R",
+            "to": "rio.R"
+          }
+        },
+        {
+          "word": "money",
+          "offset": 0.1,
+          "actor": "mom",
+          "anim": "idle"
+        },
+        {
+          "word": "and",
+          "actor": "rio",
+          "expr": "big_smile"
+        },
+        {
+          "word": "Wednesday",
+          "actor": "rio",
+          "anim": "think",
+          "expr": "surprised"
+        },
+        {
+          "word": "gone",
+          "offset": -0.1,
+          "hide": "rio.R"
+        }
+      ],
+      "camera": [
+        {
+          "focus": [
+            "@wide"
+          ],
+          "fit": [
+            0.92,
+            1.0
+          ],
+          "untilWord": "pocket",
+          "untilOffset": -0.15
+        },
+        {
+          "focus": [
+            "mom.R",
+            "rio.R"
+          ],
+          "fit": [
+            0.62,
+            0.72
+          ],
+          "untilWord": "Wednesday",
+          "untilOffset": -0.15
+        },
+        {
+          "focus": [
+            "rio:head"
+          ],
+          "fit": [
+            0.55,
+            0.7
+          ]
+        }
+      ],
+      "counter": {
+        "from": 100,
+        "to": 100,
+        "label": "Pocket money",
+        "steps": [
+          {
+            "word": "gone",
+            "v": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "title": "Where it went",
+      "place": "shop",
+      "narration": "When I think about where I spent it? On Monday, I bought chips during recess. On Tuesday, I wanted something to drink with them, so I bought juice. By Wednesday, my hundred rupees had become only thirty.",
+      "actors": {
+        "shopkeeper": {
+          "at": [
+            860,
+            1390
+          ],
+          "face": 1,
+          "anim": "idle",
+          "expr": "smile",
+          "behind": true
+        },
+        "rio": {
+          "at": [
+            560,
+            1660
+          ],
+          "face": 1,
+          "anim": "idle",
+          "expr": "smile"
+        }
+      },
+      "props": [
+        {
+          "id": "chips",
+          "at": [
+            770,
+            985
+          ],
+          "showWord": "chips",
+          "showOffset": -0.35
+        },
+        {
+          "id": "juice",
+          "at": [
+            920,
+            995
+          ],
+          "showWord": "juice",
+          "showOffset": -0.35
+        },
+        {
+          "id": "notes_30",
+          "at": [
+            1080,
+            1040
+          ],
+          "showWord": "Wednesday"
+        }
+      ],
+      "beats": [
+        {
+          "word": "bought",
+          "offset": -0.3,
+          "actor": "rio",
+          "anim": "give"
+        },
+        {
+          "word": "during",
+          "actor": "rio",
+          "anim": "idle"
+        },
+        {
+          "word": "bought#2",
+          "offset": -0.3,
+          "actor": "rio",
+          "anim": "give"
+        },
+        {
+          "word": "juice",
+          "offset": 0.5,
+          "actor": "rio",
+          "anim": "idle"
+        },
+        {
+          "word": "Wednesday",
+          "actor": "rio",
+          "expr": "worried"
+        }
+      ],
+      "sfx": [
+        {
+          "file": "coin-register.mp3",
+          "word": "chips",
+          "offset": 0.1,
+          "vol": 0.5
+        },
+        {
+          "file": "coin-register.mp3",
+          "word": "juice",
+          "offset": 0.1,
+          "vol": 0.5
+        }
+      ],
+      "counter": {
+        "from": 100,
+        "to": 30,
+        "label": "Pocket money",
+        "steps": [
+          {
+            "word": "chips",
+            "offset": 0.2,
+            "v": 60
+          },
+          {
+            "word": "juice",
+            "offset": 0.2,
+            "v": 30
+          }
+        ]
+      },
+      "camera": [
+        {
+          "focus": [
+            "rio",
+            "shopkeeper"
+          ],
+          "fit": [
+            0.82,
+            0.88
+          ],
+          "untilWord": "chips",
+          "untilOffset": -0.45
+        },
+        {
+          "focus": [
+            "chips"
+          ],
+          "fit": [
+            0.42,
+            0.55
+          ],
+          "untilWord": "Tuesday",
+          "untilOffset": -0.15
+        },
+        {
+          "focus": [
+            "rio:upper"
+          ],
+          "fit": [
+            0.6,
+            0.66
+          ],
+          "untilWord": "juice",
+          "untilOffset": -0.45
+        },
+        {
+          "focus": [
+            "juice"
+          ],
+          "fit": [
+            0.4,
+            0.52
+          ],
+          "untilWord": "Wednesday",
+          "untilOffset": -0.15
+        },
+        {
+          "focus": [
+            "notes_30"
+          ],
+          "fit": [
+            0.45,
+            0.58
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "The dream",
+      "place": "ground",
+      "narration": "And the sad part? I was saving for a football of one hundred and fifty rupees.",
+      "actors": {
+        "rio": {
+          "at": [
+            1060,
+            1650
+          ],
+          "face": -1,
+          "anim": "idle",
+          "expr": "sad"
+        }
+      },
+      "props": [
+        {
+          "id": "football",
+          "at": [
+            640,
+            1600
+          ]
+        }
+      ],
+      "weather": {
+        "type": "rain",
+        "thunder": [
+          {
+            "word": "sad",
+            "offset": 0.2
+          }
+        ]
+      },
+      "ambience": {
+        "file": "rain-loop.wav",
+        "vol": 0.12
+      },
+      "caption": {
+        "text": "Dream: ₹150 football",
+        "atWord": "football"
+      },
+      "camera": [
+        {
+          "focus": [
+            "rio",
+            "football"
+          ],
+          "fit": [
+            0.86,
+            0.9
+          ],
+          "untilWord": "football",
+          "untilOffset": -0.3
+        },
+        {
+          "focus": [
+            "football"
+          ],
+          "fit": [
+            0.42,
+            0.52
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "The pause",
+      "place": "ground",
+      "narration": "What do you do when the money is gone, but the dream is still there? I did not know. I just sat on the bench, looking at my thirty rupees.",
+      "actors": {
+        "rio": {
+          "at": [
+            800,
+            1650
+          ],
+          "face": 1,
+          "anim": "sit_sad",
+          "expr": "sad",
+          "seat": 330,
+          "hold": {
+            "R": "notes_30"
+          }
+        }
+      },
+      "weather": {
+        "type": "rain",
+        "thunder": [
+          {
+            "word": "know",
+            "offset": 0.0
+          }
+        ]
+      },
+      "ambience": {
+        "file": "rain-loop.wav",
+        "vol": 0.12
+      },
+      "sfx": [
+        {
+          "file": "kite-wind.mp3",
+          "word": "What",
+          "vol": 0.15
+        }
+      ],
+      "counter": {
+        "from": 30,
+        "to": 30,
+        "label": "Left"
+      },
+      "camera": [
+        {
+          "focus": [
+            "rio"
+          ],
+          "fit": [
+            1.15,
+            0.72
+          ],
+          "untilWord": "thirty",
+          "untilOffset": -0.45
+        },
+        {
+          "focus": [
+            "rio.R"
+          ],
+          "fit": [
+            0.5,
+            0.62
+          ]
+        }
+      ]
+    }
+  ]
+}

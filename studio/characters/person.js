@@ -680,6 +680,16 @@
                      wear: { top: { type: 'shirt', color: 0xdbeafe, pattern: 'checks', color2: 0x60a5fa, tuck: true, sleeves: 'long' }, bottom: { type: 'trousers', color: 0x374151 }, shoes: { type: 'formal', color: 0x3b2416 } } },
     shopkeeper:    { label: 'Shopkeeper',     height: 1.66, weight: 0.85, build: 0.6,  age: 1.0,  sex: 'm', hair: 'receding', hairColor: 'salt', skin: 'tan', mustache: true,
                      wear: { top: { type: 'shirt', color: 0xf5f5f4, tuck: true }, layer: { type: 'vest', color: 0x92400e }, bottom: { type: 'trousers', color: 0x57534e }, shoes: { type: 'sandals' } } },
+    bank_teller:   { label: 'Bank teller',    height: 1.62, weight: 0.45, build: 0.45, age: 0.9,  sex: 'f', hair: 'bun', skin: 'wheat',
+                     wear: { top: { type: 'shirt', color: 0xe0f2fe, tuck: true }, bottom: { type: 'trousers', color: 0x1e293b }, shoes: { type: 'formal', color: 0x111827 }, tie: { color: 0x7c3aed } } },
+    bank_manager:  { label: 'Bank manager',   height: 1.74, weight: 0.65, build: 0.6,  age: 1.0,  sex: 'm', hair: 'side_part', skin: 'tan', glasses: true,
+                     wear: { top: { type: 'shirt', color: 0xffffff, tuck: true }, layer: { type: 'jacket', color: 0x1f2937 }, bottom: { type: 'trousers', color: 0x1f2937 }, shoes: { type: 'formal', color: 0x111827 }, tie: { color: 0x7c3aed } } },
+    security_guard:{ label: 'Security guard', height: 1.76, weight: 0.75, build: 0.8,  age: 1.0,  sex: 'm', hair: 'short', skin: 'brown', mustache: true,
+                     wear: { top: { type: 'shirt', color: 0x1e3a8a, tuck: true }, bottom: { type: 'trousers', color: 0x1e293b }, shoes: { type: 'boots', color: 0x111827 } } },
+    grocer:        { label: 'Grocer',         height: 1.68, weight: 0.8,  build: 0.6,  age: 1.0,  sex: 'm', hair: 'short', skin: 'tan', mustache: true,
+                     wear: { top: { type: 'tshirt', color: 0xfef9c3 }, layer: { type: 'vest', color: 0x16a34a }, bottom: { type: 'trousers', color: 0x57534e }, shoes: { type: 'sandals' } } },
+    vegetable_seller:{ label: 'Vegetable seller', height: 1.56, weight: 0.5, build: 0.45, age: 1.0, sex: 'f', hair: 'bun', skin: 'brown',
+                     wear: { top: { type: 'top', color: 0x16a34a }, bottom: { type: 'saree', color: 0xf97316 }, shoes: { type: 'sandals' } } },
   };
   window.ZCharacters = Object.assign(window.ZCharacters || {}, { person, PRESETS, SKINS, HAIRC, BRAND_COLORS, WEAR_TYPES, TOP_DEF });
 })();

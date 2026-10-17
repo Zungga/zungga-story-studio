@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Asset review</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>html,body{margin:0;background:#f3f0fb;font-family:Fredoka,sans-serif}#grid{display:grid;grid-template-columns:repeat(5,300px);gap:8px;padding:8px}.c{background:#fff;border-radius:10px;overflow:hidden}.c img{width:300px;height:300px;display:block}.c b{display:block;padding:4px 8px;font-size:14px}.c small{display:block;padding:0 8px 6px;color:#777;font-size:11px}.err{color:#c00}</style>
+</head><body><div id="grid"></div>
+<!-- every asset file, in load order; new category files are added here too -->
+<script src="../vendor/three.min.js"></script>
+<script src="assets/core.js"></script>
+<script>
+// load the asset files listed in ?files=a,b,c (default: all known) synchronously, in order
+const FILES = (new URLSearchParams(location.search).get('files') || 'money,food,toys,school,furniture,shop,brand,nature,sets,bank,home,transport,tech,street,village,outdoors,islanders,animals,garage,sports,sky,seasons,cave,places').split(',');
+for (const f of FILES) document.write(`<script src="assets/${f}.js" onerror="window.__missing=(window.__missing||[]).concat('${f}')"><\/script>`);
+</script>
+<script>
+(async () => {
+  const q = new URLSearchParams(location.search), cat = q.get('cat'), ids = q.get('ids') ? q.get('ids').split(',') : null, yaw = +(q.get('yaw') || 0.6), pitch = +(q.get('pitch') || 0.45);
+  await document.fonts.load('700 40px Fredoka').catch(() => {});
+  await new Promise((r) => setTimeout(r, 600));   // let logo textures load
+  const T = THREE, r = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true }); r.setPixelRatio(1); r.setSize(300, 300); r.outputColorSpace = T.SRGBColorSpace; r.toneMapping = T.ACESFilmicToneMapping; r.shadowMap.enabled = true;
+  const scene = new T.Scene(); scene.background = new T.Color(0xeef1f8);
+  scene.add(new T.HemisphereLight(0xffffff, 0xcab89a, 1.2)); const sun = new T.DirectionalLight(0xfff1dc, 2.6); sun.position.set(2, 5, 3); sun.castShadow = true; scene.add(sun);
+  const floor = new T.Mesh(new T.PlaneGeometry(200, 200), new T.ShadowMaterial({ opacity: 0.18 })); floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+  const cam = new T.PerspectiveCamera(32, 1, 0.005, 400);
+  if (q.has('list')) { window.__done = { list: ZAssets.list, missing: window.__missing || [] }; return; }
+  const list = ZAssets.list.filter((a) => (!cat || a.cat === cat) && (!ids || ids.includes(a.id)));
+  const grid = document.getElementById('grid'), out = [];
+  for (const a of list) {
+    const card = document.createElement('div'); card.className = 'c'; grid.appendChild(card);
+    try {
+      const res = ZAssets.build(a.id), obj = res.group; scene.add(obj); obj.updateMatrixWorld(true);
+      const b = ZA.frameBox(obj), c = b.getCenter(new T.Vector3()), s = b.getSize(new T.Vector3()), R = Math.max(s.length() / 2, 0.01);
+      sun.shadow.camera.left = sun.shadow.camera.bottom = -R * 2; sun.shadow.camera.right = sun.shadow.camera.top = R * 2; sun.shadow.camera.updateProjectionMatrix(); sun.position.copy(c).add(new T.Vector3(R * 2, R * 5, R * 3)); sun.target.position.copy(c); sun.target.updateMatrixWorld();
+      const d = R / Math.sin(T.MathUtils.degToRad(16)) * 1.05;
+      cam.position.set(c.x + Math.sin(yaw) * Math.cos(pitch) * d, c.y + Math.sin(pitch) * d, c.z + Math.cos(yaw) * Math.cos(pitch) * d); cam.lookAt(c); cam.near = d / 100; cam.far = d * 10; cam.updateProjectionMatrix();
+      r.render(scene, cam); scene.remove(obj);
+      card.innerHTML = `<img src="${r.domElement.toDataURL()}"><b>${a.label}</b><small>${a.id} · ${s.x.toFixed(2)}×${s.y.toFixed(2)}×${s.z.toFixed(2)} m</small>`;
+      out.push({ id: a.id, size: [s.x, s.y, s.z].map((v) => +v.toFixed(3)) });
+    } catch (e) { card.innerHTML = `<b class="err">${a.id}</b><small class="err">${e.message}</small>`; out.push({ id: a.id, error: e.message }); }
+  }
+  window.__done = { count: list.length, results: out, missing: window.__missing || [] };
+})();
+</script></body></html>

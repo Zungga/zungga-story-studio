@@ -54,17 +54,36 @@
 <script src="assets/brand.js"></script>
 <script src="assets/nature.js"></script>
 <script src="assets/sets.js"></script>
+<script src="assets/bank.js"></script>
+<script src="assets/home.js"></script>
+<script src="assets/transport.js"></script>
+<script src="assets/tech.js"></script>
+<script src="assets/street.js"></script>
+<script src="assets/village.js"></script>
+<script src="assets/outdoors.js"></script>
+<script src="assets/islanders.js"></script>
+<script src="assets/animals.js"></script>
+<script src="assets/garage.js"></script>
+<script src="assets/sports.js"></script>
+<script src="assets/sky.js"></script>
+<script src="assets/seasons.js"></script>
+<script src="assets/cave.js"></script>
+<script src="assets/places.js"></script>
 <script src="characters/person.js"></script>
 <script src="characters/toons.js"></script>
 <script src="js/camera-moves.js"></script>
 <script src="js/story-engine.js"></script>
+<script src="js/puppets2d.js"></script>
+<script src="js/engine2d.js"></script>
 <script type="module">
 const $ = (s) => document.querySelector(s);
 const params = new URLSearchParams(location.search), storyName = params.get('story') || 'pocket-money', renderMode = params.has('render');
 let savedVoice = null; try { savedVoice = localStorage.getItem('zungga-voice-' + storyName); } catch (e) {}
-const storyMeta = await (await fetch(`../stories/${storyName}/story.json`, { cache: 'no-store' })).json();
+const baseDir = params.get('dir') ? `../${params.get('dir').replace(/\/$/, '')}/` : `../stories/${storyName}/`;   // ?dir=projects/<id> plays a studio project
+const storyMeta = await (await fetch(baseDir + 'story.json', { cache: 'no-store' })).json();
 const voiceDir = params.get('voice') || savedVoice || storyMeta.voice?.defaultDir || 'voice';   // a story can borrow another story's clips (e.g. ../pocket-money/voice-narrator)   // ?voice=voice-narrator plays the story with another voice's clips
-const eng = await ZStory.create({ storyDir: `../stories/${storyName}/`, voiceDir });
+const eng = await (storyMeta.engine === '2d' ? Z2D : ZStory).create({ storyDir: baseDir, voiceDir, width: +params.get('w') || undefined, height: +params.get('h') || undefined, fps: +params.get('fps') || undefined,
+  options: { subtitles: params.get('subs') !== '0', endCard: params.get('endcard') !== '0' } });   // "engine": "2d" stories use the vector-puppet engine
 $('#wrap').appendChild(eng.canvas);
 $('#title').innerHTML = `${eng.story.title}<span>.</span>`;
 $('#meta').textContent = `${eng.timeline.length} scenes · ${eng.total.toFixed(1)} s`;
@@ -103,7 +122,7 @@ function scheduleAudio(fromT) {
     const src = ctx.createBufferSource(), g = ctx.createGain(); src.buffer = buf; src.loop = !!c.loop; g.gain.value = c.vol;
     src.connect(g); g.connect(ctx.destination); if (recDest) g.connect(recDest);
     const when = ctx.currentTime + 0.05 + Math.max(0, c.start - fromT), off = Math.max(0, fromT - c.start);
-    src.start(when, c.loop ? off % buf.duration : off); if (c.loop) src.stop(ctx.currentTime + 0.05 + (end - fromT));
+    src.start(when, c.loop ? ((c.offset || 0) + off) % buf.duration : off); if (c.loop) src.stop(ctx.currentTime + 0.05 + (end - fromT));
     sources.push(src);
   }
 }

@@ -333,6 +333,13 @@
         const tie = J(chest, 0, AGE.th - 0.035, fz + 0.012); add(tie, new T.SphereGeometry(0.014, 12, 8), M.top2.color.getHex() === M.white.color.getHex() ? M.dark : felt(L.tie ?? 0xc0392b));
         const blade = add(tie, new T.CylinderGeometry(0.012, 0.025, AGE.th * 0.45, 4), felt(L.tie ?? 0xc0392b), 0, -AGE.th * 0.24, 0); blade.scale.z = 0.3;
       }
+      if ((L.extras || []).includes('id_card')) {   // staff ID card on a lanyard (bank, office)
+        const ly = felt(L.lanyard ?? 0x7c3aed);
+        for (const s of [-1, 1]) { const st = add(chest, new T.CylinderGeometry(0.004, 0.004, AGE.th * 0.42, 6), ly, s * 0.035, AGE.th * 0.74, fz + 0.008); st.rotation.z = s * 0.22; }
+        add(chest, roundBox(0.05, 0.065, 0.006, 0.006), M.white, 0, AGE.th * 0.5, fz + 0.012);
+        add(chest, new T.BoxGeometry(0.036, 0.016, 0.002), ly, 0, AGE.th * 0.52, fz + 0.016);
+        add(chest, new T.BoxGeometry(0.03, 0.006, 0.002), M.dark, 0, AGE.th * 0.485, fz + 0.016);
+      }
       if (ot === 'hoodie') {
         const hood = add(chest, new T.SphereGeometry(1, 24, 16), M.top, 0, AGE.th * 0.92, -td * 0.42); hood.scale.set(tw * 0.42, AGE.th * 0.22, td * 0.32);
         add(chest, roundBox(tw * 0.62, AGE.th * 0.28, 0.02, 0.02), felt(new T.Color(L.top ?? 0xffffff).multiplyScalar(0.85).getHex()), 0, AGE.th * 0.22, fz + 0.006);
@@ -536,6 +543,11 @@
     engineer:     { label: 'Engineer', role: 'work', kind: 'folk', look: { age: 'adult', female: true, head: 0xec4899, face: SKIN.tan, outfit: 'shirt', top: 0x60a5fa, bottomType: 'pants', bottom: 0x334155, shoe: 0x3b2416, hat: 'hard_hat', hatColor: 0xf8fafc, prop: 'blueprint' } },
     it_specialist:{ label: 'IT specialist', role: 'work', kind: 'folk', look: { age: 'adult', head: 0x10b981, face: SKIN.light, outfit: 'hoodie', top: 0x334155, bottomType: 'pants', bottom: 0x1e293b, shoe: 0xffffff, hair: 'short', hairColor: 0x3b2416, extras: ['glasses', 'headset'], prop: 'laptop' } },
     grandpa:      { label: 'Grandpa', role: 'family', kind: 'folk', look: { age: 'old', head: 0x8b5cf6, face: SKIN.tan, outfit: 'cardigan', top: 0x92400e, top2: 0xfef3c7, bottomType: 'pants', bottom: 0x57534e, shoe: 0x3b2416, hair: 'grey_rim', hairColor: 0xd4d4d4, extras: ['moustache', 'glasses', 'grey_brows'], prop: 'cane' } },
+    bank_teller:  { label: 'Bank teller', role: 'bank', kind: 'folk', look: { age: 'adult', female: true, head: 0x7c3aed, face: SKIN.peach, outfit: 'shirt', top: 0xe0f2fe, bottomType: 'pants', bottom: 0x1e293b, shoe: 0x111827, hair: 'bun', hairColor: 0x1a120c, extras: ['tie', 'id_card'], tie: 0x7c3aed, lanyard: 0x7c3aed } },
+    bank_manager: { label: 'Bank manager', role: 'bank', kind: 'folk', look: { age: 'adult', build: 1.1, head: 0x0f766e, face: SKIN.tan, outfit: 'suit', top: 0x1f2937, top2: 0xffffff, bottomType: 'pants', bottom: 0x1f2937, shoe: 0x111827, hair: 'side', hairColor: 0x1a120c, extras: ['glasses', 'id_card'], tie: 0x7c3aed, lanyard: 0x0f766e, prop: 'clipboard' } },
+    security_guard:{ label: 'Security guard', role: 'bank', kind: 'folk', look: { age: 'adult', build: 1.2, head: 0x475569, face: SKIN.brown, outfit: 'shirt', top: 0x1e3a8a, bottomType: 'pants', bottom: 0x1e293b, shoe: 0x111827, hat: 'driver', hatColor: 0x1e3a8a, extras: ['moustache', 'id_card'], lanyard: 0xfacc15 } },
+    grocer:       { label: 'Grocer', role: 'shop', kind: 'folk', look: { age: 'adult', build: 1.2, head: 0xf59e0b, face: SKIN.tan, outfit: 'apron', top: 0xfef9c3, top2: 0x16a34a, bottomType: 'pants', bottom: 0x57534e, shoe: 0x3b2416, hair: 'short', hairColor: 0x1a120c, extras: ['moustache'], prop: 'clipboard' } },
+    vegetable_seller:{ label: 'Vegetable seller', role: 'shop', kind: 'folk', look: { age: 'adult', female: true, head: 0x16a34a, face: SKIN.deep, outfit: 'kurti', top: 0xf97316, top2: 0x16a34a, bottomType: 'long_dress', bottom: 0xf97316, shoe: 0x8a5a33, hair: 'bun', hairColor: 0x1a120c } },
     grandma:      { label: 'Grandma', role: 'family', kind: 'folk', look: { age: 'old', female: true, head: 0xf43f5e, face: SKIN.peach, outfit: 'shawl', top: 0x9d174d, top2: 0xfcc72c, bottomType: 'long_dress', bottom: 0x9d174d, shoe: 0x8a5a33, hair: 'grey_bun', hairColor: 0xd4d4d4, extras: ['glasses', 'grey_brows'], prop: 'cane' } },
   };
   window.ZCharacters = Object.assign(window.ZCharacters || {}, { toon, TOON_KINDS: KINDS, TOON_PALETTE: PAL, TOON_PRESETS });

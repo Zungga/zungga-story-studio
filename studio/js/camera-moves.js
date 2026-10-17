@@ -45,7 +45,9 @@
       case 'dolly_forward': { const d = dirAt(yaw, T.MathUtils.degToRad(o.elevation ?? 8)); at = (k) => ({ pos: look.clone().addScaledVector(d, D.wide + (D.mid - D.wide) * k), look }); break; }
       default: throw new Error('Unknown camera move: ' + move);
     }
-    return { duration: dur, at: (t) => at(ease(Math.min(1, Math.max(0, t / dur)))) };
+    // speed: 1 = the move takes the whole shot, 2 = done in half the time then holds; smooth: 1 = eased (default), 0 = constant speed
+    const sp = Math.max(0.2, o.speed ?? 1), sm = o.smooth ?? 1, k0 = (t) => Math.min(1, Math.max(0, t * sp / dur));
+    return { duration: dur, at: (t) => { const k = k0(t); return at(sm * ease(k) + (1 - sm) * k); } };
   }
   window.ZCamera = { MOVES, plan, frame, ease, lerpV };
 })();

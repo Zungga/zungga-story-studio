@@ -44,8 +44,30 @@
   const box = (w, h, d, c, parent, x, y, z, r = 0.01) => mesh(roundBox(w, h, d, r), mat(c), parent, x, y, z);
 
 
+  // the real Zungga logo / mascot as textures (loaded once, as soon as the page loads, so renders have them)
+  const BASE = document.currentScript && document.currentScript.src ? new URL('.', document.currentScript.src).href : 'assets/';
+  const IMG = {};
+  function imgTex(file) { if (!IMG[file]) { const t = new T.TextureLoader().load(BASE + 'brand/' + file); t.colorSpace = T.SRGBColorSpace; t.anisotropy = 8; IMG[file] = t; } return IMG[file]; }
+  const logoTex = () => imgTex('zungga-logo.png'), mascotTex = () => imgTex('zungga-mascot.png');   // logo is 920×755, mascot is square-ish
+  logoTex(); mascotTex();
+  // a flat decal (transparent picture) facing +z, centred at (x, y, z) on parent
+  function decal(texture, w, h, parent, x = 0, y = 0, z = 0) { const m = mesh(new T.PlaneGeometry(w, h), new T.MeshStandardMaterial({ map: texture, transparent: true, roughness: 0.6, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2 }), parent, x, y, z); m.castShadow = false; return m; }
+  // a canvas-drawn label/sign texture with centred text
+  function label(text, { w = 512, h = 160, bg = '#ffffff', fg = '#1f1a33', size = 80, weight = 700, radius = 0 } = {}) {
+    return tex((g, W, H) => { g.fillStyle = bg; if (radius) { g.beginPath(); g.roundRect(0, 0, W, H, radius); g.fill(); } else g.fillRect(0, 0, W, H); g.fillStyle = fg; g.textAlign = 'center'; g.textBaseline = 'middle'; fitText(g, text, W * 0.9, size, weight); g.fillText(text, W / 2, H / 2 + 4); }, w, h);
+  }
+  const cyl = (rt, rb, h, c, parent, x, y, z, seg = 24) => mesh(new T.CylinderGeometry(rt, rb, h, seg), mat(c), parent, x, y, z);
+  const sphere = (r, c, parent, x, y, z, seg = 24) => mesh(new T.SphereGeometry(r, seg, Math.round(seg * 0.75)), mat(c), parent, x, y, z);
+
+  // bounding box for framing a prop in previews: skips sky pieces (moon, stars…) marked userData.sky = true
+  function frameBox(obj) {
+    obj.updateMatrixWorld(true); const box = new T.Box3(), b = new T.Box3();
+    (function walk(o) { if (o.userData && o.userData.sky) return; if ((o.isMesh || o.isPoints || o.isInstancedMesh) && o.geometry) { if (!o.geometry.boundingBox) o.geometry.computeBoundingBox(); b.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld); if (o.isInstancedMesh) b.setFromObject(o); box.union(b); } for (const c of o.children) walk(c); })(obj);
+    return box.isEmpty() ? new T.Box3().setFromObject(obj) : box;
+  }
+
   const REG = {};
-  window.ZA = { T, Z, FONT, hex, mat, glassMat, mesh, tex, fitText, roundBox, box };
+  window.ZA = { T, Z, FONT, hex, mat, glassMat, mesh, tex, fitText, roundBox, box, logoTex, mascotTex, decal, label, cyl, sphere, frameBox };
   window.ZAssets = {
     palette: Z,
     helpers: { mat, mesh, tex, roundBox },

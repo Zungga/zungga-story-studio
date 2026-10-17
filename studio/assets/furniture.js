@@ -1,7 +1,7 @@
 /* Zungga Story Studio — furniture props. Registered into the shared library (assets/core.js). */
 (() => {
   'use strict';
-  const { T, Z, FONT, hex, mat, glassMat, mesh, tex, fitText, roundBox, box } = ZA;
+  const { T, Z, FONT, hex, mat, glassMat, mesh, tex, fitText, roundBox, box, logoTex, mascotTex, decal, label, cyl, sphere } = ZA;
   function bench() {   // school-ground bench
     const g = new T.Group(), L = 1.6, iron = mat(0x334155, { metalness: 0.5, roughness: 0.45 });
     for (let i = 0; i < 4; i++) box(L, 0.03, 0.09, Z.wood, g, 0, 0.45, -0.15 + i * 0.1, 0.008);                    // seat slats

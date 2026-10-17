@@ -1,0 +1,1077 @@
+{
+ "note": "Voice lines from the resume game (drive-portfolio, ElevenLabs). Use in a scene as a sound: ../dialogues/<file>.",
+ "lines": [
+  {
+   "key": "shop.MASALA DOSA.greet",
+   "file": "shop-masala-dosa-greet.mp3",
+   "text": "Hot masala dosa, straight off the tawa! Nice and crispy for you.",
+   "kind": "shop",
+   "who": "masala dosa",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.MASALA DOSA.bye",
+   "file": "shop-masala-dosa-bye.mp3",
+   "text": "Come again tomorrow! The dosa will be even crispier.",
+   "kind": "shop",
+   "who": "masala dosa",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.CHAI.greet",
+   "file": "shop-chai-greet.mp3",
+   "text": "Garam garam chai! Cutting chai, freshly brewed. Come, come!",
+   "kind": "shop",
+   "who": "chai",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.CHAI.bye",
+   "file": "shop-chai-bye.mp3",
+   "text": "Come back for another chai anytime, my friend!",
+   "kind": "shop",
+   "who": "chai",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.FRESH FRUITS.greet",
+   "file": "shop-fresh-fruits-greet.mp3",
+   "text": "Fresh fruits, beta! Sweet mangoes, bananas, straight from the farm.",
+   "kind": "shop",
+   "who": "fresh fruits",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.FRESH FRUITS.bye",
+   "file": "shop-fresh-fruits-bye.mp3",
+   "text": "Eat healthy, and visit again! Fresh stock every morning.",
+   "kind": "shop",
+   "who": "fresh fruits",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.SPICES.greet",
+   "file": "shop-spices-greet.mp3",
+   "text": "Smell that? Pure spices, ground this morning. Very good quality.",
+   "kind": "shop",
+   "who": "spices",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.SPICES.bye",
+   "file": "shop-spices-bye.mp3",
+   "text": "Your kitchen will smell wonderful. Do come again.",
+   "kind": "shop",
+   "who": "spices",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.ICE CREAM.greet",
+   "file": "shop-ice-cream-greet.mp3",
+   "text": "Kulfi and ice cream! Perfect for this weather, no?",
+   "kind": "shop",
+   "who": "ice cream",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.ICE CREAM.bye",
+   "file": "shop-ice-cream-bye.mp3",
+   "text": "Stay cool! Come back and try a new flavour next time.",
+   "kind": "shop",
+   "who": "ice cream",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.JUICE.greet",
+   "file": "shop-juice-greet.mp3",
+   "text": "Sugarcane juice, ice cold! One glass and you will feel fresh.",
+   "kind": "shop",
+   "who": "juice",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.JUICE.bye",
+   "file": "shop-juice-bye.mp3",
+   "text": "Stay fresh! Come back when the sun is hot.",
+   "kind": "shop",
+   "who": "juice",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.BIRYANI.greet",
+   "file": "shop-biryani-greet.mp3",
+   "text": "Biryani, my friend! The queue is long, but trust me, it is worth it.",
+   "kind": "shop",
+   "who": "biryani",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.BIRYANI.bye",
+   "file": "shop-biryani-bye.mp3",
+   "text": "Hope you loved it! Come back hungry next time.",
+   "kind": "shop",
+   "who": "biryani",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.BOOKS.greet",
+   "file": "shop-books-greet.mp3",
+   "text": "Welcome, welcome. Old books, new stories. Take your time.",
+   "kind": "shop",
+   "who": "books",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.BOOKS.bye",
+   "file": "shop-books-bye.mp3",
+   "text": "Happy reading! Come back and tell me how it ends.",
+   "kind": "shop",
+   "who": "books",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.TOYS.greet",
+   "file": "shop-toys-greet.mp3",
+   "text": "Kites, tops, toys! The kids love them. Big kids too!",
+   "kind": "shop",
+   "who": "toys",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.TOYS.bye",
+   "file": "shop-toys-bye.mp3",
+   "text": "Have fun! Come back and show me your kite flying.",
+   "kind": "shop",
+   "who": "toys",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.FLOWERS.greet",
+   "file": "shop-flowers-greet.mp3",
+   "text": "Fresh jasmine garlands! They smell lovely, take one.",
+   "kind": "shop",
+   "who": "flowers",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.FLOWERS.bye",
+   "file": "shop-flowers-bye.mp3",
+   "text": "May your day smell as sweet. Please visit again!",
+   "kind": "shop",
+   "who": "flowers",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.PANI PURI.greet",
+   "file": "shop-pani-puri-greet.mp3",
+   "text": "Pani puri! Spicy, tangy, full of flavour. How many plates?",
+   "kind": "shop",
+   "who": "pani puri",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.PANI PURI.bye",
+   "file": "shop-pani-puri-bye.mp3",
+   "text": "Spicy enough? Come back for round two!",
+   "kind": "shop",
+   "who": "pani puri",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.FILTER COFFEE.greet",
+   "file": "shop-filter-coffee-greet.mp3",
+   "text": "Strong filter coffee, nice and frothy. Just how you like it.",
+   "kind": "shop",
+   "who": "filter coffee",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.FILTER COFFEE.bye",
+   "file": "shop-filter-coffee-bye.mp3",
+   "text": "Strong coffee, strong day. See you tomorrow morning!",
+   "kind": "shop",
+   "who": "filter coffee",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.BAKERY.greet",
+   "file": "shop-bakery-greet.mp3",
+   "text": "Fresh puffs and buns, still warm from the oven!",
+   "kind": "shop",
+   "who": "bakery",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.BAKERY.bye",
+   "file": "shop-bakery-bye.mp3",
+   "text": "Fresh puffs come out at four o'clock. Do visit again!",
+   "kind": "shop",
+   "who": "bakery",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.CRAFTS.greet",
+   "file": "shop-crafts-greet.mp3",
+   "text": "Everything here is handmade. Each piece has a story.",
+   "kind": "shop",
+   "who": "crafts",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.CRAFTS.bye",
+   "file": "shop-crafts-bye.mp3",
+   "text": "Thank you so much. Please come again!",
+   "kind": "shop",
+   "who": "crafts",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.CLOTHES.greet",
+   "file": "shop-clothes-greet.mp3",
+   "text": "Shirts, sarees, scarves. The new collection just arrived!",
+   "kind": "shop",
+   "who": "clothes",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.CLOTHES.bye",
+   "file": "shop-clothes-bye.mp3",
+   "text": "You will look great in that! Visit again for the new collection.",
+   "kind": "shop",
+   "who": "clothes",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.GROCERY.greet",
+   "file": "shop-grocery-greet.mp3",
+   "text": "Welcome to the grocery! Water, snacks, chocolates, all here.",
+   "kind": "shop",
+   "who": "grocery",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.GROCERY.bye",
+   "file": "shop-grocery-bye.mp3",
+   "text": "Thank you for shopping with us. See you soon!",
+   "kind": "shop",
+   "who": "grocery",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.CAFÉ.greet",
+   "file": "shop-cafe-greet.mp3",
+   "text": "Hi, welcome in! The coffee is fresh and the cake is lovely today.",
+   "kind": "shop",
+   "who": "café",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.CAFÉ.bye",
+   "file": "shop-cafe-bye.mp3",
+   "text": "Thanks for stopping by. Your table will be waiting!",
+   "kind": "shop",
+   "who": "café",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.TEA HOUSE.greet",
+   "file": "shop-tea-house-greet.mp3",
+   "text": "Come, sit back and relax. The tea is fresh.",
+   "kind": "shop",
+   "who": "tea house",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.TEA HOUSE.bye",
+   "file": "shop-tea-house-bye.mp3",
+   "text": "Peace and tea. Come back whenever you need both.",
+   "kind": "shop",
+   "who": "tea house",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.PHARMACY.greet",
+   "file": "shop-pharmacy-greet.mp3",
+   "text": "Oh, you are hurt. Don't worry, let's get you fixed up.",
+   "kind": "shop",
+   "who": "pharmacy",
+   "moment": "greet"
+  },
+  {
+   "key": "shop.PHARMACY.bye",
+   "file": "shop-pharmacy-bye.mp3",
+   "text": "Take care of yourself. And hopefully I won't see you too soon!",
+   "kind": "shop",
+   "who": "pharmacy",
+   "moment": "bye"
+  },
+  {
+   "key": "shop.PHARMACY.healthy",
+   "file": "shop-pharmacy-healthy.mp3",
+   "text": "You look perfectly healthy! I can't sell you medicine. Come back if you get hurt.",
+   "kind": "shop",
+   "who": "pharmacy",
+   "moment": "healthy"
+  },
+  {
+   "key": "shop.PHARMACY.rescue",
+   "file": "shop-pharmacy-rescue.mp3",
+   "text": "Oh no! Your loyal dog brought you here. Don't worry, I'll help you.",
+   "kind": "shop",
+   "who": "pharmacy",
+   "moment": "rescue"
+  },
+  {
+   "key": "thanks.chaiwala.0",
+   "file": "thanks-chaiwala-0.mp3",
+   "text": "Here you go, boss!",
+   "kind": "thanks",
+   "who": "thanks chaiwala",
+   "moment": "0"
+  },
+  {
+   "key": "thanks.chaiwala.1",
+   "file": "thanks-chaiwala-1.mp3",
+   "text": "Thank you, thank you!",
+   "kind": "thanks",
+   "who": "thanks chaiwala",
+   "moment": "1"
+  },
+  {
+   "key": "thanks.chaiwala.2",
+   "file": "thanks-chaiwala-2.mp3",
+   "text": "Enjoy!",
+   "kind": "thanks",
+   "who": "thanks chaiwala",
+   "moment": "2"
+  },
+  {
+   "key": "thanks.dosa.0",
+   "file": "thanks-dosa-0.mp3",
+   "text": "Here you go, enjoy it hot!",
+   "kind": "thanks",
+   "who": "thanks dosa",
+   "moment": "0"
+  },
+  {
+   "key": "thanks.dosa.1",
+   "file": "thanks-dosa-1.mp3",
+   "text": "Thank you so much!",
+   "kind": "thanks",
+   "who": "thanks dosa",
+   "moment": "1"
+  },
+  {
+   "key": "thanks.dosa.2",
+   "file": "thanks-dosa-2.mp3",
+   "text": "Good choice!",
+   "kind": "thanks",
+   "who": "thanks dosa",
+   "moment": "2"
+  },
+  {
+   "key": "thanks.elder.0",
+   "file": "thanks-elder-0.mp3",
+   "text": "Here you are.",
+   "kind": "thanks",
+   "who": "thanks elder",
+   "moment": "0"
+  },
+  {
+   "key": "thanks.elder.1",
+   "file": "thanks-elder-1.mp3",
+   "text": "Thank you, dear.",
+   "kind": "thanks",
+   "who": "thanks elder",
+   "moment": "1"
+  },
+  {
+   "key": "thanks.elder.2",
+   "file": "thanks-elder-2.mp3",
+   "text": "A fine choice.",
+   "kind": "thanks",
+   "who": "thanks elder",
+   "moment": "2"
+  },
+  {
+   "key": "thanks.aunty.0",
+   "file": "thanks-aunty-0.mp3",
+   "text": "Here you go, beta!",
+   "kind": "thanks",
+   "who": "thanks aunty",
+   "moment": "0"
+  },
+  {
+   "key": "thanks.aunty.1",
+   "file": "thanks-aunty-1.mp3",
+   "text": "Thank you so much!",
+   "kind": "thanks",
+   "who": "thanks aunty",
+   "moment": "1"
+  },
+  {
+   "key": "thanks.aunty.2",
+   "file": "thanks-aunty-2.mp3",
+   "text": "Enjoy!",
+   "kind": "thanks",
+   "who": "thanks aunty",
+   "moment": "2"
+  },
+  {
+   "key": "thanks.simran.0",
+   "file": "thanks-simran-0.mp3",
+   "text": "Here you go!",
+   "kind": "thanks",
+   "who": "thanks simran",
+   "moment": "0"
+  },
+  {
+   "key": "thanks.simran.1",
+   "file": "thanks-simran-1.mp3",
+   "text": "Yay, thank you!",
+   "kind": "thanks",
+   "who": "thanks simran",
+   "moment": "1"
+  },
+  {
+   "key": "thanks.simran.2",
+   "file": "thanks-simran-2.mp3",
+   "text": "Great choice!",
+   "kind": "thanks",
+   "who": "thanks simran",
+   "moment": "2"
+  },
+  {
+   "key": "thanks.pharma.0",
+   "file": "thanks-pharma-0.mp3",
+   "text": "Here you are.",
+   "kind": "thanks",
+   "who": "thanks pharma",
+   "moment": "0"
+  },
+  {
+   "key": "thanks.pharma.1",
+   "file": "thanks-pharma-1.mp3",
+   "text": "Thank you.",
+   "kind": "thanks",
+   "who": "thanks pharma",
+   "moment": "1"
+  },
+  {
+   "key": "thanks.pharma.2",
+   "file": "thanks-pharma-2.mp3",
+   "text": "Use it right away.",
+   "kind": "thanks",
+   "who": "thanks pharma",
+   "moment": "2"
+  },
+  {
+   "key": "atm.welcome",
+   "file": "atm-welcome.mp3",
+   "text": "Welcome to Island Bank. Your account summary is on the screen.",
+   "kind": "atm",
+   "who": "atm welcome",
+   "moment": null
+  },
+  {
+   "key": "race.invite",
+   "file": "race-invite.mp3",
+   "text": "Hey! We're about to race. Want to join us?",
+   "kind": "race",
+   "who": "race invite",
+   "moment": null
+  },
+  {
+   "key": "race.marks",
+   "file": "race-marks.mp3",
+   "text": "On your marks!",
+   "kind": "race",
+   "who": "race marks",
+   "moment": null
+  },
+  {
+   "key": "race.set",
+   "file": "race-set.mp3",
+   "text": "Get set!",
+   "kind": "race",
+   "who": "race set",
+   "moment": null
+  },
+  {
+   "key": "race.go",
+   "file": "race-go.mp3",
+   "text": "Go!",
+   "kind": "race",
+   "who": "race go",
+   "moment": null
+  },
+  {
+   "key": "race.place1",
+   "file": "race-place1.mp3",
+   "text": "Amazing! You won the race!",
+   "kind": "race",
+   "who": "race place1",
+   "moment": null
+  },
+  {
+   "key": "race.place2",
+   "file": "race-place2.mp3",
+   "text": "Well run! You finished second.",
+   "kind": "race",
+   "who": "race place2",
+   "moment": null
+  },
+  {
+   "key": "race.place3",
+   "file": "race-place3.mp3",
+   "text": "Well run! You finished third.",
+   "kind": "race",
+   "who": "race place3",
+   "moment": null
+  },
+  {
+   "key": "race.place4",
+   "file": "race-place4.mp3",
+   "text": "You finished fourth. Better luck next time!",
+   "kind": "race",
+   "who": "race place4",
+   "moment": null
+  },
+  {
+   "key": "race.place5",
+   "file": "race-place5.mp3",
+   "text": "You finished fifth. Better luck next time!",
+   "kind": "race",
+   "who": "race place5",
+   "moment": null
+  },
+  {
+   "key": "isl.m1.base.0",
+   "file": "isl-m1-base-0.mp3",
+   "text": "Hi there!",
+   "kind": "isl",
+   "who": "isl m1",
+   "moment": "base.0"
+  },
+  {
+   "key": "isl.m1.base.1",
+   "file": "isl-m1-base-1.mp3",
+   "text": "Hello, traveller!",
+   "kind": "isl",
+   "who": "isl m1",
+   "moment": "base.1"
+  },
+  {
+   "key": "isl.m1.base.2",
+   "file": "isl-m1-base-2.mp3",
+   "text": "Welcome to the island!",
+   "kind": "isl",
+   "who": "isl m1",
+   "moment": "base.2"
+  },
+  {
+   "key": "isl.m1.base.3",
+   "file": "isl-m1-base-3.mp3",
+   "text": "Have you tried the dosa stall? It's really good.",
+   "kind": "isl",
+   "who": "isl m1",
+   "moment": "base.3"
+  },
+  {
+   "key": "isl.m1.base.4",
+   "file": "isl-m1-base-4.mp3",
+   "text": "The sunset point is lovely in the evening.",
+   "kind": "isl",
+   "who": "isl m1",
+   "moment": "base.4"
+  },
+  {
+   "key": "isl.m1.base.5",
+   "file": "isl-m1-base-5.mp3",
+   "text": "Lost? The map shows every stop.",
+   "kind": "isl",
+   "who": "isl m1",
+   "moment": "base.5"
+  },
+  {
+   "key": "isl.m1.base.6",
+   "file": "isl-m1-base-6.mp3",
+   "text": "Nice shirt!",
+   "kind": "isl",
+   "who": "isl m1",
+   "moment": "base.6"
+  },
+  {
+   "key": "isl.m1.rain.0",
+   "file": "isl-m1-rain-0.mp3",
+   "text": "Better find some shelter!",
+   "kind": "isl",
+   "who": "isl m1",
+   "moment": "rain.0"
+  },
+  {
+   "key": "isl.m1.rain.1",
+   "file": "isl-m1-rain-1.mp3",
+   "text": "Lovely rain, isn't it?",
+   "kind": "isl",
+   "who": "isl m1",
+   "moment": "rain.1"
+  },
+  {
+   "key": "isl.m1.snow.0",
+   "file": "isl-m1-snow-0.mp3",
+   "text": "Brr, it's freezing!",
+   "kind": "isl",
+   "who": "isl m1",
+   "moment": "snow.0"
+  },
+  {
+   "key": "isl.m1.snow.1",
+   "file": "isl-m1-snow-1.mp3",
+   "text": "Snowball fight later?",
+   "kind": "isl",
+   "who": "isl m1",
+   "moment": "snow.1"
+  },
+  {
+   "key": "isl.m1.night.0",
+   "file": "isl-m1-night-0.mp3",
+   "text": "Good evening!",
+   "kind": "isl",
+   "who": "isl m1",
+   "moment": "night.0"
+  },
+  {
+   "key": "isl.m1.night.1",
+   "file": "isl-m1-night-1.mp3",
+   "text": "Look at all those stars!",
+   "kind": "isl",
+   "who": "isl m1",
+   "moment": "night.1"
+  },
+  {
+   "key": "isl.m2.base.0",
+   "file": "isl-m2-base-0.mp3",
+   "text": "Hi there!",
+   "kind": "isl",
+   "who": "isl m2",
+   "moment": "base.0"
+  },
+  {
+   "key": "isl.m2.base.1",
+   "file": "isl-m2-base-1.mp3",
+   "text": "Hello, traveller!",
+   "kind": "isl",
+   "who": "isl m2",
+   "moment": "base.1"
+  },
+  {
+   "key": "isl.m2.base.2",
+   "file": "isl-m2-base-2.mp3",
+   "text": "Welcome to the island!",
+   "kind": "isl",
+   "who": "isl m2",
+   "moment": "base.2"
+  },
+  {
+   "key": "isl.m2.base.3",
+   "file": "isl-m2-base-3.mp3",
+   "text": "Have you tried the dosa stall? It's really good.",
+   "kind": "isl",
+   "who": "isl m2",
+   "moment": "base.3"
+  },
+  {
+   "key": "isl.m2.base.4",
+   "file": "isl-m2-base-4.mp3",
+   "text": "The sunset point is lovely in the evening.",
+   "kind": "isl",
+   "who": "isl m2",
+   "moment": "base.4"
+  },
+  {
+   "key": "isl.m2.base.5",
+   "file": "isl-m2-base-5.mp3",
+   "text": "Lost? The map shows every stop.",
+   "kind": "isl",
+   "who": "isl m2",
+   "moment": "base.5"
+  },
+  {
+   "key": "isl.m2.base.6",
+   "file": "isl-m2-base-6.mp3",
+   "text": "Nice shirt!",
+   "kind": "isl",
+   "who": "isl m2",
+   "moment": "base.6"
+  },
+  {
+   "key": "isl.m2.rain.0",
+   "file": "isl-m2-rain-0.mp3",
+   "text": "Better find some shelter!",
+   "kind": "isl",
+   "who": "isl m2",
+   "moment": "rain.0"
+  },
+  {
+   "key": "isl.m2.rain.1",
+   "file": "isl-m2-rain-1.mp3",
+   "text": "Lovely rain, isn't it?",
+   "kind": "isl",
+   "who": "isl m2",
+   "moment": "rain.1"
+  },
+  {
+   "key": "isl.m2.snow.0",
+   "file": "isl-m2-snow-0.mp3",
+   "text": "Brr, it's freezing!",
+   "kind": "isl",
+   "who": "isl m2",
+   "moment": "snow.0"
+  },
+  {
+   "key": "isl.m2.snow.1",
+   "file": "isl-m2-snow-1.mp3",
+   "text": "Snowball fight later?",
+   "kind": "isl",
+   "who": "isl m2",
+   "moment": "snow.1"
+  },
+  {
+   "key": "isl.m2.night.0",
+   "file": "isl-m2-night-0.mp3",
+   "text": "Good evening!",
+   "kind": "isl",
+   "who": "isl m2",
+   "moment": "night.0"
+  },
+  {
+   "key": "isl.m2.night.1",
+   "file": "isl-m2-night-1.mp3",
+   "text": "Look at all those stars!",
+   "kind": "isl",
+   "who": "isl m2",
+   "moment": "night.1"
+  },
+  {
+   "key": "isl.f1.base.0",
+   "file": "isl-f1-base-0.mp3",
+   "text": "Hi there!",
+   "kind": "isl",
+   "who": "isl f1",
+   "moment": "base.0"
+  },
+  {
+   "key": "isl.f1.base.1",
+   "file": "isl-f1-base-1.mp3",
+   "text": "Hello, traveller!",
+   "kind": "isl",
+   "who": "isl f1",
+   "moment": "base.1"
+  },
+  {
+   "key": "isl.f1.base.2",
+   "file": "isl-f1-base-2.mp3",
+   "text": "Welcome to the island!",
+   "kind": "isl",
+   "who": "isl f1",
+   "moment": "base.2"
+  },
+  {
+   "key": "isl.f1.base.3",
+   "file": "isl-f1-base-3.mp3",
+   "text": "Have you tried the dosa stall? It's really good.",
+   "kind": "isl",
+   "who": "isl f1",
+   "moment": "base.3"
+  },
+  {
+   "key": "isl.f1.base.4",
+   "file": "isl-f1-base-4.mp3",
+   "text": "The sunset point is lovely in the evening.",
+   "kind": "isl",
+   "who": "isl f1",
+   "moment": "base.4"
+  },
+  {
+   "key": "isl.f1.base.5",
+   "file": "isl-f1-base-5.mp3",
+   "text": "Lost? The map shows every stop.",
+   "kind": "isl",
+   "who": "isl f1",
+   "moment": "base.5"
+  },
+  {
+   "key": "isl.f1.base.6",
+   "file": "isl-f1-base-6.mp3",
+   "text": "Nice shirt!",
+   "kind": "isl",
+   "who": "isl f1",
+   "moment": "base.6"
+  },
+  {
+   "key": "isl.f1.rain.0",
+   "file": "isl-f1-rain-0.mp3",
+   "text": "Better find some shelter!",
+   "kind": "isl",
+   "who": "isl f1",
+   "moment": "rain.0"
+  },
+  {
+   "key": "isl.f1.rain.1",
+   "file": "isl-f1-rain-1.mp3",
+   "text": "Lovely rain, isn't it?",
+   "kind": "isl",
+   "who": "isl f1",
+   "moment": "rain.1"
+  },
+  {
+   "key": "isl.f1.snow.0",
+   "file": "isl-f1-snow-0.mp3",
+   "text": "Brr, it's freezing!",
+   "kind": "isl",
+   "who": "isl f1",
+   "moment": "snow.0"
+  },
+  {
+   "key": "isl.f1.snow.1",
+   "file": "isl-f1-snow-1.mp3",
+   "text": "Snowball fight later?",
+   "kind": "isl",
+   "who": "isl f1",
+   "moment": "snow.1"
+  },
+  {
+   "key": "isl.f1.night.0",
+   "file": "isl-f1-night-0.mp3",
+   "text": "Good evening!",
+   "kind": "isl",
+   "who": "isl f1",
+   "moment": "night.0"
+  },
+  {
+   "key": "isl.f1.night.1",
+   "file": "isl-f1-night-1.mp3",
+   "text": "Look at all those stars!",
+   "kind": "isl",
+   "who": "isl f1",
+   "moment": "night.1"
+  },
+  {
+   "key": "isl.f2.base.0",
+   "file": "isl-f2-base-0.mp3",
+   "text": "Hi there!",
+   "kind": "isl",
+   "who": "isl f2",
+   "moment": "base.0"
+  },
+  {
+   "key": "isl.f2.base.1",
+   "file": "isl-f2-base-1.mp3",
+   "text": "Hello, traveller!",
+   "kind": "isl",
+   "who": "isl f2",
+   "moment": "base.1"
+  },
+  {
+   "key": "isl.f2.base.2",
+   "file": "isl-f2-base-2.mp3",
+   "text": "Welcome to the island!",
+   "kind": "isl",
+   "who": "isl f2",
+   "moment": "base.2"
+  },
+  {
+   "key": "isl.f2.base.3",
+   "file": "isl-f2-base-3.mp3",
+   "text": "Have you tried the dosa stall? It's really good.",
+   "kind": "isl",
+   "who": "isl f2",
+   "moment": "base.3"
+  },
+  {
+   "key": "isl.f2.base.4",
+   "file": "isl-f2-base-4.mp3",
+   "text": "The sunset point is lovely in the evening.",
+   "kind": "isl",
+   "who": "isl f2",
+   "moment": "base.4"
+  },
+  {
+   "key": "isl.f2.base.5",
+   "file": "isl-f2-base-5.mp3",
+   "text": "Lost? The map shows every stop.",
+   "kind": "isl",
+   "who": "isl f2",
+   "moment": "base.5"
+  },
+  {
+   "key": "isl.f2.base.6",
+   "file": "isl-f2-base-6.mp3",
+   "text": "Nice shirt!",
+   "kind": "isl",
+   "who": "isl f2",
+   "moment": "base.6"
+  },
+  {
+   "key": "isl.f2.rain.0",
+   "file": "isl-f2-rain-0.mp3",
+   "text": "Better find some shelter!",
+   "kind": "isl",
+   "who": "isl f2",
+   "moment": "rain.0"
+  },
+  {
+   "key": "isl.f2.rain.1",
+   "file": "isl-f2-rain-1.mp3",
+   "text": "Lovely rain, isn't it?",
+   "kind": "isl",
+   "who": "isl f2",
+   "moment": "rain.1"
+  },
+  {
+   "key": "isl.f2.snow.0",
+   "file": "isl-f2-snow-0.mp3",
+   "text": "Brr, it's freezing!",
+   "kind": "isl",
+   "who": "isl f2",
+   "moment": "snow.0"
+  },
+  {
+   "key": "isl.f2.snow.1",
+   "file": "isl-f2-snow-1.mp3",
+   "text": "Snowball fight later?",
+   "kind": "isl",
+   "who": "isl f2",
+   "moment": "snow.1"
+  },
+  {
+   "key": "isl.f2.night.0",
+   "file": "isl-f2-night-0.mp3",
+   "text": "Good evening!",
+   "kind": "isl",
+   "who": "isl f2",
+   "moment": "night.0"
+  },
+  {
+   "key": "isl.f2.night.1",
+   "file": "isl-f2-night-1.mp3",
+   "text": "Look at all those stars!",
+   "kind": "isl",
+   "who": "isl f2",
+   "moment": "night.1"
+  },
+  {
+   "key": "narrator.intro",
+   "file": "narrator-intro.mp3",
+   "text": "Welcome to the island, explorer! This whole world is Sachayanthan's portfolio. Walk or drive to the glowing pads around the fountain to discover his story, his projects and his skills. Up north is Market Street, full of food stalls and shops, where you can even work a shift. To the south is the village, there are tent camps to the east and west, and the sports ground waits in the north-east. Catch the sunrise and sunset points on the beach. And one more thing... somewhere on this island hides a secret cave. Only one percent of explorers ever find it. Good luck!",
+   "kind": "narrator",
+   "who": "narrator intro",
+   "moment": null
+  },
+  {
+   "key": "narrator.caveFound",
+   "file": "narrator-cave-found.mp3",
+   "text": "Incredible! You found the secret cave. Only one percent of explorers ever make it this far. Welcome to The Core.",
+   "kind": "narrator",
+   "who": "narrator cavefound",
+   "moment": null
+  },
+  {
+   "key": "cust.m1.0",
+   "file": "cust-m1-0.mp3",
+   "text": "Hi! One of those, please.",
+   "kind": "cust",
+   "who": "cust m1",
+   "moment": "0"
+  },
+  {
+   "key": "cust.m1.1",
+   "file": "cust-m1-1.mp3",
+   "text": "Can I get one, please?",
+   "kind": "cust",
+   "who": "cust m1",
+   "moment": "1"
+  },
+  {
+   "key": "cust.m1.2",
+   "file": "cust-m1-2.mp3",
+   "text": "Thank you so much!",
+   "kind": "cust",
+   "who": "cust m1",
+   "moment": "2"
+  },
+  {
+   "key": "cust.m2.0",
+   "file": "cust-m2-0.mp3",
+   "text": "Hi! One of those, please.",
+   "kind": "cust",
+   "who": "cust m2",
+   "moment": "0"
+  },
+  {
+   "key": "cust.m2.1",
+   "file": "cust-m2-1.mp3",
+   "text": "Can I get one, please?",
+   "kind": "cust",
+   "who": "cust m2",
+   "moment": "1"
+  },
+  {
+   "key": "cust.m2.2",
+   "file": "cust-m2-2.mp3",
+   "text": "Thank you so much!",
+   "kind": "cust",
+   "who": "cust m2",
+   "moment": "2"
+  },
+  {
+   "key": "cust.f1.0",
+   "file": "cust-f1-0.mp3",
+   "text": "Hi! One of those, please.",
+   "kind": "cust",
+   "who": "cust f1",
+   "moment": "0"
+  },
+  {
+   "key": "cust.f1.1",
+   "file": "cust-f1-1.mp3",
+   "text": "Can I get one, please?",
+   "kind": "cust",
+   "who": "cust f1",
+   "moment": "1"
+  },
+  {
+   "key": "cust.f1.2",
+   "file": "cust-f1-2.mp3",
+   "text": "Thank you so much!",
+   "kind": "cust",
+   "who": "cust f1",
+   "moment": "2"
+  },
+  {
+   "key": "cust.f2.0",
+   "file": "cust-f2-0.mp3",
+   "text": "Hi! One of those, please.",
+   "kind": "cust",
+   "who": "cust f2",
+   "moment": "0"
+  },
+  {
+   "key": "cust.f2.1",
+   "file": "cust-f2-1.mp3",
+   "text": "Can I get one, please?",
+   "kind": "cust",
+   "who": "cust f2",
+   "moment": "1"
+  },
+  {
+   "key": "cust.f2.2",
+   "file": "cust-f2-2.mp3",
+   "text": "Thank you so much!",
+   "kind": "cust",
+   "who": "cust f2",
+   "moment": "2"
+  }
+ ]
+}

@@ -18,3 +18,9 @@ selected-voices/*/out/
 
 # baked weather sounds are real assets (tools/make_sfx.py can re-make them)
 !studio/assets/sfx/*.wav
+
+# studio: your projects and local settings stay on this Mac
+projects/
+settings.local.json
+*.tmp
+

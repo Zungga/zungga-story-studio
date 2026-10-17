@@ -1,0 +1,13 @@
+# Python side of Zungga Story Studio (voice, word timing, story AI). Apple Silicon (MLX) only.
+# setup.sh installs these into .venv — versions are pinned so a new Mac gets exactly what was tested.
+mlx==0.32.3
+mlx-audio==0.5.8
+mlx-lm==0.32.2
+numpy==2.5.4
+scipy==1.18.1
+transformers==5.19.0
+huggingface_hub==2.2.0
+tokenizers==0.23.3
+safetensors==0.8.0
+sentencepiece==0.2.2
+pillow==12.3.0

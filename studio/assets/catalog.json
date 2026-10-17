@@ -102,6 +102,171 @@
       ]
     },
     {
+      "id": "note_500",
+      "label": "₹500 note",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "note",
+        "rupee",
+        "500"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "note_200",
+      "label": "₹200 note",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "note",
+        "rupee",
+        "200"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "coin_1",
+      "label": "₹1 coin",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "coin",
+        "rupee",
+        "1",
+        "physics"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "coin_2",
+      "label": "₹2 coin",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "coin",
+        "rupee",
+        "2",
+        "physics"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "coin_10",
+      "label": "₹10 coin",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "coin",
+        "rupee",
+        "10",
+        "physics"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "money_bunch",
+      "label": "Bunch of notes",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "notes",
+        "cash",
+        "bunch"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "money_pile",
+      "label": "Pile of money",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "notes",
+        "coins",
+        "pile",
+        "rich",
+        "treasure"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "bundle_1lakh",
+      "label": "₹1 lakh bundle",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "bundle",
+        "lakh",
+        "cash",
+        "500"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "money_brick",
+      "label": "Brick of cash (₹5 lakh)",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "bundle",
+        "lakh",
+        "cash",
+        "brick"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "zungga_coin",
+      "label": "Zungga gold coin",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "coin",
+        "zungga",
+        "gold",
+        "physics"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "coin_stack",
+      "label": "Stack of coins",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "coins",
+        "stack",
+        "tower",
+        "savings"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "wallet",
+      "label": "Leather wallet",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "wallet",
+        "purse",
+        "leather"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "money_bag",
+      "label": "Money sack",
+      "category": "money",
+      "file": "studio/assets/money.js",
+      "tags": [
+        "bag",
+        "sack",
+        "treasure"
+      ],
+      "usedIn": []
+    },
+    {
       "id": "chips",
       "label": "Chips packet",
       "category": "food",
@@ -130,6 +295,152 @@
       ]
     },
     {
+      "id": "lunch_box",
+      "label": "Steel lunch box",
+      "category": "food",
+      "file": "studio/assets/food.js",
+      "tags": [
+        "lunch",
+        "tiffin",
+        "school",
+        "opens"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "water_bottle",
+      "label": "Water bottle",
+      "category": "food",
+      "file": "studio/assets/food.js",
+      "tags": [
+        "bottle",
+        "drink",
+        "school"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "samosa_plate",
+      "label": "Samosa plate",
+      "category": "food",
+      "file": "studio/assets/food.js",
+      "tags": [
+        "snack",
+        "samosa",
+        "chutney",
+        "plate"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "ice_cream",
+      "label": "Ice-cream cone",
+      "category": "food",
+      "file": "studio/assets/food.js",
+      "tags": [
+        "dessert",
+        "cone",
+        "treat"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "apple",
+      "label": "Apple",
+      "category": "food",
+      "file": "studio/assets/food.js",
+      "tags": [
+        "fruit",
+        "healthy"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "banana",
+      "label": "Banana",
+      "category": "food",
+      "file": "studio/assets/food.js",
+      "tags": [
+        "fruit",
+        "healthy"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "mango",
+      "label": "Mango",
+      "category": "food",
+      "file": "studio/assets/food.js",
+      "tags": [
+        "fruit",
+        "summer"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "birthday_cake",
+      "label": "Birthday cake",
+      "category": "food",
+      "file": "studio/assets/food.js",
+      "tags": [
+        "cake",
+        "party",
+        "candles",
+        "celebration"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "tiffin_carrier",
+      "label": "Tiffin carrier",
+      "category": "food",
+      "file": "studio/assets/food.js",
+      "tags": [
+        "tiffin",
+        "dabba",
+        "lunch",
+        "steel"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "lemonade",
+      "label": "Glass of lemonade",
+      "category": "food",
+      "file": "studio/assets/food.js",
+      "tags": [
+        "drink",
+        "lemon",
+        "nimbu pani",
+        "glass"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "biscuit_packet",
+      "label": "Cream biscuits packet",
+      "category": "food",
+      "file": "studio/assets/food.js",
+      "tags": [
+        "snack",
+        "biscuit",
+        "packet"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "chocolate_bar",
+      "label": "Chocolate bar",
+      "category": "food",
+      "file": "studio/assets/food.js",
+      "tags": [
+        "chocolate",
+        "treat",
+        "sweet"
+      ],
+      "usedIn": []
+    },
+    {
       "id": "football",
       "label": "Football + ₹150 tag",
       "category": "toys",
@@ -143,6 +454,145 @@
       "usedIn": [
         "pocket-money"
       ]
+    },
+    {
+      "id": "kite",
+      "label": "Kite (patang)",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "patang",
+        "kite",
+        "sankranti",
+        "sky",
+        "tick"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cricket_bat",
+      "label": "Cricket bat",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "cricket",
+        "bat",
+        "sport"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cricket_ball",
+      "label": "Cricket ball",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "cricket",
+        "ball",
+        "sport",
+        "physics"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "toy_car",
+      "label": "Toy car",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "car",
+        "toy",
+        "vehicle"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "teddy_bear",
+      "label": "Teddy bear",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "teddy",
+        "bear",
+        "soft toy",
+        "plush"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "spinning_top",
+      "label": "Spinning top (lattu)",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "lattu",
+        "top",
+        "spin",
+        "tick"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "blocks",
+      "label": "Letter blocks Z-U-N-G-G-A",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "blocks",
+        "letters",
+        "abc",
+        "zungga"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "skipping_rope",
+      "label": "Skipping rope",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "rope",
+        "skipping",
+        "exercise"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "toy_drone",
+      "label": "Toy drone",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "drone",
+        "quadcopter",
+        "toy",
+        "tick"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "board_game",
+      "label": "Snakes & Ladders board game",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "board game",
+        "snakes",
+        "ladders",
+        "dice"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "yoyo",
+      "label": "Yo-yo",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "yoyo",
+        "toy"
+      ],
+      "usedIn": []
     },
     {
       "id": "pencil",
@@ -210,6 +660,152 @@
       "usedIn": [
         "pocket-money"
       ]
+    },
+    {
+      "id": "school_bag",
+      "label": "School bag",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "bag",
+        "backpack",
+        "school bag",
+        "stationery"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "notebook",
+      "label": "Notebook",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "notebook",
+        "book",
+        "homework",
+        "opens"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "geometry_box",
+      "label": "Geometry box (open)",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "geometry box",
+        "compass",
+        "protractor",
+        "scale",
+        "stationery"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "crayons",
+      "label": "Box of crayons",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "crayons",
+        "drawing",
+        "colours",
+        "art"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "globe",
+      "label": "Globe",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "globe",
+        "world",
+        "earth",
+        "geography",
+        "spins"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "report_card",
+      "label": "Report card (A+)",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "report card",
+        "marks",
+        "grades",
+        "exam",
+        "result"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "trophy",
+      "label": "Trophy (1st)",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "trophy",
+        "prize",
+        "winner",
+        "cup",
+        "award"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "medal",
+      "label": "Gold medal",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "medal",
+        "prize",
+        "winner",
+        "award",
+        "gold"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "calculator",
+      "label": "Calculator",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "calculator",
+        "maths",
+        "counting"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "eraser_sharpener",
+      "label": "Eraser + sharpener",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "eraser",
+        "sharpener",
+        "stationery",
+        "pencil"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "school_bell",
+      "label": "School bell (hand bell)",
+      "category": "school",
+      "file": "studio/assets/school.js",
+      "tags": [
+        "bell",
+        "school bell",
+        "rings"
+      ],
+      "usedIn": []
     },
     {
       "id": "bench",
@@ -294,6 +890,144 @@
       ]
     },
     {
+      "id": "grocery_shelf",
+      "label": "Grocery shelf",
+      "category": "shop",
+      "file": "studio/assets/shop.js",
+      "tags": [
+        "shop",
+        "shelf",
+        "grocery",
+        "rack",
+        "supermarket"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cash_register",
+      "label": "Cash register",
+      "category": "shop",
+      "file": "studio/assets/shop.js",
+      "tags": [
+        "shop",
+        "cash",
+        "register",
+        "billing",
+        "drawer"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "weighing_scale",
+      "label": "Weighing scale",
+      "category": "shop",
+      "file": "studio/assets/shop.js",
+      "tags": [
+        "shop",
+        "scale",
+        "weight",
+        "kg"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "shopping_basket",
+      "label": "Shopping basket",
+      "category": "shop",
+      "file": "studio/assets/shop.js",
+      "tags": [
+        "shop",
+        "basket",
+        "shopping"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "sale_sign",
+      "label": "SALE sign board",
+      "category": "shop",
+      "file": "studio/assets/shop.js",
+      "tags": [
+        "shop",
+        "sale",
+        "discount",
+        "sign",
+        "offer"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "vegetable_cart",
+      "label": "Vegetable cart (thela)",
+      "category": "shop",
+      "file": "studio/assets/shop.js",
+      "tags": [
+        "shop",
+        "vegetables",
+        "cart",
+        "thela",
+        "market",
+        "street"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "toy_shop_window",
+      "label": "Toy shop window",
+      "category": "shop",
+      "file": "studio/assets/shop.js",
+      "tags": [
+        "shop",
+        "toys",
+        "window",
+        "storefront",
+        "zungga"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "candy_jars",
+      "label": "Candy jars",
+      "category": "shop",
+      "file": "studio/assets/shop.js",
+      "tags": [
+        "shop",
+        "candy",
+        "sweets",
+        "jars",
+        "toffee"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "paper_bag",
+      "label": "Paper shopping bag",
+      "category": "shop",
+      "file": "studio/assets/shop.js",
+      "tags": [
+        "shop",
+        "bag",
+        "paper",
+        "groceries",
+        "zungga"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "qr_stand",
+      "label": "Scan & Pay QR stand",
+      "category": "shop",
+      "file": "studio/assets/shop.js",
+      "tags": [
+        "shop",
+        "qr",
+        "pay",
+        "upi",
+        "digital payment"
+      ],
+      "usedIn": []
+    },
+    {
       "id": "zungga_logo",
       "label": "Zungga logo",
       "category": "brand",
@@ -308,43 +1042,150 @@
       ]
     },
     {
-      "id": "classroom",
-      "label": "Classroom (full set)",
-      "category": "sets",
-      "file": "studio/assets/sets.js",
+      "id": "zungga_trophy",
+      "label": "Zungga trophy",
+      "category": "brand",
+      "file": "studio/assets/brand.js",
       "tags": [
-        "set",
-        "classroom",
-        "indoor"
+        "brand",
+        "trophy",
+        "prize",
+        "winner",
+        "zungga"
       ],
-      "usedIn": [
-        "pocket-money"
-      ]
+      "usedIn": []
     },
     {
-      "id": "school_ground",
-      "label": "School ground (set)",
-      "category": "sets",
-      "file": "studio/assets/sets.js",
+      "id": "zungga_flag",
+      "label": "Zungga flag",
+      "category": "brand",
+      "file": "studio/assets/brand.js",
       "tags": [
-        "set",
-        "outdoor",
-        "playground"
+        "brand",
+        "flag",
+        "pole",
+        "zungga"
       ],
-      "usedIn": [
-        "pocket-money"
-      ]
+      "usedIn": []
     },
     {
-      "id": "home_room",
-      "label": "Home living room (set)",
-      "category": "sets",
-      "file": "studio/assets/sets.js",
+      "id": "zungga_balloons",
+      "label": "Zungga balloons",
+      "category": "brand",
+      "file": "studio/assets/brand.js",
       "tags": [
-        "set",
-        "home",
+        "brand",
+        "balloons",
+        "party",
+        "birthday",
+        "zungga"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "zungga_gift",
+      "label": "Zungga gift box",
+      "category": "brand",
+      "file": "studio/assets/brand.js",
+      "tags": [
+        "brand",
+        "gift",
+        "present",
+        "surprise",
+        "confetti",
+        "zungga"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "zungga_stickers",
+      "label": "Zungga sticker sheet",
+      "category": "brand",
+      "file": "studio/assets/brand.js",
+      "tags": [
+        "brand",
+        "stickers",
+        "zungga"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "zungga_plush",
+      "label": "Zungga mascot plush",
+      "category": "brand",
+      "file": "studio/assets/brand.js",
+      "tags": [
+        "brand",
+        "plush",
+        "soft toy",
+        "mascot",
+        "zungga"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "zungga_signboard",
+      "label": "Zungga light-up sign",
+      "category": "brand",
+      "file": "studio/assets/brand.js",
+      "tags": [
+        "brand",
+        "sign",
+        "signboard",
+        "neon",
+        "zungga"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "zungga_cap",
+      "label": "Zungga cap",
+      "category": "brand",
+      "file": "studio/assets/brand.js",
+      "tags": [
+        "brand",
+        "cap",
+        "hat",
+        "zungga"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "zungga_phone_app",
+      "label": "Zungga app on phone",
+      "category": "brand",
+      "file": "studio/assets/brand.js",
+      "tags": [
+        "brand",
+        "phone",
+        "app",
+        "mobile",
+        "zungga"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "zungga_banner",
+      "label": "Zungga roll-up banner",
+      "category": "brand",
+      "file": "studio/assets/brand.js",
+      "tags": [
+        "brand",
+        "banner",
+        "standee",
+        "zungga"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "plant_pot",
+      "label": "Houseplant",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "plant",
         "indoor",
-        "parents"
+        "home"
       ],
       "usedIn": [
         "pocket-money"
@@ -358,6 +1199,7 @@
       "tags": [
         "tree",
         "nature",
+        "oak",
         "outdoor"
       ],
       "usedIn": [
@@ -373,6 +1215,7 @@
       "tags": [
         "tree",
         "nature",
+        "pine",
         "outdoor"
       ],
       "usedIn": [
@@ -388,6 +1231,7 @@
       "tags": [
         "tree",
         "nature",
+        "birch",
         "outdoor"
       ],
       "usedIn": [
@@ -403,6 +1247,7 @@
       "tags": [
         "tree",
         "nature",
+        "maple",
         "outdoor"
       ],
       "usedIn": [
@@ -456,18 +1301,5282 @@
       "source": "drive-portfolio (Play-mode island)"
     },
     {
-      "id": "plant_pot",
-      "label": "Houseplant",
+      "id": "palm_tree",
+      "label": "Coconut palm",
       "category": "nature",
       "file": "studio/assets/nature.js",
       "tags": [
-        "plant",
+        "tree",
+        "palm",
+        "coconut",
+        "beach",
+        "outdoor"
+      ],
+      "usedIn": [],
+      "words": [
+        "palm",
+        "coconut",
+        "coconuts"
+      ]
+    },
+    {
+      "id": "banyan_tree",
+      "label": "Banyan tree with swing",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "tree",
+        "banyan",
+        "swing",
+        "village",
+        "outdoor"
+      ],
+      "usedIn": [],
+      "words": [
+        "banyan",
+        "swing"
+      ],
+      "idle": "rope swing sways back and forth"
+    },
+    {
+      "id": "grass_patch",
+      "label": "Grass patch",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "grass",
+        "lawn",
+        "nature",
+        "outdoor"
+      ],
+      "usedIn": [],
+      "words": [
+        "grass",
+        "lawn"
+      ]
+    },
+    {
+      "id": "pond",
+      "label": "Lily pond",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "pond",
+        "water",
+        "lotus",
+        "nature",
+        "outdoor"
+      ],
+      "usedIn": [],
+      "words": [
+        "pond",
+        "lotus",
+        "lily"
+      ],
+      "idle": "ripples spread on the water, lily pads bob"
+    },
+    {
+      "id": "clouds",
+      "label": "Clouds",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "clouds",
+        "sky",
+        "weather",
+        "outdoor"
+      ],
+      "usedIn": [],
+      "words": [
+        "cloud",
+        "clouds",
+        "cloudy"
+      ],
+      "idle": "clouds drift slowly"
+    },
+    {
+      "id": "sun_rainbow",
+      "label": "Sun and rainbow",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "sun",
+        "rainbow",
+        "sky",
+        "backdrop"
+      ],
+      "usedIn": [],
+      "words": [
+        "rainbow",
+        "sunshine",
+        "sunny"
+      ],
+      "idle": "sun rays turn and pulse gently"
+    },
+    {
+      "id": "butterflies",
+      "label": "Butterflies",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "butterfly",
+        "insects",
+        "garden",
+        "outdoor"
+      ],
+      "usedIn": [],
+      "words": [
+        "butterfly",
+        "butterflies"
+      ],
+      "idle": "wings flap, butterflies flutter along looping paths"
+    },
+    {
+      "id": "birds_wire",
+      "label": "Birds on a wire",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "birds",
+        "wire",
+        "pole",
+        "street",
+        "outdoor"
+      ],
+      "usedIn": [],
+      "words": [
+        "birds",
+        "sparrow",
+        "sparrows",
+        "myna",
+        "pigeon"
+      ],
+      "idle": "birds turn and tilt their heads"
+    },
+    {
+      "id": "fallen_leaves",
+      "label": "Fallen leaves",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "leaves",
+        "autumn",
+        "ground",
+        "outdoor"
+      ],
+      "usedIn": [],
+      "words": [
+        "leaves",
+        "autumn",
+        "fallen"
+      ]
+    },
+    {
+      "id": "mountains",
+      "label": "Mountains backdrop",
+      "category": "nature",
+      "file": "studio/assets/nature.js",
+      "tags": [
+        "mountains",
+        "hills",
+        "backdrop",
+        "landscape"
+      ],
+      "usedIn": [],
+      "words": [
+        "mountain",
+        "mountains",
+        "hills"
+      ]
+    },
+    {
+      "id": "home_room",
+      "label": "Home living room (set)",
+      "category": "sets",
+      "file": "studio/assets/sets.js",
+      "tags": [
+        "set",
+        "home",
         "indoor",
-        "home"
+        "parents"
       ],
       "usedIn": [
         "pocket-money"
       ]
+    },
+    {
+      "id": "classroom",
+      "label": "Classroom (full set)",
+      "category": "sets",
+      "file": "studio/assets/sets.js",
+      "tags": [
+        "set",
+        "classroom",
+        "indoor"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "school_ground",
+      "label": "School ground (set)",
+      "category": "sets",
+      "file": "studio/assets/sets.js",
+      "tags": [
+        "set",
+        "outdoor",
+        "playground"
+      ],
+      "usedIn": [
+        "pocket-money"
+      ]
+    },
+    {
+      "id": "bank_counter",
+      "label": "Bank teller counter",
+      "category": "bank",
+      "file": "studio/assets/bank.js",
+      "tags": [
+        "bank",
+        "counter",
+        "teller",
+        "cashier",
+        "glass",
+        "set"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "piggy_bank",
+      "label": "Piggy bank",
+      "category": "bank",
+      "file": "studio/assets/bank.js",
+      "tags": [
+        "piggy",
+        "savings",
+        "coins",
+        "pig"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "atm_machine",
+      "label": "ATM machine",
+      "category": "bank",
+      "file": "studio/assets/bank.js",
+      "tags": [
+        "atm",
+        "cash",
+        "machine",
+        "card"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "vault_door",
+      "label": "Bank vault door",
+      "category": "bank",
+      "file": "studio/assets/bank.js",
+      "tags": [
+        "vault",
+        "safe",
+        "door",
+        "gold"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "passbook",
+      "label": "Savings passbook",
+      "category": "bank",
+      "file": "studio/assets/bank.js",
+      "tags": [
+        "passbook",
+        "savings",
+        "account",
+        "book"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "debit_card",
+      "label": "Zungga debit card",
+      "category": "bank",
+      "file": "studio/assets/bank.js",
+      "tags": [
+        "card",
+        "debit",
+        "atm"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "token_machine",
+      "label": "Queue token machine",
+      "category": "bank",
+      "file": "studio/assets/bank.js",
+      "tags": [
+        "token",
+        "queue",
+        "display",
+        "serving"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cheque_book",
+      "label": "Cheque book",
+      "category": "bank",
+      "file": "studio/assets/bank.js",
+      "tags": [
+        "cheque",
+        "check",
+        "pen",
+        "book"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "locker_box",
+      "label": "Safe-deposit locker",
+      "category": "bank",
+      "file": "studio/assets/bank.js",
+      "tags": [
+        "locker",
+        "safe",
+        "key",
+        "box"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "counting_machine",
+      "label": "Note counting machine",
+      "category": "bank",
+      "file": "studio/assets/bank.js",
+      "tags": [
+        "counting",
+        "counter",
+        "notes",
+        "machine"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "bed",
+      "label": "Single bed",
+      "category": "home",
+      "file": "studio/assets/home.js",
+      "tags": [
+        "bed",
+        "bedroom",
+        "sleep",
+        "pillow",
+        "blanket"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "study_table",
+      "label": "Study table + chair + lamp",
+      "category": "home",
+      "file": "studio/assets/home.js",
+      "tags": [
+        "study",
+        "table",
+        "desk",
+        "lamp",
+        "homework",
+        "books"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "dining_set",
+      "label": "Dining table + 4 chairs",
+      "category": "home",
+      "file": "studio/assets/home.js",
+      "tags": [
+        "dining",
+        "table",
+        "chairs",
+        "meal",
+        "steel jug"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "tv_stand",
+      "label": "TV on a cabinet",
+      "category": "home",
+      "file": "studio/assets/home.js",
+      "tags": [
+        "tv",
+        "television",
+        "cartoon",
+        "living room"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "wardrobe",
+      "label": "Steel almirah (wardrobe)",
+      "category": "home",
+      "file": "studio/assets/home.js",
+      "tags": [
+        "almirah",
+        "wardrobe",
+        "cupboard",
+        "clothes"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "ceiling_fan",
+      "label": "Ceiling fan",
+      "category": "home",
+      "file": "studio/assets/home.js",
+      "tags": [
+        "fan",
+        "ceiling",
+        "tick"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "fridge",
+      "label": "Fridge (single door)",
+      "category": "home",
+      "file": "studio/assets/home.js",
+      "tags": [
+        "fridge",
+        "refrigerator",
+        "kitchen",
+        "food"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "shoe_rack",
+      "label": "Shoe rack",
+      "category": "home",
+      "file": "studio/assets/home.js",
+      "tags": [
+        "shoes",
+        "slippers",
+        "chappals",
+        "rack"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "wall_clock",
+      "label": "Wall clock",
+      "category": "home",
+      "file": "studio/assets/home.js",
+      "tags": [
+        "clock",
+        "time",
+        "wall",
+        "tick"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "stove_cooker",
+      "label": "Gas stove + pressure cooker",
+      "category": "home",
+      "file": "studio/assets/home.js",
+      "tags": [
+        "stove",
+        "cooker",
+        "kitchen",
+        "cooking",
+        "steam",
+        "tick"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "bicycle",
+      "label": "Kid's bicycle",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "bike",
+        "cycle",
+        "vehicle",
+        "street"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "school_bus",
+      "label": "School bus",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "bus",
+        "school",
+        "vehicle",
+        "street"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "auto_rickshaw",
+      "label": "Auto rickshaw",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "auto",
+        "rickshaw",
+        "vehicle",
+        "street"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "car",
+      "label": "Hatchback car",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "car",
+        "vehicle",
+        "street"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "scooter",
+      "label": "Scooter",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "scooty",
+        "scooter",
+        "vehicle",
+        "street"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "bus_stop",
+      "label": "Bus stop",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "bus",
+        "stop",
+        "shelter",
+        "street"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "traffic_light",
+      "label": "Traffic light",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "signal",
+        "traffic",
+        "street",
+        "action"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "train",
+      "label": "Train (engine + coach)",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "train",
+        "railway",
+        "vehicle"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "aeroplane",
+      "label": "Aeroplane",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "plane",
+        "flight",
+        "sky",
+        "vehicle"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "road_crossing",
+      "label": "Road with zebra crossing",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "road",
+        "zebra",
+        "crossing",
+        "street"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "phone",
+      "label": "Smartphone on a stand",
+      "category": "tech",
+      "file": "studio/assets/tech.js",
+      "tags": [
+        "phone",
+        "mobile",
+        "smartphone",
+        "screen"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "laptop",
+      "label": "Laptop",
+      "category": "tech",
+      "file": "studio/assets/tech.js",
+      "tags": [
+        "laptop",
+        "computer",
+        "screen"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "tablet",
+      "label": "Tablet",
+      "category": "tech",
+      "file": "studio/assets/tech.js",
+      "tags": [
+        "tablet",
+        "ipad",
+        "screen",
+        "video"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "headphones",
+      "label": "Headphones",
+      "category": "tech",
+      "file": "studio/assets/tech.js",
+      "tags": [
+        "headphones",
+        "music",
+        "audio"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "smartwatch",
+      "label": "Smartwatch",
+      "category": "tech",
+      "file": "studio/assets/tech.js",
+      "tags": [
+        "watch",
+        "smartwatch",
+        "time"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "savings_app_screen",
+      "label": "Savings app on a phone",
+      "category": "tech",
+      "file": "studio/assets/tech.js",
+      "tags": [
+        "phone",
+        "app",
+        "savings",
+        "goal"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "tv_remote",
+      "label": "TV remote",
+      "category": "tech",
+      "file": "studio/assets/tech.js",
+      "tags": [
+        "remote",
+        "tv",
+        "television"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "camera",
+      "label": "Compact camera",
+      "category": "tech",
+      "file": "studio/assets/tech.js",
+      "tags": [
+        "camera",
+        "photo",
+        "picture"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "charger_powerbank",
+      "label": "Power bank + charger",
+      "category": "tech",
+      "file": "studio/assets/tech.js",
+      "tags": [
+        "charger",
+        "powerbank",
+        "cable",
+        "battery"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "robot_toy",
+      "label": "Robot toy",
+      "category": "tech",
+      "file": "studio/assets/tech.js",
+      "tags": [
+        "robot",
+        "toy",
+        "gadget"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "stall_masala_dosa",
+      "label": "Masala dosa stall",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "stall",
+        "market",
+        "street",
+        "food",
+        "dosa",
+        "masala dosa"
+      ],
+      "usedIn": [],
+      "words": [
+        "dosa",
+        "masala dosa"
+      ],
+      "action": "after dark: lantern, canopy, counter, goods and sign glow",
+      "source": "drive-portfolio/js/game.js:884-909, 2571-2596"
+    },
+    {
+      "id": "stall_chai",
+      "label": "Chai stall",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "stall",
+        "market",
+        "street",
+        "food",
+        "chai",
+        "tea stall"
+      ],
+      "usedIn": [],
+      "words": [
+        "chai",
+        "tea stall"
+      ],
+      "action": "after dark: lantern, canopy, counter, goods and sign glow",
+      "source": "drive-portfolio/js/game.js:884-909, 2571-2596"
+    },
+    {
+      "id": "stall_fresh_fruits",
+      "label": "Fresh fruits stall",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "stall",
+        "market",
+        "street",
+        "food",
+        "fruit stall",
+        "fruits"
+      ],
+      "usedIn": [],
+      "words": [
+        "fruit stall",
+        "fruits stall"
+      ],
+      "action": "after dark: lantern, canopy, counter, goods and sign glow",
+      "source": "drive-portfolio/js/game.js:884-909, 2571-2596"
+    },
+    {
+      "id": "stall_spices",
+      "label": "Spices stall",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "stall",
+        "market",
+        "street",
+        "food",
+        "spices",
+        "spice"
+      ],
+      "usedIn": [],
+      "words": [
+        "spices",
+        "spice stall"
+      ],
+      "action": "after dark: lantern, canopy, counter, goods and sign glow",
+      "source": "drive-portfolio/js/game.js:884-909, 2571-2596"
+    },
+    {
+      "id": "stall_ice_cream",
+      "label": "Ice cream stall",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "stall",
+        "market",
+        "street",
+        "food",
+        "kulfi",
+        "ice cream stall"
+      ],
+      "usedIn": [],
+      "words": [
+        "kulfi",
+        "ice cream stall"
+      ],
+      "action": "after dark: lantern, canopy, counter, goods and sign glow",
+      "source": "drive-portfolio/js/game.js:884-909, 2571-2596"
+    },
+    {
+      "id": "stall_juice",
+      "label": "Juice stall",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "stall",
+        "market",
+        "street",
+        "food",
+        "sugarcane",
+        "juice stall"
+      ],
+      "usedIn": [],
+      "words": [
+        "sugarcane",
+        "juice stall"
+      ],
+      "action": "after dark: lantern, canopy, counter, goods and sign glow",
+      "source": "drive-portfolio/js/game.js:884-909, 2571-2596"
+    },
+    {
+      "id": "stall_biryani",
+      "label": "Biryani stall",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "stall",
+        "market",
+        "street",
+        "food",
+        "biryani"
+      ],
+      "usedIn": [],
+      "words": [
+        "biryani"
+      ],
+      "action": "after dark: lantern, canopy, counter, goods and sign glow",
+      "source": "drive-portfolio/js/game.js:884-909, 2571-2596"
+    },
+    {
+      "id": "stall_books",
+      "label": "Books stall",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "stall",
+        "market",
+        "street",
+        "food",
+        "book stall",
+        "second-hand books"
+      ],
+      "usedIn": [],
+      "words": [
+        "book stall",
+        "second-hand books"
+      ],
+      "action": "after dark: lantern, canopy, counter, goods and sign glow",
+      "source": "drive-portfolio/js/game.js:884-909, 2571-2596"
+    },
+    {
+      "id": "stall_toys",
+      "label": "Toys stall",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "stall",
+        "market",
+        "street",
+        "food",
+        "toy stall"
+      ],
+      "usedIn": [],
+      "words": [
+        "toy stall"
+      ],
+      "action": "after dark: lantern, canopy, counter, goods and sign glow",
+      "source": "drive-portfolio/js/game.js:884-909, 2571-2596"
+    },
+    {
+      "id": "stall_flowers",
+      "label": "Flowers stall",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "stall",
+        "market",
+        "street",
+        "food",
+        "jasmine",
+        "garlands",
+        "flower stall"
+      ],
+      "usedIn": [],
+      "words": [
+        "jasmine",
+        "garlands",
+        "flower stall"
+      ],
+      "action": "after dark: lantern, canopy, counter, goods and sign glow",
+      "source": "drive-portfolio/js/game.js:884-909, 2571-2596"
+    },
+    {
+      "id": "stall_pani_puri",
+      "label": "Pani puri stall",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "stall",
+        "market",
+        "street",
+        "food",
+        "pani puri",
+        "golgappa"
+      ],
+      "usedIn": [],
+      "words": [
+        "pani puri",
+        "golgappa"
+      ],
+      "action": "after dark: lantern, canopy, counter, goods and sign glow",
+      "source": "drive-portfolio/js/game.js:884-909, 2571-2596"
+    },
+    {
+      "id": "stall_filter_coffee",
+      "label": "Filter coffee stall",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "stall",
+        "market",
+        "street",
+        "food",
+        "filter coffee",
+        "coffee stall"
+      ],
+      "usedIn": [],
+      "words": [
+        "filter coffee",
+        "coffee stall"
+      ],
+      "action": "after dark: lantern, canopy, counter, goods and sign glow",
+      "source": "drive-portfolio/js/game.js:884-909, 2571-2596"
+    },
+    {
+      "id": "stall_bakery",
+      "label": "Bakery stall",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "stall",
+        "market",
+        "street",
+        "food",
+        "bakery",
+        "puffs",
+        "buns"
+      ],
+      "usedIn": [],
+      "words": [
+        "bakery",
+        "puffs"
+      ],
+      "action": "after dark: lantern, canopy, counter, goods and sign glow",
+      "source": "drive-portfolio/js/game.js:884-909, 2571-2596"
+    },
+    {
+      "id": "stall_crafts",
+      "label": "Crafts stall",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "stall",
+        "market",
+        "street",
+        "food",
+        "crafts",
+        "pottery"
+      ],
+      "usedIn": [],
+      "words": [
+        "crafts",
+        "pottery"
+      ],
+      "action": "after dark: lantern, canopy, counter, goods and sign glow",
+      "source": "drive-portfolio/js/game.js:884-909, 2571-2596"
+    },
+    {
+      "id": "stall_clothes",
+      "label": "Clothes stall",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "stall",
+        "market",
+        "street",
+        "food",
+        "clothes stall",
+        "sarees",
+        "scarves"
+      ],
+      "usedIn": [],
+      "words": [
+        "clothes stall",
+        "sarees"
+      ],
+      "action": "after dark: lantern, canopy, counter, goods and sign glow",
+      "source": "drive-portfolio/js/game.js:884-909, 2571-2596"
+    },
+    {
+      "id": "island_shop_grocery",
+      "label": "Island shop: GROCERY",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "shop",
+        "market",
+        "street",
+        "building",
+        "grocery"
+      ],
+      "usedIn": [],
+      "words": [
+        "grocery",
+        "grocery shop"
+      ],
+      "action": "after dark: windows, walls, sign and two lanterns glow",
+      "source": "drive-portfolio/js/game.js:910-923, 2578-2581"
+    },
+    {
+      "id": "island_shop_cafe",
+      "label": "Island shop: CAFÉ",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "shop",
+        "market",
+        "street",
+        "building",
+        "cafe"
+      ],
+      "usedIn": [],
+      "words": [
+        "cafe",
+        "café"
+      ],
+      "action": "after dark: windows, walls, sign and two lanterns glow",
+      "source": "drive-portfolio/js/game.js:910-923, 2578-2581"
+    },
+    {
+      "id": "island_shop_pharmacy",
+      "label": "Island shop: PHARMACY",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "shop",
+        "market",
+        "street",
+        "building",
+        "pharmacy"
+      ],
+      "usedIn": [],
+      "words": [
+        "pharmacy",
+        "chemist",
+        "medical shop"
+      ],
+      "action": "after dark: windows, walls, sign and two lanterns glow",
+      "source": "drive-portfolio/js/game.js:910-923, 2578-2581"
+    },
+    {
+      "id": "island_shop_tea_house",
+      "label": "Island shop: TEA HOUSE",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "shop",
+        "market",
+        "street",
+        "building",
+        "tea house"
+      ],
+      "usedIn": [],
+      "words": [
+        "tea house"
+      ],
+      "action": "after dark: windows, walls, sign and two lanterns glow",
+      "source": "drive-portfolio/js/game.js:910-923, 2578-2581"
+    },
+    {
+      "id": "market_arch",
+      "label": "Market Street arch",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "arch",
+        "gate",
+        "market",
+        "street",
+        "sign"
+      ],
+      "usedIn": [],
+      "words": [
+        "market street",
+        "market arch"
+      ],
+      "action": "sign glows after dark",
+      "source": "drive-portfolio/js/game.js:881-883"
+    },
+    {
+      "id": "island_atm",
+      "label": "Island Bank ATM",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "atm",
+        "bank",
+        "cash",
+        "street"
+      ],
+      "usedIn": [],
+      "words": [
+        "island bank",
+        "atm"
+      ],
+      "action": "sign + screen glow brighter after dark",
+      "source": "drive-portfolio/js/game.js:924-932"
+    },
+    {
+      "id": "island_lamp_post",
+      "label": "Island lamp post",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "lamp",
+        "lamp post",
+        "light",
+        "park",
+        "street"
+      ],
+      "usedIn": [],
+      "words": [
+        "lamp post",
+        "lamppost"
+      ],
+      "action": "lamp lights (head, halo, pool of light)",
+      "source": "drive-portfolio/js/game.js:867-869, 1067-1095"
+    },
+    {
+      "id": "island_street_lamp",
+      "label": "Island street lamp (arm)",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "street lamp",
+        "streetlight",
+        "lamp",
+        "road"
+      ],
+      "usedIn": [],
+      "words": [
+        "street lamp",
+        "streetlight"
+      ],
+      "action": "lamp lights + pool of light on the road",
+      "source": "drive-portfolio/js/game.js:742-779"
+    },
+    {
+      "id": "market_string_lights",
+      "label": "String lights across the street",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "fairy lights",
+        "string lights",
+        "lights",
+        "festival",
+        "market"
+      ],
+      "usedIn": [],
+      "words": [
+        "fairy lights",
+        "string lights"
+      ],
+      "action": "bulbs + both lamp posts light up",
+      "source": "drive-portfolio/js/game.js:933-940, 1068"
+    },
+    {
+      "id": "stall_lantern",
+      "label": "Stall lantern",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "lantern",
+        "bulb",
+        "stall",
+        "light"
+      ],
+      "usedIn": [],
+      "words": [
+        "lantern"
+      ],
+      "action": "lantern glows (bulb + halo)",
+      "source": "drive-portfolio/js/game.js:2571-2596"
+    },
+    {
+      "id": "island_bench",
+      "label": "Island bench",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "bench",
+        "park bench",
+        "seat"
+      ],
+      "usedIn": [],
+      "words": [
+        "park bench"
+      ],
+      "source": "drive-portfolio/js/game.js:849-856"
+    },
+    {
+      "id": "island_park_sign",
+      "label": "ISLAND PARK sign",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "park sign",
+        "sign",
+        "park"
+      ],
+      "usedIn": [],
+      "words": [
+        "island park",
+        "park sign"
+      ],
+      "action": "sign glows after dark",
+      "source": "drive-portfolio/js/game.js:1011-1013"
+    },
+    {
+      "id": "island_zone_sign",
+      "label": "Zone billboard (ABOUT ME)",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "billboard",
+        "sign",
+        "about me"
+      ],
+      "usedIn": [],
+      "words": [
+        "billboard"
+      ],
+      "source": "drive-portfolio/js/game.js:602-622"
+    },
+    {
+      "id": "market_paving",
+      "label": "Market street paving",
+      "category": "street",
+      "file": "studio/assets/street.js",
+      "tags": [
+        "paving",
+        "pavement",
+        "street floor"
+      ],
+      "usedIn": [],
+      "words": [
+        "paving",
+        "pavement"
+      ],
+      "source": "drive-portfolio/js/game.js:878-879"
+    },
+    {
+      "id": "village_home_red",
+      "label": "Village home (red roof)",
+      "category": "village",
+      "file": "studio/assets/village.js",
+      "tags": [
+        "house",
+        "home",
+        "village",
+        "cottage",
+        "red roof"
+      ],
+      "usedIn": [],
+      "words": [
+        "red roof",
+        "red house",
+        "cottage"
+      ],
+      "action": "windows glow warm (evening)",
+      "source": "drive-portfolio/js/game.js:944-960"
+    },
+    {
+      "id": "village_home_blue",
+      "label": "Village home (blue roof)",
+      "category": "village",
+      "file": "studio/assets/village.js",
+      "tags": [
+        "house",
+        "home",
+        "village",
+        "cottage",
+        "blue roof"
+      ],
+      "usedIn": [],
+      "words": [
+        "blue roof",
+        "blue house"
+      ],
+      "action": "windows glow warm (evening)",
+      "source": "drive-portfolio/js/game.js:944-960"
+    },
+    {
+      "id": "village_home_purple",
+      "label": "Village home (purple roof)",
+      "category": "village",
+      "file": "studio/assets/village.js",
+      "tags": [
+        "house",
+        "home",
+        "village",
+        "cottage",
+        "purple roof"
+      ],
+      "usedIn": [],
+      "words": [
+        "purple roof",
+        "purple house"
+      ],
+      "action": "windows glow warm (evening)",
+      "source": "drive-portfolio/js/game.js:944-960"
+    },
+    {
+      "id": "village_home_green",
+      "label": "Village home (green roof)",
+      "category": "village",
+      "file": "studio/assets/village.js",
+      "tags": [
+        "house",
+        "home",
+        "village",
+        "cottage",
+        "green roof"
+      ],
+      "usedIn": [],
+      "words": [
+        "green roof",
+        "green house"
+      ],
+      "action": "windows glow warm (evening)",
+      "source": "drive-portfolio/js/game.js:944-960"
+    },
+    {
+      "id": "village_home_orange",
+      "label": "Village home (orange roof)",
+      "category": "village",
+      "file": "studio/assets/village.js",
+      "tags": [
+        "house",
+        "home",
+        "village",
+        "cottage",
+        "orange roof"
+      ],
+      "usedIn": [],
+      "words": [
+        "orange roof",
+        "orange house"
+      ],
+      "action": "windows glow warm (evening)",
+      "source": "drive-portfolio/js/game.js:944-960"
+    },
+    {
+      "id": "village_home_grey",
+      "label": "Village home (grey roof)",
+      "category": "village",
+      "file": "studio/assets/village.js",
+      "tags": [
+        "house",
+        "home",
+        "village",
+        "cottage",
+        "grey roof"
+      ],
+      "usedIn": [],
+      "words": [
+        "grey roof",
+        "grey house"
+      ],
+      "action": "windows glow warm (evening)",
+      "source": "drive-portfolio/js/game.js:944-960"
+    },
+    {
+      "id": "village_hut",
+      "label": "Thatched mud hut",
+      "category": "village",
+      "file": "studio/assets/village.js",
+      "tags": [
+        "hut",
+        "thatched hut",
+        "mud hut",
+        "village",
+        "cottage"
+      ],
+      "usedIn": [],
+      "words": [
+        "hut",
+        "thatched",
+        "mud hut"
+      ],
+      "action": "window glows warm (evening)",
+      "source": "drive-portfolio/js/game.js:961-969"
+    },
+    {
+      "id": "village_picket_fence",
+      "label": "Picket fence (3.6 m)",
+      "category": "village",
+      "file": "studio/assets/village.js",
+      "tags": [
+        "fence",
+        "picket fence",
+        "village"
+      ],
+      "usedIn": [],
+      "words": [
+        "picket fence",
+        "fence"
+      ],
+      "source": "drive-portfolio/js/game.js:958"
+    },
+    {
+      "id": "village_lane",
+      "label": "Village dirt lane with lamps",
+      "category": "village",
+      "file": "studio/assets/village.js",
+      "tags": [
+        "lane",
+        "village lane",
+        "dirt road",
+        "path"
+      ],
+      "usedIn": [],
+      "words": [
+        "village lane",
+        "dirt road",
+        "lane"
+      ],
+      "action": "the two lamps light up",
+      "source": "drive-portfolio/js/game.js:946-947, 1069"
+    },
+    {
+      "id": "park_gazebo",
+      "label": "Park gazebo",
+      "category": "park",
+      "file": "studio/assets/park.js",
+      "tags": [
+        "gazebo",
+        "pavilion",
+        "park"
+      ],
+      "usedIn": [],
+      "words": [
+        "gazebo",
+        "pavilion"
+      ],
+      "source": "drive-portfolio/js/game.js:980-983"
+    },
+    {
+      "id": "flower_bed_red",
+      "label": "Flower bed (red)",
+      "category": "park",
+      "file": "studio/assets/park.js",
+      "tags": [
+        "flower bed",
+        "flowers",
+        "garden",
+        "park",
+        "red flowers"
+      ],
+      "usedIn": [],
+      "words": [
+        "flower bed",
+        "red flowers"
+      ],
+      "source": "drive-portfolio/js/game.js:989-1001"
+    },
+    {
+      "id": "flower_bed_yellow",
+      "label": "Flower bed (yellow)",
+      "category": "park",
+      "file": "studio/assets/park.js",
+      "tags": [
+        "flower bed",
+        "flowers",
+        "garden",
+        "park",
+        "yellow flowers"
+      ],
+      "usedIn": [],
+      "words": [
+        "flower bed",
+        "yellow flowers"
+      ],
+      "source": "drive-portfolio/js/game.js:989-1001"
+    },
+    {
+      "id": "flower_bed_pink",
+      "label": "Flower bed (pink)",
+      "category": "park",
+      "file": "studio/assets/park.js",
+      "tags": [
+        "flower bed",
+        "flowers",
+        "garden",
+        "park",
+        "pink flowers"
+      ],
+      "usedIn": [],
+      "words": [
+        "flower bed",
+        "pink flowers"
+      ],
+      "source": "drive-portfolio/js/game.js:989-1001"
+    },
+    {
+      "id": "flower_bed_white",
+      "label": "Flower bed (white)",
+      "category": "park",
+      "file": "studio/assets/park.js",
+      "tags": [
+        "flower bed",
+        "flowers",
+        "garden",
+        "park",
+        "white flowers"
+      ],
+      "usedIn": [],
+      "words": [
+        "flower bed",
+        "white flowers"
+      ],
+      "source": "drive-portfolio/js/game.js:989-1001"
+    },
+    {
+      "id": "park_path_straight",
+      "label": "Park path (straight, 3 × 8 m)",
+      "category": "park",
+      "file": "studio/assets/park.js",
+      "tags": [
+        "park path",
+        "footpath",
+        "path"
+      ],
+      "usedIn": [],
+      "words": [
+        "footpath",
+        "park path"
+      ],
+      "source": "drive-portfolio/js/game.js:977-979"
+    },
+    {
+      "id": "park_path_curve",
+      "label": "Park path (curve of the ring)",
+      "category": "park",
+      "file": "studio/assets/park.js",
+      "tags": [
+        "park path",
+        "curved path"
+      ],
+      "usedIn": [],
+      "words": [
+        "curved path"
+      ],
+      "source": "drive-portfolio/js/game.js:978"
+    },
+    {
+      "id": "park_lawn",
+      "label": "Park lawn with cross paths",
+      "category": "park",
+      "file": "studio/assets/park.js",
+      "tags": [
+        "lawn",
+        "park lawn",
+        "grass"
+      ],
+      "usedIn": [],
+      "words": [
+        "lawn"
+      ],
+      "source": "drive-portfolio/js/game.js:976-979"
+    },
+    {
+      "id": "tent_orange",
+      "label": "Tent (orange)",
+      "category": "camping",
+      "file": "studio/assets/camping.js",
+      "tags": [
+        "tent",
+        "camping",
+        "camp",
+        "orange tent"
+      ],
+      "usedIn": [],
+      "words": [
+        "tent",
+        "orange tent"
+      ],
+      "source": "drive-portfolio/js/game.js:1034-1044"
+    },
+    {
+      "id": "tent_teal",
+      "label": "Tent (teal)",
+      "category": "camping",
+      "file": "studio/assets/camping.js",
+      "tags": [
+        "tent",
+        "camping",
+        "camp",
+        "teal tent"
+      ],
+      "usedIn": [],
+      "words": [
+        "teal tent"
+      ],
+      "source": "drive-portfolio/js/game.js:1034-1044"
+    },
+    {
+      "id": "tent_yellow",
+      "label": "Tent (yellow)",
+      "category": "camping",
+      "file": "studio/assets/camping.js",
+      "tags": [
+        "tent",
+        "camping",
+        "camp",
+        "yellow tent"
+      ],
+      "usedIn": [],
+      "words": [
+        "yellow tent"
+      ],
+      "source": "drive-portfolio/js/game.js:1034-1044"
+    },
+    {
+      "id": "tent_red",
+      "label": "Tent (red)",
+      "category": "camping",
+      "file": "studio/assets/camping.js",
+      "tags": [
+        "tent",
+        "camping",
+        "camp",
+        "red tent"
+      ],
+      "usedIn": [],
+      "words": [
+        "red tent"
+      ],
+      "source": "drive-portfolio/js/game.js:1034-1044"
+    },
+    {
+      "id": "tent_blue",
+      "label": "Tent (blue)",
+      "category": "camping",
+      "file": "studio/assets/camping.js",
+      "tags": [
+        "tent",
+        "camping",
+        "camp",
+        "blue tent"
+      ],
+      "usedIn": [],
+      "words": [
+        "blue tent"
+      ],
+      "source": "drive-portfolio/js/game.js:1034-1044"
+    },
+    {
+      "id": "campfire",
+      "label": "Campfire",
+      "category": "camping",
+      "file": "studio/assets/camping.js",
+      "tags": [
+        "campfire",
+        "bonfire",
+        "fire",
+        "camp"
+      ],
+      "usedIn": [],
+      "words": [
+        "campfire",
+        "bonfire"
+      ],
+      "action": "fire burning (flames + glow) / put out",
+      "idle": "flames flicker and turn",
+      "source": "drive-portfolio/js/game.js:1019-1028, 1851"
+    },
+    {
+      "id": "camp_log_seat",
+      "label": "Log seat",
+      "category": "camping",
+      "file": "studio/assets/camping.js",
+      "tags": [
+        "log",
+        "log seat",
+        "camp"
+      ],
+      "usedIn": [],
+      "words": [
+        "log seat"
+      ],
+      "source": "drive-portfolio/js/game.js:1029-1033"
+    },
+    {
+      "id": "sunrise_point_deck",
+      "label": "Sunrise Point deck",
+      "category": "beach",
+      "file": "studio/assets/beach.js",
+      "tags": [
+        "sunrise",
+        "viewpoint",
+        "deck",
+        "beach"
+      ],
+      "usedIn": [],
+      "words": [
+        "sunrise point",
+        "sunrise"
+      ],
+      "action": "sign + two lamps glow after dark",
+      "source": "drive-portfolio/js/game.js:1047-1062, 1074"
+    },
+    {
+      "id": "sunset_point_deck",
+      "label": "Sunset Point deck",
+      "category": "beach",
+      "file": "studio/assets/beach.js",
+      "tags": [
+        "sunset",
+        "viewpoint",
+        "deck",
+        "beach"
+      ],
+      "usedIn": [],
+      "words": [
+        "sunset point",
+        "sunset"
+      ],
+      "action": "sign + two lamps glow after dark",
+      "source": "drive-portfolio/js/game.js:1047-1062, 1074"
+    },
+    {
+      "id": "beach_umbrella",
+      "label": "Beach umbrella",
+      "category": "beach",
+      "file": "studio/assets/beach.js",
+      "tags": [
+        "beach umbrella",
+        "parasol",
+        "beach"
+      ],
+      "usedIn": [],
+      "words": [
+        "beach umbrella",
+        "parasol"
+      ],
+      "source": "drive-portfolio/js/game.js:3280-3287 (adapted)"
+    },
+    {
+      "id": "sea_shore",
+      "label": "Sea and shore (waves)",
+      "category": "beach",
+      "file": "studio/assets/beach.js",
+      "tags": [
+        "sea",
+        "shore",
+        "waves",
+        "ocean",
+        "seaside"
+      ],
+      "usedIn": [],
+      "words": [
+        "sea",
+        "seashore",
+        "waves",
+        "ocean",
+        "shore"
+      ],
+      "idle": "swells roll in and break; swash runs up the sand and slides back (6.5 s period)",
+      "source": "drive-portfolio/js/game.js:268-387"
+    },
+    {
+      "id": "sand_patch",
+      "label": "Sand patch",
+      "category": "beach",
+      "file": "studio/assets/beach.js",
+      "tags": [
+        "sand",
+        "beach",
+        "sandy"
+      ],
+      "usedIn": [],
+      "words": [
+        "sand",
+        "sandy"
+      ],
+      "source": "drive-portfolio/js/game.js:345-346"
+    },
+    {
+      "id": "island_river",
+      "label": "River stretch",
+      "category": "beach",
+      "file": "studio/assets/beach.js",
+      "tags": [
+        "river",
+        "stream",
+        "water"
+      ],
+      "usedIn": [],
+      "words": [
+        "river",
+        "stream"
+      ],
+      "idle": "water ripples and glints",
+      "source": "drive-portfolio/js/game.js:265-343, 388-391"
+    },
+    {
+      "id": "landmark_house",
+      "label": "Landmark house",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "landmark",
+        "building",
+        "landmark house",
+        "big house"
+      ],
+      "usedIn": [],
+      "words": [
+        "landmark house"
+      ],
+      "source": "drive-portfolio/js/game.js:633-655"
+    },
+    {
+      "id": "landmark_blocks",
+      "label": "Landmark stacked blocks",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "landmark",
+        "building",
+        "stacked blocks",
+        "block tower"
+      ],
+      "usedIn": [],
+      "words": [
+        "stacked blocks",
+        "block tower"
+      ],
+      "source": "drive-portfolio/js/game.js:633-655"
+    },
+    {
+      "id": "landmark_tower",
+      "label": "Landmark screen tower",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "landmark",
+        "building",
+        "screen tower",
+        "tower"
+      ],
+      "usedIn": [],
+      "words": [
+        "screen tower"
+      ],
+      "source": "drive-portfolio/js/game.js:633-655"
+    },
+    {
+      "id": "landmark_stairs",
+      "label": "Landmark staircase",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "landmark",
+        "building",
+        "staircase",
+        "steps",
+        "growth"
+      ],
+      "usedIn": [],
+      "words": [
+        "staircase",
+        "giant steps"
+      ],
+      "source": "drive-portfolio/js/game.js:633-655"
+    },
+    {
+      "id": "landmark_antenna",
+      "label": "Landmark signal tower",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "landmark",
+        "building",
+        "antenna",
+        "signal tower",
+        "radio tower"
+      ],
+      "usedIn": [],
+      "words": [
+        "antenna",
+        "signal tower",
+        "radio tower"
+      ],
+      "source": "drive-portfolio/js/game.js:633-655"
+    },
+    {
+      "id": "zone_pad",
+      "label": "Glowing zone pad",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "glowing pad",
+        "zone pad",
+        "checkpoint pad"
+      ],
+      "usedIn": [],
+      "words": [
+        "glowing pad",
+        "zone pad"
+      ],
+      "idle": "ring pulses up/down and brightens",
+      "source": "drive-portfolio/js/game.js:597-600, 4185-4189"
+    },
+    {
+      "id": "island_fountain",
+      "label": "Plaza fountain",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "fountain",
+        "plaza",
+        "water fountain"
+      ],
+      "usedIn": [],
+      "words": [
+        "fountain",
+        "plaza"
+      ],
+      "action": "underwater ring lights at night",
+      "idle": "water jets arc, pools ripple",
+      "source": "drive-portfolio/js/game.js:512-570"
+    },
+    {
+      "id": "hidden_cave",
+      "label": "Hidden cave outcrop",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "cave",
+        "hidden cave",
+        "rocks",
+        "runes"
+      ],
+      "usedIn": [],
+      "words": [
+        "cave",
+        "hidden cave",
+        "runes"
+      ],
+      "action": "runes + inner purple glow light up",
+      "idle": "runes pulse while lit",
+      "source": "drive-portfolio/js/game.js:781-828"
+    },
+    {
+      "id": "river_bridge",
+      "label": "River bridge",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "bridge",
+        "river bridge",
+        "river"
+      ],
+      "usedIn": [],
+      "words": [
+        "bridge"
+      ],
+      "idle": "river under it ripples",
+      "source": "drive-portfolio/js/game.js:446-462, 265-343"
+    },
+    {
+      "id": "jump_ramp",
+      "label": "Jump ramp",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "ramp",
+        "jump ramp",
+        "stunt ramp"
+      ],
+      "usedIn": [],
+      "words": [
+        "ramp",
+        "jump ramp"
+      ],
+      "source": "drive-portfolio/js/game.js:436-445, 464-474"
+    },
+    {
+      "id": "boost_pad",
+      "label": "Boost pad",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "boost pad",
+        "boost",
+        "speed pad"
+      ],
+      "usedIn": [],
+      "words": [
+        "boost pad",
+        "speed boost"
+      ],
+      "idle": "chevrons pulse",
+      "source": "drive-portfolio/js/game.js:476-491, 4171"
+    },
+    {
+      "id": "lap_gate_start",
+      "label": "Lap gate: START / FINISH",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "start",
+        "finish",
+        "finish line",
+        "race gate"
+      ],
+      "usedIn": [],
+      "words": [
+        "finish line",
+        "start line"
+      ],
+      "action": "gate glows (next gate to drive through)",
+      "source": "drive-portfolio/js/game.js:493-510"
+    },
+    {
+      "id": "lap_gate_checkpoint_1",
+      "label": "Lap gate: CHECKPOINT 1",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "checkpoint",
+        "race gate"
+      ],
+      "usedIn": [],
+      "words": [
+        "checkpoint 1",
+        "checkpoint"
+      ],
+      "action": "gate glows (next gate to drive through)",
+      "source": "drive-portfolio/js/game.js:493-510"
+    },
+    {
+      "id": "lap_gate_checkpoint_2",
+      "label": "Lap gate: CHECKPOINT 2",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "checkpoint",
+        "race gate"
+      ],
+      "usedIn": [],
+      "words": [
+        "checkpoint 2"
+      ],
+      "action": "gate glows (next gate to drive through)",
+      "source": "drive-portfolio/js/game.js:493-510"
+    },
+    {
+      "id": "lap_gate_checkpoint_3",
+      "label": "Lap gate: CHECKPOINT 3",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "checkpoint",
+        "race gate"
+      ],
+      "usedIn": [],
+      "words": [
+        "checkpoint 3"
+      ],
+      "action": "gate glows (next gate to drive through)",
+      "source": "drive-portfolio/js/game.js:493-510"
+    },
+    {
+      "id": "lap_gate_checkpoint_4",
+      "label": "Lap gate: CHECKPOINT 4",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "checkpoint",
+        "race gate"
+      ],
+      "usedIn": [],
+      "words": [
+        "checkpoint 4"
+      ],
+      "action": "gate glows (next gate to drive through)",
+      "source": "drive-portfolio/js/game.js:493-510"
+    },
+    {
+      "id": "lap_gate_checkpoint_5",
+      "label": "Lap gate: CHECKPOINT 5",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "checkpoint",
+        "race gate"
+      ],
+      "usedIn": [],
+      "words": [
+        "checkpoint 5"
+      ],
+      "action": "gate glows (next gate to drive through)",
+      "source": "drive-portfolio/js/game.js:493-510"
+    },
+    {
+      "id": "island_road",
+      "label": "Lap road piece with kerbs",
+      "category": "landmarks",
+      "file": "studio/assets/landmarks.js",
+      "tags": [
+        "race track",
+        "kerb",
+        "road"
+      ],
+      "usedIn": [],
+      "words": [
+        "race track",
+        "kerb"
+      ],
+      "source": "drive-portfolio/js/game.js:224-253"
+    },
+    {
+      "id": "rain_umbrella_red",
+      "label": "Rain umbrella (red)",
+      "category": "weather",
+      "file": "studio/assets/weather.js",
+      "tags": [
+        "umbrella",
+        "rain",
+        "red umbrella"
+      ],
+      "usedIn": [],
+      "words": [
+        "umbrella",
+        "red umbrella"
+      ],
+      "action": "umbrella opens (on) / folds closed (off)",
+      "source": "drive-portfolio/js/game.js:3278-3287"
+    },
+    {
+      "id": "rain_umbrella_blue",
+      "label": "Rain umbrella (blue)",
+      "category": "weather",
+      "file": "studio/assets/weather.js",
+      "tags": [
+        "umbrella",
+        "rain",
+        "blue umbrella"
+      ],
+      "usedIn": [],
+      "words": [
+        "blue umbrella"
+      ],
+      "action": "umbrella opens (on) / folds closed (off)",
+      "source": "drive-portfolio/js/game.js:3278-3287"
+    },
+    {
+      "id": "rain_umbrella_yellow",
+      "label": "Rain umbrella (yellow)",
+      "category": "weather",
+      "file": "studio/assets/weather.js",
+      "tags": [
+        "umbrella",
+        "rain",
+        "yellow umbrella"
+      ],
+      "usedIn": [],
+      "words": [
+        "yellow umbrella"
+      ],
+      "action": "umbrella opens (on) / folds closed (off)",
+      "source": "drive-portfolio/js/game.js:3278-3287"
+    },
+    {
+      "id": "rain_umbrella_green",
+      "label": "Rain umbrella (green)",
+      "category": "weather",
+      "file": "studio/assets/weather.js",
+      "tags": [
+        "umbrella",
+        "rain",
+        "green umbrella"
+      ],
+      "usedIn": [],
+      "words": [
+        "green umbrella"
+      ],
+      "action": "umbrella opens (on) / folds closed (off)",
+      "source": "drive-portfolio/js/game.js:3278-3287"
+    },
+    {
+      "id": "rain_umbrella_purple",
+      "label": "Rain umbrella (purple)",
+      "category": "weather",
+      "file": "studio/assets/weather.js",
+      "tags": [
+        "umbrella",
+        "rain",
+        "purple umbrella"
+      ],
+      "usedIn": [],
+      "words": [
+        "purple umbrella"
+      ],
+      "action": "umbrella opens (on) / folds closed (off)",
+      "source": "drive-portfolio/js/game.js:3278-3287"
+    },
+    {
+      "id": "rain_umbrella_pink",
+      "label": "Rain umbrella (pink)",
+      "category": "weather",
+      "file": "studio/assets/weather.js",
+      "tags": [
+        "umbrella",
+        "rain",
+        "pink umbrella"
+      ],
+      "usedIn": [],
+      "words": [
+        "pink umbrella"
+      ],
+      "action": "umbrella opens (on) / folds closed (off)",
+      "source": "drive-portfolio/js/game.js:3278-3287"
+    },
+    {
+      "id": "rain_umbrella_black",
+      "label": "Rain umbrella (black)",
+      "category": "weather",
+      "file": "studio/assets/weather.js",
+      "tags": [
+        "umbrella",
+        "rain",
+        "black umbrella"
+      ],
+      "usedIn": [],
+      "words": [
+        "black umbrella"
+      ],
+      "action": "umbrella opens (on) / folds closed (off)",
+      "source": "drive-portfolio/js/game.js:3278-3287"
+    },
+    {
+      "id": "islander_seller_masala_dosa",
+      "label": "Masala dosa seller (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "seller",
+        "vendor",
+        "market",
+        "masala dosa"
+      ],
+      "usedIn": [],
+      "words": [
+        "dosa seller",
+        "dosa wala"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "hands resting forward on the counter, gently swaying",
+      "source": "drive-portfolio/js/game.js:game.js 883-889, 1497-1515, 1819-1830, 1872"
+    },
+    {
+      "id": "islander_seller_chai",
+      "label": "Chai seller (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "seller",
+        "vendor",
+        "market",
+        "chai"
+      ],
+      "usedIn": [],
+      "words": [
+        "chai wala",
+        "chaiwala",
+        "tea seller"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "hands resting forward on the counter, gently swaying",
+      "source": "drive-portfolio/js/game.js:game.js 883-889, 1497-1515, 1819-1830, 1872"
+    },
+    {
+      "id": "islander_seller_fresh_fruits",
+      "label": "Fresh fruits seller (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "seller",
+        "vendor",
+        "market",
+        "fresh fruits"
+      ],
+      "usedIn": [],
+      "words": [
+        "fruit seller",
+        "fruit wala"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "hands resting forward on the counter, gently swaying",
+      "source": "drive-portfolio/js/game.js:game.js 883-889, 1497-1515, 1819-1830, 1872"
+    },
+    {
+      "id": "islander_seller_spices",
+      "label": "Spices seller (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "seller",
+        "vendor",
+        "market",
+        "spices"
+      ],
+      "usedIn": [],
+      "words": [
+        "spice seller"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "hands resting forward on the counter, gently swaying",
+      "source": "drive-portfolio/js/game.js:game.js 883-889, 1497-1515, 1819-1830, 1872"
+    },
+    {
+      "id": "islander_seller_ice_cream",
+      "label": "Ice cream seller (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "seller",
+        "vendor",
+        "market",
+        "ice cream"
+      ],
+      "usedIn": [],
+      "words": [
+        "ice cream seller",
+        "kulfi wala"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "hands resting forward on the counter, gently swaying",
+      "source": "drive-portfolio/js/game.js:game.js 883-889, 1497-1515, 1819-1830, 1872"
+    },
+    {
+      "id": "islander_seller_juice",
+      "label": "Juice seller (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "seller",
+        "vendor",
+        "market",
+        "juice"
+      ],
+      "usedIn": [],
+      "words": [
+        "juice seller",
+        "juice wala"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "hands resting forward on the counter, gently swaying",
+      "source": "drive-portfolio/js/game.js:game.js 883-889, 1497-1515, 1819-1830, 1872"
+    },
+    {
+      "id": "islander_seller_biryani",
+      "label": "Biryani seller (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "seller",
+        "vendor",
+        "market",
+        "biryani"
+      ],
+      "usedIn": [],
+      "words": [
+        "biryani seller"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "hands resting forward on the counter, gently swaying",
+      "source": "drive-portfolio/js/game.js:game.js 883-889, 1497-1515, 1819-1830, 1872"
+    },
+    {
+      "id": "islander_seller_books",
+      "label": "Books seller (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "seller",
+        "vendor",
+        "market",
+        "books"
+      ],
+      "usedIn": [],
+      "words": [
+        "book seller",
+        "bookseller"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "hands resting forward on the counter, gently swaying",
+      "source": "drive-portfolio/js/game.js:game.js 883-889, 1497-1515, 1819-1830, 1872"
+    },
+    {
+      "id": "islander_seller_toys",
+      "label": "Toys seller (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "seller",
+        "vendor",
+        "market",
+        "toys"
+      ],
+      "usedIn": [],
+      "words": [
+        "toy seller"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "hands resting forward on the counter, gently swaying",
+      "source": "drive-portfolio/js/game.js:game.js 883-889, 1497-1515, 1819-1830, 1872"
+    },
+    {
+      "id": "islander_seller_flowers",
+      "label": "Flowers seller (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "seller",
+        "vendor",
+        "market",
+        "flowers"
+      ],
+      "usedIn": [],
+      "words": [
+        "flower seller",
+        "garland seller"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "hands resting forward on the counter, gently swaying",
+      "source": "drive-portfolio/js/game.js:game.js 883-889, 1497-1515, 1819-1830, 1872"
+    },
+    {
+      "id": "islander_seller_pani_puri",
+      "label": "Pani puri seller (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "seller",
+        "vendor",
+        "market",
+        "pani puri"
+      ],
+      "usedIn": [],
+      "words": [
+        "pani puri wala",
+        "golgappa wala"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "hands resting forward on the counter, gently swaying",
+      "source": "drive-portfolio/js/game.js:game.js 883-889, 1497-1515, 1819-1830, 1872"
+    },
+    {
+      "id": "islander_seller_filter_coffee",
+      "label": "Filter coffee seller (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "seller",
+        "vendor",
+        "market",
+        "filter coffee"
+      ],
+      "usedIn": [],
+      "words": [
+        "coffee seller"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "hands resting forward on the counter, gently swaying",
+      "source": "drive-portfolio/js/game.js:game.js 883-889, 1497-1515, 1819-1830, 1872"
+    },
+    {
+      "id": "islander_seller_bakery",
+      "label": "Bakery seller (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "seller",
+        "vendor",
+        "market",
+        "bakery"
+      ],
+      "usedIn": [],
+      "words": [
+        "baker"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "hands resting forward on the counter, gently swaying",
+      "source": "drive-portfolio/js/game.js:game.js 883-889, 1497-1515, 1819-1830, 1872"
+    },
+    {
+      "id": "islander_seller_crafts",
+      "label": "Crafts seller (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "seller",
+        "vendor",
+        "market",
+        "crafts"
+      ],
+      "usedIn": [],
+      "words": [
+        "potter",
+        "craft seller"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "hands resting forward on the counter, gently swaying",
+      "source": "drive-portfolio/js/game.js:game.js 883-889, 1497-1515, 1819-1830, 1872"
+    },
+    {
+      "id": "islander_seller_clothes",
+      "label": "Clothes seller (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "seller",
+        "vendor",
+        "market",
+        "clothes"
+      ],
+      "usedIn": [],
+      "words": [
+        "cloth seller"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "hands resting forward on the counter, gently swaying",
+      "source": "drive-portfolio/js/game.js:game.js 883-889, 1497-1515, 1819-1830, 1872"
+    },
+    {
+      "id": "islander_1",
+      "label": "Islander — red shirt (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "crowd",
+        "person",
+        "man"
+      ],
+      "usedIn": [],
+      "words": [
+        "passer-by",
+        "villager"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 1497-1509, 1807-1828"
+    },
+    {
+      "id": "islander_2",
+      "label": "Islander — pink dress (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "crowd",
+        "person",
+        "woman"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 1497-1509, 1807-1828"
+    },
+    {
+      "id": "islander_3",
+      "label": "Islander — straw hat (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "crowd",
+        "person",
+        "man"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 1497-1509, 1807-1828"
+    },
+    {
+      "id": "islander_4",
+      "label": "Islander — blue shirt (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "crowd",
+        "person",
+        "man"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 1497-1509, 1807-1828"
+    },
+    {
+      "id": "islander_5",
+      "label": "Islander — elder, grey hair (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "crowd",
+        "person",
+        "man"
+      ],
+      "usedIn": [],
+      "words": [
+        "old man",
+        "grandpa"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 1497-1509, 1807-1828"
+    },
+    {
+      "id": "islander_6",
+      "label": "Islander — purple dress, black hat (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "crowd",
+        "person",
+        "woman"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 1497-1509, 1807-1828"
+    },
+    {
+      "id": "islander_7",
+      "label": "Islander — orange shirt, red hat (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "crowd",
+        "person",
+        "man"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 1497-1509, 1807-1828"
+    },
+    {
+      "id": "islander_8",
+      "label": "Islander — teal dress (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "crowd",
+        "person",
+        "woman"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 1497-1509, 1807-1828"
+    },
+    {
+      "id": "islander_9",
+      "label": "Islander — grey shirt (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "crowd",
+        "person",
+        "man"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 1497-1509, 1807-1828"
+    },
+    {
+      "id": "islander_10",
+      "label": "Islander — yellow dress (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "crowd",
+        "person",
+        "woman"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 1497-1509, 1807-1828"
+    },
+    {
+      "id": "islander_kid_1",
+      "label": "Island kid — boy, blue tee (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "kid",
+        "child",
+        "crowd"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 2728-2732"
+    },
+    {
+      "id": "islander_kid_2",
+      "label": "Island kid — girl, pink dress (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "kid",
+        "child",
+        "crowd"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 2728-2732"
+    },
+    {
+      "id": "islander_kid_3",
+      "label": "Island kid — boy, orange tee (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "kid",
+        "child",
+        "crowd"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 2728-2732"
+    },
+    {
+      "id": "islander_kid_4",
+      "label": "Island kid — girl, green dress (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "kid",
+        "child",
+        "crowd"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 2728-2732"
+    },
+    {
+      "id": "islander_walking",
+      "label": "Islander walking (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "walk",
+        "crowd"
+      ],
+      "usedIn": [],
+      "words": [
+        "walking by",
+        "passer-by"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "walk cycle (legs/arms swing)",
+      "source": "drive-portfolio/js/game.js:game.js 1510-1514, 1870"
+    },
+    {
+      "id": "islander_walking_woman",
+      "label": "Islander walking, dress (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "walk",
+        "crowd"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "walk cycle",
+      "source": "drive-portfolio/js/game.js:game.js 1510-1514, 1870"
+    },
+    {
+      "id": "islander_kid_walking",
+      "label": "Island kid walking (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "kid",
+        "walk"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "fast kid walk cycle",
+      "source": "drive-portfolio/js/game.js:game.js 2728-2732"
+    },
+    {
+      "id": "islander_sitting",
+      "label": "Islander sitting — hips at bench height 0.48 m (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "sit",
+        "bench"
+      ],
+      "usedIn": [],
+      "words": [
+        "sitting on the bench"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 1515, 1832-1834"
+    },
+    {
+      "id": "islander_sitting_woman",
+      "label": "Islander sitting, dress — hips at 0.48 m (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "sit",
+        "bench"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 1515, 1832-1834"
+    },
+    {
+      "id": "islander_lying",
+      "label": "Islander lying on the ground (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "lie",
+        "rest",
+        "sleep"
+      ],
+      "usedIn": [],
+      "words": [
+        "lying down",
+        "fainted"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 2081"
+    },
+    {
+      "id": "islander_player",
+      "label": "The game player on foot — violet shirt (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "player"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "source": "drive-portfolio/js/game.js:game.js 1685-1691"
+    },
+    {
+      "id": "islander_runner_arjun",
+      "label": "Race runner 1 · Arjun (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "runner",
+        "race",
+        "sport",
+        "arjun"
+      ],
+      "usedIn": [],
+      "words": [
+        "arjun",
+        "runner"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "running in place (race stride) with floating number tag",
+      "source": "drive-portfolio/js/game.js:game.js 2422-2433, 2494"
+    },
+    {
+      "id": "islander_runner_meera",
+      "label": "Race runner 2 · Meera (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "runner",
+        "race",
+        "sport",
+        "meera"
+      ],
+      "usedIn": [],
+      "words": [
+        "meera"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "running in place (race stride) with floating number tag",
+      "source": "drive-portfolio/js/game.js:game.js 2422-2433, 2494"
+    },
+    {
+      "id": "islander_runner_kabir",
+      "label": "Race runner 3 · Kabir (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "runner",
+        "race",
+        "sport",
+        "kabir"
+      ],
+      "usedIn": [],
+      "words": [
+        "kabir"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "running in place (race stride) with floating number tag",
+      "source": "drive-portfolio/js/game.js:game.js 2422-2433, 2494"
+    },
+    {
+      "id": "islander_runner_priya",
+      "label": "Race runner 4 · Priya (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "runner",
+        "race",
+        "sport",
+        "priya"
+      ],
+      "usedIn": [],
+      "words": [
+        "priya"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "running in place (race stride) with floating number tag",
+      "source": "drive-portfolio/js/game.js:game.js 2422-2433, 2494"
+    },
+    {
+      "id": "islander_kite_flyer_kid",
+      "label": "Island kid flying a kite (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "kid",
+        "kite",
+        "flying",
+        "park"
+      ],
+      "usedIn": [],
+      "words": [
+        "flying a kite",
+        "kite flying"
+      ],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "kite sways and dips on its string, tail ribbon flutters, arm bobs",
+      "source": "drive-portfolio/js/game.js:game.js 2744-2777"
+    },
+    {
+      "id": "islander_kite_flyer",
+      "label": "Islander flying a kite, dress (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "kite",
+        "flying",
+        "beach"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "kite sways on its string, tail flutters",
+      "source": "drive-portfolio/js/game.js:game.js 2744-2777"
+    },
+    {
+      "id": "islander_kite_flyer_kid_2",
+      "label": "Island kid flying a purple kite (island extra)",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "islander",
+        "extra",
+        "kid",
+        "kite",
+        "flying"
+      ],
+      "usedIn": [],
+      "action": "waves hello (right arm raised, waving)",
+      "idle": "kite sways on its string, tail flutters",
+      "source": "drive-portfolio/js/game.js:game.js 2744-2777"
+    },
+    {
+      "id": "race_results_holo",
+      "label": "Race results hologram board",
+      "category": "people",
+      "file": "studio/assets/people.js",
+      "tags": [
+        "race",
+        "results",
+        "hologram",
+        "leaderboard",
+        "winner"
+      ],
+      "usedIn": [],
+      "words": [
+        "race results",
+        "leaderboard",
+        "you won"
+      ],
+      "idle": "bobs and flickers",
+      "source": "drive-portfolio/js/game.js:game.js 2513-2540, 3361-3363"
+    },
+    {
+      "id": "game_dog",
+      "label": "Dog — tan, red collar",
+      "category": "animals",
+      "file": "studio/assets/animals.js",
+      "tags": [
+        "dog",
+        "pet",
+        "puppy",
+        "tail wag"
+      ],
+      "usedIn": [],
+      "words": [
+        "dog",
+        "doggy"
+      ],
+      "action": "barks (head bobs up)",
+      "idle": "tail wags fast",
+      "source": "drive-portfolio/js/game.js:game.js 2139-2167, 2245-2251"
+    },
+    {
+      "id": "game_dog_sitting",
+      "label": "Dog sitting",
+      "category": "animals",
+      "file": "studio/assets/animals.js",
+      "tags": [
+        "dog",
+        "pet",
+        "sit"
+      ],
+      "usedIn": [],
+      "words": [
+        "dog sits",
+        "sitting dog"
+      ],
+      "action": "barks",
+      "idle": "tail wags",
+      "source": "drive-portfolio/js/game.js:game.js 2139-2167, 2245-2251"
+    },
+    {
+      "id": "game_dog_walking",
+      "label": "Dog trotting",
+      "category": "animals",
+      "file": "studio/assets/animals.js",
+      "tags": [
+        "dog",
+        "pet",
+        "walk",
+        "follow"
+      ],
+      "usedIn": [],
+      "words": [
+        "dog ran",
+        "dog followed"
+      ],
+      "action": "barks",
+      "idle": "trot leg cycle + tail wag",
+      "source": "drive-portfolio/js/game.js:game.js 2139-2167, 2245-2251"
+    },
+    {
+      "id": "game_dog_with_ball",
+      "label": "Dog fetching the ball",
+      "category": "animals",
+      "file": "studio/assets/animals.js",
+      "tags": [
+        "dog",
+        "pet",
+        "fetch",
+        "ball"
+      ],
+      "usedIn": [],
+      "words": [
+        "fetch",
+        "fetched"
+      ],
+      "action": "barks",
+      "idle": "tail wags",
+      "source": "drive-portfolio/js/game.js:game.js 2139-2167, 2245-2251"
+    },
+    {
+      "id": "game_cat",
+      "label": "Cat — orange, green eyes",
+      "category": "animals",
+      "file": "studio/assets/animals.js",
+      "tags": [
+        "cat",
+        "pet",
+        "kitten"
+      ],
+      "usedIn": [],
+      "words": [
+        "cat",
+        "kitty",
+        "kitten"
+      ],
+      "action": "meows (head bobs)",
+      "idle": "tail sways slowly",
+      "source": "drive-portfolio/js/game.js:game.js 2139-2167, 2245-2251"
+    },
+    {
+      "id": "game_cat_sitting",
+      "label": "Cat sitting",
+      "category": "animals",
+      "file": "studio/assets/animals.js",
+      "tags": [
+        "cat",
+        "pet",
+        "sit",
+        "purr"
+      ],
+      "usedIn": [],
+      "words": [
+        "cat sat",
+        "purr",
+        "purred"
+      ],
+      "action": "meows",
+      "idle": "tail sways",
+      "source": "drive-portfolio/js/game.js:game.js 2139-2167, 2245-2251"
+    },
+    {
+      "id": "game_cat_walking",
+      "label": "Cat walking",
+      "category": "animals",
+      "file": "studio/assets/animals.js",
+      "tags": [
+        "cat",
+        "pet",
+        "walk",
+        "follow"
+      ],
+      "usedIn": [],
+      "words": [
+        "cat followed"
+      ],
+      "action": "meows",
+      "idle": "walk leg cycle + tail sway",
+      "source": "drive-portfolio/js/game.js:game.js 2139-2167, 2245-2251"
+    },
+    {
+      "id": "game_cat_with_ball",
+      "label": "Cat with the ball",
+      "category": "animals",
+      "file": "studio/assets/animals.js",
+      "tags": [
+        "cat",
+        "pet",
+        "fetch",
+        "ball"
+      ],
+      "usedIn": [],
+      "words": [
+        "cat played"
+      ],
+      "action": "meows",
+      "idle": "tail sways",
+      "source": "drive-portfolio/js/game.js:game.js 2139-2167, 2245-2251"
+    },
+    {
+      "id": "game_car_coupe",
+      "label": "Sports coupe (game car)",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "vehicle",
+        "car",
+        "sports car",
+        "coupe"
+      ],
+      "usedIn": [],
+      "words": [
+        "sports car",
+        "coupe"
+      ],
+      "action": "headlights/tail lights to full night brightness",
+      "source": "drive-portfolio/js/game.js:game.js 1517-1661"
+    },
+    {
+      "id": "game_car_super",
+      "label": "Hypercar with rear wing (game car)",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "vehicle",
+        "car",
+        "supercar",
+        "hypercar",
+        "race car"
+      ],
+      "usedIn": [],
+      "words": [
+        "supercar",
+        "hypercar",
+        "race car"
+      ],
+      "action": "headlights/tail lights to full night brightness",
+      "source": "drive-portfolio/js/game.js:game.js 1517-1661"
+    },
+    {
+      "id": "game_car_classic",
+      "label": "Classic 50s cruiser, chrome (game car)",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "vehicle",
+        "car",
+        "vintage",
+        "classic",
+        "old car"
+      ],
+      "usedIn": [],
+      "words": [
+        "vintage car",
+        "classic car",
+        "old car"
+      ],
+      "action": "headlights/tail lights to full night brightness",
+      "source": "drive-portfolio/js/game.js:game.js 1517-1661"
+    },
+    {
+      "id": "game_car_buggy",
+      "label": "Dune buggy with roll cage (game car)",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "vehicle",
+        "car",
+        "buggy",
+        "off-road",
+        "beach"
+      ],
+      "usedIn": [],
+      "words": [
+        "buggy",
+        "dune buggy"
+      ],
+      "action": "headlights/tail lights to full night brightness",
+      "source": "drive-portfolio/js/game.js:game.js 1517-1661"
+    },
+    {
+      "id": "game_bike",
+      "label": "Sport motorbike with helmeted rider (game)",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "vehicle",
+        "motorbike",
+        "bike",
+        "rider",
+        "helmet"
+      ],
+      "usedIn": [],
+      "words": [
+        "motorbike",
+        "motorcycle",
+        "biker"
+      ],
+      "action": "headlights to full brightness",
+      "source": "drive-portfolio/js/game.js:game.js 1662-1683"
+    },
+    {
+      "id": "game_bike_parked",
+      "label": "Sport motorbike, no rider (game)",
+      "category": "transport",
+      "file": "studio/assets/transport.js",
+      "tags": [
+        "vehicle",
+        "motorbike",
+        "bike"
+      ],
+      "usedIn": [],
+      "words": [
+        "parked bike"
+      ],
+      "action": "headlights to full brightness",
+      "source": "drive-portfolio/js/game.js:game.js 1662-1677"
+    },
+    {
+      "id": "game_kite",
+      "label": "Four-colour diamond kite with bow tail (game)",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "kite",
+        "patang",
+        "toy",
+        "wind"
+      ],
+      "usedIn": [],
+      "words": [
+        "diamond kite"
+      ],
+      "idle": "kite rocks, ribbon tail with bows flutters",
+      "source": "drive-portfolio/js/game.js:game.js 2299-2319"
+    },
+    {
+      "id": "game_top",
+      "label": "Spinning top — red and yellow (game)",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "top",
+        "lattu",
+        "spinning",
+        "toy"
+      ],
+      "usedIn": [],
+      "words": [
+        "top",
+        "lattu",
+        "spinning top"
+      ],
+      "action": "topples over and stops",
+      "idle": "spins fast with a slight wobble",
+      "source": "drive-portfolio/js/game.js:game.js 2386-2403"
+    },
+    {
+      "id": "game_frisbee",
+      "label": "Pink frisbee (game)",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "frisbee",
+        "disc",
+        "fetch",
+        "toy"
+      ],
+      "usedIn": [],
+      "words": [
+        "frisbee"
+      ],
+      "source": "drive-portfolio/js/game.js:game.js 3187"
+    },
+    {
+      "id": "game_ball",
+      "label": "Lime play ball (game)",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "ball",
+        "fetch",
+        "toy"
+      ],
+      "usedIn": [],
+      "words": [
+        "tennis ball",
+        "play ball"
+      ],
+      "source": "drive-portfolio/js/game.js:game.js 3188"
+    },
+    {
+      "id": "collect_star",
+      "label": "Collectible golden star gem (game pickup)",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "star",
+        "collectible",
+        "gem",
+        "pickup",
+        "bonus",
+        "game"
+      ],
+      "usedIn": [],
+      "words": [
+        "star",
+        "collect",
+        "bonus"
+      ],
+      "idle": "spins and bobs",
+      "source": "drive-portfolio/js/game.js:game.js 1467-1481, 4119-4120"
+    },
+    {
+      "id": "game_cone",
+      "label": "Orange traffic cone (game knock-over prop)",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "cone",
+        "traffic cone",
+        "obstacle"
+      ],
+      "usedIn": [],
+      "words": [
+        "cone",
+        "traffic cone"
+      ],
+      "source": "drive-portfolio/js/game.js:game.js 1453-1457"
+    },
+    {
+      "id": "game_crate",
+      "label": "Wooden crate (game knock-over prop)",
+      "category": "toys",
+      "file": "studio/assets/toys.js",
+      "tags": [
+        "crate",
+        "box",
+        "obstacle"
+      ],
+      "usedIn": [],
+      "words": [
+        "crate",
+        "wooden box"
+      ],
+      "source": "drive-portfolio/js/game.js:game.js 1453-1458"
+    },
+    {
+      "id": "floodlight_tower",
+      "label": "Floodlight tower",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "floodlight",
+        "light",
+        "stadium",
+        "sports",
+        "night",
+        "outdoor"
+      ],
+      "usedIn": [],
+      "words": [
+        "floodlight",
+        "floodlights",
+        "stadium lights"
+      ],
+      "action": "lamp head lights up and casts a warm light pool",
+      "source": "drive-portfolio/js/game.js:2780-2790"
+    },
+    {
+      "id": "football_goal",
+      "label": "Football goal",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "football",
+        "goal",
+        "net",
+        "sports",
+        "outdoor"
+      ],
+      "usedIn": [],
+      "words": [
+        "goal post",
+        "goalpost",
+        "goal posts",
+        "goalkeeper"
+      ],
+      "source": "drive-portfolio/js/game.js:2809-2815"
+    },
+    {
+      "id": "football_pitch",
+      "label": "Football pitch markings",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "football",
+        "pitch",
+        "field",
+        "ground",
+        "sports"
+      ],
+      "usedIn": [],
+      "words": [
+        "football pitch",
+        "football field",
+        "pitch markings"
+      ],
+      "source": "drive-portfolio/js/game.js:2802-2808"
+    },
+    {
+      "id": "pitch_football",
+      "label": "Football (match ball)",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "football",
+        "ball",
+        "sports"
+      ],
+      "usedIn": [],
+      "words": [
+        "soccer ball",
+        "match ball",
+        "kicked the ball"
+      ],
+      "source": "drive-portfolio/js/game.js:2801,2817"
+    },
+    {
+      "id": "football_ground",
+      "label": "Football ground (pitch, goals, lights)",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "football",
+        "pitch",
+        "goal",
+        "stadium",
+        "sports",
+        "set"
+      ],
+      "usedIn": [],
+      "words": [
+        "football ground",
+        "football match",
+        "football stadium"
+      ],
+      "action": "all four floodlights switch on",
+      "source": "drive-portfolio/js/game.js:2800-2818"
+    },
+    {
+      "id": "basketball_court",
+      "label": "Basketball court",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "basketball",
+        "court",
+        "sports"
+      ],
+      "usedIn": [],
+      "words": [
+        "basketball court"
+      ],
+      "source": "drive-portfolio/js/game.js:2865-2871"
+    },
+    {
+      "id": "basketball_hoop",
+      "label": "Basketball hoop",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "basketball",
+        "hoop",
+        "basket",
+        "sports",
+        "outdoor"
+      ],
+      "usedIn": [],
+      "words": [
+        "hoop",
+        "basket",
+        "backboard",
+        "slam dunk"
+      ],
+      "source": "drive-portfolio/js/game.js:2872-2880"
+    },
+    {
+      "id": "basketball",
+      "label": "Basketball",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "basketball",
+        "ball",
+        "sports"
+      ],
+      "usedIn": [],
+      "words": [
+        "basketball",
+        "dribble",
+        "dribbling"
+      ],
+      "source": "drive-portfolio/js/game.js:2882-2885"
+    },
+    {
+      "id": "basketball_ground",
+      "label": "Basketball court with hoops",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "basketball",
+        "court",
+        "hoop",
+        "sports",
+        "set"
+      ],
+      "usedIn": [],
+      "words": [
+        "basketball game",
+        "basketball match"
+      ],
+      "action": "both floodlights switch on",
+      "source": "drive-portfolio/js/game.js:2864-2885"
+    },
+    {
+      "id": "cricket_stumps",
+      "label": "Cricket stumps",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "cricket",
+        "stumps",
+        "wicket",
+        "sports"
+      ],
+      "usedIn": [],
+      "words": [
+        "stumps",
+        "wicket",
+        "wickets",
+        "bails",
+        "bowled"
+      ],
+      "action": "BOWLED: stumps knocked flying",
+      "source": "drive-portfolio/js/game.js:2955,2994"
+    },
+    {
+      "id": "cricket_pitch",
+      "label": "Cricket pitch",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "cricket",
+        "pitch",
+        "wicket",
+        "sports"
+      ],
+      "usedIn": [],
+      "words": [
+        "cricket pitch",
+        "crease",
+        "batting crease"
+      ],
+      "action": "batting-end stumps knocked flying (bowled)",
+      "source": "drive-portfolio/js/game.js:2954-2955"
+    },
+    {
+      "id": "cricket_ground",
+      "label": "Cricket ground",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "cricket",
+        "ground",
+        "stadium",
+        "sports",
+        "set"
+      ],
+      "usedIn": [],
+      "words": [
+        "cricket ground",
+        "cricket match",
+        "boundary rope"
+      ],
+      "action": "all four floodlights switch on",
+      "source": "drive-portfolio/js/game.js:2951-2956"
+    },
+    {
+      "id": "badminton_net",
+      "label": "Badminton net",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "badminton",
+        "net",
+        "sports",
+        "beach"
+      ],
+      "usedIn": [],
+      "words": [
+        "badminton net"
+      ],
+      "source": "drive-portfolio/js/game.js:3039-3041"
+    },
+    {
+      "id": "badminton_court",
+      "label": "Beach badminton court",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "badminton",
+        "court",
+        "beach",
+        "sand",
+        "sports",
+        "set"
+      ],
+      "usedIn": [],
+      "words": [
+        "badminton court",
+        "beach badminton",
+        "badminton"
+      ],
+      "source": "drive-portfolio/js/game.js:3034-3042"
+    },
+    {
+      "id": "badminton_racket",
+      "label": "Badminton racket",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "badminton",
+        "racket",
+        "sports"
+      ],
+      "usedIn": [],
+      "words": [
+        "racket",
+        "racquet"
+      ],
+      "source": "drive-portfolio/js/game.js:3048-3049"
+    },
+    {
+      "id": "shuttlecock",
+      "label": "Shuttlecock",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "badminton",
+        "shuttle",
+        "shuttlecock",
+        "sports"
+      ],
+      "usedIn": [],
+      "words": [
+        "shuttlecock",
+        "shuttle",
+        "birdie"
+      ],
+      "source": "drive-portfolio/js/game.js:3043"
+    },
+    {
+      "id": "gym_treadmill",
+      "label": "Treadmill",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "gym",
+        "treadmill",
+        "exercise",
+        "running",
+        "fitness"
+      ],
+      "usedIn": [],
+      "words": [
+        "treadmill",
+        "jogging machine"
+      ],
+      "action": "treadmill runs: belt moves, console lights",
+      "idle": "belt scrolls while running",
+      "source": "drive-portfolio/js/game.js:3109"
+    },
+    {
+      "id": "gym_treadmill_compact",
+      "label": "Treadmill (no handrails)",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "gym",
+        "treadmill",
+        "exercise",
+        "fitness"
+      ],
+      "usedIn": [],
+      "words": [
+        "treadmill"
+      ],
+      "action": "treadmill runs: belt moves, console lights",
+      "idle": "belt scrolls while running",
+      "source": "drive-portfolio/js/game.js:3115"
+    },
+    {
+      "id": "gym_bench_press",
+      "label": "Bench press",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "gym",
+        "bench press",
+        "weights",
+        "barbell",
+        "fitness"
+      ],
+      "usedIn": [],
+      "words": [
+        "bench press",
+        "barbell",
+        "weightlifting"
+      ],
+      "source": "drive-portfolio/js/game.js:3110"
+    },
+    {
+      "id": "gym_pullup_bar",
+      "label": "Pull-up bar",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "gym",
+        "pull-up",
+        "bar",
+        "fitness",
+        "outdoor"
+      ],
+      "usedIn": [],
+      "words": [
+        "pull-up",
+        "pull-ups",
+        "pullup bar",
+        "chin-up"
+      ],
+      "source": "drive-portfolio/js/game.js:3111"
+    },
+    {
+      "id": "gym_dumbbell_rack",
+      "label": "Dumbbell rack",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "gym",
+        "dumbbells",
+        "weights",
+        "rack",
+        "fitness"
+      ],
+      "usedIn": [],
+      "words": [
+        "dumbbell rack",
+        "dumbbells",
+        "weights rack"
+      ],
+      "source": "drive-portfolio/js/game.js:3112"
+    },
+    {
+      "id": "gym_dumbbell",
+      "label": "Dumbbell",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "gym",
+        "dumbbell",
+        "weights",
+        "fitness"
+      ],
+      "usedIn": [],
+      "words": [
+        "dumbbell",
+        "bicep curl",
+        "curls"
+      ],
+      "source": "drive-portfolio/js/game.js:3122"
+    },
+    {
+      "id": "outdoor_gym",
+      "label": "Outdoor gym",
+      "category": "sports",
+      "file": "studio/assets/sports.js",
+      "tags": [
+        "gym",
+        "exercise",
+        "fitness",
+        "outdoor",
+        "set"
+      ],
+      "usedIn": [],
+      "words": [
+        "gym",
+        "workout",
+        "exercise",
+        "outdoor gym"
+      ],
+      "action": "both treadmills start running",
+      "idle": "treadmill belts scroll while running",
+      "source": "drive-portfolio/js/game.js:3104-3115"
+    },
+    {
+      "id": "sky_dome",
+      "label": "Sky backdrop (day / night)",
+      "category": "sky",
+      "file": "studio/assets/sky.js",
+      "tags": [
+        "sky",
+        "backdrop",
+        "day",
+        "night",
+        "milky way"
+      ],
+      "usedIn": [],
+      "words": [
+        "sky backdrop",
+        "night sky",
+        "milky way",
+        "starry sky"
+      ],
+      "action": "switches from day sky to night sky with the Milky Way",
+      "source": "drive-portfolio/js/game.js:45-81"
+    },
+    {
+      "id": "sky_sun",
+      "label": "Sun (glowing)",
+      "category": "sky",
+      "file": "studio/assets/sky.js",
+      "tags": [
+        "sun",
+        "sky",
+        "day",
+        "sunny"
+      ],
+      "usedIn": [],
+      "words": [
+        "sun",
+        "sunshine",
+        "sunrise",
+        "sunset"
+      ],
+      "idle": "sun glow gently pulses",
+      "source": "drive-portfolio/js/game.js:70,157"
+    },
+    {
+      "id": "sky_moon",
+      "label": "Moon",
+      "category": "sky",
+      "file": "studio/assets/sky.js",
+      "tags": [
+        "moon",
+        "sky",
+        "night"
+      ],
+      "usedIn": [],
+      "words": [
+        "moon",
+        "moonlight",
+        "full moon",
+        "crater"
+      ],
+      "idle": "moon slowly turns",
+      "source": "drive-portfolio/js/game.js:115-121"
+    },
+    {
+      "id": "star_field",
+      "label": "Twinkling stars",
+      "category": "sky",
+      "file": "studio/assets/sky.js",
+      "tags": [
+        "stars",
+        "sky",
+        "night"
+      ],
+      "usedIn": [],
+      "words": [
+        "stars",
+        "twinkle",
+        "twinkling"
+      ],
+      "idle": "stars twinkle",
+      "source": "drive-portfolio/js/game.js:96-114"
+    },
+    {
+      "id": "planet_mars",
+      "label": "Mars (red planet)",
+      "category": "sky",
+      "file": "studio/assets/sky.js",
+      "tags": [
+        "planet",
+        "mars",
+        "space",
+        "sky"
+      ],
+      "usedIn": [],
+      "words": [
+        "mars",
+        "red planet"
+      ],
+      "idle": "planet spins",
+      "source": "drive-portfolio/js/game.js:123"
+    },
+    {
+      "id": "planet_jupiter",
+      "label": "Jupiter (striped planet)",
+      "category": "sky",
+      "file": "studio/assets/sky.js",
+      "tags": [
+        "planet",
+        "jupiter",
+        "space",
+        "sky"
+      ],
+      "usedIn": [],
+      "words": [
+        "jupiter"
+      ],
+      "idle": "planet spins",
+      "source": "drive-portfolio/js/game.js:122,124"
+    },
+    {
+      "id": "planet_saturn",
+      "label": "Saturn (ringed planet)",
+      "category": "sky",
+      "file": "studio/assets/sky.js",
+      "tags": [
+        "planet",
+        "saturn",
+        "rings",
+        "space",
+        "sky"
+      ],
+      "usedIn": [],
+      "words": [
+        "saturn",
+        "planet rings"
+      ],
+      "idle": "planet spins",
+      "source": "drive-portfolio/js/game.js:125-134"
+    },
+    {
+      "id": "black_hole",
+      "label": "Black hole",
+      "category": "sky",
+      "file": "studio/assets/sky.js",
+      "tags": [
+        "black hole",
+        "space",
+        "sky",
+        "galaxy"
+      ],
+      "usedIn": [],
+      "words": [
+        "black hole"
+      ],
+      "idle": "accretion disk swirls",
+      "source": "drive-portfolio/js/game.js:135-154"
+    },
+    {
+      "id": "snowfall",
+      "label": "Falling snow",
+      "category": "sky",
+      "file": "studio/assets/sky.js",
+      "tags": [
+        "snow",
+        "snowflakes",
+        "winter",
+        "weather"
+      ],
+      "usedIn": [],
+      "words": [
+        "snowing",
+        "snowfall",
+        "snowflakes",
+        "snowflake"
+      ],
+      "idle": "snowflakes drift down",
+      "source": "drive-portfolio/js/game.js:3606-3637"
+    },
+    {
+      "id": "rainfall",
+      "label": "Falling rain",
+      "category": "sky",
+      "file": "studio/assets/sky.js",
+      "tags": [
+        "rain",
+        "raindrops",
+        "weather",
+        "monsoon"
+      ],
+      "usedIn": [],
+      "words": [
+        "raining",
+        "rainfall",
+        "raindrops",
+        "downpour",
+        "monsoon"
+      ],
+      "idle": "rain streaks fall",
+      "source": "drive-portfolio/js/game.js:3606-3637"
+    },
+    {
+      "id": "firefly_swarm",
+      "label": "Fireflies",
+      "category": "sky",
+      "file": "studio/assets/sky.js",
+      "tags": [
+        "fireflies",
+        "night",
+        "woods",
+        "glow"
+      ],
+      "usedIn": [],
+      "words": [
+        "firefly",
+        "fireflies"
+      ],
+      "action": "fireflies on/off (shown by default)",
+      "idle": "fireflies wander and blink",
+      "source": "drive-portfolio/js/game.js:1153-1185"
+    },
+    {
+      "id": "cave_spores",
+      "label": "Glowing cave spores",
+      "category": "sky",
+      "file": "studio/assets/sky.js",
+      "tags": [
+        "spores",
+        "cave",
+        "glow",
+        "magic"
+      ],
+      "usedIn": [],
+      "words": [
+        "spores",
+        "glowing dust",
+        "sparkles in the cave"
+      ],
+      "idle": "spores float and blink",
+      "source": "drive-portfolio/js/game.js:1427-1432"
+    },
+    {
+      "id": "spring_blossom_tree",
+      "label": "Spring blossom tree (pink)",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "tree",
+        "spring",
+        "blossom",
+        "pink",
+        "season"
+      ],
+      "usedIn": [],
+      "words": [
+        "blossom",
+        "blossoms",
+        "cherry blossom",
+        "pink tree"
+      ],
+      "source": "drive-portfolio/js/game.js:3555-3559"
+    },
+    {
+      "id": "spring_oak",
+      "label": "Spring oak (fresh green, a pink bough)",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "tree",
+        "spring",
+        "oak",
+        "season"
+      ],
+      "usedIn": [],
+      "words": [
+        "spring tree",
+        "spring oak"
+      ],
+      "source": "drive-portfolio/js/game.js:3557-3559"
+    },
+    {
+      "id": "spring_birch",
+      "label": "Spring birch",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "tree",
+        "spring",
+        "birch",
+        "season"
+      ],
+      "usedIn": [],
+      "words": [
+        "spring birch"
+      ],
+      "source": "drive-portfolio/js/game.js:3559"
+    },
+    {
+      "id": "spring_pine",
+      "label": "Spring pine",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "tree",
+        "spring",
+        "pine",
+        "season"
+      ],
+      "usedIn": [],
+      "words": [
+        "spring pine"
+      ],
+      "source": "drive-portfolio/js/game.js:3559"
+    },
+    {
+      "id": "spring_bush",
+      "label": "Spring bush (with blossom)",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "bush",
+        "spring",
+        "season"
+      ],
+      "usedIn": [],
+      "words": [
+        "flowering bush",
+        "blossom bush"
+      ],
+      "source": "drive-portfolio/js/game.js:3558"
+    },
+    {
+      "id": "summer_maple",
+      "label": "Summer maple (green)",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "tree",
+        "summer",
+        "maple",
+        "season"
+      ],
+      "usedIn": [],
+      "words": [
+        "summer tree",
+        "green maple"
+      ],
+      "source": "drive-portfolio/js/game.js:3556"
+    },
+    {
+      "id": "autumn_oak",
+      "label": "Autumn oak (orange & gold)",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "tree",
+        "autumn",
+        "oak",
+        "season",
+        "fall"
+      ],
+      "usedIn": [],
+      "words": [
+        "autumn tree",
+        "fall colours",
+        "orange leaves"
+      ],
+      "source": "drive-portfolio/js/game.js:3565"
+    },
+    {
+      "id": "autumn_birch",
+      "label": "Autumn birch (yellow)",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "tree",
+        "autumn",
+        "birch",
+        "season",
+        "fall"
+      ],
+      "usedIn": [],
+      "words": [
+        "yellow tree",
+        "golden leaves"
+      ],
+      "source": "drive-portfolio/js/game.js:3564"
+    },
+    {
+      "id": "autumn_pine",
+      "label": "Autumn pine",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "tree",
+        "autumn",
+        "pine",
+        "season"
+      ],
+      "usedIn": [],
+      "words": [
+        "autumn pine"
+      ],
+      "source": "drive-portfolio/js/game.js:3562"
+    },
+    {
+      "id": "autumn_bush",
+      "label": "Autumn bush (brown)",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "bush",
+        "autumn",
+        "season",
+        "fall"
+      ],
+      "usedIn": [],
+      "words": [
+        "autumn bush",
+        "brown bush"
+      ],
+      "source": "drive-portfolio/js/game.js:3566"
+    },
+    {
+      "id": "winter_oak",
+      "label": "Winter oak (frosted)",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "tree",
+        "winter",
+        "snow",
+        "oak",
+        "season"
+      ],
+      "usedIn": [],
+      "words": [
+        "frosty tree",
+        "winter tree",
+        "frost"
+      ],
+      "source": "drive-portfolio/js/game.js:3568"
+    },
+    {
+      "id": "winter_pine",
+      "label": "Snowy pine",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "tree",
+        "winter",
+        "snow",
+        "pine",
+        "christmas",
+        "season"
+      ],
+      "usedIn": [],
+      "words": [
+        "snowy pine",
+        "snow-covered tree",
+        "snowy tree"
+      ],
+      "source": "drive-portfolio/js/game.js:3568"
+    },
+    {
+      "id": "winter_birch",
+      "label": "Winter birch (frosted)",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "tree",
+        "winter",
+        "snow",
+        "birch",
+        "season"
+      ],
+      "usedIn": [],
+      "words": [
+        "winter birch"
+      ],
+      "source": "drive-portfolio/js/game.js:3568"
+    },
+    {
+      "id": "winter_maple",
+      "label": "Winter maple (frosted)",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "tree",
+        "winter",
+        "snow",
+        "maple",
+        "season"
+      ],
+      "usedIn": [],
+      "words": [
+        "winter maple"
+      ],
+      "source": "drive-portfolio/js/game.js:3568"
+    },
+    {
+      "id": "winter_bush",
+      "label": "Snowy bush",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "bush",
+        "winter",
+        "snow",
+        "season"
+      ],
+      "usedIn": [],
+      "words": [
+        "snowy bush"
+      ],
+      "source": "drive-portfolio/js/game.js:3568"
+    },
+    {
+      "id": "season_cycle_tree",
+      "label": "Four-seasons oak (changes colour)",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "tree",
+        "seasons",
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "usedIn": [],
+      "words": [
+        "seasons",
+        "four seasons",
+        "seasons change",
+        "all year"
+      ],
+      "action": "holds the tree in winter (frosted, snowy ground)",
+      "idle": "crown colours cycle spring → summer → autumn → winter",
+      "source": "drive-portfolio/js/game.js:3552-3585,3693"
+    },
+    {
+      "id": "snow_patch",
+      "label": "Snowy ground patch",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "snow",
+        "winter",
+        "ground"
+      ],
+      "usedIn": [],
+      "words": [
+        "snow",
+        "snowy ground",
+        "snowdrift",
+        "snow pile"
+      ],
+      "source": "drive-portfolio/js/game.js:200-206,3698"
+    },
+    {
+      "id": "frozen_ice",
+      "label": "Frozen ice sheet",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "ice",
+        "frozen",
+        "winter",
+        "river"
+      ],
+      "usedIn": [],
+      "words": [
+        "ice",
+        "frozen",
+        "frozen river",
+        "frozen lake"
+      ],
+      "source": "drive-portfolio/js/game.js:3545"
+    },
+    {
+      "id": "falling_petals",
+      "label": "Falling blossom petals",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "petals",
+        "blossom",
+        "spring",
+        "falling"
+      ],
+      "usedIn": [],
+      "words": [
+        "petals",
+        "falling petals"
+      ],
+      "idle": "petals tumble down",
+      "source": "drive-portfolio/js/game.js:3638-3670"
+    },
+    {
+      "id": "falling_leaves",
+      "label": "Falling autumn leaves",
+      "category": "seasons",
+      "file": "studio/assets/seasons.js",
+      "tags": [
+        "leaves",
+        "autumn",
+        "falling",
+        "fall"
+      ],
+      "usedIn": [],
+      "words": [
+        "falling leaves",
+        "leaves falling",
+        "leaves are falling"
+      ],
+      "idle": "leaves tumble down",
+      "source": "drive-portfolio/js/game.js:3638-3670"
+    },
+    {
+      "id": "cave_entrance",
+      "label": "Cave entrance (glowing runes)",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "cave",
+        "entrance",
+        "rocks",
+        "runes",
+        "secret",
+        "adventure"
+      ],
+      "usedIn": [],
+      "words": [
+        "cave",
+        "cave entrance",
+        "cave mouth",
+        "runes"
+      ],
+      "action": "night: runes glow and pulse, purple light inside",
+      "idle": "runes pulse when lit",
+      "source": "drive-portfolio/js/game.js:782-828"
+    },
+    {
+      "id": "cave_crystal",
+      "label": "Glowing crystal (purple)",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "crystal",
+        "gem",
+        "cave",
+        "glow",
+        "purple"
+      ],
+      "usedIn": [],
+      "words": [
+        "crystal",
+        "purple crystal"
+      ],
+      "idle": "glow halo pulses",
+      "source": "drive-portfolio/js/game.js:1252-1259"
+    },
+    {
+      "id": "cave_crystal_cyan",
+      "label": "Glowing crystal (cyan)",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "crystal",
+        "gem",
+        "cave",
+        "glow",
+        "blue"
+      ],
+      "usedIn": [],
+      "words": [
+        "blue crystal",
+        "cyan crystal"
+      ],
+      "idle": "glow halo pulses",
+      "source": "drive-portfolio/js/game.js:1252-1259"
+    },
+    {
+      "id": "cave_crystal_pink",
+      "label": "Glowing crystal (pink)",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "crystal",
+        "gem",
+        "cave",
+        "glow",
+        "pink"
+      ],
+      "usedIn": [],
+      "words": [
+        "pink crystal"
+      ],
+      "idle": "glow halo pulses",
+      "source": "drive-portfolio/js/game.js:1252-1259"
+    },
+    {
+      "id": "cave_crystal_indigo",
+      "label": "Glowing crystal (indigo)",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "crystal",
+        "gem",
+        "cave",
+        "glow"
+      ],
+      "usedIn": [],
+      "words": [
+        "indigo crystal"
+      ],
+      "idle": "glow halo pulses",
+      "source": "drive-portfolio/js/game.js:1252-1259"
+    },
+    {
+      "id": "crystal_cluster",
+      "label": "Crystal cluster",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "crystals",
+        "gems",
+        "cave",
+        "glow",
+        "treasure"
+      ],
+      "usedIn": [],
+      "words": [
+        "crystals",
+        "gems",
+        "crystal cave"
+      ],
+      "idle": "glow halo pulses",
+      "source": "drive-portfolio/js/game.js:1245-1259"
+    },
+    {
+      "id": "glow_mushroom",
+      "label": "Glowing mushroom",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "mushroom",
+        "cave",
+        "glow",
+        "magic"
+      ],
+      "usedIn": [],
+      "words": [
+        "mushroom",
+        "glowing mushroom"
+      ],
+      "source": "drive-portfolio/js/game.js:1260-1273"
+    },
+    {
+      "id": "glow_mushroom_patch",
+      "label": "Glowing mushroom patch",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "mushrooms",
+        "cave",
+        "glow",
+        "magic"
+      ],
+      "usedIn": [],
+      "words": [
+        "mushrooms",
+        "glowing mushrooms"
+      ],
+      "source": "drive-portfolio/js/game.js:1260-1273"
+    },
+    {
+      "id": "stalagmites",
+      "label": "Stalagmites",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "stalagmite",
+        "cave",
+        "rock"
+      ],
+      "usedIn": [],
+      "words": [
+        "stalagmite",
+        "stalagmites",
+        "rock spikes"
+      ],
+      "source": "drive-portfolio/js/game.js:1282-1287"
+    },
+    {
+      "id": "stalactites",
+      "label": "Stalactites (hanging rock)",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "stalactite",
+        "cave",
+        "rock",
+        "ceiling"
+      ],
+      "usedIn": [],
+      "words": [
+        "stalactite",
+        "stalactites",
+        "icicle rocks"
+      ],
+      "source": "drive-portfolio/js/game.js:1275-1281"
+    },
+    {
+      "id": "cave_tunnel",
+      "label": "Cave tunnel section",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "cave",
+        "tunnel",
+        "underground"
+      ],
+      "usedIn": [],
+      "words": [
+        "tunnel",
+        "underground",
+        "cave tunnel"
+      ],
+      "source": "drive-portfolio/js/game.js:1221-1232"
+    },
+    {
+      "id": "cave_vein_floor",
+      "label": "Glowing-vein cave floor",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "cave",
+        "floor",
+        "glow",
+        "underground"
+      ],
+      "usedIn": [],
+      "words": [
+        "glowing floor",
+        "cave floor",
+        "glowing veins"
+      ],
+      "source": "drive-portfolio/js/game.js:1206-1219,1242"
+    },
+    {
+      "id": "cave_way_out",
+      "label": "Cave exit glow + WAY OUT sign",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "cave",
+        "exit",
+        "way out",
+        "sign"
+      ],
+      "usedIn": [],
+      "words": [
+        "way out",
+        "cave exit",
+        "daylight"
+      ],
+      "source": "drive-portfolio/js/game.js:1233-1238"
+    },
+    {
+      "id": "glow_lake",
+      "label": "Glowing cave lake",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "lake",
+        "cave",
+        "glow",
+        "water",
+        "underground"
+      ],
+      "usedIn": [],
+      "words": [
+        "glowing lake",
+        "underground lake",
+        "bioluminescent"
+      ],
+      "idle": "water ripples drift",
+      "source": "drive-portfolio/js/game.js:1290-1296"
+    },
+    {
+      "id": "core_hologram",
+      "label": "THE CORE — brain hologram on its dais",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "core",
+        "brain",
+        "hologram",
+        "ai",
+        "cave"
+      ],
+      "usedIn": [],
+      "words": [
+        "the core",
+        "hologram",
+        "dais"
+      ],
+      "idle": "brain hologram spins and bobs",
+      "source": "drive-portfolio/js/game.js:1298-1328"
+    },
+    {
+      "id": "core_brain",
+      "label": "Brain hologram (THE CORE)",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "brain",
+        "hologram",
+        "ai",
+        "mind"
+      ],
+      "usedIn": [],
+      "words": [
+        "brain",
+        "ai brain",
+        "hologram brain"
+      ],
+      "idle": "brain spins and bobs",
+      "source": "drive-portfolio/js/game.js:1309-1327"
+    },
+    {
+      "id": "core_crystal",
+      "label": "The Core Crystal",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "crystal",
+        "core",
+        "secret",
+        "treasure",
+        "magic"
+      ],
+      "usedIn": [],
+      "words": [
+        "core crystal",
+        "magic crystal",
+        "secret crystal"
+      ],
+      "idle": "crystal spins and floats",
+      "source": "drive-portfolio/js/game.js:1410-1416"
+    },
+    {
+      "id": "core_exhibit_trophy",
+      "label": "Exhibit — Smart India Hackathon trophy",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "exhibit",
+        "trophy",
+        "prize",
+        "hackathon",
+        "cave"
+      ],
+      "usedIn": [],
+      "words": [
+        "hackathon",
+        "first prize",
+        "smart india"
+      ],
+      "idle": "gem on top spins",
+      "source": "drive-portfolio/js/game.js:1334-1340,1382,1391-1408"
+    },
+    {
+      "id": "core_exhibit_bp",
+      "label": "Exhibit — non-invasive BP device",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "exhibit",
+        "bp",
+        "device",
+        "health",
+        "cave"
+      ],
+      "usedIn": [],
+      "words": [
+        "blood pressure",
+        "bp device",
+        "heartbeat monitor"
+      ],
+      "idle": "heartbeat line scrolls, LED blinks",
+      "source": "drive-portfolio/js/game.js:1341-1354,1384"
+    },
+    {
+      "id": "core_exhibit_maze",
+      "label": "Exhibit — AGV maze solver",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "exhibit",
+        "maze",
+        "robot",
+        "agv",
+        "cave"
+      ],
+      "usedIn": [],
+      "words": [
+        "maze",
+        "maze solver",
+        "agv"
+      ],
+      "idle": "robot car drives through the maze",
+      "source": "drive-portfolio/js/game.js:1355-1365,1386"
+    },
+    {
+      "id": "core_exhibit_robot",
+      "label": "Exhibit — robot arm (where it started)",
+      "category": "cave",
+      "file": "studio/assets/cave.js",
+      "tags": [
+        "exhibit",
+        "robot",
+        "arm",
+        "robotics",
+        "cave"
+      ],
+      "usedIn": [],
+      "words": [
+        "robot arm",
+        "robotics",
+        "circuit board"
+      ],
+      "idle": "robot arm swings",
+      "source": "drive-portfolio/js/game.js:1366-1379,1388"
+    },
+    {
+      "id": "beach_set",
+      "label": "Beach (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "beach",
+        "sea",
+        "outdoor",
+        "waves"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "market_set",
+      "label": "Market street (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "market",
+        "stalls",
+        "street",
+        "outdoor"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "village_set",
+      "label": "Village (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "village",
+        "huts",
+        "homes",
+        "outdoor"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "camp_set",
+      "label": "Campsite at dusk (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "camp",
+        "campfire",
+        "tents",
+        "outdoor",
+        "evening"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "sports_set",
+      "label": "Sports ground (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "sports",
+        "football",
+        "outdoor"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cave_set",
+      "label": "Cave (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "cave",
+        "crystals",
+        "dark"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "bank_set",
+      "label": "Bank (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "bank",
+        "indoor",
+        "counter",
+        "atm"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "kitchen_set",
+      "label": "Kitchen (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "kitchen",
+        "home",
+        "indoor"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "bedroom_set",
+      "label": "Bedroom (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "bedroom",
+        "home",
+        "indoor"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "park_set",
+      "label": "Park (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "park",
+        "outdoor",
+        "swings",
+        "slide"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "supermarket_set",
+      "label": "Supermarket (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "supermarket",
+        "shop",
+        "indoor"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "street_set",
+      "label": "Street + bus stop (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "street",
+        "road",
+        "bus stop",
+        "outdoor"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "party_set",
+      "label": "Birthday party room (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "party",
+        "birthday",
+        "indoor"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "festival_set",
+      "label": "Festival street — Diwali evening (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "festival",
+        "diwali",
+        "temple",
+        "outdoor",
+        "evening"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "library_set",
+      "label": "Library (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "library",
+        "books",
+        "indoor"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "night_ground_set",
+      "label": "Playground at night (set)",
+      "category": "sets",
+      "file": "studio/assets/places.js",
+      "tags": [
+        "set",
+        "night",
+        "playground",
+        "outdoor",
+        "stars"
+      ],
+      "usedIn": []
     }
   ]
 }

@@ -1,7 +1,7 @@
 /* Zungga Story Studio — sets props. Registered into the shared library (assets/core.js). */
 (() => {
   'use strict';
-  const { T, Z, FONT, hex, mat, glassMat, mesh, tex, fitText, roundBox, box } = ZA;
+  const { T, Z, FONT, hex, mat, glassMat, mesh, tex, fitText, roundBox, box, logoTex, mascotTex, decal, label, cyl, sphere } = ZA;
   function classroomSet() {
     const g = new T.Group(), W = 8, D = 7, H = 3.2;
     const floorT = tex((c, Wd, Hd) => { c.fillStyle = '#e7dcc8'; c.fillRect(0, 0, Wd, Hd); c.strokeStyle = '#cdbfa6'; c.lineWidth = 3; for (let i = 0; i <= 8; i++) { c.beginPath(); c.moveTo(i * Wd / 8, 0); c.lineTo(i * Wd / 8, Hd); c.stroke(); c.beginPath(); c.moveTo(0, i * Hd / 8); c.lineTo(Wd, i * Hd / 8); c.stroke(); } }, 512, 512);
