@@ -24,7 +24,7 @@
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
   function create(scene) {
-    const details = [], doorKeys = new Set(), ceilings = [], floors = {}, cols = [], grid = new Map(), terrains = [], waters = [], slides = [], interacts = [], areas = [], anchors = [], ticks = [], roofs = [], elevators = [], doors = [];
+    const placed = [], seats = [], details = [], doorKeys = new Set(), ceilings = [], floors = {}, cols = [], grid = new Map(), terrains = [], waters = [], slides = [], interacts = [], areas = [], anchors = [], ticks = [], roofs = [], elevators = [], doors = [];
     for (const n of ['under', 'ground', 'first', 'shaft']) { floors[n] = new T.Group(); floors[n].name = n; scene.add(floors[n]); }
     const matCache = new Map();
     const M = (c, o = {}) => { if (c && c.isMaterial) return c; const k = c + JSON.stringify(o); if (!matCache.has(k)) matCache.set(k, new T.MeshStandardMaterial({ color: c, roughness: 0.75, ...o })); return matCache.get(k); };
@@ -130,6 +130,8 @@
           const p = ZAssets.build(id), obj = p.group; obj.scale.multiplyScalar(s); obj.updateMatrixWorld(true);
           const bb = ZA.frameBox ? ZA.frameBox(obj) : new T.Box3().setFromObject(obj);
           obj.position.set(x, y, z); obj.rotation.y = r; (o.parent || g).add(obj);
+          { const [wx2, wz2] = W(x, z), sc2 = obj.scale.x; placed.push({ id, obj, x: wx2, y: oy + y, z: wz2, ry: ry + r, hx: bb.isEmpty() ? 0.4 : (bb.max.x - bb.min.x) / 2, hz: bb.isEmpty() ? 0.4 : (bb.max.z - bb.min.z) / 2, top: bb.isEmpty() ? 1 : bb.max.y, s: sc2 });
+            const SEAT = /bench|chair|sofa|armchair|throne|window_seat|bean_bag|cushion|stool/.test(id) && !/table|desk/.test(id); if (SEAT && o.seat !== false) seats.push({ id, x: wx2, y: oy + y, z: wz2, ry: ry + r, h: /bean_bag|cushion/.test(id) ? 0.3 : /sofa|armchair|throne/.test(id) ? 0.48 : 0.45, w: bb.isEmpty() ? 1 : bb.max.x - bb.min.x }); }
           if (obj.userData.tick || p.tick) { obj.userData.dynamic = true; const tk = obj.userData.tick || p.tick; ticks.push((t) => { if (obj.visible) tk(t); }); details.push(obj); }
           if (o.col !== false && !bb.isEmpty()) {
             const cx = (bb.min.x + bb.max.x) / 2, cz = (bb.min.z + bb.max.z) / 2, cr = Math.cos(r), sr = Math.sin(r);
@@ -189,7 +191,7 @@
           if (levels[0] > -99) eg.box(w + 0.4, 0.01, 0.2, 0, bot - 0.01, d / 2 + 0.1, color, { col: false, cast: false });
           // landing doors: two sliding panels per level
           const panels = levels.map((y0) => { const ps = [-1, 1].map((sx) => { const m2 = new T.Mesh(new T.BoxGeometry(dw / 2, 2.45, 0.08), M(0xe5e7eb, { metalness: 0.5, roughness: 0.3 })); m2.position.set(sx * dw / 4, y0 + 1.225, d / 2 + 0.16); eg.g.add(m2); return m2; }); const c2 = eg.col(dw, 2.45, 0.12, 0, y0, d / 2 + 0.16); return { ps, col: c2, open: 0, y0 }; });
-          const L = { cab, levels: levels.map((v) => oy + v), names, pos: oy + levels[0], target: oy + levels[0], wait: 0, platCol, panels, x: wx, z: wz, w, d, speed: 2.4, base: oy, eg,
+          const L = { ry: ry + side, cab, levels: levels.map((v) => oy + v), names, pos: oy + levels[0], target: oy + levels[0], wait: 0, platCol, panels, x: wx, z: wz, w, d, speed: 2.4, base: oy, eg,
             call(i) { L.target = L.levels[clamp(i, 0, L.levels.length - 1)]; },
             next() { const i = L.levels.findIndex((v) => Math.abs(v - L.pos) < 0.05); L.call(i < 0 ? 0 : (i + 1) % L.levels.length); },
             atLevel() { return L.levels.findIndex((v) => Math.abs(v - L.pos) < 0.02); },
@@ -241,6 +243,7 @@
           const off = [Math.cos(r) * w / 2, -Math.sin(r) * w / 2];   // the right leaf: hinge on the other jamb
           void off;
           const R = frame(floor, ...W(x, z), ry + r + Math.PI, oy + y).door({ x: -w / 4, z: 0, w: w / 2, h, ry: 0, kind: 'swing', auto: true, mesh: leaf(1), swing: 1 });
+          API.lanes.push({ x: wx, z: wz, ry: ry + r, hw: w / 2 + 0.25, hd: 1.0, y: oy + y, h: h + 0.5 });   // the doorway itself, full height
           return [L, R];
         },
         interact({ x, y = 0, z, r = 1.6, label, fn }) { const [wx, wz] = W(x, z); interacts.push({ test: (p) => Math.hypot(p.x - wx, p.z - wz) < r && Math.abs(p.y - (oy + y)) < 1.6, label: () => label, fn }); },
@@ -278,7 +281,7 @@
     // ---------- queries for the walker ----------
     function terrainAt(x, z) { let best = -Infinity; for (const tr of terrains) if (x >= tr.x0 && x <= tr.x1 && z >= tr.z0 && z <= tr.z1) best = Math.max(best, tr.fn(x, z)); return best; }
     const API = {
-      floors, cols, ceilings, areas, anchors, slides, elevators, doors, waters, interacts, ticks, roofs, frame, M,
+      placed, seats, floors, cols, ceilings, areas, anchors, slides, elevators, doors, waters, interacts, ticks, roofs, frame, M,
       terrain(fn, x0, z0, x1, z1) { terrains.push({ fn, x0, z0, x1, z1 }); },
       // dressing (furniture) is marked, so walkways can be cleared of it later without touching walls, floors or doors
       lanes: [],
@@ -295,11 +298,11 @@
       clearLanes(list = API.lanes) {
         let nc = 0, nm = 0;
         const inLane = (L, x, z, ex, ez, r) => { const c = Math.cos(L.ry), s2 = Math.sin(L.ry), dx = x - L.x, dz = z - L.z, lx = dx * c - dz * s2, lz = dx * s2 + dz * c, dr = r - L.ry, px = Math.abs(ex * Math.cos(dr)) + Math.abs(ez * Math.sin(dr)), pz = Math.abs(ex * Math.sin(dr)) + Math.abs(ez * Math.cos(dr)); return Math.abs(lx) < L.hw + px && Math.abs(lz) < L.hd + pz; };
-        for (const L of list) for (const c of cols) { if (!c.dress || !c.on) continue; if (c.y1 < L.y + 0.3 || c.y0 > L.y + 1.7) continue; if (inLane(L, c.x, c.z, c.hx, c.hz, c.ry)) { c.on = false; nc++; } }
+        for (const L of list) for (const c of cols) { if (!c.dress || !c.on) continue; if (c.y1 < L.y + 0.3 || c.y0 > L.y + (L.h || 1.7)) continue; if (inLane(L, c.x, c.z, c.hx, c.hz, c.ry)) { c.on = false; nc++; } }
         const box = new T.Box3(), ctr = new T.Vector3(), sz = new T.Vector3();
         const units = []; for (const k of Object.keys(floors)) floors[k].traverse((o) => { if (!o.userData.dress) return; o.traverse((m) => { if (m === o && !o.isMesh && !o.userData.propId) return; if (m.userData.propId || (m.isMesh && !(m.parent && m.parent.userData && m.parent.userData.propId))) units.push(m); }); });
         for (const u of new Set(units)) { if (!u.visible) continue; u.updateWorldMatrix(true, true); box.setFromObject(u); if (box.isEmpty()) continue; box.getCenter(ctr); box.getSize(sz);
-          for (const L of list) { if (box.max.y < L.y + 0.18 || box.min.y > L.y + 1.7) continue; if (inLane(L, ctr.x, ctr.z, sz.x / 2, sz.z / 2, 0)) { u.visible = false; if (u.userData.col) u.userData.col.on = false; nm++; break; } } }
+          for (const L of list) { if (box.max.y < L.y + 0.18 || box.min.y > L.y + (L.h || 1.7)) continue; if (inLane(L, ctr.x, ctr.z, sz.x / 2, sz.z / 2, 0)) { u.visible = false; if (u.userData.col) u.userData.col.on = false; nm++; break; } } }
         return { colliders: nc, meshes: nm };
       },
       terrainAt,

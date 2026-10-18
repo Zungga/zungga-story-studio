@@ -67,6 +67,8 @@
       }
       const main = r.doors[0], [sx2, sz2, sr] = main[0] === 'n' ? [main[1], -d / 2 - 0.15, Math.PI] : main[0] === 's' ? [main[1], d / 2 + 0.15, 0] : main[0] === 'e' ? [w / 2 + 0.15, main[1], Math.PI / 2] : [-w / 2 - 0.15, main[1], -Math.PI / 2];
       const sg = new T.Mesh(new T.PlaneGeometry(Math.min(w - 2, 6.5), 0.75), new T.MeshStandardMaterial({ map: ZA.label(`${r.num} · ${r.name.toUpperCase()}`, { w: 1024, h: 120, bg: '#3b0764', fg: '#ffd84a', size: 70, radius: 24 }), roughness: 0.6 })); sg.position.set(sx2, DH + 0.75, sz2); sg.rotation.y = sr; f.g.add(sg);
+      f.ceiling(w, d, 0, H, 0, M(0xf6eee2, { roughness: 0.95 }), { t: 0.3 });   // sealed (the ceiling lets the sun through: no shadow)
+      for (let lx = -w / 2 + 3; lx <= w / 2 - 3; lx += 6) for (let lz = -d / 2 + 3; lz <= d / 2 - 3; lz += 6) { const lp = new T.Mesh(new T.CylinderGeometry(0.45, 0.45, 0.06, 16), M(0xfff6dd, { emissive: 0xfff1c9, emissiveIntensity: 1.2 })); lp.position.set(lx, H - 0.04, lz); f.g.add(lp); }
       c.area({ id: r.id, num: r.num, name: r.name, x: cx, z: cz, w, d, y0: -0.5, y1: H + 2 });
       const spec = { id: r.id, name: r.name, w, d, h: H, y: 0, doors: r.doors.map(([side, at]) => ({ side, at, w: DW })), floor: 'first' };
       if (r.id === 'recipe_library') spec.hidden = { x0: hid.x0 - cx, x1: hid.x1 - cx, z0: hid.z0 - cz, z1: hid.z1 - cz, shelf: { x: hid.shelf.x - cx, z: hid.shelf.z - cz } };
@@ -79,9 +81,12 @@
     if (ZFactory.dress.observation_balcony) { const bz = (F.balcony.z0 + F.balcony.z1) / 2; try { W.dressRun(() => ZFactory.dress.observation_balcony(c.frame(0, bz), { id: 'observation_balcony', w: F.balcony.x1 - F.balcony.x0, d: F.balcony.z1 - F.balcony.z0, glass: { x0: gl.x0, x1: gl.x1, z0: gl.z0 - bz, z1: gl.z1 - bz }, doorsNorth: F.rooms.filter((r) => Math.abs(r.z1 - F.balcony.z0) < 0.1).map((r) => (r.x0 + r.x1) / 2), doorsSouth: F.rooms.filter((r) => Math.abs(r.z0 - F.balcony.z1) < 0.1).map((r) => (r.x0 + r.x1) / 2), towersX: G.towers.map((t) => t.x + (t.x < 0 ? 3.5 : -3.5)), floor: 'first' })); } catch (e) { console.error('dress balcony', e); } }
     // the outer walls of the balcony band (west/east of the towers are the towers themselves) + corridor ends
     c.area({ id: B.id, num: B.num, name: B.name, x: 0, z: (B.z0 + B.z1) / 2, w: B.x1 - B.x0, d: B.z1 - B.z0, y0: -0.5, y1: 6 });
+    for (const k of F.corridors) c.ceiling(k.x1 - k.x0, k.z1 - k.z0, (k.x0 + k.x1) / 2, H, (k.z0 + k.z1) / 2, M(0xf6eee2), { t: 0.3 });
+    { c.ceiling(B.x1 - B.x0, B.z1 - B.z0, 0, H, (B.z0 + B.z1) / 2, M(0xf6eee2), { t: 0.3 });   // the balcony: a glass skylight in the middle of its ceiling
+      const sky = new T.Mesh(new T.PlaneGeometry(gl.x1 - gl.x0, gl.z1 - gl.z0), new T.MeshStandardMaterial({ color: 0xcdeeff, emissive: 0x9fd8ff, emissiveIntensity: 0.35, transparent: true, opacity: 0.85 })); sky.rotation.x = Math.PI / 2; sky.position.set((gl.x0 + gl.x1) / 2, H - 0.16, (gl.z0 + gl.z1) / 2); c.g.add(sky); }
     for (const k of F.corridors) c.area({ id: k.id, num: 0, name: k.name, x: (k.x0 + k.x1) / 2, z: (k.z0 + k.z1) / 2, w: k.x1 - k.x0, d: k.z1 - k.z0, y0: -0.5, y1: 6 });
     // low parapet walls where the deck edge is open (corridor ends, balcony ends beside the towers)
-    const parapet = (x1, z1, x2, z2) => c.wall(x1, z1, x2, z2, { h: 1.1, t: 0.3, mat: M(0x5b2a86) });
+    const parapet = (x1, z1, x2, z2) => c.wall(x1, z1, x2, z2, { h: H, t: 0.3, mat: M(0xe9d3b0), windows: [{ at: Math.hypot(x2 - x1, z2 - z1) / 2, w: Math.min(2.4, Math.hypot(x2 - x1, z2 - z1) - 0.6), h: 1.6, y: 2.2, glow: 0xdff3ff }] });
     const nc = F.corridors.find((k) => k.id === 'north_corridor'), scr = F.corridors.find((k) => k.id === 'south_corridor');
     for (const sx of [-1, 1]) { const x = sx * (O.x1 - 0.3); parapet(x, nc.z0, x, nc.z1); }                  // north corridor ends
     const tw0 = G.towers[0]; for (const sx of [-1, 1]) { const x = sx * (O.x1 - 0.3); parapet(x, B.z0, x, tw0.z - 3.5); parapet(x, tw0.z + 3.5, x, B.z1); }   // balcony band beside the towers
@@ -102,6 +107,10 @@
         for (let row = 0; row < 4; row++) for (let i = 0; i < 9; i++) { const bk = new T.Mesh(new T.BoxGeometry(0.12, 0.42 + ((i * 7 + row) % 3) * 0.06, 0.26), M(row === 2 && i === 4 ? 0xdc2626 : cols[(i + row * 3) % cols.length], row === 2 && i === 4 ? { emissive: 0x7f1d1d, emissiveIntensity: 0.5 } : {})); bk.position.set(-0.6 + i * 0.15, 0.32 + row * 0.6 + 0.21, 0.05); shelf.add(bk); }
         for (let row = 0; row <= 4; row++) { const sh = new T.Mesh(new T.BoxGeometry(1.45, 0.05, 0.3), M(0x8a5a33)); sh.position.set(0, 0.1 + row * 0.6, 0.02); shelf.add(sh); } }
       const D = c.door({ x: hid.x1 + 0.12, y: 0, z: hid.shelf.z, w: 1.5, h: 2.6, ry: Math.PI / 2, kind: 'shelf', auto: false, label: 'Pull the old red book', mesh: shelf });
+      { const red = shelf.children.find((m) => m.material && m.material.color && m.material.color.getHex() === 0xdc2626); if (red) { red.material = red.material.clone(); c.tick((t) => { red.material.emissiveIntensity = 0.6 + Math.sin(t * 3) * 0.5; }, red); }
+        const spk = new T.Group(); spk.position.set(hid.x1 + 0.45, 1.6, hid.shelf.z); c.g.add(spk); const sm = new T.MeshBasicMaterial({ color: 0xffd84a }); const sps = Array.from({ length: 6 }, () => { const m = new T.Mesh(new T.OctahedronGeometry(0.04), sm); spk.add(m); return m; });
+        c.tick((t) => sps.forEach((m, i) => { const a = t * 1.4 + i; m.position.set(Math.sin(a * 1.3) * 0.25, Math.sin(a) * 0.5, Math.cos(a) * 0.5); m.rotation.y = t * 3; }), spk);
+        const note = new T.Mesh(new T.PlaneGeometry(1.2, 0.8), new T.MeshStandardMaterial({ map: ZA.label('“The red book opens the way…”', { w: 512, h: 340, bg: '#f5e6c8', fg: '#5b3420', size: 40, radius: 20 }) })); note.position.set(hid.x1 + 0.16, 2.0, hid.shelf.z + 2.4); note.rotation.y = Math.PI / 2; c.g.add(note); }
       void D;
       // floor of the hidden room around the shaft opening (the spiral's landing is built with the shaft)
       const S = G.shaft;
@@ -109,6 +118,7 @@
       const bridge = c.box(0.9, 0.6, 1.6, hid.x1 - 0.55, -0.6, hid.shelf.z, 0x5b4636, { cast: false }); void bridge;
       // dusty little lamp + cobwebs feel
       const lamp = new T.Mesh(new T.SphereGeometry(0.16, 12, 10), M(0xffd27a, { emissive: 0xffb347, emissiveIntensity: 1.4 })); lamp.position.set(hid.x0 + 0.5, 2.6, hid.z0 + 0.5); c.g.add(lamp);
+      c.frame((hid.x0 + hid.x1) / 2, (hid.z0 + hid.z1) / 2).ceiling(hid.x1 - hid.x0, hid.z1 - hid.z0, 0, H, 0, M(0x5b4636), { t: 0.3 });
       c.area({ id: hid.id, num: hid.num, name: hid.name, x: hx, z: hz, w: hid.x1 - hid.x0, d: hid.z1 - hid.z0, y0: -2, y1: 6 });
       if (ZFactory.dress.hidden_access) { try { W.dressRun(() => ZFactory.dress.hidden_access(c.frame(hx, hz), { id: hid.id, w: hid.x1 - hid.x0, d: hid.z1 - hid.z0, shaft: { x: S.x - hx, z: S.z - hz, r: S.r + 0.1 }, shelf: { x: hid.x1 - hx, z: hid.shelf.z - hz }, floor: 'first' })); } catch (e) { console.error('dress hidden', e); } }
     }

@@ -988,7 +988,7 @@
   D.first_aid = (c, spec) => {
     const { P, wall, back, rug } = kit(c, spec), bz = -spec.d / 2 + WALL_IN + 1.1;
     for (const x of [-6.6, -3.2, 3.2, 6.6]) P('cf1_med_bed', x, bz);
-    for (const x of [-4.9, -1.9, 1.9, 4.9]) c.prop('cf1_privacy_curtain', x, 0, bz + 0.1, HP, 0.85, { col: false });
+    for (const x of [-4.9, -2.15, 2.15, 4.9]) c.prop('cf1_privacy_curtain', x, 0, bz + 0.1, HP, Math.abs(x) < 3 ? 0.6 : 0.85, { col: false });   // the inner two stay clear of the north door
     back('cf1_med_cabinet', 's', 4.5, 0.5); P('cf1_height_scale', 8.1, 5.15, PI);
     P('desk', 6.0, 2.5, PI); c.prop('laptop', 6.0, 0.77, 2.5, PI, 1.6, { col: false }); P('cf1_chair', 6.0, 3.45, PI);
     P('cf1_water_cooler', 8.3, 3.3, -HP);

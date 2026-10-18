@@ -116,16 +116,29 @@
     }
 
     // ---------- camera ----------
+    // the kid turns see-through when the camera has to come very close (tight stairs, lift, against walls)
+    let fadeMats = null, fadeNow = 1;
+    function fadeKid(o) { if (Math.abs(o - fadeNow) < 0.02) return; fadeNow = o; if (!fadeMats) { fadeMats = []; char.group.traverse((m) => { if (m.isMesh) for (const mt of [].concat(m.material)) fadeMats.push({ mt, t: mt.transparent, o: mt.opacity }); }); }
+      for (const f of fadeMats) { f.mt.transparent = o < 0.99 ? true : f.t; f.mt.opacity = o < 0.99 ? f.o * o : f.o; f.mt.depthWrite = o > 0.6; } }
+    function inLift() { for (const L of world.elevators || []) if (L.inside(pos)) return L; return null; }
     function placeCamera(dt) {
       if (mode === 'free') {
         const d = new T.Vector3(-Math.sin(free.yaw) * Math.cos(free.pitch), Math.sin(free.pitch), -Math.cos(free.yaw) * Math.cos(free.pitch));
         camera.position.copy(free.pos); camera.lookAt(free.pos.clone().add(d)); return;
       }
+      if (mode === 'sit') { const fx2 = Math.sin(yaw), fz2 = Math.cos(yaw), cp = new T.Vector3(pos.x + fx2 * 3.2 + Math.cos(yaw) * 1.2, pos.y + 1.7, pos.z + fz2 * 3.2 - Math.sin(yaw) * 1.2), lk = new T.Vector3(pos.x, pos.y + 0.6, pos.z); const h0 = new T.Vector3(pos.x, pos.y + 0.8, pos.z), dd = cp.clone().sub(h0), l0 = dd.length(); dd.normalize(); const hh = world.ray(h0, dd, l0); if (hh < l0) cp.copy(h0).addScaledVector(dd, Math.max(0.6, hh - 0.25)); camPos.lerp(cp, 1 - Math.exp(-4 * dt)); camLook.lerp(lk, 1 - Math.exp(-6 * dt)); camera.position.copy(camPos); camera.lookAt(camLook); fadeKid(1); return; }   // seated: a friendly view from the front
+      const lift = inLift();
+      if (lift) {   // in the lift cab: from the back corner, looking out through the doors (the kid goes see-through)
+        const a = lift.ry ?? yaw, fx2 = Math.sin(a), fz2 = Math.cos(a), rx2 = Math.cos(a), rz2 = -Math.sin(a), bk = lift.d / 2 - 0.25, sd = lift.w / 2 - 0.35;
+        const cp = new T.Vector3(lift.x - fx2 * bk + rx2 * sd, lift.pos + 2.15, lift.z - fz2 * bk + rz2 * sd), lk = new T.Vector3(lift.x + fx2 * 2.6, lift.pos + 0.55, lift.z + fz2 * 2.6);
+        camPos.lerp(cp, 1 - Math.exp(-8 * dt)); camLook.lerp(lk, 1 - Math.exp(-8 * dt)); camera.position.copy(camPos); camera.lookAt(camLook); fadeKid(0.3); return;
+      }
+      const tight = area && /^tower_/.test(area.id), C = tight ? { ...CAM, back: 2.4, up: 2.7, look: -0.2, ahead: 1.6, side: 0 } : CAM;   // tower stairs: high and looking down the steps
       // the island's chase camera: behind the facing, a little higher when running; eased; the drag-look turns it after
-      const base = mode === 'swim' ? swimSurf - 0.25 : visY, ca = yaw + CAM.orbit * Math.PI / 180, fx = Math.sin(ca), fz = Math.cos(ca), rx = Math.cos(yaw), rz = -Math.sin(yaw), sp = Math.abs(speed);
-      const back = CAM.back * camDist + sp * 0.08, up = CAM.up * Math.sqrt(camDist) + sp * 0.03;
+      const base = mode === 'swim' ? swimSurf - 0.25 : visY, ca = yaw + C.orbit * Math.PI / 180, fx = Math.sin(ca), fz = Math.cos(ca), rx = Math.cos(yaw), rz = -Math.sin(yaw), sp = Math.abs(speed);
+      const back = C.back * camDist + sp * 0.08, up = C.up * Math.sqrt(camDist) + sp * 0.03;
       const head = new T.Vector3(pos.x, base + 0.95, pos.z);
-      const desired = new T.Vector3(pos.x - fx * back - rx * CAM.side, base + up, pos.z - fz * back - rz * CAM.side), target = new T.Vector3(pos.x + fx * CAM.ahead - rx * CAM.side, base + CAM.look, pos.z + fz * CAM.ahead - rz * CAM.side);
+      const desired = new T.Vector3(pos.x - fx * back - rx * C.side, base + up, pos.z - fz * back - rz * C.side), target = new T.Vector3(pos.x + fx * C.ahead - rx * C.side, base + C.look, pos.z + fz * C.ahead - rz * C.side);
       if (Math.abs(camera.fov - CAM.fov) > 0.05) { camera.fov = CAM.fov; camera.updateProjectionMatrix(); }
       // never through walls / ceilings: pull the wanted spot in toward the head
       const dir = desired.clone().sub(head), dl = dir.length(); dir.normalize();
@@ -134,6 +147,7 @@
       const k = 1 - Math.exp(-CAM.stiff * dt); camPos.lerp(desired, k); camLook.lerp(target, k);
       { const d2 = camPos.clone().sub(head), l2 = d2.length(); if (l2 > 0.01) { d2.normalize(); const h2 = world.ray(head, d2, l2 + 0.2); if (h2 < l2) camPos.copy(head).addScaledVector(d2, Math.max(0.4, h2 - 0.3)); } }
       camera.position.copy(camPos); camera.lookAt(camLook);
+      { const dh = camPos.distanceTo(head); fadeKid(dh < 1.7 ? Math.max(0.15, (dh - 0.5) / 1.2) : 1); }
       const ease = 1 - Math.exp(-(LOOK.drag ? 18 : 4) * dt);
       LOOK.pitch += (LOOK.target - LOOK.pitch) * ease; LOOK.yaw += (LOOK.yawTarget - LOOK.yaw) * ease;
       if (Math.abs(LOOK.yaw) > 1e-4) camera.rotateOnWorldAxis(UPV, LOOK.yaw);
@@ -167,13 +181,22 @@
           if (keys.has('KeyE')) free.pos.y += sp; if (keys.has('KeyQ')) free.pos.y -= sp; void f;
           placeCamera(dt); char.update(dt); return;
         }
-        const inp = input(), n = Math.max(1, Math.ceil(dt / (1 / 120))), h = dt / n;
+        const inp = input();
+        if (mode === 'sit') {   // seated: any move (or E / Space) stands you up
+          if (inp.f || inp.r || useQueued || jumpQueued) { useQueued = jumpQueued = false; setMode('walk'); char.setSeat(null); pos.x += Math.sin(yaw) * 0.55; pos.z += Math.cos(yaw) * 0.55; speed = 0; }
+          else { if (prompt !== 'Stand up') { prompt = 'Stand up'; onPrompt && onPrompt(prompt); } char.play('sit'); char.group.position.set(pos.x, pos.y, pos.z); char.group.rotation.y = yaw; char.update(dt); placeCamera(dt); return; }
+        }
+        const n = Math.max(1, Math.ceil(dt / (1 / 120))), h = dt / n;
         for (let i = 0; i < n; i++) step(h, inp);
         // falling out of the world → back to the last safe spot
         if (pos.y < -70) { pos.copy(safe); vel.set(0, 0, 0); }
         safeT += dt; if (grounded && mode === 'walk' && safeT > 0.5) { safe.copy(pos); safeT = 0; }
         // interactions (E)
         let best = null; for (const it of world.interacts) if (it.test(pos)) { best = it; break; }
+        if (!best && mode === 'walk' && world.seats) {   // a bench, chair, sofa or bean bag close by → sit down
+          let bs = null, bd = 1.25; for (const st of world.seats) { if (st.taken) continue; const dx = pos.x - st.x, dz = pos.z - st.z, co = Math.cos(st.ry), si = Math.sin(st.ry), lx = dx * co - dz * si, lz = dx * si + dz * co, half = Math.max(0, st.w / 2 - 0.4), cx = Math.max(-half, Math.min(half, lx)), d = Math.hypot(lx - cx, lz); if (d < bd && Math.abs(pos.y - st.y) < 0.7) { bd = d; bs = { st, lx: cx }; } }
+          if (bs) best = { label: () => 'Sit down', fn: () => { const st = bs.st, co = Math.cos(st.ry), si = Math.sin(st.ry); pos.x = st.x + bs.lx * co; pos.z = st.z - bs.lx * si; pos.y = st.y; yaw = st.ry; speed = 0; vel.set(0, 0, 0); setMode('sit'); char.setSeat(st.h); } };
+        }
         if (!best && mode === 'walk') for (const s of world.slides) if (Math.hypot(pos.x - s.start.x, pos.z - s.start.z) < 1.6 && Math.abs(pos.y - s.start.y) < 1.1) { best = { label: () => 'Slide down — ' + s.name, fn: () => trySlide(0, 0, true) }; break; }
         const label = best ? best.label() : null; if (label !== prompt) { prompt = label; onPrompt && onPrompt(label); }
         if (useQueued) { useQueued = false; if (best) best.fn(); }

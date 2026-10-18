@@ -36,6 +36,7 @@
 
   function build(W) {
     const L = ZFactory.layout, G = L.ground, c = W.frame('ground'), M = W.M;
+    W.lamps = []; const lamp = (f, x, z, h) => { const [wx, wz] = f.W(x, z); W.lamps.push([wx, f.oy + h, wz]); };   // for night mode
     const riv = G.river, RW = riv.width / 2;
     // ---------- terrain ----------
     function riverD(x, z) { return polyDist(x, z, riv.points, false); }
@@ -219,7 +220,7 @@
       if (ZFactory.faceOn) { const ftk = ZFactory.faceOn(ff.g, { y: 1.2, z: 4.0, s: 2.2, lid: 0x5b3420 }); f.tick(ftk); }   // the living chocolate fountain smiles at the plaza
       const z = ZAssets.has('zungga_logo'); if (z) ff.prop('zungga_logo', 0, 5.0, 0, 0, 1.2, { col: false });
       const PR = G.plaza.r;
-      for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2 + Math.PI / 12, r = PR * 0.82; f.prop('island_lamp_post', Math.sin(a) * r, 0, Math.cos(a) * r, a, 1, { col: false }); f.col(0.3, 3, 0.3, Math.sin(a) * r, 0, Math.cos(a) * r); }
+      for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2 + Math.PI / 12, r = PR * 0.82; f.prop('island_lamp_post', Math.sin(a) * r, 0, Math.cos(a) * r, a, 1, { col: false }); f.col(0.3, 3, 0.3, Math.sin(a) * r, 0, Math.cos(a) * r); lamp(f, Math.sin(a) * r, Math.cos(a) * r, 3.2); }
       for (let i = 0; i < 10; i++) { const a = i / 10 * Math.PI * 2, r = PR * 0.6; f.prop('bench', Math.sin(a) * r, 0, Math.cos(a) * r, a + Math.PI, 1.2); }
       for (let i = 0; i < 8; i++) { const a = i / 8 * Math.PI * 2 + Math.PI / 8, r = PR * 0.44; f.prop(['flower_bed_pink', 'flower_bed_yellow', 'flower_bed_red', 'flower_bed_white'][i % 4], Math.sin(a) * r, 0, Math.cos(a) * r, a, 1, { colH: 0.4 }); }
     }
@@ -241,7 +242,7 @@
       f.box(9.4, 2.6, 0.4, 0, 7.0, 1.0, 0x5b2a86, { col: false });
       // the outer plaza fountain
       const o = E.outer, fo = c.frame(o.x, o.z); fo.cyl(2.6, 2.8, 0.6, 0, 0, 0, 0xe9d5b5); const wpool = new T.Mesh(new T.CircleGeometry(2.4, 32), M(0x60a5fa, { roughness: 0.15 })); wpool.rotation.x = -Math.PI / 2; wpool.position.y = 0.55; fo.g.add(wpool); fo.cyl(0.3, 0.4, 1.8, 0, 0.5, 0, 0xe9d5b5); const spray = new T.Mesh(new T.SphereGeometry(0.6, 16, 12), M(0xbfdbfe, { transparent: true, opacity: 0.7 })); spray.position.y = 2.4; fo.g.add(spray); fo.tick((t) => spray.scale.setScalar(1 + Math.sin(t * 5) * 0.1), spray);
-      for (const sx of [-1, 1]) for (const sz of [-1, 1]) { fo.prop('island_lamp_post', sx * 5.5, 0, sz * 5.5, 0, 1, { col: false }); fo.col(0.3, 3, 0.3, sx * 5.5, 0, sz * 5.5); }
+      for (const sx of [-1, 1]) for (const sz of [-1, 1]) { fo.prop('island_lamp_post', sx * 5.5, 0, sz * 5.5, 0, 1, { col: false }); fo.col(0.3, 3, 0.3, sx * 5.5, 0, sz * 5.5); lamp(fo, sx * 5.5, sz * 5.5, 3.2); }
     }
 
     // ---------- buildings (shells + roofs); interiors come from ZFactory.dress ----------
@@ -308,7 +309,7 @@
         c.prop(k, x, 0, z, rnd() * 6.28, s, { col: false }); if (big) { c.col(0.45, 3, 0.45, x, 0, z); (W.treeSpots = W.treeSpots || []).push([x, z, s]); } placed++;
       }
       // lamps along the boulevard loop
-      for (let i = 0; i < loopPts.length; i += 3) { const [x, z] = loopPts[i], [nx, nz] = loopPts[(i + 1) % loopPts.length], tx = nx - x, tz = nz - z, tl = Math.hypot(tx, tz) || 1, ox = -tz / tl * (lp.w / 2 + 0.6), oz = tx / tl * (lp.w / 2 + 0.6); if (height(x + ox, z + oz) < -0.05 || !free(x + ox, z + oz, -1.4)) continue; c.prop('island_lamp_post', x + ox, 0, z + oz, 0, 1, { col: false }); c.col(0.3, 3, 0.3, x + ox, 0, z + oz); }
+      for (let i = 0; i < loopPts.length; i += 3) { const [x, z] = loopPts[i], [nx, nz] = loopPts[(i + 1) % loopPts.length], tx = nx - x, tz = nz - z, tl = Math.hypot(tx, tz) || 1, ox = -tz / tl * (lp.w / 2 + 0.6), oz = tx / tl * (lp.w / 2 + 0.6); if (height(x + ox, z + oz) < -0.05 || !free(x + ox, z + oz, -1.4)) continue; c.prop('island_lamp_post', x + ox, 0, z + oz, 0, 1, { col: false }); c.col(0.3, 3, 0.3, x + ox, 0, z + oz); lamp(c, x + ox, z + oz, 3.2); }
     }
 
     // ---------- the island's look: treat stalls with their sellers, benches + lamps along the paths, gazebos, planters ----------
@@ -326,7 +327,7 @@
       // benches and lamps along every path (alternating sides, only where the ground is free)
       for (const pth of G.paths) { let acc = 0; for (let i = 0; i < pth.length - 1; i++) { const [ax, az] = pth[i], [bx, bz] = pth[i + 1], L2 = Math.hypot(bx - ax, bz - az), ux = (bx - ax) / L2, uz = (bz - az) / L2;
         for (let d = 6; d < L2; d += 11) { const side = (Math.floor((acc + d) / 11) % 2) ? 1 : -1, ox = -uz * side * 3.6, oz = ux * side * 3.6, x = ax + ux * d + ox, z = az + uz * d + oz; if (!free(x, z, 0.6)) continue;
-          if ((Math.floor((acc + d) / 11) % 3) === 0) { c.prop('island_bench', x, 0, z, Math.atan2(-ox, -oz), 1); } else { c.prop('island_street_lamp', x, 0, z, Math.atan2(-ox, -oz), 1, { col: false }); c.col(0.35, 3.5, 0.35, x, 0, z); } }
+          if ((Math.floor((acc + d) / 11) % 3) === 0) { c.prop('island_bench', x, 0, z, Math.atan2(-ox, -oz), 1); } else { c.prop('island_street_lamp', x, 0, z, Math.atan2(-ox, -oz), 1, { col: false }); c.col(0.35, 3.5, 0.35, x, 0, z); lamp(c, x, z, 4); } }
         acc += L2; } }
       // a few gazebos on the open lawns
       let gz = 0; for (let i = 0; i < 600 && gz < 4; i++) { const x = L.bounds.x0 + 15 + rnd() * (L.bounds.x1 - L.bounds.x0 - 30), z = L.bounds.z0 + 15 + rnd() * (L.bounds.z1 - L.bounds.z0 - 30); if (!free(x, z, 5.5)) continue; c.prop('park_gazebo', x, 0, z, rnd() * 6.28, 0.5); blocks.push([x, z, 5, 5]); gz++; }

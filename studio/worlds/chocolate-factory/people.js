@@ -57,7 +57,7 @@
       const P = { ch, stops, i: 0, x: stops[0].x, z: stops[0].z, y: fr.floor === 'first' ? F.y : 0, yaw: stops[0].face ?? 0, wait: stops[0].wait * rnd(), walking: false, speed: o.speed || 1.05, walkClip: o.walkClip || 'walk', floorY: fr.floor === 'first' ? F.y : 0, fr };
       P.ch.play(stops[0].clip, { instant: true }); crew.push(P); place(P);
     }
-    function place(P) { const s = W.support(P.x, P.z, P.floorY + 0.5, 0.8).y; P.y = s > -1e8 ? s : P.floorY; P.ch.group.position.set(P.x, P.y, P.z); P.ch.group.rotation.y = P.yaw; }
+    function place(P) { const s = P.fixedY != null ? P.fixedY : W.support(P.x, P.z, P.floorY + 0.5, 0.8).y; P.y = s > -1e8 ? s : P.floorY; P.ch.group.position.set(P.x, P.y, P.z); P.ch.group.rotation.y = P.yaw; }
 
     // the named workers of Zungga (worker sheet), in the Explorer look
     function named(at, preset, route, o = {}) {
@@ -70,50 +70,15 @@
       P.ch.play(stops[0].clip, { instant: true }); P.ch.setExpression(o.expr || 'smile', true); crew.push(P); place(P);
     }
     // Rosie's reception desk just inside the main gate
-    { const E = G.entrance, f = W.frame('ground', E.x - E.gate / 2 - 4.5, E.z - 5, 0); f.box(2.6, 1.05, 0.9, -0, 0, 0, 0x6d28d9, { r: 0.08 }); f.box(2.8, 0.08, 1.05, 0, 1.05, 0, 0xfacc15, { col: false });
+    { const E = G.entrance, f = W.frame('ground', E.x - 5.2, E.z - 10, Math.PI / 2);   // beside the main path, facing it f.box(2.6, 1.05, 0.9, -0, 0, 0, 0x6d28d9, { r: 0.08 }); f.box(2.8, 0.08, 1.05, 0, 1.05, 0, 0xfacc15, { col: false });
       const sg = new T.Mesh(new T.PlaneGeometry(2.2, 0.45), new T.MeshStandardMaterial({ map: ZA.label('WELCOME TO ZUNGGA!', { w: 1024, h: 210, bg: '#fde68a', fg: '#3b0764', size: 110, radius: 30 }) })); sg.position.set(0, 0.6, 0.46); f.g.add(sg); }
-    { const E = G.entrance; named('main_entrance', 'rosie', [[-E.gate / 2 - 4.5, -6.3, 7, 'greet', 0], [-E.gate / 2 - 4.5, -6.3, 5, 'talk', 0]]); named('main_entrance', 'bruno', [[E.gate / 2 + 1.8, 4.5, 6, 'hands_on_hips', 0], [E.gate / 2 + 6, 6, 3, 'wave', 0], [E.gate / 2 + 1.8, 4.5, 4, 'arms_crossed', 0]], { expr: 'calm' }); }
-    named('cookie_bakery', 'ben', [[-2.6, -3.4, 4, 'carry_idle', Math.PI], [2.4, 1.6, 4, 'carry_idle', 0]], { walkClip: 'carry' });
-    named('cookie_bakery', 'ollie', [[2.2, -2.2, 12, 'stir', Math.PI]], { expr: 'focused' });
-    named('candy_lab', 'lulu', [[-1.5, -3.4, 6, 'give', Math.PI], [1.8, -3.0, 5, 'count', Math.PI]]);
-    named('ingredient_warehouse', 'penny', [[-2.6, -3.6, 5, 'carry_idle', Math.PI], [2.4, 0.5, 4, 'carry_idle', Math.PI / 2]], { walkClip: 'carry' });
-    named('machine_workshop', 'tink', [[1.6, -3.2, 9, 'hammer', Math.PI], [-1.5, -2.6, 5, 'think', Math.PI]], { expr: 'focused' });
+    { const E = G.entrance; named('main_entrance', 'rosie', [[-6.4, -10, 7, 'greet', Math.PI / 2], [-6.4, -10.6, 5, 'talk', Math.PI / 2]]); named('main_entrance', 'bruno', [[E.gate / 2 + 1.8, 4.5, 6, 'hands_on_hips', 0], [E.gate / 2 + 6, 6, 3, 'wave', 0], [E.gate / 2 + 1.8, 4.5, 4, 'arms_crossed', 0]], { expr: 'calm' }); }
     named('choco_garden', 'moss', [[-7, 4, 3, 'give', Math.PI], [-7, -5, 3, 'give', 0], [-2, 1, 3, 'give', Math.PI / 2]]);
     named('express_station', 'pip', [[-4, 1.6, 5, 'wave', 0.2], [5, 1.6, 4, 'point', 0.2], [0, 1.6, 4, 'wave', 0.1]]);
     { const R = G.plaza.r * 0.52, pts = []; for (let k = 0; k < 8; k++) { const a = k / 8 * Math.PI * 2; pts.push([Math.sin(a) * R, Math.cos(a) * R, 4, 'sweep', a + Math.PI / 2]); } named('main_plaza', 'bubbles', pts, { speed: 0.6 }); }
-    named('innovation_lab', 'nibbles', [[-2, -2.6, 6, 'think', Math.PI], [2, -1.5, 5, 'give', Math.PI / 2]], { expr: 'excited' });
-    named('quality_lab', 'vanilla', [[0, -3.4, 8, 'think', Math.PI], [2, -3.4, 6, 'count', Math.PI]], { expr: 'focused' });
 
     // ---------------- who works where ----------------
     const C = [0x5b3420, 0x7a4426, 0x8a5a3a];
-    // Chocolate Kitchen: three chocolatiers stirring the vats, one carrying moulds between the vats and the tables
-    add('chocolate_kitchen', W_.chocolatier(C[0]), [[-2.2, -2.4, 9, 'stir', Math.PI]]);
-    add('chocolate_kitchen', W_.chocolatier(C[1]), [[2.4, -2.2, 9, 'stir', Math.PI]]);
-    add('chocolate_kitchen', W_.chocolatier(C[2]), [[0, 3.5, 2, 'carry_idle'], [0, -1, 2, 'carry_idle'], [-1.8, 0.5, 2, 'carry_idle']], { hold: 'tray', walkClip: 'carry' });
-    // Cookie Bakery: a baker between the ovens and the counter, a cashier
-    add('cookie_bakery', W_.baker(), [[1.5, -0.5, 6, 'talk', 0]]);
-    // Candy Lab: two scientists
-    add('candy_lab', W_.scientist(0xec4899), [[-2, -2.2, 5, 'think', Math.PI], [2, -2.2, 5, 'count', Math.PI]]);
-    add('candy_lab', W_.scientist(0x8b5cf6), [[1.6, 1.2, 4, 'point', Math.PI / 2], [0, 3.5, 2, 'idle'], [-1.6, 0.5, 3, 'type', Math.PI]], { hold: 'jar' });
-    // Marshmallow Workshop
-    add('marshmallow_workshop', W_.chocolatier(0xf9a8d4), [[-2, -2, 6, 'give', Math.PI]]);
-    add('marshmallow_workshop', W_.crew(0xf472b6), [[0, 3.6, 2, 'carry_idle'], [1.8, -1.2, 2, 'carry_idle']], { hold: 'crate', walkClip: 'carry' });
-    // Ingredient Warehouse: a crew moving crates in a loop
-    add('ingredient_warehouse', W_.crew(), [[0, 4, 1.5, 'carry_idle'], [-2.5, -2.5, 1.5, 'carry_idle'], [2.5, -2.5, 1.5, 'carry_idle']], { hold: 'crate', walkClip: 'carry', speed: 1.2 });
-    add('ingredient_warehouse', W_.crew(0x0ea5e9), [[2.2, 0.5, 7, 'count', Math.PI / 2]]);
-    // Machine Workshop: engineers
-    add('machine_workshop', W_.engineer(), [[-1.8, -2.4, 8, 'hammer', Math.PI]], { hold: 'wrench' });
-    add('machine_workshop', W_.engineer(0xf97316), [[2, -1.5, 4, 'type', Math.PI], [1, 3, 3, 'think', 0]]);
-    // Factory Control Room (ground): operators at the round console
-    add('control_room', W_.operator(), [[-2.2, -1.6, 10, 'type', Math.PI * 0.8]]);
-    add('control_room', W_.operator(0x7c3aed), [[2.2, -1.6, 10, 'type', -Math.PI * 0.8]]);
-    // Mr. Choco's ground-floor office
-    add('choco_office', W_.boss(), [[3, 0, 6, 'think', Math.PI], [5.5, 2, 4, 'arms_crossed', 0]]);
-    // Workers' Café: barista + customers chatting
-    add('workers_cafe', W_.barista(), [[0, -2.6, 6, 'stir', Math.PI], [1.6, -2.6, 4, 'give', 0]]);
-    add('workers_cafe', W_.crew(0x8b5cf6), [[-2.6, 1.2, 12, 'talk', Math.PI / 2]]);
-    add('workers_cafe', W_.chocolatier(0x7a4426), [[-1.4, 1.2, 12, 'talk', -Math.PI / 2]]);
-    add('workers_cafe', W_.engineer(0x22c55e), [[2.8, 2.2, 10, 'talk', Math.PI]]);
     // the station: ticket clerk + passengers waiting for the train (station frame: world axes; platform top 0.5)
     add('express_station', W_.clerk(), [[-8.4, -0.4, 10, 'talk', 0]]);
     for (let i = 0; i < 4; i++) add('express_station', W_.visitor(i), [[-2 + i * 2.6, 1.2 + (i % 2) * 0.6, 8 + i, i % 2 ? 'talk' : 'idle', Math.PI * 0.05]]);
@@ -123,22 +88,81 @@
     // the gate guard, waving at visitors
     // visitors strolling around the Main Plaza (between the benches and the lamps)
     for (let i = 0; i < 6; i++) { const R = G.plaza.r * 0.71, a0 = i / 6 * Math.PI * 2, pts = []; for (let k = 0; k < 10; k++) { const a = a0 + (k / 10) * Math.PI * 2 * (i % 2 ? 1 : -1); pts.push([Math.sin(a) * R, Math.cos(a) * R, k % 5 === 4 ? 3 : 0.01, k % 5 === 4 ? 'talk' : 'idle']); } add('main_plaza', W_.visitor(i + 1), pts.map((p) => [p[0], p[1] + 0, p[2], p[3]]), { speed: 0.95 }); }
-    // ---- first floor ----
-    add('executive_office', W_.boss(), [[0, -3.5, 8, 'think', Math.PI], [3, -1, 5, 'arms_crossed', Math.PI / 2], [-2, 1, 4, 'hip_point_front', 0]]);
-    add('control_room_f1', W_.operator(), [[-3, -2.5, 12, 'type', Math.PI]]); add('control_room_f1', W_.operator(0x0ea5e9), [[3, -2.5, 12, 'type', Math.PI]]);
-    add('security_center', W_.guard(), [[0, -2.5, 10, 'type', Math.PI], [2, 1.5, 4, 'think', Math.PI / 2]]);
-    add('meeting_hall', W_.boss(), [[0, -4, 10, 'talk', 0], [1.5, -4, 6, 'point', 0]]);
-    for (let i = 0; i < 4; i++) add('meeting_hall', W_.visitor(i + 2), [[-3 + i * 2, 1.5, 12, i % 2 ? 'idle' : 'think', Math.PI]]);
-    add('quality_lab', W_.scientist(0xfacc15), [[-2, -2, 6, 'give', Math.PI], [2, -2, 6, 'count', Math.PI]]);
-    add('quality_lab', W_.chocolatier(0x8a5a3a), [[1.5, 1.5, 9, 'talk', Math.PI]]);
-    add('innovation_lab', W_.scientist(0x14b8a6), [[-1.5, -2, 5, 'think', Math.PI], [1.5, 1, 5, 'point', Math.PI / 2]]);
-    add('training_room', W_.trainer(), [[0, -3.2, 10, 'point', 0], [1.5, -3.2, 6, 'talk', 0]]);
-    for (let i = 0; i < 3; i++) add('training_room', W_.crew(C[i]), [[-2 + i * 2, 1, 12, 'think', Math.PI]]);
-    add('first_aid', W_.nurse(), [[-2.5, -1.5, 4, 'give', Math.PI], [2.5, -1.5, 4, 'count', Math.PI], [0, 2.5, 3, 'idle']]);
-    add('archive_room', W_.clerk(), [[-2, -2.5, 3, 'carry_idle'], [2, -2.5, 3, 'carry_idle'], [0, 2, 2, 'carry_idle']], { hold: 'files', walkClip: 'carry' });
-    add('recipe_library', W_.trainer(), [[4, 2, 6, 'think', Math.PI], [9, 3, 5, 'count', Math.PI / 2]]);
-    add('hall_of_fame', W_.visitor(0), [[-2, -1, 6, 'point', Math.PI], [2, -1, 6, 'think', Math.PI]]);
     { const B = F.balcony, gz0 = B.glass.z0 - (B.z0 + B.z1) / 2; for (let i = 0; i < 4; i++) add('observation_balcony', W_.visitor(i + 3), [[-20 + i * 12, gz0 - 1.5, 9, i % 2 ? 'point' : 'idle', 0], [-14 + i * 12, gz0 - 1.5, 6, 'talk', 0]], { speed: 0.8 }); }
+
+    // ---------------- jobs: every worker stands at a real machine / desk in their room and works it ----------------
+    const roomRect = (at) => { const b = bld(at); if (b) return { x0: b.x - b.w / 2, x1: b.x + b.w / 2, z0: b.z - b.d / 2, z1: b.z + b.d / 2, y: 0.13 }; const r = room(at); if (r) return { x0: r.x0, x1: r.x1, z0: r.z0, z1: r.z1, y: F.y }; return null; };
+    const usedP = new Set(), usedS = new Set(), missed = [];
+    function findProp(at, re) { const R = roomRect(at); if (!R) return null; const cx = (R.x0 + R.x1) / 2, cz = (R.z0 + R.z1) / 2;
+      const list = (W.placed || []).filter((q) => re.test(q.id) && !usedP.has(q) && q.obj.visible !== false && q.x > R.x0 && q.x < R.x1 && q.z > R.z0 && q.z < R.z1 && Math.abs(q.y - R.y) < 1.2).sort((a2, b2) => Math.hypot(a2.x - cx, a2.z - cz) - Math.hypot(b2.x - cx, b2.z - cz));
+      if (!list.length) return null; usedP.add(list[0]); return { q: list[0], R }; }
+    function standBy(f, gap = 0.55) { const { q, R } = f, fx = Math.sin(q.ry), fz = Math.cos(q.ry), rx = Math.cos(q.ry), rz = -Math.sin(q.ry);
+      for (const side of [1, -1]) for (const [axis, lat] of [[0, 0], [0, 0.8], [0, -0.8], [1, 0]]) { const d = (axis ? q.hx : q.hz) + gap, x = axis ? q.x + rx * d * side : q.x + fx * d * side + rx * lat, z = axis ? q.z + rz * d * side : q.z + fz * d * side + rz * lat;
+        if (x < R.x0 + 0.5 || x > R.x1 - 0.5 || z < R.z0 + 0.5 || z > R.z1 - 0.5) continue; const t = { x, z }; W.push(t, 0.3, R.y, 1.1, 0.42); if (Math.hypot(t.x - x, t.z - z) < 0.05) return { x, z, face: Math.atan2(q.x - x, q.z - z) }; }
+      return null; }
+    function spawnAt(R, kind, look, stops, o = {}) {
+      const ch = kind === 'exp' ? ZCharacters.explorer({ preset: look }) : ZCharacters.toon(look); ch.group.traverse((m) => { if (m.isMesh) { m.castShadow = true; m.userData.dynamic = true; } }); ch.group.userData.dynamic = true;
+      if (o.hold && kind !== 'exp') { const hh = HOLD[o.hold](); if (o.hold === 'crate' || o.hold === 'tray' || o.hold === 'files') { hh.position.set(0, o.hold === 'tray' ? 0.62 : 0.5, 0.26); ch.group.add(hh); } else ch.hold(hh, 'R'); }
+      const floor = R.y > 9 ? 'first' : 'ground'; W.floors[floor].add(ch.group);
+      const P = { ch, stops, i: 0, x: stops[0].x, z: stops[0].z, y: R.y, yaw: stops[0].face ?? 0, wait: stops[0].wait * rnd(), walking: false, speed: o.speed || 0.95, walkClip: o.walkClip || 'walk', floorY: floor === 'first' ? F.y : 0, fr: null, seat: o.seat };
+      if (o.seat) { ch.setSeat(o.seat.h); P.fixedY = o.seat.y; }
+      P.ch.play(stops[0].clip, { instant: true }); if (kind === 'exp') P.ch.setExpression(o.expr || 'smile', true); crew.push(P); place(P); return P;
+    }
+    function job(at, kind, look, specs, o = {}) {   // specs: [[regex, clip, seconds], …] — one stop at each machine found
+      const stops = []; let R = null;
+      for (const [re, clip, wait] of specs) { const f = findProp(at, re); if (!f) continue; const sp = standBy(f); if (!sp) continue; R = f.R; stops.push({ x: sp.x, z: sp.z, wait, clip, face: sp.face }); }
+      if (stops.length) spawnAt(R, kind, look, stops, o); else missed.push(at + ':' + specs.map((q) => q[0].source).join(','));
+    }
+    function sitIn(at, looks, near, clip = 'sit') {   // people sitting on the room's real chairs / benches / sofas (closest to `near` first: the front rows)
+      const R = roomRect(at); if (!R) return; const seats = (W.seats || []).filter((st) => !usedS.has(st) && st.x > R.x0 && st.x < R.x1 && st.z > R.z0 && st.z < R.z1 && Math.abs(st.y - R.y) < 1.2);
+      const fp = near && (W.placed || []).find((q) => near.test(q.id) && q.x > R.x0 && q.x < R.x1 && q.z > R.z0 && q.z < R.z1);
+      if (fp) seats.sort((a2, b2) => Math.hypot(a2.x - fp.x, a2.z - fp.z) - Math.hypot(b2.x - fp.x, b2.z - fp.z));
+      const stride = fp ? 1 : Math.max(1, Math.floor(seats.length / looks.length)), skip = fp ? 2 : 0;   // leave the very front seats free for the kid
+      looks.forEach((look, i) => { const st = seats[skip + i * stride + (fp && i % 3 === 2 ? 1 : 0) + Math.floor(i / 3) * (fp ? 1 : 0)]; if (!st) { missed.push(at + ':seat'); return; } usedS.add(st); st.taken = true; spawnAt(R, 'toon', look, [{ x: st.x, z: st.z, wait: 1e9, clip, face: st.ry }], { seat: st }); });
+    }
+    const TN = 'toon', XP = 'exp';
+    // ground floor
+    job('chocolate_kitchen', TN, W_.chocolatier(C[0]), [[/cfl_choco_mixer|cf_choco_vat/, 'stir', 12]]);
+    job('chocolate_kitchen', TN, W_.chocolatier(C[1]), [[/cf_choco_vat|cfl_choco_mixer/, 'stir', 12]]);
+    job('chocolate_kitchen', TN, W_.chocolatier(C[2]), [[/cf_tempering_table|cf_choco_mold_rack/, 'give', 6], [/cfl_conveyor|cf_choco_bar_conveyor/, 'give', 6]], { hold: 'tray', walkClip: 'carry' });
+    job('cookie_bakery', XP, 'ben', [[/cfl_cookie_oven|cf_brick_oven/, 'carry_idle', 6], [/cf_cookie_display|cf_cookie_rack/, 'carry_idle', 5]], { walkClip: 'carry' });
+    job('cookie_bakery', XP, 'ollie', [[/cf_dough_table|cf_stand_mixer/, 'stir', 14]], { expr: 'focused' });
+    job('cookie_bakery', TN, W_.baker(), [[/cfl_cookie_printer|cf_brick_oven/, 'type', 10]]);
+    job('candy_lab', XP, 'lulu', [[/cfl_candy_machine|cf_lollipop_press/, 'give', 8], [/cf_swirl_machine|cf_gumball_machine/, 'count', 6]]);
+    job('candy_lab', TN, W_.scientist(0xec4899), [[/cf_lab_bench|cf_syrup_tubes/, 'stir', 12]]);
+    job('candy_lab', TN, W_.scientist(0x8b5cf6), [[/cf_syrup_tubes|cf_candy_shelf|cf_lab_bench/, 'type', 10]]);
+    job('marshmallow_workshop', TN, W_.chocolatier(0xf9a8d4), [[/cfl_marshmallow_fluffer|cf_marshmallow_puffer/, 'give', 10]]);
+    job('marshmallow_workshop', TN, W_.crew(0xf472b6), [[/cf_marshmallow_conveyor|cf_marshmallow_pile/, 'carry_idle', 4], [/cf_marshmallow_sack|cf_marshmallow_puffer/, 'carry_idle', 4]], { hold: 'crate', walkClip: 'carry' });
+    job('ingredient_warehouse', XP, 'penny', [[/cfl_packing_machine/, 'give', 10]]);
+    job('ingredient_warehouse', TN, W_.crew(), [[/cf_storage_rack|cf_pallet_sacks/, 'carry_idle', 3], [/cfl_ingredient_elevator|cf_crate_stack/, 'carry_idle', 3]], { hold: 'crate', walkClip: 'carry', speed: 1.2 });
+    job('machine_workshop', XP, 'tink', [[/cf_workbench/, 'hammer', 12]], { expr: 'focused' });
+    job('machine_workshop', TN, W_.engineer(), [[/cf_robot_arm|cf_pump_machine/, 'type', 10]]);
+    job('machine_workshop', TN, W_.engineer(0xf97316), [[/cf_workbench|cf_tool_cabinet/, 'hammer', 10]], { hold: 'wrench' });
+    job('control_room', TN, W_.operator(), [[/cf_control_desk|cf_lever_panel/, 'type', 15]]);
+    job('control_room', TN, W_.operator(0x7c3aed), [[/cf_control_desk|cf_big_monitor/, 'type', 15]]);
+    job('choco_office', TN, W_.boss(), [[/cf_boss_desk/, 'type', 12], [/cf_bookshelf|cf_trophy_cabinet/, 'think', 6]]);
+    job('workers_cafe', TN, W_.barista(), [[/cf_coffee_machine|cf_cafe_counter|cf_hot_choco_dispenser/, 'stir', 10]]);
+    for (let i = 0; i < 3; i++) job('workers_cafe', TN, W_.visitor(i + 4), [[/cf_cafe_table_set/, 'talk', 12]]);
+    // first floor
+    job('control_room_f1', TN, W_.operator(), [[/cf1_control_console/, 'type', 15]]); job('control_room_f1', TN, W_.operator(0x0ea5e9), [[/cf1_control_console/, 'type', 15]]);
+    job('security_center', TN, W_.guard(), [[/cf1_monitor_wall|cf1_control_console/, 'type', 12], [/cf1_map_board/, 'think', 6]]);
+    job('quality_lab', XP, 'vanilla', [[/cfl_conveyor|cf1_mini_conveyor/, 'think', 8], [/cf1_tasting_table/, 'count', 6]], { expr: 'focused' });
+    job('quality_lab', TN, W_.scientist(0xfacc15), [[/cf1_microscope_bench|cf1_scale_table|cf1_sample_rack/, 'type', 12]]);
+    job('innovation_lab', XP, 'nibbles', [[/cf1_flask_bench|cf1_bubble_tank/, 'stir', 10], [/cf1_holo_table/, 'point', 6]], { expr: 'excited' });
+    job('innovation_lab', TN, W_.scientist(0x14b8a6), [[/cf1_invention_machine|cf1_tesla_coil/, 'type', 12]]);
+    job('recipe_library', TN, W_.trainer(), [[/cf1_bookshelf$|cf1_bookshelf_b/, 'point', 6], [/cf1_drafting_table|cf1_archive_boxes/, 'count', 6]]);
+    job('training_room', TN, W_.trainer(), [[/cf1_whiteboard|cf1_practice_machine/, 'point', 12]]);
+    job('first_aid', TN, W_.nurse(), [[/cf1_med_cabinet/, 'give', 6], [/cf1_med_bed/, 'count', 6]]);
+    job('archive_room', TN, W_.clerk(), [[/cf1_filing_cabinet/, 'count', 6], [/cf1_archive_shelf/, 'carry_idle', 5]], { hold: 'files', walkClip: 'carry' });
+    job('executive_office', TN, W_.boss(), [[/cf1_exec_desk/, 'type', 14], [/cf1_bookshelf|cf1_trophy_shelf/, 'think', 6]]);
+    job('meeting_hall', TN, W_.boss(), [[/cf1_podium|cf1_stage_screen/, 'talk', 14]]);
+    job('hall_of_fame', TN, W_.visitor(0), [[/cf1_pedestal/, 'point', 6], [/cf1_cocoa_statue/, 'think', 6]]);
+    sitIn('meeting_hall', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (i % 3 === 1 ? W_.crew(C[i % 3]) : i % 3 === 2 ? W_.chocolatier(C[i % 3]) : W_.visitor(i))), /cf1_podium|cf1_stage_screen/);
+    [W_.crew(C[0]), W_.crew(C[1]), W_.chocolatier(0xf9a8d4)].forEach((lk) => job('training_room', TN, lk, [[/cf1_training_desk/, 'type', 1e9]]));
+    job('training_room', TN, W_.crew(C[2]), [[/cf1_practice_machine/, 'hammer', 1e9]]);
+    sitIn('recipe_library', [W_.visitor(2), W_.scientist(0x7c3aed)]);
+    sitIn('executive_office', [W_.visitor(1)]);
+    sitIn('first_aid', [W_.crew(0x8b5cf6)]);
 
     // ---------------- living creatures (creature sheet) ----------------
     const life = [];
@@ -165,9 +189,23 @@
       const R = L.under.rooms.find((r) => r.id === 'chocolate_reservoir'), pl = R.pool, cx = (pl.x0 + pl.x1) / 2, cz = (pl.z0 + pl.z1) / 2;
       for (let i = 0; i < 4; i++) { const rx = (pl.x1 - pl.x0) / 2 - 2 - i, rz = (pl.z1 - pl.z0) / 2 - 1.5 - i * 0.4; critter('chocolate_fish', 'under', (L, dt) => { L.t += dt; const a = L.t * 0.25 + i * 1.6; L.c.group.position.set(cx + Math.cos(a) * rx, R.y - 0.4, cz + Math.sin(a) * rz); L.c.group.rotation.y = Math.atan2(-Math.sin(a) * rx, Math.cos(a) * rz); L.c.play('swim'); }); } }
 
+    // customers at every treat stall (the sellers stand behind the counters, from the island)
+    for (const st of (W.placed || []).filter((p) => p.id.startsWith('stall_'))) {
+      const fx = Math.sin(st.ry), fz = Math.cos(st.ry), rx = Math.cos(st.ry), rz = -Math.sin(st.ry), n = 2;
+      for (let k = 0; k < n; k++) {
+        const off = (k - (n - 1) / 2) * 1.3, x = st.x + fx * (st.hz + 1.3) + rx * off, z = st.z + fz * (st.hz + 1.3) + rz * off, face = st.ry + Math.PI;
+        const awayX = x + fx * 6 + rx * (k ? 4 : -4), awayZ = z + fz * 6 + rz * (k ? 4 : -4);
+        const fr = { floor: 'ground', ry: 0, w: 1, d: 1, to: (a2, b2) => [a2, b2] };
+        const look = W_.visitor(Math.floor(rnd() * 9)), ch = ZCharacters.toon(look); ch.group.traverse((m) => { if (m.isMesh) { m.castShadow = true; m.userData.dynamic = true; } }); ch.group.userData.dynamic = true; W.floors.ground.add(ch.group);
+        const stops = [{ x, z, wait: 7 + rnd() * 6, clip: k ? 'give' : 'talk', face }, { x: awayX, z: awayZ, wait: 4 + rnd() * 4, clip: 'idle', face: null }];
+        const P = { ch, stops, i: 0, x, z, y: 0, yaw: face, wait: rnd() * 6, walking: false, speed: 0.9, walkClip: 'walk', floorY: 0, fr }; P.ch.play(stops[0].clip, { instant: true }); crew.push(P); place(P); void fr;
+      }
+    }
+
     const NEAR = 60;
     return {
       list: crew,
+      missed,
       life,
       update(t, dt, player) {
         for (const L of life) { const g = L.c.group, p = g.position; const on = !player || ((L.floor === 'under') === (player.y < -3) && Math.hypot(p.x - player.x, p.z - player.z) < 55); g.visible = on; if (!on && L.s.at !== undefined && !L.s.fly) continue; L.step(L, dt); if (on) L.c.update(dt); }
