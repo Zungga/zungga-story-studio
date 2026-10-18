@@ -309,7 +309,8 @@ route('POST', '/api/world-notes/:id', async (req, q, m) => {
 // sound mixer defaults (Walk the World → Mixer → Save): studio/assets/mix.json, in git so they ship as the defaults
 route('GET', '/api/mix', async () => readJSON(P('studio/assets/mix.json'), {}));
 route('PUT', '/api/mix', async (req) => { const b = await jsonBody(req), cur = readJSON(P('studio/assets/mix.json'), {}), clean = (o) => Object.fromEntries(Object.entries(o || {}).filter(([, v]) => typeof v === 'number' && v >= 0 && v <= 3).map(([k, v]) => [k, Math.round(v * 100) / 100]));
-  const next = { ...cur, world: { ...(cur.world || {}), ...clean(b.world) }, video: { ...(cur.video || {}), ...clean(b.video) }, saved: new Date().toISOString() }; writeJSON(P('studio/assets/mix.json'), next); return next; });
+  const camClean = (o) => Object.fromEntries(Object.entries(o || {}).filter(([, v]) => typeof v === 'number' && Math.abs(v) <= 360).map(([k, v]) => [k, Math.round(v * 100) / 100]));
+  const next = { ...cur, world: { ...(cur.world || {}), ...clean(b.world) }, video: { ...(cur.video || {}), ...clean(b.video) }, ...(b.camera ? { camera: { ...(cur.camera || {}), ...camClean(b.camera) } } : {}), saved: new Date().toISOString() }; writeJSON(P('studio/assets/mix.json'), next); return next; });
 route('GET', '/api/settings', async () => settings());
 route('PUT', '/api/settings', async (req) => { const b = await jsonBody(req); const cur = readJSON(SETTINGS, {}); writeJSON(SETTINGS, deepMerge(cur, b)); return settings(); });
 route('POST', '/api/settings/reset', async () => { fs.rmSync(SETTINGS, { force: true }); return settings(); });

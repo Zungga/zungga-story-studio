@@ -31,6 +31,9 @@
   #mixer { position: fixed; right: 14px; top: 312px; bottom: 64px; width: 340px; overflow: auto; background: var(--panel); border-radius: 16px; box-shadow: 0 12px 40px rgba(30, 20, 60, 0.3); padding: 12px 14px; z-index: 7; display: none; }
   #mixer h3 { margin: 10px 0 4px; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; } #mixer .r { display: grid; grid-template-columns: 1fr 130px 40px; align-items: center; gap: 6px; font-size: 13px; padding: 2px 0; }
   #mixer input[type=range] { width: 100%; accent-color: #7c3aed; } #mixer .v { text-align: right; color: var(--muted); font-size: 12px; } #mixer .r.live b { color: #16a34a; }
+  #camBtn { position: fixed; bottom: 14px; right: 340px; z-index: 6; border: 0; border-radius: 12px; padding: 9px 14px; background: #fff; color: var(--p); font: 600 14px Fredoka, system-ui; cursor: pointer; box-shadow: 0 6px 20px rgba(30, 20, 60, 0.25); }
+  #camPanel { position: fixed; right: 14px; top: 312px; width: 340px; background: var(--panel); border-radius: 16px; box-shadow: 0 12px 40px rgba(30, 20, 60, 0.3); padding: 12px 14px; z-index: 7; display: none; }
+  #camPanel .r { display: grid; grid-template-columns: 1fr 130px 46px; align-items: center; gap: 6px; font-size: 13px; padding: 2px 0; } #camPanel input[type=range] { width: 100%; accent-color: #7c3aed; } #camPanel .v { text-align: right; color: var(--muted); font-size: 12px; }
   #fps { position: fixed; top: 8px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #fff; text-shadow: 0 1px 2px #000; pointer-events: none; }
 </style></head>
 <body>
@@ -44,6 +47,8 @@
 <div id="fps"></div>
 <button id="menuBtn">☰ Places &amp; checklist</button>
 <button id="mixBtn">🔊 Mixer</button>
+<button id="camBtn">🎥 Camera</button>
+<div id="camPanel"></div>
 <div id="mixer"></div>
 <div id="panel"></div>
 <div id="noteBox"><b>Note at this spot</b><p style="margin:4px 0 8px;color:#6b6480;font-size:13px" id="noteWhere"></p><textarea id="noteText" placeholder="e.g. this wall is missing, make the vat bigger…"></textarea><div class="btns"><button id="noteSave">Save note</button><button class="ghost" id="noteCancel">Cancel</button></div></div>
@@ -128,7 +133,20 @@
     $('#mixReset').onclick = () => { for (const k of Object.keys(MIX_LABEL)) MIX.world[k] = k === 'master' ? 0.8 : 1; for (const k of Object.keys(VID_LABEL)) MIX.video[k] = 1; audio.mix = MIX.world; renderMixer(); };
     $('#mixClose').onclick = () => { $('#mixer').style.display = 'none'; };
   }
-  $('#mixBtn').onclick = () => { const m = $('#mixer'); m.style.display = m.style.display === 'block' ? 'none' : 'block'; if (m.style.display === 'block') { audio.start(); renderMixer(); } };
+  // ---------- camera: move the view in every way, save it as the default (studio/assets/mix.json → camera) ----------
+  const CAM_UI = [['back', 'Distance behind', 1.5, 14, 0.1, 'm'], ['up', 'Height', 0.3, 8, 0.05, 'm'], ['look', 'Look at height', 0.2, 3, 0.05, 'm'], ['ahead', 'Look ahead', 0, 10, 0.1, 'm'], ['side', 'Side offset (− left / + right)', -3, 3, 0.05, 'm'], ['orbit', 'Angle around the kid', -180, 180, 1, '°'], ['stiff', 'Follow speed', 1, 20, 0.5, ''], ['fov', 'Field of view', 30, 95, 1, '°']];
+  if (MIX.camera) walker.setCam(MIX.camera);
+  function renderCam() {
+    $('#camPanel').innerHTML = `<b style="font-size:16px">Camera</b><div style="font-size:12px;color:#6b6480">Move the sliders while walking. Save makes this the default view.</div>` + CAM_UI.map(([k, label, min, max, st, u]) => `<div class="r"><span>${label}</span><input type="range" min="${min}" max="${max}" step="${st}" value="${walker.cam[k]}" data-k="${k}"><span class="v">${(+walker.cam[k]).toFixed(st < 1 ? 1 : 0)}${u}</span></div>`).join('')
+      + `<div class="btns"><button id="camSave">Save as default</button><button class="ghost" id="camReset">Reset</button><button class="ghost" id="camClose">Close</button></div><div id="camMsg" style="font-size:12px;color:#6b6480;margin-top:6px"></div>`;
+    $('#camPanel').querySelectorAll('input[type=range]').forEach((el) => el.oninput = () => { walker.setCam({ [el.dataset.k]: +el.value }); const d = CAM_UI.find((c) => c[0] === el.dataset.k); el.nextElementSibling.textContent = (+el.value).toFixed(d[4] < 1 ? 1 : 0) + d[5]; });
+    if (!STUDIO) { $('#camSave').style.display = 'none'; $('#camMsg').textContent = 'Changes last for this visit.'; }
+    $('#camSave').onclick = async () => { try { const camera = {}; for (const [k] of CAM_UI) camera[k] = +walker.cam[k]; const r = await fetch('/api/mix', { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ camera }) }); if (!r.ok) throw new Error(); MIX = { ...MIX, ...(await r.json()) }; $('#camMsg').textContent = 'Saved ✓ — studio/assets/mix.json'; toast('Camera saved'); } catch { $('#camMsg').textContent = 'Could not save (is the studio server running?)'; } };
+    $('#camReset').onclick = () => { walker.setCam(walker.CAM_DEFAULTS); renderCam(); };
+    $('#camClose').onclick = () => { $('#camPanel').style.display = 'none'; };
+  }
+  $('#camBtn').onclick = () => { const m = $('#camPanel'); m.style.display = m.style.display === 'block' ? 'none' : 'block'; $('#mixer').style.display = 'none'; if (m.style.display === 'block') renderCam(); };
+  $('#mixBtn').onclick = () => { $('#camPanel').style.display = 'none'; const m = $('#mixer'); m.style.display = m.style.display === 'block' ? 'none' : 'block'; if (m.style.display === 'block') { audio.start(); renderMixer(); } };
   setInterval(() => { if ($('#mixer').style.display === 'block' && !$('#mixer').matches(':hover')) renderMixer(); }, 1500);   // refresh the ● "playing here" marks
 
   const BED_OF = { chocolate_kitchen: 'vats', machine_workshop: 'machines', control_room: 'beeps', control_room_f1: 'beeps', security_center: 'beeps', cookie_bakery: 'bakery', workers_cafe: 'cafe', candy_lab: 'lab', innovation_lab: 'lab', quality_lab: 'lab', marshmallow_workshop: 'puff', ingredient_warehouse: 'warehouse', meeting_hall: 'cafe', training_room: 'cafe', machinery_hall: 'machines', secret_chamber: 'magic', recipe_vault: 'magic' };
@@ -278,7 +296,7 @@
   }
   function frame(now) {
     const dt = Math.min(0.05, (now - last) / 1000); last = now; if (paused) { requestAnimationFrame(frame); return; } time += dt;
-    walker.update(dt); W.update(time, dt, walker.pos); updateAudio(dt); if ((cullT += dt) > 0.25) { cullT = 0; W.cull(camera.position, walker.mode === 'free' ? 80 : 55); } if (crowd) crowd.update(time, dt, walker.mode === 'free' ? camera.position : walker.pos);
+    walker.update(dt); W.update(time, dt, walker.pos); updateAudio(dt); if ((cullT += dt) > 0.25) { cullT = 0; W.cull(camera.position, walker.mode === 'free' ? 80 : 55); } if (crowd) crowd.update(time, dt, walker.mode === 'free' ? camera.position : walker.pos); updateDropped(dt);
     const ref = walker.mode === 'free' ? camera.position : walker.pos;
     applyFloor(floorOf(walker.mode === 'free' ? camera.position.y : walker.pos.y));
     sun.position.set(ref.x + 30, ref.y + 60, ref.z + 22); sun.target.position.set(ref.x, ref.y, ref.z); sun.target.updateMatrixWorld();
@@ -295,17 +313,43 @@
   // ---------- the school bus: arriving from the island (?from=island&back=…) and riding back ----------
   const backURL = q.get('back');
   addEventListener('zworld-bus', () => { if (backURL) { toast('All aboard! Back to the island 🚌'); audio.play('whistle', 1); setTimeout(() => { location.href = backURL; }, 1300); } else toast('This bus goes to the island — open Play mode on the resume site to ride it 🚌'); });
+  const dropped = [];   // kids the bus drops off (they walk into the factory)
   if (q.get('from') === 'island' && W.busStop) {
-    const B = L.bounds, stopZ = B.z1 - 8;
-    walker.teleport([W.busStop.x + 2.5, 0.05, W.busStop.z - 3], 0);   // facing the gate: watch the bus roll in
+    const B = L.bounds, stopZ = B.z1 - 8, laneX = -1.6, doorX = laneX + 1.9;
     let bus = null;
     if (ZAssets.has('school_bus')) { bus = ZAssets.build('school_bus').group; bus.updateMatrixWorld(true); const bb = new T.Box3().setFromObject(bus), sx = bb.max.x - bb.min.x, sz = bb.max.z - bb.min.z; const k = 9 / Math.max(sx, sz); bus.scale.multiplyScalar(k); if (sx > sz) bus.rotation.y = Math.PI / 2; }
     else { bus = new T.Group(); const m = new T.Mesh(new T.BoxGeometry(2.5, 2.8, 9.5), new T.MeshStandardMaterial({ color: 0xfacc15 })); m.position.y = 1.6; bus.add(m); }
-    bus.traverse((o) => { if (o.isMesh) o.castShadow = true; }); W.floors.ground.add(bus);
-    const t0 = performance.now(), path = (t) => { if (t < 4) { const k = t / 4, e = 1 - (1 - k) * (1 - k); return B.z1 + 70 - (B.z1 + 70 - stopZ) * e; } if (t < 7) return stopZ; const k = (t - 7) / 5; return stopZ + k * k * 90; };
-    bus.position.set(-1.6, 0, B.z1 + 70);
-    (function busAnim() { const t = (performance.now() - t0) / 1000; bus.position.z = path(t); bus.rotation.y = (bus.rotation.y % Math.PI) || 0; for (const D of W.busGate || []) D.want = t < 11 ? 1 : D.want; if (t < 13) requestAnimationFrame(busAnim); else bus.parent && bus.parent.remove(bus); })();
-    setTimeout(() => { toast('Welcome to the Zungga Chocolate Factory! 🍫'); audio.play('chime', 1); }, 4200);
+    bus.traverse((o) => { if (o.isMesh) o.castShadow = true; }); W.floors.ground.add(bus); bus.position.set(laneX, 0, B.z1 + 70);
+    const busCol = W.frame('ground', laneX, stopZ, 0).col(2.8, 3.2, 9.8, 0, 0, 0); busCol.on = false;   // the parked bus is solid
+    // watch it arrive from beside the stop; you are on the bus (hidden) until it stops
+    kid.group.visible = false; walker.setInput({ f: 0, r: 0, run: false });
+    walker.view([doorX + 8, 2.4, stopZ - 7], [laneX, 1.3, stopZ + 8]);
+    const others = ['friend_boy', 'friend_girl', 'best_friend'];
+    const t0 = performance.now(), zAt = (t) => { if (t < 4) { const k = t / 4, e = 1 - (1 - k) * (1 - k); return B.z1 + 70 - (B.z1 + 70 - stopZ) * e; } if (t < 9) return stopZ; const k = (t - 9) / 5; return stopZ + k * k * 90; };
+    let stage = 0;
+    (function busAnim() {
+      const t = (performance.now() - t0) / 1000; bus.position.z = zAt(t);
+      for (const D of W.busGate || []) D.want = t < 13 ? 1 : D.want;
+      busCol.on = t >= 3.9 && t < 9;
+      if (stage === 0 && t >= 4.4) {   // the door opens: you step off
+        stage = 1; if (walker.mode === 'free') walker.toggleFree(); walker.teleport([doorX, 0.05, stopZ + 1.2], Math.PI / 2); kid.group.visible = true; walker.setInput({ f: 1, r: 0, run: false });
+        setTimeout(() => walker.setInput(null), 2200); toast('Welcome to the Zungga Chocolate Factory! 🍫'); audio.play('chime', 1);
+      }
+      if (stage >= 1 && stage <= others.length && t >= 4.9 + stage * 0.9) {   // …and the other kids after you
+        const ch = ZCharacters.toon({ ...ZCharacters.TOON_PRESETS[others[stage - 1]] }); ch.group.traverse((o) => { if (o.isMesh) o.castShadow = true; }); W.floors.ground.add(ch.group);
+        const E = L.ground.entrance, n = stage, path = [[doorX + 1.6, stopZ + 1.2 - n * 0.3], [doorX + 3 + n, stopZ - 5], [E.outer.x + (n - 2) * 2.2, E.outer.z + E.outer.r + 1], [E.x + (n - 2) * 1.6, E.z + 4], [E.x + (n - 2) * 2.5, E.z - 8], [L.ground.plaza.x + (n - 2) * 3, L.ground.plaza.z + L.ground.plaza.ring[1] + 3]];
+        dropped.push({ ch, path, i: 0, x: doorX, z: stopZ + 1.2, yaw: Math.PI / 2 }); stage++;
+      }
+      if (t < 15) requestAnimationFrame(busAnim); else bus.parent && bus.parent.remove(bus);
+    })();
+  }
+  function updateDropped(dt) {
+    for (const d of dropped) {
+      const tgt = d.path[d.i];
+      if (tgt) { const dx = tgt[0] - d.x, dz = tgt[1] - d.z, dist = Math.hypot(dx, dz); if (dist < 0.2) d.i++; else { const sp = Math.min(dist, 1.3 * dt); d.x += dx / dist * sp; d.z += dz / dist * sp; d.yaw += Math.atan2(Math.sin(Math.atan2(dx, dz) - d.yaw), Math.cos(Math.atan2(dx, dz) - d.yaw)) * Math.min(1, dt * 8); } d.ch.play('walk'); }
+      else d.ch.play(d.i % 2 ? 'talk' : 'idle');
+      const y = W.support(d.x, d.z, 1, 1.2).y; d.ch.group.position.set(d.x, y > -50 ? y : 0, d.z); d.ch.group.rotation.y = d.yaw; d.ch.update(dt);
+    }
   }
   $('#loading').remove();
   // ---------- clearance audit: can the kid (r 0.35) walk from every door to the room centre? ----------

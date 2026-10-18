@@ -12,12 +12,13 @@
   'use strict';
   const T = THREE;
   const R = 0.3, H = 1.1, STEP = 0.42, SNAP = 0.55, G = 28, JUMP = 7.2, WALK = 2.8, RUN = 6, BACK = 0.6, ACC = 14, RUN_ACC = 18, TURN = 3.2, SWIM = 2.3, SWIM_FAST = 3.6;
-  const CAM = { back: 5.2, up: 1.45, look: 1.15 };   // the island's on-foot camera, a little lower (sees the kid from just above head height, not from the top)
+  const CAM0 = { back: 5.2, up: 1.45, look: 1.15, ahead: 4, side: 0, orbit: 0, stiff: 5, fov: 55 };   // the island's on-foot camera, a little lower; every value can be changed (Camera panel) and saved
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v)), wrap = (a) => Math.atan2(Math.sin(a), Math.cos(a));
 
   function create({ world, camera, dom, char, start = { x: 0, y: 0, z: 0, yaw: 0 }, onArea, onPrompt, onMode }) {
     const pos = new T.Vector3(start.x, start.y, start.z), vel = new T.Vector3(), keys = new Set();
-    let yaw = start.yaw || 0, camYaw = (start.yaw || 0) + Math.PI, camPitch = 0.32, camDist = 1, camD = CAM.back, speed = 0, steer = 0;
+    let yaw = start.yaw || 0, camYaw = (start.yaw || 0) + Math.PI, camPitch = 0.32, camDist = 1, camD = CAM0.back, speed = 0, steer = 0;
+    const CAM = { ...CAM0 };
     const LOOK = { pitch: 0, target: 0, yaw: 0, yawTarget: 0, drag: false, x: 0, y: 0 };   // drag-to-look, eased back on release
     let mode = 'walk', grounded = true, air = 0, slide = null, area = null, prompt = null, time = 0, visY = pos.y, swimSurf = 0;
     let safe = pos.clone(), safeT = 0, jumpQueued = false, useQueued = false;
@@ -121,15 +122,16 @@
         camera.position.copy(free.pos); camera.lookAt(free.pos.clone().add(d)); return;
       }
       // the island's chase camera: behind the facing, a little higher when running; eased; the drag-look turns it after
-      const base = mode === 'swim' ? swimSurf - 0.25 : visY, fx = Math.sin(yaw), fz = Math.cos(yaw), sp = Math.abs(speed);
+      const base = mode === 'swim' ? swimSurf - 0.25 : visY, ca = yaw + CAM.orbit * Math.PI / 180, fx = Math.sin(ca), fz = Math.cos(ca), rx = Math.cos(yaw), rz = -Math.sin(yaw), sp = Math.abs(speed);
       const back = CAM.back * camDist + sp * 0.08, up = CAM.up * Math.sqrt(camDist) + sp * 0.03;
       const head = new T.Vector3(pos.x, base + 0.95, pos.z);
-      const desired = new T.Vector3(pos.x - fx * back, base + up, pos.z - fz * back), target = new T.Vector3(pos.x + fx * 4, base + CAM.look, pos.z + fz * 4);
+      const desired = new T.Vector3(pos.x - fx * back - rx * CAM.side, base + up, pos.z - fz * back - rz * CAM.side), target = new T.Vector3(pos.x + fx * CAM.ahead - rx * CAM.side, base + CAM.look, pos.z + fz * CAM.ahead - rz * CAM.side);
+      if (Math.abs(camera.fov - CAM.fov) > 0.05) { camera.fov = CAM.fov; camera.updateProjectionMatrix(); }
       // never through walls / ceilings: pull the wanted spot in toward the head
       const dir = desired.clone().sub(head), dl = dir.length(); dir.normalize();
       const hit = world.ray(head, dir, dl + 0.3); if (hit < dl + 0.3) desired.copy(head).addScaledVector(dir, Math.max(0.5, hit - 0.35));
       if (!camInit) { camPos.copy(desired); camLook.copy(target); camInit = true; }
-      const k = 1 - Math.exp(-5 * dt); camPos.lerp(desired, k); camLook.lerp(target, k);
+      const k = 1 - Math.exp(-CAM.stiff * dt); camPos.lerp(desired, k); camLook.lerp(target, k);
       { const d2 = camPos.clone().sub(head), l2 = d2.length(); if (l2 > 0.01) { d2.normalize(); const h2 = world.ray(head, d2, l2 + 0.2); if (h2 < l2) camPos.copy(head).addScaledVector(d2, Math.max(0.4, h2 - 0.3)); } }
       camera.position.copy(camPos); camera.lookAt(camLook);
       const ease = 1 - Math.exp(-(LOOK.drag ? 18 : 4) * dt);
@@ -186,6 +188,7 @@
       },
       get camera() { return { yaw: camYaw, pitch: camPitch, dist: camDist }; },
       // test hooks: drive the walker without a keyboard
+      cam: CAM, CAM_DEFAULTS: CAM0, setCam(o) { Object.assign(CAM, o); },
       setInput(i) { forced = i; }, setCamYaw(y) { camYaw = y; }, setHeading(y) { yaw = y; steer = 0; }, jump() { jumpQueued = true; }, use() { useQueued = true; },
     };
     return api;

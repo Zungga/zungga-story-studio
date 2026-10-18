@@ -335,7 +335,7 @@
       for (const b of G.buildings) {
         const ry = { s: 0, n: Math.PI, e: Math.PI / 2, w: -Math.PI / 2 }[b.door], dd = (b.door === 'e' || b.door === 'w' ? b.w : b.d) / 2, f = c.frame(b.x, b.z, ry);
         for (const sx of [-1, 1]) { f.cyl(0.5, 0.42, 0.6, sx * 2.6, 0, dd + 0.9, 0x8a5a33, { seg: 14 }); f.prop(['flowers', 'bush'][(b.num + (sx > 0 ? 1 : 0)) % 2], sx * 2.6, 0.55, dd + 0.9, 0, 0.7, { col: false }); }
-        if (!b.round) { const aw = new T.Mesh(new T.CylinderGeometry(0.8, 0.8, 3.6, 18, 1, true, 0, Math.PI), new T.MeshStandardMaterial({ map: awnT, side: T.DoubleSide, roughness: 0.7 })); aw.rotation.set(0, 0, Math.PI / 2); aw.rotation.order = 'ZYX'; aw.position.set(0, 3.55 + 0.12, dd + 0.55); aw.scale.set(1, 1, 0.9); f.g.add(aw); }
+        if (!b.round) { const aw = new T.Mesh(new T.CylinderGeometry(0.5, 0.5, 3.4, 18, 1, true, 0, Math.PI), new T.MeshStandardMaterial({ map: awnT, side: T.DoubleSide, roughness: 0.7 })); aw.rotation.set(0, 0, Math.PI / 2); aw.rotation.order = 'ZYX'; aw.position.set(0, 3.32 + 0.12, dd + 0.4); /* just over the door, below the name board */ aw.scale.set(1, 1, 0.9); f.g.add(aw); }
       }
     }
 
@@ -376,7 +376,7 @@
       for (const sx of [-1, 1]) f.box(0.3, doorH + 0.3, 0.45, sx * (doorW / 2 + 0.15), 0.12, d / 2, trim, { col: false });
       f.box(doorW + 0.9, 0.35, 0.5, 0, 0.12 + doorH, d / 2, trim, { col: false });
       f.doubleDoor({ x: 0, y: 0.12, z: d / 2, w: doorW, h: doorH, color: b.roof, label: b.name });
-      const sg = new T.Mesh(new T.PlaneGeometry(Math.min(w - 1, 7), 0.9), new T.MeshStandardMaterial({ map: ZA.label(b.name.toUpperCase(), { w: 1024, h: 140, bg: '#3b0764', fg: '#ffd84a', size: 88, radius: 26 }), roughness: 0.6 })); sg.position.set(0, 0.12 + doorH + 0.9, d / 2 + 0.14); f.g.add(sg);
+      const sg = new T.Mesh(new T.PlaneGeometry(Math.min(w - 1, 7), 0.9), new T.MeshStandardMaterial({ map: ZA.label(b.name.toUpperCase(), { w: 1024, h: 140, bg: '#3b0764', fg: '#ffd84a', size: 88, radius: 26 }), roughness: 0.6 })); sg.position.set(0, 0.12 + doorH + 1.45, d / 2 + 0.14); f.g.add(sg); /* name board above the awning */
       // roof by style
       const roof = new T.Group(); f.g.add(roof); const rm = M(b.roof, { roughness: 0.6 }), top = h + 0.12;
       const flat = new T.Mesh(new T.BoxGeometry(w + 0.8, 0.35, d + 0.8), rm); flat.position.y = top + 0.17; flat.castShadow = true; roof.add(flat);
