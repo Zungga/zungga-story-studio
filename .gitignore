@@ -27,3 +27,10 @@ settings.local.json
 
 # rig test of an adult model — not for kids content, stays local
 studio/characters/glb/medic.glb
+
+# our own generated voices are real assets: the chosen reference clips + the story's Rio clips are kept in git
+# (the narrator stays local — it is cloned from someone else's recording, not ours to publish)
+!selected-voices/girl/*.wav
+!selected-voices/boy-calm/*.wav
+!selected-voices/boy-deep/*.wav
+!stories/pocket-money/voice/*.wav
