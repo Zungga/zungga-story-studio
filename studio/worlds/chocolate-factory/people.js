@@ -59,6 +59,31 @@
     }
     function place(P) { const s = W.support(P.x, P.z, P.floorY + 0.5, 0.8).y; P.y = s > -1e8 ? s : P.floorY; P.ch.group.position.set(P.x, P.y, P.z); P.ch.group.rotation.y = P.yaw; }
 
+    // the named workers of Zungga (worker sheet), in the Explorer look
+    function named(at, preset, route, o = {}) {
+      if (!ZCharacters.explorer || !ZCharacters.EXPLORER_PRESETS[preset]) return;
+      const fr = frameOf(at); if (!fr) return;
+      const ch = ZCharacters.explorer({ preset }); ch.group.traverse((m) => { if (m.isMesh) { m.castShadow = true; m.userData.dynamic = true; } }); ch.group.userData.dynamic = true;
+      W.floors[fr.floor].add(ch.group);
+      const stops = route.map(([x, z, wait = 2, clip = 'idle', face]) => { const [wx, wz] = fr.to(x, z); return { x: wx, z: wz, wait, clip, face: face == null ? null : face + fr.ry }; });
+      const P = { ch, stops, i: 0, x: stops[0].x, z: stops[0].z, y: 0, yaw: stops[0].face ?? 0, wait: stops[0].wait * rnd(), walking: false, speed: o.speed || 1.0, walkClip: o.walkClip || 'walk', floorY: fr.floor === 'first' ? F.y : 0, fr, name: preset };
+      P.ch.play(stops[0].clip, { instant: true }); P.ch.setExpression(o.expr || 'smile', true); crew.push(P); place(P);
+    }
+    // Rosie's reception desk just inside the main gate
+    { const E = G.entrance, f = W.frame('ground', E.x - E.gate / 2 - 4.5, E.z - 5, 0); f.box(2.6, 1.05, 0.9, -0, 0, 0, 0x6d28d9, { r: 0.08 }); f.box(2.8, 0.08, 1.05, 0, 1.05, 0, 0xfacc15, { col: false });
+      const sg = new T.Mesh(new T.PlaneGeometry(2.2, 0.45), new T.MeshStandardMaterial({ map: ZA.label('WELCOME TO ZUNGGA!', { w: 1024, h: 210, bg: '#fde68a', fg: '#3b0764', size: 110, radius: 30 }) })); sg.position.set(0, 0.6, 0.46); f.g.add(sg); }
+    { const E = G.entrance; named('main_entrance', 'rosie', [[-E.gate / 2 - 4.5, -6.3, 7, 'greet', 0], [-E.gate / 2 - 4.5, -6.3, 5, 'talk', 0]]); named('main_entrance', 'bruno', [[E.gate / 2 + 1.8, 4.5, 6, 'hands_on_hips', 0], [E.gate / 2 + 6, 6, 3, 'wave', 0], [E.gate / 2 + 1.8, 4.5, 4, 'arms_crossed', 0]], { expr: 'calm' }); }
+    named('cookie_bakery', 'ben', [[-2.6, -3.4, 4, 'carry_idle', Math.PI], [2.4, 1.6, 4, 'carry_idle', 0]], { walkClip: 'carry' });
+    named('cookie_bakery', 'ollie', [[2.2, -2.2, 12, 'stir', Math.PI]], { expr: 'focused' });
+    named('candy_lab', 'lulu', [[-1.5, -3.4, 6, 'give', Math.PI], [1.8, -3.0, 5, 'count', Math.PI]]);
+    named('ingredient_warehouse', 'penny', [[-2.6, -3.6, 5, 'carry_idle', Math.PI], [2.4, 0.5, 4, 'carry_idle', Math.PI / 2]], { walkClip: 'carry' });
+    named('machine_workshop', 'tink', [[1.6, -3.2, 9, 'hammer', Math.PI], [-1.5, -2.6, 5, 'think', Math.PI]], { expr: 'focused' });
+    named('choco_garden', 'moss', [[-7, 4, 3, 'give', Math.PI], [-7, -5, 3, 'give', 0], [-2, 1, 3, 'give', Math.PI / 2]]);
+    named('express_station', 'pip', [[-4, 1.6, 5, 'wave', 0.2], [5, 1.6, 4, 'point', 0.2], [0, 1.6, 4, 'wave', 0.1]]);
+    { const R = G.plaza.r * 0.52, pts = []; for (let k = 0; k < 8; k++) { const a = k / 8 * Math.PI * 2; pts.push([Math.sin(a) * R, Math.cos(a) * R, 4, 'sweep', a + Math.PI / 2]); } named('main_plaza', 'bubbles', pts, { speed: 0.6 }); }
+    named('innovation_lab', 'nibbles', [[-2, -2.6, 6, 'think', Math.PI], [2, -1.5, 5, 'give', Math.PI / 2]], { expr: 'excited' });
+    named('quality_lab', 'vanilla', [[0, -3.4, 8, 'think', Math.PI], [2, -3.4, 6, 'count', Math.PI]], { expr: 'focused' });
+
     // ---------------- who works where ----------------
     const C = [0x5b3420, 0x7a4426, 0x8a5a3a];
     // Chocolate Kitchen: three chocolatiers stirring the vats, one carrying moulds between the vats and the tables
@@ -66,7 +91,6 @@
     add('chocolate_kitchen', W_.chocolatier(C[1]), [[2.4, -2.2, 9, 'stir', Math.PI]]);
     add('chocolate_kitchen', W_.chocolatier(C[2]), [[0, 3.5, 2, 'carry_idle'], [0, -1, 2, 'carry_idle'], [-1.8, 0.5, 2, 'carry_idle']], { hold: 'tray', walkClip: 'carry' });
     // Cookie Bakery: a baker between the ovens and the counter, a cashier
-    add('cookie_bakery', W_.baker(), [[-2.5, -2.5, 3, 'give', Math.PI], [2.2, 1.5, 3, 'give', 0]], { hold: 'tray', walkClip: 'carry' });
     add('cookie_bakery', W_.baker(), [[1.5, -0.5, 6, 'talk', 0]]);
     // Candy Lab: two scientists
     add('candy_lab', W_.scientist(0xec4899), [[-2, -2.2, 5, 'think', Math.PI], [2, -2.2, 5, 'count', Math.PI]]);
@@ -94,11 +118,9 @@
     add('express_station', W_.clerk(), [[-8.4, -0.4, 10, 'talk', 0]]);
     for (let i = 0; i < 4; i++) add('express_station', W_.visitor(i), [[-2 + i * 2.6, 1.2 + (i % 2) * 0.6, 8 + i, i % 2 ? 'talk' : 'idle', Math.PI * 0.05]]);
     // garden: the gardener with a watering can on a stroll, two kids playing
-    add('choco_garden', W_.gardener(), [[-6, 3, 3, 'give', Math.PI], [-6, -4, 3, 'give', 0], [-1, 0.5, 3, 'give', Math.PI / 2]], { hold: 'can' });
     add('choco_garden', W_.visitor(4), [[-4, 4, 1, 'cheer'], [2, 4.5, 1, 'wave'], [-1, -5, 1, 'cheer']], { speed: 1.6, walkClip: 'run' });
     add('choco_garden', W_.visitor(5), [[2, 4.5, 1, 'wave'], [-1, -5, 1, 'cheer'], [-4, 4, 1, 'cheer']], { speed: 1.6, walkClip: 'run' });
     // the gate guard, waving at visitors
-    { const E = G.entrance; add('main_entrance', W_.guard(), [[(E.gate / 2 + 1.2), 4.2, 8, 'wave', 0], [(E.gate / 2 + 1.2), 4.2, 8, 'hands_on_hips', 0]]); }
     // visitors strolling around the Main Plaza (between the benches and the lamps)
     for (let i = 0; i < 6; i++) { const R = G.plaza.r * 0.71, a0 = i / 6 * Math.PI * 2, pts = []; for (let k = 0; k < 10; k++) { const a = a0 + (k / 10) * Math.PI * 2 * (i % 2 ? 1 : -1); pts.push([Math.sin(a) * R, Math.cos(a) * R, k % 5 === 4 ? 3 : 0.01, k % 5 === 4 ? 'talk' : 'idle']); } add('main_plaza', W_.visitor(i + 1), pts.map((p) => [p[0], p[1] + 0, p[2], p[3]]), { speed: 0.95 }); }
     // ---- first floor ----
@@ -118,10 +140,37 @@
     add('hall_of_fame', W_.visitor(0), [[-2, -1, 6, 'point', Math.PI], [2, -1, 6, 'think', Math.PI]]);
     { const B = F.balcony, gz0 = B.glass.z0 - (B.z0 + B.z1) / 2; for (let i = 0; i < 4; i++) add('observation_balcony', W_.visitor(i + 3), [[-20 + i * 12, gz0 - 1.5, 9, i % 2 ? 'point' : 'idle', 0], [-14 + i * 12, gz0 - 1.5, 6, 'talk', 0]], { speed: 0.8 }); }
 
+    // ---------------- living creatures (creature sheet) ----------------
+    const life = [];
+    function critter(kind, floor, step) { if (!ZCharacters.creature) return null; const c = ZCharacters.creature(kind); c.group.scale.setScalar(1.25); c.group.traverse((m) => { if (m.isMesh) m.userData.dynamic = true; }); c.group.userData.dynamic = true; W.floors[floor].add(c.group); const L = { c, floor, step, t: rnd() * 10, s: {} }; life.push(L); return L; }
+    const trees = (W.treeSpots || []).slice(), PR = G.plaza.r;
+    // cookie birds: perch on a tree top, then fly to another tree
+    for (let i = 0; i < Math.min(10, trees.length); i++) { const L = critter('cookie_bird', 'ground', (L, dt) => {
+      const s = L.s; if (!s.at) { s.at = trees[Math.floor(rnd() * trees.length)]; s.wait = 2 + rnd() * 6; L.c.play('idle'); }
+      if (s.fly) { s.k = Math.min(1, s.k + dt * s.v); const k = s.k, x = s.from[0] + (s.to[0] - s.from[0]) * k, z = s.from[1] + (s.to[1] - s.from[1]) * k, y = 3.4 * s.from[2] + (3.4 * s.to[2] - 3.4 * s.from[2]) * k + Math.sin(k * Math.PI) * 3; L.c.group.position.set(x, y, z); L.c.group.rotation.y = Math.atan2(s.to[0] - s.from[0], s.to[1] - s.from[1]); if (k >= 1) { s.fly = false; s.at = s.to; s.wait = 3 + rnd() * 8; L.c.play('idle'); } return; }
+      L.c.group.position.set(s.at[0] + 0.3, 3.4 * s.at[2] + 0.4, s.at[1]); if ((s.wait -= dt) <= 0) { let to = trees[Math.floor(rnd() * trees.length)]; for (let k = 0; k < 5 && Math.hypot(to[0] - s.at[0], to[1] - s.at[1]) > 35; k++) to = trees[Math.floor(rnd() * trees.length)]; s.from = s.at; s.to = to; s.k = 0; s.v = 4 / Math.max(4, Math.hypot(to[0] - s.at[0], to[1] - s.at[1])); s.fly = true; L.c.play('fly'); } }); void L; }
+    // flower spots for bees + butterflies: plaza flower beds, the garden, the stalls ring
+    const flowers = []; for (let i = 0; i < 8; i++) { const a = i / 8 * Math.PI * 2 + Math.PI / 8; flowers.push([G.plaza.x + Math.sin(a) * PR * 0.44, G.plaza.z + Math.cos(a) * PR * 0.44]); }
+    for (let i = 0; i < 6; i++) flowers.push([G.garden.x - G.garden.w / 2 + 4 + rnd() * (G.garden.w - 8), G.garden.z - G.garden.d / 2 + 3 + rnd() * (G.garden.d - 6)]);
+    for (let i = 0; i < 9; i++) { const home = flowers[i % flowers.length], r = 0.6 + rnd() * 0.6; critter('jelly_bee', 'ground', (L, dt) => { L.t += dt; const a = L.t * (0.8 + (i % 3) * 0.3); L.c.group.position.set(home[0] + Math.cos(a) * r, 0.9 + Math.sin(L.t * 1.7) * 0.25, home[1] + Math.sin(a) * r); L.c.group.rotation.y = -a; L.c.play('fly'); }); }
+    for (let i = 0; i < 12; i++) { const home = flowers[(i * 3) % flowers.length]; critter('sprinkle_butterfly', 'ground', (L, dt) => { const s = L.s; if (!s.to || Math.hypot(s.to[0] - s.x, s.to[1] - s.z) < 0.3) { s.x = s.x ?? home[0]; s.z = s.z ?? home[1]; s.to = [home[0] + (rnd() - 0.5) * 9, home[1] + (rnd() - 0.5) * 9]; } const dx = s.to[0] - s.x, dz = s.to[1] - s.z, d = Math.hypot(dx, dz) || 1; s.x += dx / d * dt * 1.1; s.z += dz / d * dt * 1.1; L.t += dt; L.c.group.position.set(s.x, 1.1 + Math.sin(L.t * 2.3) * 0.45, s.z); L.c.group.rotation.y = Math.atan2(dx, dz); L.c.play('fly'); }); }
+    // marshmallow bunnies hopping on the garden lawn, around the plaza and in the marshmallow workshop
+    const mw = bld('marshmallow_workshop'), hopAreas = [[G.garden.x, G.garden.z, G.garden.w / 2 - 2, G.garden.d / 2 - 2], [G.plaza.x, G.plaza.z + PR * 0.3, PR * 0.25, PR * 0.15], [mw.x, mw.z, mw.w / 2 - 3, mw.d / 2 - 3]];
+    for (let i = 0; i < 8; i++) { const A = hopAreas[i % 3]; critter('marshmallow_bunny', 'ground', (L, dt) => { const s = L.s; if (s.x == null) { s.x = A[0]; s.z = A[1]; } if (!s.to || s.wait > 0) { s.wait = (s.wait ?? 0) - dt; if (s.wait <= 0 && !s.to) { s.to = [A[0] + (rnd() * 2 - 1) * A[2], A[1] + (rnd() * 2 - 1) * A[3]]; L.c.play('hop'); } if (!s.to) { L.c.play('idle'); } }
+      if (s.to) { const dx = s.to[0] - s.x, dz = s.to[1] - s.z, d = Math.hypot(dx, dz); if (d < 0.1) { s.to = null; s.wait = 1 + rnd() * 4; } else { s.x += dx / d * Math.min(d, dt * 0.9); s.z += dz / d * Math.min(d, dt * 0.9); L.c.group.rotation.y = Math.atan2(dx, dz); } }
+      const y = W.support(s.x, s.z, 1, 1.2).y; L.c.group.position.set(s.x, y > -50 ? y : 0, s.z); }); }
+    // chocolate fish swimming along the river (now and then a jump) + a few in the underground reservoir
+    { const curve = new T.CatmullRomCurve3(G.river.points.map(([x, z]) => new T.Vector3(x, 0, z))), surf = G.river.surf;
+      for (let i = 0; i < 10; i++) { const off = (rnd() - 0.5) * 5, sp = 0.006 + rnd() * 0.006, dir = i % 2 ? 1 : -1; critter('chocolate_fish', 'ground', (L, dt) => { const s = L.s; s.u = ((s.u ?? rnd()) + dir * sp * dt + 1) % 1; const p = curve.getPointAt(s.u), tg = curve.getTangentAt(s.u); L.t += dt; const jump = Math.max(0, Math.sin(L.t * 0.7 + i * 1.3)) ** 12; L.c.group.position.set(p.x - tg.z * off, surf - 0.1 + jump * 0.9, p.z + tg.x * off); L.c.group.rotation.set(-jump * 0.6 * dir, Math.atan2(tg.x * dir, tg.z * dir), 0); L.c.play('swim'); }); }
+      const R = L.under.rooms.find((r) => r.id === 'chocolate_reservoir'), pl = R.pool, cx = (pl.x0 + pl.x1) / 2, cz = (pl.z0 + pl.z1) / 2;
+      for (let i = 0; i < 4; i++) { const rx = (pl.x1 - pl.x0) / 2 - 2 - i, rz = (pl.z1 - pl.z0) / 2 - 1.5 - i * 0.4; critter('chocolate_fish', 'under', (L, dt) => { L.t += dt; const a = L.t * 0.25 + i * 1.6; L.c.group.position.set(cx + Math.cos(a) * rx, R.y - 0.4, cz + Math.sin(a) * rz); L.c.group.rotation.y = Math.atan2(-Math.sin(a) * rx, Math.cos(a) * rz); L.c.play('swim'); }); } }
+
     const NEAR = 60;
     return {
       list: crew,
+      life,
       update(t, dt, player) {
+        for (const L of life) { const g = L.c.group, p = g.position; const on = !player || ((L.floor === 'under') === (player.y < -3) && Math.hypot(p.x - player.x, p.z - player.z) < 55); g.visible = on; if (!on && L.s.at !== undefined && !L.s.fly) continue; L.step(L, dt); if (on) L.c.update(dt); }
         for (const P of crew) {
           const near = !player || (Math.hypot(P.x - player.x, P.z - player.z) < NEAR && Math.abs(P.floorY - (player.y > 9 ? F.y : 0)) < 2 && player.y > -3);
           P.ch.group.visible = near; if (!near) continue;

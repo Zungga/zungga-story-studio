@@ -164,6 +164,7 @@
     { const f = tunnel(P(-12), R.puzzle_corridor.z1, P(-12), R.recipe_vault.z0, -14, 3.4, 3.6);
       const leaf = new T.Group(); const disc = new T.Mesh(new T.CylinderGeometry(1.55, 1.55, 0.45, 40), M(0x9ca3af, { metalness: 0.75, roughness: 0.3 })); disc.rotation.x = Math.PI / 2; disc.position.set(0, 1.6, 0); leaf.add(disc);
       const ring = new T.Mesh(new T.TorusGeometry(1.2, 0.08, 10, 40), M(0xd4a017, { metalness: 0.7, roughness: 0.3 })); ring.position.set(0, 1.6, 0.25); leaf.add(ring);
+      if (ZFactory.faceOn) { const ftk = ZFactory.faceOn(leaf, { y: 2.35, z: 0.3, s: 1.3, lid: 0x6b7280 }); c.tick(ftk); }   // the vault door is alive too (it keeps the secrets)
       const wheel = new T.Group(); for (let i = 0; i < 6; i++) { const sp = new T.Mesh(new T.BoxGeometry(0.08, 1.4, 0.08), M(0x4b5563, { metalness: 0.7 })); sp.rotation.z = i * Math.PI / 3; wheel.add(sp); } const hub = new T.Mesh(new T.CylinderGeometry(0.18, 0.18, 0.2, 16), M(0xd4a017, { metalness: 0.7 })); hub.rotation.x = Math.PI / 2; wheel.add(hub); wheel.position.set(0, 1.6, 0.32); leaf.add(wheel);
       const D = f.door({ x: 0, z: -(R.recipe_vault.z0 - R.puzzle_corridor.z1) / 2 + 0.6, w: 3.2, h: 3.4, kind: 'vault', auto: false, label: 'Spin the vault wheel', mesh: leaf });
       f.tick((t, dt) => { wheel.rotation.z += (D.want ? 2.5 : 0) * (dt || 0.016) * (D.open < 1 ? 1 : 0); }, wheel);

@@ -6579,6 +6579,131 @@
       "usedIn": []
     },
     {
+      "id": "cfl_cookie_oven",
+      "label": "Living cookie oven",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/living.js",
+      "tags": [
+        "living",
+        "machine",
+        "oven",
+        "bakery",
+        "cookies"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfl_choco_mixer",
+      "label": "Living chocolate mixer",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/living.js",
+      "tags": [
+        "living",
+        "machine",
+        "mixer",
+        "chocolate",
+        "kitchen",
+        "vat"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfl_candy_machine",
+      "label": "Living candy machine",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/living.js",
+      "tags": [
+        "living",
+        "machine",
+        "candy",
+        "lab",
+        "machine"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfl_marshmallow_fluffer",
+      "label": "Living marshmallow fluffer",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/living.js",
+      "tags": [
+        "living",
+        "machine",
+        "marshmallow",
+        "fluffer"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfl_conveyor",
+      "label": "Living conveyor belt",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/living.js",
+      "tags": [
+        "living",
+        "machine",
+        "conveyor",
+        "belt",
+        "chocolate"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfl_choco_fountain",
+      "label": "Living chocolate fountain",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/living.js",
+      "tags": [
+        "living",
+        "machine",
+        "fountain",
+        "chocolate"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfl_packing_machine",
+      "label": "Living packing machine",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/living.js",
+      "tags": [
+        "living",
+        "machine",
+        "packing",
+        "gifts",
+        "boxes"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfl_cookie_printer",
+      "label": "Living cookie printer",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/living.js",
+      "tags": [
+        "living",
+        "machine",
+        "cookie",
+        "printer",
+        "bakery"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfl_ingredient_elevator",
+      "label": "Living ingredient elevator",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/living.js",
+      "tags": [
+        "living",
+        "machine",
+        "elevator",
+        "ingredients",
+        "warehouse"
+      ],
+      "usedIn": []
+    },
+    {
       "id": "cf_syrup_tubes",
       "label": "Bubbling syrup tubes machine",
       "category": "factory",

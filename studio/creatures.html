@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Living Creatures</title>
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#f7f2ff;font-family:system-ui}#c{width:100%;height:100%;display:block}</style></head>
+<body><canvas id="c"></canvas>
+<script src="../vendor/three.min.js"></script><script src="assets/core.js"></script><script src="characters/creatures.js"></script>
+<script>
+const T = THREE, q = new URLSearchParams(location.search), r = new T.WebGLRenderer({ canvas: document.getElementById('c'), antialias: true, preserveDrawingBuffer: true });
+r.setPixelRatio(Math.min(2, devicePixelRatio)); r.shadowMap.enabled = true; r.toneMapping = T.ACESFilmicToneMapping; r.outputColorSpace = T.SRGBColorSpace;
+const scene = new T.Scene(); scene.background = new T.Color(0xf7f2ff); scene.add(new T.HemisphereLight(0xffffff, 0xd6c3a5, 1.2)); const key = new T.DirectionalLight(0xfff1e0, 2.2); key.position.set(1, 2, 2); key.castShadow = true; scene.add(key);
+const fl = new T.Mesh(new T.CircleGeometry(3, 48), new T.ShadowMaterial({ opacity: 0.15 })); fl.rotation.x = -Math.PI / 2; fl.receiveShadow = true; scene.add(fl);
+const kinds = (q.get('who') || 'cookie_bird,jelly_bee,marshmallow_bunny,chocolate_fish,sprinkle_butterfly').split(','), list = [];
+kinds.forEach((k, i) => { const c = ZCharacters.creature(k); c.group.position.x = (i - (kinds.length - 1) / 2) * 0.32; if (k === 'chocolate_fish' || k === 'jelly_bee' || k === 'sprinkle_butterfly') c.group.position.y = 0.06; c.group.rotation.y = +(q.get('ry') || 0.25); if (q.get('anim')) c.play(q.get('anim')); scene.add(c.group); list.push(c); });
+const cam = new T.PerspectiveCamera(30, 1, 0.01, 20); function frame() { r.setSize(innerWidth, innerHeight, false); cam.aspect = innerWidth / innerHeight; cam.position.set(0, 0.32, 2.1); cam.lookAt(0, 0.1, 0); cam.updateProjectionMatrix(); }
+addEventListener('resize', frame); frame(); let last = performance.now();
+(function loop(now) { requestAnimationFrame(loop); const dt = Math.min(0.05, (now - last) / 1000); last = now; list.forEach((c) => c.update(dt)); r.render(scene, cam); })(last);
+</script></body></html>

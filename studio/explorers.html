@@ -15,10 +15,10 @@ scene.add(new T.HemisphereLight(0xffffff, 0xd9c8b4, 1.15)); const key = new T.Di
 const rim = new T.DirectionalLight(0xdfe8ff, 1.4); rim.position.set(-2, 2.5, -2.5); scene.add(rim); const fill = new T.DirectionalLight(0xffffff, 0.5); fill.position.set(-2, 1, 2); scene.add(fill);
 const fl = new T.Mesh(new T.CircleGeometry(8, 48), new T.ShadowMaterial({ opacity: 0.16 })); fl.rotation.x = -Math.PI / 2; fl.receiveShadow = true; scene.add(fl);
 const cam = new T.PerspectiveCamera(28, 1, 0.01, 50);
-const ids = Object.keys(Z.EXPLORER_PRESETS); let mode = q.get('mode') || 'lineup', who = q.get('who') || 'kai', outfit = q.get('outfit') || '', chars = [];
+const ids = q.get('list') ? q.get('list').split(',') : q.get('group') === 'workers' ? ['ben', 'lulu', 'ollie', 'penny', 'moss', 'rosie', 'bruno', 'pip', 'nibbles', 'bubbles', 'tink', 'vanilla'] : q.get('group') === 'kids' ? ['kai', 'rio', 'tara', 'mira', 'jax'] : Object.keys(Z.EXPLORER_PRESETS); let mode = q.get('mode') || 'lineup', who = q.get('who') || 'kai', outfit = q.get('outfit') || '', chars = [];
 function build() {
   for (const c of chars) scene.remove(c.group); chars = [];
-  if (mode === 'lineup') ids.forEach((id, i) => { const c = Z.explorer({ preset: id, outfit }); c.group.position.x = (i - 2) * 0.62; scene.add(c.group); chars.push(c); });
+  if (mode === 'lineup') ids.forEach((id, i) => { const c = Z.explorer({ preset: id, outfit }); c.group.position.x = (i - (ids.length - 1) / 2) * 0.62; scene.add(c.group); chars.push(c); });
   else if (mode === 'turn') [0, 0.75, 1.57, 3.14].forEach((a, i) => { const c = Z.explorer({ preset: who, outfit }); c.group.position.x = (i - 1.5) * 0.62; c.group.rotation.y = a; scene.add(c.group); chars.push(c); });
   else { const c = Z.explorer({ preset: who, outfit }); scene.add(c.group); chars.push(c); }
   const ex = q.get('expr'), an = q.get('anim'); for (const c of chars) { if (ex) c.setExpression(ex, true); if (an) c.play(an, { instant: true }); }
@@ -26,7 +26,7 @@ function build() {
 function frame() { const w = r.domElement.parentElement.clientWidth, h = innerHeight; r.setSize(w, h); cam.aspect = w / h;
   if (mode === 'face') { const hc = chars[0].rig.headC.getWorldPosition(new T.Vector3()); cam.position.set(hc.x + 0.05, hc.y + 0.02, hc.z + 0.85); cam.lookAt(hc); }
   else if (mode === 'single') { cam.position.set(0.9, 0.95, 3.0); cam.lookAt(0, 0.68, 0); }
-  else { cam.position.set(0, 1.0, 5.6); cam.lookAt(0, 0.7, 0); } cam.updateProjectionMatrix(); }
+  else { const n = Math.max(5, ids.length); cam.position.set(0, 1.0, 5.6 * n / 5 * (cam.aspect > 1.4 ? 0.62 : 1)); cam.lookAt(0, 0.7, 0); } cam.updateProjectionMatrix(); }
 let t0 = performance.now(), simT = +(q.get('t') || 0);
 function loop(now) { requestAnimationFrame(loop); const dt = q.has('t') ? 0 : Math.min(0.05, (now - t0) / 1000); t0 = now; for (const c of chars) c.update(dt); frame(); r.render(scene, cam); }
 build(); if (q.has('t')) for (const c of chars) c.update(simT); requestAnimationFrame(loop); addEventListener('resize', frame);

@@ -319,8 +319,8 @@
       // cast entries: { "cast": "teacher" } = a cartoon-world preset, { "toon": "cat" } = a cartoon kind, otherwise a person preset
       const tp0 = cfg.cast && ZCharacters.TOON_PRESETS ? ZCharacters.TOON_PRESETS[cfg.cast] : null;
       const tp = tp0 && (cfg.look || cfg.colors) ? { ...tp0, look: { ...(tp0.look || {}), ...(cfg.look || {}) }, colors: { ...(tp0.colors || {}), ...(cfg.colors || {}) } } : tp0;   // per-story outfit / colour changes
-      const ch = cfg.human && ZCharacters.human ? ZCharacters.human({ preset: cfg.human }) : cfg.explorer && ZCharacters.explorer ? ZCharacters.explorer({ preset: cfg.explorer, outfit: cfg.outfit, outfit_colors: cfg.colors }) : tp ? ZCharacters.toon(tp) : cfg.toon ? ZCharacters.toon({ kind: cfg.toon, colors: cfg.colors }) : ZCharacters.person(cfg), holder = new T.Group();   // { explorer: 'kai', outfit: 'detective' } = a Zungga Explorer
-      if (tp || cfg.toon || cfg.explorer || cfg.human) cfg.height = ch.params.height; holder.add(ch.group); holder.visible = false; scene.add(holder);
+      const ch = cfg.creature && ZCharacters.creature ? ZCharacters.creature(cfg.creature) : cfg.human && ZCharacters.human ? ZCharacters.human({ preset: cfg.human }) : cfg.explorer && ZCharacters.explorer ? ZCharacters.explorer({ preset: cfg.explorer, outfit: cfg.outfit, outfit_colors: cfg.colors }) : tp ? ZCharacters.toon(tp) : cfg.toon ? ZCharacters.toon({ kind: cfg.toon, colors: cfg.colors }) : ZCharacters.person(cfg), holder = new T.Group();   // { explorer: 'kai', outfit: 'detective' } = a Zungga Explorer
+      if (tp || cfg.toon || cfg.explorer || cfg.human || cfg.creature) cfg.height = ch.params.height; holder.add(ch.group); holder.visible = false; scene.add(holder);
       ch.group.traverse((o) => { if (o.isMesh) o.castShadow = true; });
       const entry = { ch, holder, cfg, src: JSON.stringify(c) };
       if (asVariant) return entry;

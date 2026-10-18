@@ -69,6 +69,31 @@
       outfit: { kind: 'hoodie', top: 0xff6fa6, top2: 0xf35d97, trim: 0xffffff, emblem: 'mira', bottom: 'jeans_rolled', pants: 0x4e7bb5, patch: 0xff6fa6, shoe: 0x7b61ff, shoe2: 0xffffff, hightop: true, pack: 0x7b61ff, packEmblem: 'mira', bracelet: true } },
     jax: { label: 'Jax — The Powerhouse & Protector', role: 'protector', H: 1.5, build: 1.35, skin: SK.jax, hair: 'flattop', hairColor: 0x2e1a10, brow: 0x24140c, eyes: 0x3d2414, heavyBrow: true,
       outfit: { kind: 'jacket_jax', top: 0xc0282d, top2: 0x3b1f17, tee: 0x2e2a2a, bottom: 'cargo', pants: 0x3b1f17, stitch: 0x5a3a2a, shoe: 0x4a2a1c, shoe2: 0xc0282d, boots: true, belt: 0x3a2418, buckle: 'J', gloves: 0x2a2220, patch: true } },
+    // ---- the workers of the Zungga Chocolate Factory (worker sheet) ----
+    ben: { label: 'Ben — Cookie Baker', role: 'baker', H: 1.36, build: 1.05, skin: 0xe9a777, hair: 'messy', hairColor: 0x5a3220, brow: 0x3a2214, eyes: 0x5a3416, hat: { kind: 'chef' }, prop: 'tray',
+      outfit: { kind: 'worker', top: 0xf8f4ec, apron: 0x6b3a1f, bottom: 'pants', pants: 0x3b2a20, shoe: 0x5b3420, shoe2: 0xf3e2c8 } },
+    lulu: { label: 'Lulu — Candy Artist', role: 'candy artist', H: 1.3, build: 0.9, skin: 0xebab7e, hair: 'buns', hairColor: 0x3a2214, brow: 0x2a180e, eyes: 0x4a2a14, female: true, clips: [0xff6fa6, 0x7bd3f7], prop: 'lollipop',
+      outfit: { kind: 'worker', top: 0xf9a8d4, apron: 0x7c3aed, bottom: 'pants', pants: 0x6d28d9, shoe: 0xec4899, shoe2: 0xffffff } },
+    ollie: { label: 'Ollie — Dough Master', role: 'dough master', H: 1.35, build: 1.0, skin: 0xd9925f, hair: 'curly', hairColor: 0x2b1a12, brow: 0x24150d, eyes: 0x3a2214, hat: { kind: 'chef' }, prop: 'dough',
+      outfit: { kind: 'worker', top: 0xf8f4ec, apron: 0xe58a1f, bottom: 'pants', pants: 0x4a3426, shoe: 0x6b4423, shoe2: 0xf3e2c8 } },
+    penny: { label: 'Penny — Packaging Pro', role: 'packaging', H: 1.31, build: 0.92, skin: 0xe9a777, hair: 'ponytail', hairColor: 0x4a2b1a, brow: 0x3a2214, eyes: 0x4a2a14, female: true, glasses: 0x1f1a17, hat: { kind: 'cap', color: 0x4d7c3a }, prop: 'box',
+      outfit: { kind: 'worker', top: 0x5f9a3a, apron: 0x3f6b2a, bottom: 'pants', pants: 0x3b2a20, shoe: 0x4d7c3a, shoe2: 0xffffff, tie: 0x4d7c3a } },
+    moss: { label: 'Moss — Garden Keeper', role: 'gardener', H: 1.28, build: 1.0, skin: 0xb9b07a, hair: 'leafy', hairColor: 0x4f7a2a, brow: 0x3f5a22, eyes: 0x3a4a1a, elfEars: true, freckles: true, prop: 'can',
+      outfit: { kind: 'worker', top: 0xe9dfc4, overalls: 0x3f6b2a, bottom: 'pants', pants: 0x3f6b2a, shoe: 0x5b3420, shoe2: 0x8a5a33, boots: true } },
+    rosie: { label: 'Rosie — Receptionist', role: 'receptionist', H: 1.32, build: 0.9, skin: 0xebab7e, hair: 'wavy', hairColor: 0x3a2214, brow: 0x2a180e, eyes: 0x4a2a14, female: true, hat: { kind: 'bow', color: 0x7c3aed }, prop: 'bell',
+      outfit: { kind: 'worker', top: 0xf8f4ec, blazer: 0x6d28d9, bottom: 'pants', pants: 0x3b0764, shoe: 0x7c3aed, shoe2: 0xffffff } },
+    bruno: { label: 'Bruno — Security Guard', role: 'security', H: 1.42, build: 1.32, skin: 0xd9925f, hair: 'short', hairColor: 0x2b1a12, brow: 0x24150d, eyes: 0x3a2214, heavyBrow: true, mustache: 0x2b1a12, hat: { kind: 'police', color: 0x1e3a8a }, prop: 'radio',
+      outfit: { kind: 'worker', top: 0x1e3a8a, uniform: true, bottom: 'pants', pants: 0x172554, shoe: 0x111827, shoe2: 0x111827, belt: 0x111827, boots: true } },
+    pip: { label: 'Pip — Train Assistant', role: 'train assistant', H: 1.3, build: 0.95, skin: 0xe9a777, hair: 'messy', hairColor: 0x5a3220, brow: 0x3a2214, eyes: 0x5a3416, hat: { kind: 'striped', color: 0x1d4ed8 }, scarf: 0xdc2626, prop: 'flag',
+      outfit: { kind: 'worker', top: 0xf8f4ec, overalls: 0x1d4ed8, bottom: 'pants', pants: 0x1d4ed8, shoe: 0x5b3420, shoe2: 0xffffff } },
+    nibbles: { label: 'Nibbles — Lab Helper', role: 'lab helper', H: 1.27, build: 0.92, skin: 0xe9b08a, hair: 'short', hairColor: 0x5a3220, brow: 0x3a2214, eyes: 0x3a2214, elfEars: true, glasses: 0x22c55e, hat: { kind: 'beanie', color: 0x7c3aed }, prop: 'flask',
+      outfit: { kind: 'worker', top: 0x7c3aed, coat: true, bottom: 'pants', pants: 0x4c1d95, shoe: 0x7c3aed, shoe2: 0xffffff } },
+    bubbles: { label: 'Bubbles — Cleaner', role: 'cleaner', H: 1.34, build: 1.38, skin: 0xe9a777, hair: 'short', hairColor: 0x4a2b1a, brow: 0x3a2214, eyes: 0x4a2a14, hat: { kind: 'bandana', color: 0x0891b2 }, prop: 'broom',
+      outfit: { kind: 'worker', top: 0xf8f4ec, overalls: 0x0e7490, bottom: 'pants', pants: 0x0e7490, shoe: 0x0e7490, shoe2: 0xffffff } },
+    tink: { label: 'Tink — Maintenance Expert', role: 'maintenance', H: 1.35, build: 1.0, skin: 0xe2a172, hair: 'messy', hairColor: 0x4a2b1a, brow: 0x3a2214, eyes: 0x5a3416, hat: { kind: 'goggles', color: 0x6b4423 }, prop: 'wrench',
+      outfit: { kind: 'worker', top: 0xd6b98c, overalls: 0x6b4423, bottom: 'pants', pants: 0x6b4423, shoe: 0x3b2416, shoe2: 0x6b4423, belt: 0x3b2416, boots: true } },
+    vanilla: { label: 'Vanilla — Quality Inspector', role: 'quality inspector', H: 1.3, build: 0.9, skin: 0xebab7e, hair: 'wavy', hairColor: 0x6b3a1f, brow: 0x4a2814, eyes: 0x4a2a14, female: true, glasses: 0xec4899, hat: { kind: 'chef', color: 0xffffff }, prop: 'magnifier',
+      outfit: { kind: 'worker', top: 0xf8f4ec, apron: 0xf472b6, bottom: 'pants', pants: 0x6b3a1f, shoe: 0xec4899, shoe2: 0xffffff } },
   };
   // detective look (the second sheet): beige trench coat, waistcoat, shirt + coloured tie, dark trousers, magnifying glass
   const DETECTIVE_TIE = { kai: 0x6d3fc0, rio: 0x6b3a1e, tara: 0x14b3c8, mira: 0xe9658f, jax: 0xc0282d };
@@ -125,6 +150,7 @@
     if (typeof opts === 'string') opts = { preset: opts };
     const P0 = PRESETS[opts.preset || 'kai'] || PRESETS.kai, P = { ...P0, ...opts, outfit: { ...P0.outfit, ...(opts.outfit_colors || {}) } };
     const detective = opts.outfit === 'detective', fem = !!P.female, H = P.H, B = P.build, id = opts.preset || 'kai';
+    if (P.hat && ['chef', 'cap', 'striped', 'police', 'beanie', 'bandana'].includes(P.hat.kind) && ['messy', 'spiky', 'curly', 'flattop'].includes(P.hair)) P.hair = 'short';   // hair tucked under the hat
     const root = new T.Group(), skin = skinMat(P.skin), skinDark = skinMat(new T.Color(P.skin).multiplyScalar(0.82).getHex());
     // proportions (big head, short torso, sturdy legs)
     const headH = 0.37 * (H / 1.35) ** 0.3, headW = headH * 1.0, legLen = H * 0.415, hipW = 0.1 * B ** 0.85, shW = 0.158 * B ** 0.9 * (H / 1.35) ** 0.4, torsoH = H - legLen - headH - 0.01, chestD = 0.09 * B ** 0.9;
@@ -142,7 +168,8 @@
     }
     g.computeVertexNormals(); return g; }
     const hg = deformHead(new T.SphereGeometry(1, 64, 48)); const skull = add(headC, hg, skin); skull.scale.set(headW / 2, headH / 2, headH * 0.48);
-    for (const s of [-1, 1]) { const ear = add(headC, new T.SphereGeometry(1, 20, 14), skin, s * headW * 0.5, -headH * 0.02, -headH * 0.02); ear.scale.set(0.022, 0.034, 0.016); const inner = add(ear, new T.SphereGeometry(0.6, 14, 10), skinDark, s * 0.25, 0, 0.3); inner.castShadow = false; }
+    if (P.elfEars) for (const s of [-1, 1]) { const ear = add(headC, new T.ConeGeometry(0.03, 0.13, 16), skin, s * headW * 0.56, headH * 0.04, -headH * 0.03); ear.rotation.set(0, 0, -s * 1.15); ear.scale.z = 0.45; const inner = add(ear, new T.ConeGeometry(0.018, 0.09, 12), skinDark, 0, -0.005, 0.008); inner.castShadow = false; }
+    else for (const s of [-1, 1]) { const ear = add(headC, new T.SphereGeometry(1, 20, 14), skin, s * headW * 0.5, -headH * 0.02, -headH * 0.02); ear.scale.set(0.022, 0.034, 0.016); const inner = add(ear, new T.SphereGeometry(0.6, 14, 10), skinDark, s * 0.25, 0, 0.3); inner.castShadow = false; }
     const nose = add(headC, new T.SphereGeometry(1, 24, 16), skin, 0, -headH * 0.11, headH * 0.46); nose.scale.set(headW * 0.062, headH * 0.048, headH * 0.055);
     // face paint layer (mouth, blush, freckles) — a slice of a slightly bigger head
     const faceLayer = (thetaS, thetaL, phiS, phiL) => deformHead(new T.SphereGeometry(1.006, 48, 24, phiS, phiL, thetaS, thetaL));
@@ -251,6 +278,46 @@
       for (const s of [-1, 1]) { const arm = add(headC, new T.CylinderGeometry(0.0035, 0.0035, headH * 0.42, 6), gm, s * (eyeX + eyeR * 1.25), eyeY + eyeR * 0.3, eyeZ - headH * 0.12); arm.rotation.x = Math.PI / 2; }
     }
 
+    // workers' hair styles
+    if (P.hair === 'short') { cap(1.035, 0.8, 2.15); for (let i = 0; i < 9; i++) { const base = onHead(-0.45 + i * 0.11, 0.2, 1.0), tip = base.clone().add(V(0.004, -0.03, 0.025)); lock(base, base.clone().lerp(tip, 0.5).add(V(0, 0.01, 0.01)), tip, 0.022); } }
+    else if (P.hair === 'curly') { cap(1.04, 0.85, 2.2); for (let i = 0; i < 70; i++) { const u = rnd() * Math.PI * 2, v = 0.08 + rnd() * 0.5; if (Math.cos(u) > 0.55 && v > 0.35) continue; const b = onHead(u, v, 1.03); add(hairG, new T.SphereGeometry(0.026 + rnd() * 0.012, 10, 8), rnd() < 0.3 ? hmDark : hm, b.x, b.y, b.z); } }
+    else if (P.hair === 'buns') {   // two big buns on top (Lulu) with candy clips
+      cap(1.04, 0.75, 2.25); cap(1.025, 1.15, 2.45);
+      for (const s2 of [-1, 1]) { const b = onHead(s2 * 0.75, 0.22, 1.0); const bun = add(hairG, new T.SphereGeometry(0.075, 24, 18), hm, b.x * 1.05, b.y + 0.05, b.z * 0.6); bun.scale.set(1, 0.95, 1);
+        for (let k = 0; k < 6; k++) { const a2 = k / 6 * Math.PI * 2; const sw = add(hairG, new T.TorusGeometry(0.05, 0.012, 6, 16), hmDark, b.x * 1.05, b.y + 0.05, b.z * 0.6); sw.rotation.set(a2, a2 * 0.5, 0); }
+        const clip = add(hairG, new T.SphereGeometry(0.022, 12, 10), plastic((P.clips || [0xff6fa6])[s2 > 0 ? 1 : 0] || 0xff6fa6, { roughness: 0.25 }), b.x * 1.25, b.y + 0.01, b.z * 0.8 + 0.03); clip.scale.set(1, 1, 0.6); }
+      for (let i = 0; i < 9; i++) { const base = onHead(-0.45 + i * 0.11, 0.17, 1.0), tip = base.clone().add(V(0.004, -0.045, 0.03)); lock(base, base.clone().lerp(tip, 0.5).add(V(0, 0.012, 0.012)), tip, 0.022); }
+    } else if (P.hair === 'leafy') {   // Moss: leaves instead of hair
+      cap(1.04, 0.8, 2.15, hmDark); const leafM = plastic(P.hairColor, { roughness: 0.55, side: T.DoubleSide }), leafM2 = plastic(new T.Color(P.hairColor).lerp(new T.Color(0xb5e36a), 0.35).getHex(), { roughness: 0.55, side: T.DoubleSide });
+      const leafS = new T.Shape(); leafS.moveTo(0, 0); leafS.quadraticCurveTo(0.03, 0.04, 0, 0.1); leafS.quadraticCurveTo(-0.03, 0.04, 0, 0);
+      for (let i = 0; i < 70; i++) { const u = rnd() * Math.PI * 2, v = rnd() * 0.55, b = onHead(u, v, 0.98); if (Math.cos(u) > 0.5 && v > 0.32) continue; const lf = add(hairG, new T.ShapeGeometry(leafS), rnd() < 0.5 ? leafM : leafM2, b.x, b.y, b.z); lf.lookAt(b.clone().multiplyScalar(2).add(V(0, 0.1, 0))); lf.rotateX(-1.2 + rnd() * 0.5); lf.scale.setScalar(0.9 + rnd() * 0.6); }
+    }
+    // hats + head wear
+    const HT = P.hat;
+    if (HT) {
+      const hc = HT.color ?? 0xffffff, hatM = cloth(hc), top = headH * 0.5, zFront = headH * 0.46;
+      const dome = (scale = 1.08, h = 0.9, m = hatM) => { const d = add(headC, new T.SphereGeometry(1, 36, 18, 0, Math.PI * 2, 0, Math.PI * 0.5), m, 0, headH * 0.06); d.scale.set(headW / 2 * scale, headH / 2 * h, headH * 0.49 * scale); return d; };
+      const zBadge = (w, y, z, ring = '#ffd166', inner = '#7c3aed') => decal(headC, EMB.zcircle(ring, inner, ring), w, w, 0, y, z);
+      if (HT.kind === 'chef') {
+        const band = add(headC, new T.CylinderGeometry(headW * 0.5, headW * 0.49, headH * 0.22, 32, 1, true), cloth(0xffffff, { side: T.DoubleSide }), 0, top * 0.82, -0.005);
+        for (let k = 0; k < 7; k++) { const a2 = k / 7 * Math.PI * 2; add(headC, new T.SphereGeometry(headW * 0.24, 18, 14), cloth(0xffffff), Math.sin(a2) * headW * 0.24, top + headH * 0.18, Math.cos(a2) * headW * 0.22 - 0.005); }
+        add(headC, new T.SphereGeometry(headW * 0.3, 20, 16), cloth(0xffffff), 0, top + headH * 0.28, 0); zBadge(headH * 0.2, top * 0.82, headW * 0.5 + 0.004); void band;
+      } else if (HT.kind === 'cap' || HT.kind === 'striped') {
+        const m = HT.kind === 'striped' ? new T.MeshStandardMaterial({ map: canvasTex((g, w, h) => { for (let i = 0; i < 12; i++) { g.fillStyle = i % 2 ? '#ffffff' : '#' + new T.Color(hc).getHexString(); g.fillRect(i * w / 12, 0, w / 12, h); } }, 256, 64), roughness: 0.8 }) : hatM;
+        dome(1.1, 0.95, m); const visor = add(headC, new T.CylinderGeometry(headW * 0.42, headW * 0.42, 0.012, 24, 1, false, -Math.PI / 2, Math.PI), HT.kind === 'striped' ? cloth(hc) : hatM, 0, headH * 0.16, headH * 0.32); visor.rotation.x = 0.15; visor.scale.z = 0.8;
+        add(headC, new T.SphereGeometry(0.014, 8, 6), hatM, 0, top + headH * 0.04, 0); zBadge(headH * 0.2, headH * 0.33, zFront * 1.0);
+      } else if (HT.kind === 'police') {
+        const crown = add(headC, new T.CylinderGeometry(headW * 0.58, headW * 0.5, headH * 0.24, 32), hatM, 0, top * 0.95, -0.01); crown.rotation.x = -0.12;
+        add(headC, new T.CylinderGeometry(headW * 0.51, headW * 0.51, headH * 0.06, 32), plastic(0x111827), 0, top * 0.78, -0.005);
+        const visor = add(headC, new T.CylinderGeometry(headW * 0.4, headW * 0.4, 0.012, 24, 1, false, -Math.PI / 2, Math.PI), plastic(0x111827, { roughness: 0.25 }), 0, headH * 0.26, headH * 0.34); visor.rotation.x = 0.25; visor.scale.z = 0.7;
+        decal(headC, EMB.badge(), headH * 0.18, headH * 0.18, 0, top * 0.98, headW * 0.56);
+      } else if (HT.kind === 'beanie') { dome(1.1, 1.05); const fold = add(headC, new T.TorusGeometry(headW * 0.53, 0.02, 10, 36), cloth(new T.Color(hc).multiplyScalar(0.85).getHex()), 0, headH * 0.12, 0); fold.rotation.x = Math.PI / 2; fold.scale.y = 0.98; zBadge(headH * 0.18, headH * 0.27, zFront * 1.04); }
+      else if (HT.kind === 'bandana') { dome(1.08, 0.88); for (const s2 of [-1, 1]) { const kn = add(headC, new T.SphereGeometry(0.03, 12, 10), hatM, s2 * 0.025, headH * 0.15, -headH * 0.5); kn.scale.set(1.2, 0.8, 0.7); } zBadge(headH * 0.16, headH * 0.3, zFront * 1.02, '#ffffff', '#0e7490'); }
+      else if (HT.kind === 'bow') { const band = add(headC, new T.TorusGeometry(headW * 0.5, 0.012, 8, 36, Math.PI), cloth(hc), 0, headH * 0.22, -0.01); band.rotation.set(-0.3, 0, 0); for (const s2 of [-1, 1]) { const lp = add(headC, new T.SphereGeometry(0.045, 14, 10), cloth(hc), -headW * 0.32 + s2 * 0.04, top * 0.86, headH * 0.12); lp.scale.set(1.2, 0.8, 0.45); } add(headC, new T.SphereGeometry(0.018, 10, 8), cloth(new T.Color(hc).multiplyScalar(0.8).getHex()), -headW * 0.32, top * 0.86, headH * 0.15); }
+      else if (HT.kind === 'goggles') { const band = add(headC, new T.TorusGeometry(headW * 0.52, 0.012, 8, 40), cloth(hc), 0, headH * 0.3, 0); band.rotation.x = Math.PI / 2 - 0.25; for (const s2 of [-1, 1]) { const ln = add(headC, new T.CylinderGeometry(0.04, 0.04, 0.03, 20), plastic(0x8a6a3a, { metalness: 0.5, roughness: 0.3 }), s2 * 0.05, headH * 0.36, headH * 0.4); ln.rotation.x = Math.PI / 2 - 0.4; const gl2 = add(headC, new T.CircleGeometry(0.032, 20), new T.MeshPhysicalMaterial({ color: 0x9fd8ff, roughness: 0.05, clearcoat: 1 }), s2 * 0.05, headH * 0.37, headH * 0.42); gl2.rotation.x = -0.4; } }
+    }
+    if (P.mustache) for (const s2 of [-1, 1]) { const mu = add(headC, new T.SphereGeometry(1, 16, 12), hairMat(P.mustache), s2 * headW * 0.075, -headH * 0.165, headH * 0.445); mu.scale.set(headW * 0.085, headH * 0.04, headH * 0.04); mu.rotation.z = s2 * 0.25; }
+
     // ---------- neck + torso ----------
     add(neck, new T.CylinderGeometry(0.042 * B ** 0.5, 0.047 * B ** 0.5, 0.07, 20), skin, 0, 0.0, 0);
     const prof = (k = 1) => [[hipW * 1.0 * k, -0.02], [hipW * 1.02 * k, torsoH * 0.12], [shW * 0.72 * k, torsoH * 0.45], [shW * 0.86 * k, torsoH * 0.78], [shW * 0.82 * k, torsoH * 0.92], [0.05 * k, torsoH * 1.0]];
@@ -261,7 +328,17 @@
     const topM = cloth(O.top), top2M = cloth(O.top2 || O.top), teeM = cloth(O.tee || O.top), trimM = cloth(O.trim || O.top2 || O.top);
     const frontZ = chestD * 1.02;
     const kind = detective ? 'detective' : O.kind;
-    if (kind === 'hoodie' || kind === 'detective') {
+    if (kind === 'worker') {   // shirt + apron / overalls / lab coat / blazer / uniform
+      add(torsoGrp, topG(1.0), topM);
+      const zDecal = (w, x, y, z, ring = '#ffd166', inner = '#7c3aed') => decal(torsoGrp, EMB.zcircle(ring, inner, ring), w, w, x, y, z);
+      if (O.apron) { const am = cloth(O.apron); add(torsoGrp, roundBox(shW * 1.15, torsoH * 0.62, 0.014, 0.012), am, 0, -torsoH * 0.12, frontZ * 1.06); for (const s2 of [-1, 1]) { const st = add(torsoGrp, new T.CylinderGeometry(0.006, 0.006, torsoH * 0.35, 6), am, s2 * shW * 0.42, torsoH * 0.33, frontZ * 0.85); st.rotation.set(-0.35, 0, s2 * 0.25); } zDecal(0.07, 0, torsoH * 0.02, frontZ * 1.11, '#ffd166', '#' + new T.Color(O.apron).multiplyScalar(0.7).getHexString()); }
+      if (O.overalls) { const om = cloth(O.overalls); add(torsoGrp, roundBox(shW * 1.0, torsoH * 0.5, 0.016, 0.012), om, 0, -torsoH * 0.2, frontZ * 1.05); for (const s2 of [-1, 1]) { const st = taper(curve3([s2 * shW * 0.4, torsoH * 0.06, frontZ * 1.05], [s2 * shW * 0.55, torsoH * 0.5, frontZ * 0.6], [s2 * shW * 0.5, torsoH * 0.48, -chestD * 0.8], [s2 * shW * 0.35, -torsoH * 0.1, -chestD * 1.05]), 0.014, 0.013, 16, 6, 0.4); add(torsoGrp, st, om); add(torsoGrp, new T.SphereGeometry(0.009, 8, 6), plastic(0xfacc15, { metalness: 0.5 }), s2 * shW * 0.4, torsoH * 0.04, frontZ * 1.1); } zDecal(0.065, 0, -torsoH * 0.18, frontZ * 1.1); }
+      if (O.coat) { const cm = cloth(0xffffff, { side: T.DoubleSide }); const coat = add(spine, lathe([[hipW * 1.32, -legLen * 0.3], [hipW * 1.22, -0.02], [hipW * 1.12, torsoH * 0.12], [shW * 0.8, torsoH * 0.5], [shW * 0.92, torsoH * 0.82], [shW * 0.86, torsoH * 0.95], [0.06, torsoH * 1.02]], 1, TZ * 1.12, 48, 0.5, Math.PI * 2 - 1.0), cm); void coat; decal(torsoGrp, EMB.zcircle('#ffd166', '#7c3aed', '#ffd166'), 0.035, 0.035, -shW * 0.6, torsoH * 0.22, frontZ * 1.12, -0.4); }
+      if (O.blazer) { const bm = cloth(O.blazer, { side: T.DoubleSide }); add(torsoGrp, topG(1.08, 0.55, Math.PI * 2 - 1.1), bm); for (const s2 of [-1, 1]) { const lap = add(torsoGrp, new T.BoxGeometry(0.04, torsoH * 0.42, 0.01), cloth(new T.Color(O.blazer).multiplyScalar(0.8).getHex()), s2 * 0.045, torsoH * 0.18, frontZ * 1.08); lap.rotation.set(-0.08, s2 * -0.4, s2 * 0.3); } decal(torsoGrp, EMB.zcircle('#ffd166', '#3b0764', '#ffd166'), 0.035, 0.035, -shW * 0.6, torsoH * 0.22, frontZ * 1.06, -0.4); }
+      if (O.uniform) { for (const s2 of [-1, 1]) add(torsoGrp, roundBox(0.055, 0.04, 0.008, 0.004), cloth(new T.Color(O.top).multiplyScalar(0.75).getHex()), s2 * shW * 0.45, torsoH * 0.18, frontZ * 1.0); decal(torsoGrp, EMB.badge(), 0.045, 0.045, -shW * 0.45, torsoH * 0.26, frontZ * 1.04, -0.3); decal(torsoGrp, EMB.zcircle('#ffd166', '#1e3a8a', '#ffd166'), 0.035, 0.035, shW * 0.45, torsoH * 0.27, frontZ * 1.03, 0.3); }
+      if (O.tie) { add(torsoGrp, new T.SphereGeometry(0.011, 10, 8), cloth(O.tie), 0, torsoH * 0.42, frontZ * 0.98); }
+      if (P.scarf) { const sc = add(neck, new T.ConeGeometry(0.06, 0.08, 4), cloth(P.scarf), 0, -0.03, 0.035); sc.rotation.set(Math.PI + 0.3, Math.PI / 4, 0); sc.scale.z = 0.4; const kn = add(neck, new T.TorusGeometry(0.048, 0.015, 8, 20), cloth(P.scarf), 0, 0.0, 0); kn.rotation.x = Math.PI / 2; }
+    } else if (kind === 'hoodie' || kind === 'detective') {
       add(torsoGrp, topG(kind === 'detective' ? 1.0 : 1.06), kind === 'detective' ? cloth(0xffffff) : topM);
     } else {
       add(torsoGrp, topG(1.0), teeM);   // tee underneath the open jacket / hoodie
@@ -308,14 +385,14 @@
     }
 
     // ---------- arms ----------
-    const upperL = 0.16 * (H / 1.35), foreL = 0.14 * (H / 1.35), armR0 = 0.033 * B ** 1.0, sleeveM = kind === 'jacket' ? cloth(O.top2) : kind === 'detective' ? cloth(0xc9a774) : topM;
+    const upperL = 0.16 * (H / 1.35), foreL = 0.14 * (H / 1.35), armR0 = 0.033 * B ** 1.0, sleeveM = kind === 'jacket' ? cloth(O.top2) : kind === 'detective' ? cloth(0xc9a774) : kind === 'worker' && O.coat ? cloth(0xffffff) : kind === 'worker' && O.blazer ? cloth(O.blazer) : topM;
     function limb(r0, r1, L, m, seg = 24) { const g = new T.CapsuleGeometry((r0 + r1) / 2, L, 8, seg); g.translate(0, -L / 2, 0); const p = g.attributes.position; for (let i = 0; i < p.count; i++) { const k = clamp(-p.getY(i) / L, 0, 1), s = lerp(r0, r1, k) / ((r0 + r1) / 2); p.setX(i, p.getX(i) * s); p.setZ(i, p.getZ(i) * s); } g.computeVertexNormals(); return g; }
     function makeArm(s) {
       const sh = J(chest, s * shW * 0.95, torsoH * 0.36, 0);
       const upper = J(sh); add(upper, limb(armR0 * 1.25, armR0 * 1.05, upperL, sleeveM), sleeveM); add(upper, new T.SphereGeometry(armR0 * 1.35, 20, 14), sleeveM).scale.set(1, 1.05, 1);
       const fore = J(upper, 0, -upperL, 0); add(fore, new T.SphereGeometry(armR0 * 1.08, 16, 12), sleeveM);
       add(fore, limb(armR0 * 1.06, armR0 * 0.98, foreL * 0.82, sleeveM), sleeveM);
-      const cuffM = kind === 'hoodie' || kind === 'hoodie_open' ? trimM : kind === 'jacket' ? cloth(0xff6a00) : kind === 'detective' ? cloth(0xb08d5a) : top2M;
+      const cuffM = kind === 'worker' ? sleeveM : kind === 'hoodie' || kind === 'hoodie_open' ? trimM : kind === 'jacket' ? cloth(0xff6a00) : kind === 'detective' ? cloth(0xb08d5a) : top2M;
       add(fore, new T.CylinderGeometry(armR0 * 1.02, armR0 * 1.0, 0.03, 18), cuffM, 0, -foreL * 0.82, 0);
       // hand: soft palm, four fingers, thumb
       const hand = J(fore, 0, -foreL * 0.95, 0), handM = O.gloves && !detective ? cloth(O.gloves) : skin;
@@ -412,6 +489,14 @@
       look_far(t, p) { CLIPS.idle(t, p); p.aR = IKP.shieldR.slice(); p.hx = -0.08; p.hy = 0.15; },
       hand_on_chin(t, p) { CLIPS.idle(t, p); p.aL = IKP.chinL.slice(); p.hz = -0.08; },
       victory(t, p) { CLIPS.idle(t, p); p.aR = [0, 0, 2.6, -0.2]; p.fist = 1; p.y = Math.max(0, Math.sin(t * 5)) * 0.03; p.hz = -0.06; },
+      // work clips (factory workers)
+      stir(t, p) { CLIPS.idle(t, p); const a2 = t * 3.2; p.aR = [-1.05 + Math.sin(a2) * 0.2, 0, 0.25 + Math.cos(a2) * 0.2, -0.8]; p.aL = [-1.0 + Math.sin(a2) * 0.2, 0, -0.25 + Math.cos(a2) * 0.2, -0.8]; p.rz = Math.sin(a2) * 0.04; p.hx = 0.18; p.fist = 1; },
+      carry(t, p) { CLIPS.walk(t, p); p.aL = [-1.1, 0, -0.15, -0.75]; p.aR = [-1.1, 0, 0.15, -0.75]; p.hx = -0.04; },
+      carry_idle(t, p) { CLIPS.idle(t, p); p.aL = [-1.1, 0, -0.15, -0.75]; p.aR = [-1.1, 0, 0.15, -0.75]; },
+      hammer(t, p) { CLIPS.idle(t, p); const k = Math.max(0, Math.sin(t * 6)); p.aR = [-2.1 + k * 1.2, 0, 0.2, -0.5 - k * 0.6]; p.aL = [-0.9, 0, -0.2, -0.7]; p.hx = 0.22; p.fist = 1; },
+      type(t, p) { CLIPS.idle(t, p); const k = Math.sin(t * 14) * 0.05; p.aR = [-0.95 + k, 0, 0.12, -1.1]; p.aL = [-0.95 - k, 0, -0.12, -1.1]; p.hx = 0.2; },
+      sweep(t, p) { CLIPS.idle(t, p); const s2 = Math.sin(t * 3); p.aR = [-0.65 + s2 * 0.3, 0, 0.35, -0.5]; p.aL = [-0.9 + s2 * 0.2, 0, -0.05, -0.9]; p.ry = s2 * 0.25; p.hx = 0.2; p.fist = 1; },
+      greet(t, p) { CLIPS.idle(t, p); p.aR = [-0.3, 0, 2.3, -0.6 + Math.sin(t * 8) * 0.3]; p.hz = -0.08; p.hy = Math.sin(t * 0.8) * 0.15; },
       sit(t, p) { CLIPS.idle(t, p); p.sit = 1; p.aL = [-0.45, 0, -0.25, -0.55]; p.aR = [-0.45, 0, 0.25, -0.55]; },
       sit_sad(t, p) { CLIPS.sit(t, p); p.hx = 0.28; p.rx = 0.14; p.aL = [-0.55, 0, -0.08, -0.9]; p.aR = [-0.55, 0, 0.08, -0.9]; },
     };
@@ -489,6 +574,23 @@
       const ring = add(mg, new T.TorusGeometry(0.045, 0.008, 10, 32), plastic(0x1f1a17), 0, 0.075, 0); ring.rotation.y = Math.PI / 2;
       const lens = add(mg, new T.CircleGeometry(0.044, 32), new T.MeshPhysicalMaterial({ color: 0xdff4ff, transmission: 0.8, transparent: true, opacity: 0.45, roughness: 0.05 }), 0, 0.075, 0); lens.rotation.y = Math.PI / 2;
       api.hold(mg, 'R');
+    }
+    // the worker's tool (from the sheet)
+    if (P.prop) {
+      const g = new T.Group(), M2 = (c, o) => plastic(c, o);
+      const front = (o) => { const f = J(chest, 0, -torsoH * 0.1, chestD * 2.4); f.add(o); return f; };
+      if (P.prop === 'tray') { add(g, new T.CylinderGeometry(0.15, 0.15, 0.012, 24), M2(0x9ca3af, { metalness: 0.6, roughness: 0.3 })); for (let k = 0; k < 6; k++) add(g, new T.CylinderGeometry(0.035, 0.035, 0.014, 14), M2(0xd9a05b), Math.cos(k) * 0.08, 0.012, Math.sin(k) * 0.08); front(g); }
+      else if (P.prop === 'box') { add(g, roundBox(0.18, 0.12, 0.14, 0.01), M2(0x7c3aed)); add(g, new T.BoxGeometry(0.19, 0.125, 0.025), M2(0xfacc15)); add(g, new T.BoxGeometry(0.025, 0.125, 0.145), M2(0xfacc15)); front(g); }
+      else if (P.prop === 'dough') { const d = add(g, new T.SphereGeometry(0.08, 18, 14), M2(0xf5e1b8, { roughness: 0.8 })); d.scale.set(1.4, 0.7, 1); add(g, new T.CylinderGeometry(0.12, 0.1, 0.06, 20, 1, true), M2(0xc0c7d0, { metalness: 0.5, side: T.DoubleSide }), 0, -0.02, 0); front(g); }
+      else if (P.prop === 'magnifier') { add(g, new T.CylinderGeometry(0.01, 0.012, 0.11, 10), M2(0x1f1a17), 0, -0.02, 0); const r = add(g, new T.TorusGeometry(0.045, 0.008, 10, 32), M2(0xec4899), 0, 0.075, 0); r.rotation.y = Math.PI / 2; api.hold(g, 'R'); const cb = new T.Group(); add(cb, roundBox(0.16, 0.2, 0.012, 0.006), M2(0x8a5a33)); add(cb, new T.PlaneGeometry(0.13, 0.15), new T.MeshStandardMaterial({ color: 0xffffff }), 0, -0.01, 0.007); api.hold(cb, 'L'); }
+      else if (P.prop === 'lollipop') { add(g, new T.CylinderGeometry(0.006, 0.006, 0.22, 8), M2(0xffffff), 0, 0.05, 0); const pop = add(g, new T.CylinderGeometry(0.06, 0.06, 0.02, 24), M2(0xec4899, { roughness: 0.25 }), 0, 0.17, 0); pop.rotation.x = Math.PI / 2; api.hold(g, 'R'); }
+      else if (P.prop === 'can') { add(g, new T.CylinderGeometry(0.06, 0.07, 0.12, 16), M2(0x16a34a, { metalness: 0.3 }), 0, -0.06, 0.02); const sp = add(g, new T.CylinderGeometry(0.008, 0.014, 0.14, 8), M2(0x16a34a), 0, -0.03, 0.1); sp.rotation.x = 1.0; api.hold(g, 'R'); }
+      else if (P.prop === 'bell') { add(g, new T.SphereGeometry(0.035, 16, 10, 0, Math.PI * 2, 0, Math.PI / 2), M2(0xd4a017, { metalness: 0.7, roughness: 0.25 })); api.hold(g, 'L'); }
+      else if (P.prop === 'radio') { add(g, roundBox(0.04, 0.09, 0.025, 0.006), M2(0x111827)); add(g, new T.CylinderGeometry(0.004, 0.004, 0.06, 6), M2(0x111827), 0.012, 0.07, 0); api.hold(g, 'R'); }
+      else if (P.prop === 'flag') { add(g, new T.CylinderGeometry(0.005, 0.005, 0.3, 8), M2(0x8a5a33), 0, 0.08, 0); add(g, new T.PlaneGeometry(0.12, 0.08), new T.MeshStandardMaterial({ color: 0x16a34a, side: T.DoubleSide }), 0.06, 0.19, 0); api.hold(g, 'R'); }
+      else if (P.prop === 'flask') { add(g, new T.SphereGeometry(0.045, 16, 12), new T.MeshPhysicalMaterial({ color: 0xa855f7, transparent: true, opacity: 0.85, roughness: 0.05, emissive: 0x7c3aed, emissiveIntensity: 0.4 }), 0, 0.02, 0); add(g, new T.CylinderGeometry(0.014, 0.016, 0.05, 10), new T.MeshPhysicalMaterial({ color: 0xe9d5ff, transparent: true, opacity: 0.6 }), 0, 0.075, 0); api.hold(g, 'R'); }
+      else if (P.prop === 'broom') { add(g, new T.CylinderGeometry(0.008, 0.008, 0.62, 8), M2(0x8a5a33), 0, -0.12, 0); const br = add(g, new T.ConeGeometry(0.07, 0.14, 12), M2(0xd6a64f, { roughness: 0.9 }), 0, -0.47, 0); br.rotation.x = Math.PI; api.hold(g, 'R'); }
+      else if (P.prop === 'wrench') { add(g, new T.BoxGeometry(0.018, 0.16, 0.012), M2(0x9ca3af, { metalness: 0.7, roughness: 0.3 }), 0, 0.05, 0); const hd = add(g, new T.TorusGeometry(0.022, 0.009, 8, 16, Math.PI * 1.5), M2(0x9ca3af, { metalness: 0.7 }), 0, 0.14, 0); hd.rotation.z = Math.PI * 0.25; api.hold(g, 'R'); }
     }
     api.setExpression('neutral', true); update(0);
     root.traverse((m) => { if (m.isMesh && m.castShadow !== false) m.castShadow = true; });

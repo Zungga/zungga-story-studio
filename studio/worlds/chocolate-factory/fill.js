@@ -10,7 +10,7 @@
     control_room_f1: { wall: ['cf1_monitor_wall', 'cf1_lever_panel', 'cf1_status_tower', 'cf1_lockers'], floor: ['cf1_control_console', 'cf1_operator_chair', 'cf1_map_board', 'cf1_control_console'] },
     recipe_library: { wall: ['cf1_bookshelf', 'cf1_bookshelf_b', 'cf1_bookshelf_narrow', 'cf1_archive_boxes', 'cf1_bookshelf'], floor: ['cf1_reading_table', 'cf1_bookshelf_low', 'cf1_drafting_table', 'cf1_scroll_basket', 'cf1_bookshelf_low'] },
     innovation_lab: { wall: ['cf1_flask_bench', 'cf1_bubble_tank', 'cf1_invention_machine'], floor: ['cf1_tesla_coil', 'cf1_holo_table', 'cf1_friendly_robot', 'cf1_tesla_coil'] },
-    quality_lab: { wall: ['cf1_sample_rack', 'cf1_microscope_bench', 'cf1_scale_table'], floor: ['cf1_tasting_table', 'cf1_mini_conveyor', 'cf1_tasting_table'] },
+    quality_lab: { living: ['cfl_conveyor'], wall: ['cf1_sample_rack', 'cf1_microscope_bench', 'cf1_scale_table'], floor: ['cf1_tasting_table', 'cf1_mini_conveyor', 'cf1_tasting_table'] },
     meeting_hall: { wall: ['plant_pot', 'cf1_lockers', 'plant_pot'], rows: { id: 'cf1_chair', dx: 1.25, dz: 1.5, face: Math.PI, from: 0.15, to: 0.85 } },
     security_center: { wall: ['cf1_monitor_wall_b', 'cf1_key_cabinet', 'cf1_lockers', 'cf1_monitor_wall'], floor: ['cf1_control_console', 'cf1_operator_chair', 'cf1_map_board'] },
     hall_of_fame: { wall: ['cf1_trophy_shelf', 'plant_pot'], floor: ['cf1_pedestal_cup', 'cf1_pedestal_star', 'cf1_pedestal_bar', 'cf1_pedestal_medal', 'cf1_cocoa_statue'] },
@@ -18,14 +18,14 @@
     first_aid: { wall: ['cf1_med_bed', 'cf1_privacy_curtain', 'cf1_med_bed', 'cf1_med_cabinet', 'cf1_water_cooler'], floor: ['cf1_bean_bag', 'plant_pot', 'cf1_bean_bag'] },
     archive_room: { wall: ['cf1_archive_shelf', 'cf1_filing_cabinet', 'cf1_filing_cabinet_teal', 'cf1_archive_shelf'], floor: ['cf1_archive_shelf', 'cf1_doc_cart', 'cf1_archive_shelf'] },
     // ground floor
-    candy_lab: { wall: ['cf_candy_shelf', 'cf_syrup_tubes', 'cf_lab_bench', 'cf_candy_shelf'], floor: ['cf_lollipop_press', 'cf_gumball_machine', 'cf_swirl_machine', 'cf_cotton_candy_machine'] },
-    marshmallow_workshop: { wall: ['cf_marshmallow_sack', 'cf_marshmallow_conveyor', 'cf_marshmallow_sack'], floor: ['cf_marshmallow_puffer', 'cf_marshmallow_pile', 'cf_cushion', 'cf_marshmallow_tower'] },
-    cookie_bakery: { wall: ['cf_brick_oven', 'cf_cookie_rack', 'cf_flour_sack', 'cf_cookie_rack'], floor: ['cf_dough_table', 'cf_stand_mixer', 'cf_cookie_jar'] },
-    chocolate_kitchen: { wall: ['cf_choco_mold_rack', 'cf_tempering_table', 'cf_choco_mold_rack'], floor: ['cf_choco_vat', 'cf_cocoa_grinder', 'cf_choco_bar_stack', 'cf_choco_vat'] },
-    ingredient_warehouse: { wall: ['cf_storage_rack', 'cf_crate_stack', 'cf_storage_rack'], floor: ['cf_pallet_sacks', 'cf_crate_stack', 'cf_milk_cans', 'cf_hand_truck', 'cf_pallet_sacks'] },
+    candy_lab: { living: ['cfl_candy_machine'], wall: ['cf_candy_shelf', 'cf_syrup_tubes', 'cf_lab_bench', 'cf_candy_shelf'], floor: ['cf_lollipop_press', 'cf_gumball_machine', 'cf_swirl_machine', 'cf_cotton_candy_machine'] },
+    marshmallow_workshop: { living: ['cfl_marshmallow_fluffer'], wall: ['cf_marshmallow_sack', 'cf_marshmallow_conveyor', 'cf_marshmallow_sack'], floor: ['cf_marshmallow_puffer', 'cf_marshmallow_pile', 'cf_cushion', 'cf_marshmallow_tower'] },
+    cookie_bakery: { living: ['cfl_cookie_oven', 'cfl_cookie_printer'], wall: ['cf_brick_oven', 'cf_cookie_rack', 'cf_flour_sack', 'cf_cookie_rack'], floor: ['cf_dough_table', 'cf_stand_mixer', 'cf_cookie_jar'] },
+    chocolate_kitchen: { living: ['cfl_choco_mixer', 'cfl_conveyor'], wall: ['cf_choco_mold_rack', 'cf_tempering_table', 'cf_choco_mold_rack'], floor: ['cf_choco_vat', 'cf_cocoa_grinder', 'cf_choco_bar_stack', 'cf_choco_vat'] },
+    ingredient_warehouse: { living: ['cfl_packing_machine', 'cfl_ingredient_elevator'], wall: ['cf_storage_rack', 'cf_crate_stack', 'cf_storage_rack'], floor: ['cf_pallet_sacks', 'cf_crate_stack', 'cf_milk_cans', 'cf_hand_truck', 'cf_pallet_sacks'] },
     machine_workshop: { wall: ['cf_workbench', 'cf_tool_cabinet', 'cf_workbench'], floor: ['cf_robot_arm', 'cf_conveyor_parts', 'cf_robot_arm'] },
     choco_office: { wall: ['cf_bookshelf', 'cf_trophy_cabinet', 'cf_bookshelf'], floor: ['cf_sofa', 'cf_coffee_table', 'cf_floor_globe'] },
-    workers_cafe: { wall: ['cf_vending_machine', 'plant_pot', 'cf_hot_choco_dispenser'], floor: ['cf_cafe_table_set', 'cf_cafe_table_set', 'cf_cafe_table_set'] },
+    workers_cafe: { living: ['cfl_choco_fountain'], wall: ['cf_vending_machine', 'plant_pot', 'cf_hot_choco_dispenser'], floor: ['cf_cafe_table_set', 'cf_cafe_table_set', 'cf_cafe_table_set'] },
     // underground
     hidden_entrance: { wall: ['cfu_crate', 'cfu_barrel', 'cfu_crate', 'cfu_sack'] },
     tunnel_network: { wall: ['cfu_crate', 'cfu_barrel', 'cfu_mine_cart', 'cfu_sack'] },
@@ -58,6 +58,9 @@
         if (lx - ex < rect.x0 || lx + ex > rect.x1 || lz - ez < rect.z0 || lz + ez > rect.z1) return false;
         if (Math.hypot(lx - cxL, lz - czL) < cr + Math.max(hx, hz)) return false;   // keep the middle open
         const [wx, wz] = f.W(lx, lz); if (!clear(wx, wz, hx, hz, f.ry + r, y)) return false; f.prop(id, lx, 0, lz, r, 1, { shrink: 0.9 }); return true; };
+      if (theme.living) {   // the living machines stand by the back wall, facing whoever comes in
+        theme.living.forEach((id, i) => { if (!ZAssets.has(id)) return; const [, hz] = size(id), lz = rect.z0 + hz + 0.9, w = rect.x1 - rect.x0;
+          for (const f2 of [0, 0.22, -0.22, 0.38, -0.38, 0.12, -0.12]) { const lx = cxL + (i ? -1 : 1) * Math.abs(f2) * w * (f2 < 0 ? -1 : 1) + (theme.living.length > 1 ? (i ? -1 : 1) * w * 0.2 : 0); if (put(id, lx, lz, 0)) break; } }); }
       if (theme.wall) { let k = 0; const step = 0.5;
         for (const side of walls) { const ns = side === 'n' || side === 's', a0 = ns ? rect.x0 : rect.z0, a1 = ns ? rect.x1 : rect.z1, r = { n: 0, s: Math.PI, w: Math.PI / 2, e: -Math.PI / 2 }[side];
           for (let a = a0 + 0.8; a < a1 - 0.8; a += step) { const id = theme.wall[k % theme.wall.length]; if (!ZAssets.has(id)) { k++; continue; } const [hx, hz] = size(id), off = hz + 0.3;

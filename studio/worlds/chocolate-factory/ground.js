@@ -160,7 +160,15 @@
       run(B.x0, B.z0, B.x1, B.z0); run(B.x1, B.z0, B.x1, B.z1); run(B.x0, B.z1, -4, B.z1); run(4, B.z1, B.x1, B.z1); run(B.x0, B.z0, B.x0, B.z1);
       // south gate (closed iron gate between two pillars) — the way in from outside
       for (const sx of [-1, 1]) { c.cyl(1.1, 1.2, 4.6, sx * 4.6, 0, B.z1, 0xb7793f); c.cyl(0.9, 1.15, 1.4, sx * 4.6, 4.6, B.z1, 0x6d28d9, { col: false }); }
-      for (let i = -7; i <= 7; i++) c.box(0.08, 3.2, 0.08, i * 0.5, 0, B.z1, 0x3b2416, { col: false }); c.col(8, 3.2, 0.4, 0, 0, B.z1); c.box(8, 0.15, 0.12, 0, 3.0, B.z1, 0x3b2416, { col: false }); c.box(8, 0.15, 0.12, 0, 0.4, B.z1, 0x3b2416, { col: false });
+      // two iron gate leaves that swing open for the school bus (and for you)
+      for (const sx of [-1, 1]) { const leaf = new T.Group(); for (let i = 0; i < 8; i++) { const b2 = new T.Mesh(new T.BoxGeometry(0.08, 3.1, 0.08), M(0x3b2416)); b2.position.set(-1.75 + i * 0.5, 1.55, 0); leaf.add(b2); } for (const yy of [0.4, 3.0]) { const r2 = new T.Mesh(new T.BoxGeometry(3.9, 0.14, 0.12), M(0x3b2416)); r2.position.set(0, yy, 0); leaf.add(r2); } const zb = new T.Mesh(new T.CircleGeometry(0.5, 24), new T.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.5, roughness: 0.3, side: T.DoubleSide })); zb.position.set(sx * 1.1, 1.8, 0.07); leaf.add(zb);
+        const D = c.frame(sx * 2, B.z1, sx < 0 ? 0 : Math.PI).door({ x: 0, z: 0, w: 4, h: 3.2, kind: 'swing', auto: true, mesh: leaf, swing: -1, range: 7 }); W.busGate = (W.busGate || []).concat(D); }
+      // the bus road from the gate out into the countryside, and the bus stop just inside
+      ribbon([[0, B.z1 + 90], [0, B.z1 - 3]], 7, { y: 0.03 });
+      { const bf = c.frame(7.5, B.z1 - 7, Math.PI); bf.box(5.2, 0.25, 2.4, 0, 2.8, 0.6, 0x6d28d9, { col: false }); for (const x of [-2.4, 2.4]) for (const z of [-0.4, 1.6]) bf.cyl(0.08, 0.08, 2.8, x, 0, z, 0xd1d5db, { col: false }); bf.col(5.2, 2.8, 0.2, 0, 0, 1.6);
+        bf.box(3.2, 0.12, 0.6, 0, 0.5, 1.2, 0xb7793f); const sg = new T.Mesh(new T.PlaneGeometry(3.4, 0.9), new T.MeshStandardMaterial({ map: ZA.label('🚌 SCHOOL BUS → ISLAND', { w: 1024, h: 240, bg: '#3b0764', fg: '#ffd84a', size: 110, radius: 30 }) })); sg.position.set(0, 3.5, 0.6); sg.rotation.y = Math.PI; bf.g.add(sg); const sg2 = sg.clone(); sg2.rotation.y = 0; sg2.position.z = 0.62; bf.g.add(sg2);
+        W.busStop = { x: 2.5, z: B.z1 - 8, faceZ: -1 }; blocks.push([2, B.z1 - 9, 12, 10]);   // keep trees off the bus stop + turning area
+        c.interact({ x: 3.5, z: B.z1 - 7.5, r: 3.2, label: 'Ride the school bus back to the island', fn: () => dispatchEvent(new CustomEvent('zworld-bus')) }); }
       for (const [x, z] of [[B.x0, B.z0], [B.x1, B.z0], [B.x0, B.z1], [B.x1, B.z1]]) { c.cyl(1.8, 2, 5.5, x, 0, z, 0xb7793f); const cone = new T.Mesh(new T.ConeGeometry(2.2, 2.6, 16), M(0x6d28d9)); cone.position.set(x, 6.8, z); c.g.add(cone); }
     }
 
@@ -208,6 +216,7 @@
       const fallM = new T.MeshStandardMaterial({ color: 0x7a4426, roughness: 0.25, transparent: true, opacity: 0.92, side: T.DoubleSide });
       const cur1 = new T.Mesh(new T.CylinderGeometry(2.05, 2.6, 2.0, 32, 1, true), fallM); cur1.position.y = 1.6; ff.g.add(cur1); const cur2 = new T.Mesh(new T.CylinderGeometry(1.0, 1.9, 1.4, 24, 1, true), fallM); cur2.position.y = 3.35; ff.g.add(cur2);
       f.tick((t) => { cur1.scale.set(1 + Math.sin(t * 3) * 0.015, 1, 1 + Math.cos(t * 3) * 0.015); cur2.rotation.y = t * 0.4; }, cur1); cur2.userData.dynamic = true;
+      if (ZFactory.faceOn) { const ftk = ZFactory.faceOn(ff.g, { y: 1.2, z: 4.0, s: 2.2, lid: 0x5b3420 }); f.tick(ftk); }   // the living chocolate fountain smiles at the plaza
       const z = ZAssets.has('zungga_logo'); if (z) ff.prop('zungga_logo', 0, 5.0, 0, 0, 1.2, { col: false });
       const PR = G.plaza.r;
       for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2 + Math.PI / 12, r = PR * 0.82; f.prop('island_lamp_post', Math.sin(a) * r, 0, Math.cos(a) * r, a, 1, { col: false }); f.col(0.3, 3, 0.3, Math.sin(a) * r, 0, Math.cos(a) * r); }
@@ -296,7 +305,7 @@
         if (!free(x, z, big ? 1.2 : 0.3)) continue;
         // under the first-floor deck only low plants (the deck is 13 m up, trees are fine but keep it airy)
         const s = big ? 0.8 + rnd() * 0.5 : 0.8 + rnd() * 0.6;
-        c.prop(k, x, 0, z, rnd() * 6.28, s, { col: false }); if (big) c.col(0.45, 3, 0.45, x, 0, z); placed++;
+        c.prop(k, x, 0, z, rnd() * 6.28, s, { col: false }); if (big) { c.col(0.45, 3, 0.45, x, 0, z); (W.treeSpots = W.treeSpots || []).push([x, z, s]); } placed++;
       }
       // lamps along the boulevard loop
       for (let i = 0; i < loopPts.length; i += 3) { const [x, z] = loopPts[i], [nx, nz] = loopPts[(i + 1) % loopPts.length], tx = nx - x, tz = nz - z, tl = Math.hypot(tx, tz) || 1, ox = -tz / tl * (lp.w / 2 + 0.6), oz = tx / tl * (lp.w / 2 + 0.6); if (height(x + ox, z + oz) < -0.05 || !free(x + ox, z + oz, -1.4)) continue; c.prop('island_lamp_post', x + ox, 0, z + oz, 0, 1, { col: false }); c.col(0.3, 3, 0.3, x + ox, 0, z + oz); }

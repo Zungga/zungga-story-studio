@@ -57,11 +57,13 @@
 <script src="assets/animals.js"></script><script src="assets/garage.js"></script><script src="assets/sports.js"></script><script src="assets/sky.js"></script>
 <script src="assets/seasons.js"></script><script src="assets/cave.js"></script>
 <script src="characters/toons.js"></script>
+<script src="characters/explorers.js"></script>
+<script src="characters/creatures.js"></script>
 <script src="js/world-kit.js"></script>
 <script src="js/walker.js"></script>
 <script src="js/world-audio.js"></script>
 <script src="worlds/chocolate-factory/layout.js"></script>
-<script src="worlds/chocolate-factory/props.js" onerror="this.remove()"></script>
+<script src="worlds/chocolate-factory/living.js"></script>
 <script src="worlds/chocolate-factory/dress-ground.js"></script>
 <script src="worlds/chocolate-factory/dress-first.js"></script>
 <script src="worlds/chocolate-factory/dress-under.js"></script>
@@ -111,6 +113,7 @@
   const MIX_LABEL = { master: 'Master volume', water: 'Chocolate river', fountain: 'Plaza fountain', waterfall: 'Waterfalls', birds: 'Birds (open land)', vats: 'Chocolate vats (kitchen)', machines: 'Machines (workshop, machinery hall)', beeps: 'Console beeps (control rooms)', bakery: 'Ovens (bakery)', cafe: 'Chatter (café, meeting, training)', lab: 'Bubbles (labs)', puff: 'Puffs (marshmallow)', warehouse: 'Crates (warehouse)', cave: 'Underground wind + drips', magic: 'Magic shimmer (vault, chamber)', train: 'Train', door: 'Doors', splash: 'Splash', whistle: 'Train whistle' };
   const VID_LABEL = { voice: 'Voice', music: 'Background music', ambience: 'Ambience (rain, waves…)', sfx: 'Sound effects (coins, thunder…)' };
   let MIX = { world: {}, video: { voice: 1, music: 1, ambience: 1, sfx: 1 } };
+  const STUDIO = await fetch('/api/mix', { cache: 'no-store' }).then((r) => r.ok && (r.headers.get('content-type') || '').includes('json')).catch(() => false);   // false on the public site (no studio server): no notes, no Save
   try { const r = await fetch('/api/mix'); if (r.ok) MIX = { ...MIX, ...(await r.json()) }; else { const r2 = await fetch('assets/mix.json'); if (r2.ok) MIX = { ...MIX, ...(await r2.json()) }; } } catch { /* defaults */ }
   audio.mix = MIX.world;
   function renderMixer() {
@@ -120,6 +123,7 @@
       <h3>Story videos (defaults)</h3>${Object.keys(VID_LABEL).map((k) => row('video', k, VID_LABEL[k])).join('')}
       <div class="btns"><button id="mixSave">Save as default</button><button class="ghost" id="mixReset">Reset to 100%</button><button class="ghost" id="mixClose">Close</button></div><div id="mixMsg" style="font-size:12px;color:#6b6480;margin-top:6px">${MIX.saved ? 'Last saved ' + new Date(MIX.saved).toLocaleString() : ''}</div>`;
     $('#mixer').querySelectorAll('input[type=range]').forEach((el) => el.oninput = () => { MIX[el.dataset.g][el.dataset.k] = +el.value; el.nextElementSibling.textContent = Math.round(el.value * 100) + '%'; audio.mix = MIX.world; if (el.dataset.g === 'world' && ['door', 'splash', 'whistle'].includes(el.dataset.k)) audio.play(el.dataset.k === 'door' ? 'door' : el.dataset.k, 1); });
+    if (!STUDIO) { $('#mixSave').style.display = 'none'; $('#mixMsg').textContent = 'Volume changes last for this visit.'; }
     $('#mixSave').onclick = async () => { try { const r = await fetch('/api/mix', { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ world: MIX.world, video: MIX.video }) }); if (!r.ok) throw new Error(); MIX = { ...MIX, ...(await r.json()) }; $('#mixMsg').textContent = 'Saved ✓ — studio/assets/mix.json'; toast('Mixer saved'); } catch { $('#mixMsg').textContent = 'Could not save (is the studio server running?)'; } };
     $('#mixReset').onclick = () => { for (const k of Object.keys(MIX_LABEL)) MIX.world[k] = k === 'master' ? 0.8 : 1; for (const k of Object.keys(VID_LABEL)) MIX.video[k] = 1; audio.mix = MIX.world; renderMixer(); };
     $('#mixClose').onclick = () => { $('#mixer').style.display = 'none'; };
@@ -187,7 +191,7 @@
       ${grp('ground', 'Ground floor')}${grp('first', 'First floor')}${grp('under', 'Underground')}
       <h3>Camera anchors</h3>${anc('ground')}${anc('first')}${anc('under')}
       <h3>Notes</h3><div id="notesList" class="prog">…</div>`;
-    $('#bFree').onclick = () => walker.toggleFree(); $('#bShot').onclick = shot; $('#bNote').onclick = openNote; $('#bReset').onclick = () => { visited.clear(); try { localStorage.removeItem('zw-visited-' + L.id); } catch { /* */ } renderPanel(); };
+    $('#bFree').onclick = () => walker.toggleFree(); $('#bShot').onclick = shot; $('#bNote').onclick = openNote; if (!STUDIO) { $('#bNote').style.display = 'none'; } $('#bReset').onclick = () => { visited.clear(); try { localStorage.removeItem('zw-visited-' + L.id); } catch { /* */ } renderPanel(); };
     document.querySelectorAll('[data-go]').forEach((el) => el.onclick = () => goPlace(el.dataset.go));
     document.querySelectorAll('[data-anchor]').forEach((el) => el.onclick = () => { const a = W.anchors.find((x) => x.id === el.dataset.anchor); walker.view(a.pos, a.look); applyFloor(floorOf(a.pos[1]), true); });
     loadNotes();
@@ -241,7 +245,7 @@
   addEventListener('keydown', (e) => {
     if (/INPUT|TEXTAREA/.test(e.target.tagName)) { if (e.key === 'Escape') $('#noteBox').style.display = 'none'; return; }
     if (e.code === 'KeyM' || e.code === 'Tab') { $('#panel').classList.toggle('open'); e.preventDefault();  }
-    if (e.code === 'KeyN') { e.preventDefault(); openNote(); }
+    if (e.code === 'KeyN' && STUDIO) { e.preventDefault(); openNote(); }
     if (e.code === 'KeyP') shot();
     if (e.code === 'KeyK') { audio.muted = !audio.muted; toast(audio.muted ? 'Sound off (K)' : 'Sound on (K)'); }
     if (e.code === 'KeyC' && walker.mode === 'free') { W.ceilings.forEach((m) => { m.visible = !m.visible; }); }
@@ -288,6 +292,21 @@
   if (q.get('ceil') === '0') W.ceilings.forEach((m) => { m.visible = false; });
   if (q.get('only')) { const keep = q.get('only').split(','); setTimeout(() => { for (const k of Object.keys(W.floors)) W.floors[k].visible = keep.includes(k); }, 50); window.__only = keep; }
   if (q.get('cam')) { const [px, py, pz, lx, ly, lz] = q.get('cam').split(',').map(Number); walker.view([px, py, pz], [lx, ly, lz]); applyFloor(floorOf(py), true); }
+  // ---------- the school bus: arriving from the island (?from=island&back=…) and riding back ----------
+  const backURL = q.get('back');
+  addEventListener('zworld-bus', () => { if (backURL) { toast('All aboard! Back to the island 🚌'); audio.play('whistle', 1); setTimeout(() => { location.href = backURL; }, 1300); } else toast('This bus goes to the island — open Play mode on the resume site to ride it 🚌'); });
+  if (q.get('from') === 'island' && W.busStop) {
+    const B = L.bounds, stopZ = B.z1 - 8;
+    walker.teleport([W.busStop.x + 2.5, 0.05, W.busStop.z - 3], 0);   // facing the gate: watch the bus roll in
+    let bus = null;
+    if (ZAssets.has('school_bus')) { bus = ZAssets.build('school_bus').group; bus.updateMatrixWorld(true); const bb = new T.Box3().setFromObject(bus), sx = bb.max.x - bb.min.x, sz = bb.max.z - bb.min.z; const k = 9 / Math.max(sx, sz); bus.scale.multiplyScalar(k); if (sx > sz) bus.rotation.y = Math.PI / 2; }
+    else { bus = new T.Group(); const m = new T.Mesh(new T.BoxGeometry(2.5, 2.8, 9.5), new T.MeshStandardMaterial({ color: 0xfacc15 })); m.position.y = 1.6; bus.add(m); }
+    bus.traverse((o) => { if (o.isMesh) o.castShadow = true; }); W.floors.ground.add(bus);
+    const t0 = performance.now(), path = (t) => { if (t < 4) { const k = t / 4, e = 1 - (1 - k) * (1 - k); return B.z1 + 70 - (B.z1 + 70 - stopZ) * e; } if (t < 7) return stopZ; const k = (t - 7) / 5; return stopZ + k * k * 90; };
+    bus.position.set(-1.6, 0, B.z1 + 70);
+    (function busAnim() { const t = (performance.now() - t0) / 1000; bus.position.z = path(t); bus.rotation.y = (bus.rotation.y % Math.PI) || 0; for (const D of W.busGate || []) D.want = t < 11 ? 1 : D.want; if (t < 13) requestAnimationFrame(busAnim); else bus.parent && bus.parent.remove(bus); })();
+    setTimeout(() => { toast('Welcome to the Zungga Chocolate Factory! 🍫'); audio.play('chime', 1); }, 4200);
+  }
   $('#loading').remove();
   // ---------- clearance audit: can the kid (r 0.35) walk from every door to the room centre? ----------
   function clear(x0, z0, x1, z1, y, r = 0.35) {
