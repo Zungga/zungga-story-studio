@@ -56,6 +56,19 @@
       sh.spiral({ x: S.x, z: S.z, y0: bot, y1: top, r0: 1.1, r1: 2.3, a0, dir: 1, per, rise, mat: 0x8d7b6a, rail: 0x6e5a4b, wallR: S.r, wallY0: -5, wallY1: top - 0.6, noColumn: true, landing: 6 });
       // little platform in the core at the top, next to the slide start
       sh.cyl(1.05, 1.05, 0.3, S.x, top - 0.3, S.z, 0x6e5a4b, { seg: 20 });
+      // golden guardrails round the opening: only the top landing (stairs down + the slide in the core) is open, so the
+      // rest of the hidden room's floor is safe — the rail runs on the floor rim (outer) and round the core platform (inner)
+      { const aOpen0 = aEnd - 0.12, aOpen1 = aEnd + 6 * da + 0.05, span = Math.PI * 2 - (aOpen1 - aOpen0), gold = M(0xd4a017, { metalness: 0.7, roughness: 0.3 });
+        for (const [rr, segs] of [[S.r + 0.02, 30], [1.08, 12]]) {
+          for (let k = 0; k < segs; k++) {
+            const a = aOpen1 + span * (k + 0.5) / segs, wl = span * rr / segs + 0.04, px = S.x + Math.sin(a) * rr, pz = S.z + Math.cos(a) * rr;
+            const bar = new T.Mesh(new T.BoxGeometry(0.07, 0.07, wl), gold); bar.position.set(px, top + 1.0, pz); bar.rotation.y = a + Math.PI / 2; sh.g.add(bar);
+            const mid = new T.Mesh(new T.BoxGeometry(0.04, 0.04, wl), gold); mid.position.set(px, top + 0.5, pz); mid.rotation.y = a + Math.PI / 2; sh.g.add(mid);
+            sh.col(0.12, 1.05, wl, px, top, pz, { ry: a + Math.PI / 2, nocam: true });
+          }
+          for (let k = 0; k <= segs; k++) { const a = aOpen1 + span * k / segs; sh.box(0.07, 1.04, 0.07, S.x + Math.sin(a) * rr, top, S.z + Math.cos(a) * rr, gold, { col: false, cast: false }); }
+        }
+      }
       // spiral slide down the core (8 turns), shooting out into the Hidden Entrance at the bottom
       const pts = [], turns = 8, N = turns * 12, aS = aEnd + Math.PI * 0.45, rS = 0.55, yS = top + 0.3, yE = bot + 0.55;
       for (let i = 0; i <= N; i++) { const a = aS - (i / N) * turns * Math.PI * 2, y = yS - (yS - yE) * (i / N); pts.push([S.x + Math.sin(a) * rS, y, S.z + Math.cos(a) * rS]); }

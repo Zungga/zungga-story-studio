@@ -235,13 +235,65 @@
         const tip = new T.Mesh(new T.ConeGeometry(0.5, 1.6, 12), M(0x7c3aed)); tip.position.set(tx, 11.2, 0); f.g.add(tip);
         f.box(E.w / 2 - E.gate / 2 - 5.2, 4.5, 2.4, sx * (E.w / 2 - (E.w / 2 - E.gate / 2 - 5.2) / 2), 0, 0, 0xb7793f);
       }
-      f.box(E.gate + 3, 1.8, 2.6, 0, 5.4, 0, 0x7c3aed, { col: true });
-      const arch = new T.Mesh(new T.TorusGeometry(E.gate / 2 + 0.3, 0.45, 12, 32, Math.PI), M(0xfacc15, { metalness: 0.3 })); arch.position.set(0, 5.4, 1.3); f.g.add(arch);
-      const sign = new T.Mesh(new T.PlaneGeometry(9, 2.2), new T.MeshStandardMaterial({ map: ZA.label('ZUNGGA CHOCOLATE FACTORY', { w: 1024, h: 250, bg: '#5b2a86', fg: '#ffd84a', size: 120, radius: 40 }), roughness: 0.6 })); sign.position.set(0, 8.2, 1.35); f.g.add(sign);
-      const sign2 = sign.clone(); sign2.rotation.y = Math.PI; sign2.position.z = -1.35; f.g.add(sign2);
-      f.box(9.4, 2.6, 0.4, 0, 7.0, 1.0, 0x5b2a86, { col: false });
-      // the outer plaza fountain
-      const o = E.outer, fo = c.frame(o.x, o.z); fo.cyl(2.6, 2.8, 0.6, 0, 0, 0, 0xe9d5b5); const wpool = new T.Mesh(new T.CircleGeometry(2.4, 32), M(0x60a5fa, { roughness: 0.15 })); wpool.rotation.x = -Math.PI / 2; wpool.position.y = 0.55; fo.g.add(wpool); fo.cyl(0.3, 0.4, 1.8, 0, 0.5, 0, 0xe9d5b5); const spray = new T.Mesh(new T.SphereGeometry(0.6, 16, 12), M(0xbfdbfe, { transparent: true, opacity: 0.7 })); spray.position.y = 2.4; fo.g.add(spray); fo.tick((t) => spray.scale.setScalar(1 + Math.sin(t * 5) * 0.1), spray);
+      f.box(E.gate + 3, 1.8, 2.6, 0, 5.4, 0, 0x7c3aed, { col: true });   // the lintel between the towers
+      // ---- the name board: framed, lit with marquee bulbs, readable from both sides, standing on the lintel ----
+      { const bw = 7.6, bh = 2.3, by = 7.25, nb = f.frame(0, 0); nb.box(bw, bh, 0.5, 0, by, 0, 0x3b0764, { col: false });
+        const goldF = M(0xfacc15, { metalness: 0.6, roughness: 0.3, emissive: 0x7a5a00, emissiveIntensity: 0.25 });
+        for (const [w2, h2, x2, y2] of [[bw + 0.3, 0.18, 0, by - 0.09], [bw + 0.3, 0.18, 0, by + bh - 0.09], [0.18, bh, -bw / 2, by], [0.18, bh, bw / 2, by]]) nb.box(w2, h2, 0.62, x2, y2, 0, goldF, { col: false });
+        const tex = ZA.label('ZUNGGA CHOCOLATE FACTORY', { w: 1024, h: 300, bg: '#3b0764', fg: '#ffd84a', size: 92, radius: 24 });
+        for (const sz of [1, -1]) { const pl = new T.Mesh(new T.PlaneGeometry(bw - 0.4, bh - 0.4), new T.MeshStandardMaterial({ map: tex, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.35, roughness: 0.6 })); pl.position.set(0, by + bh / 2, sz * 0.32); if (sz < 0) pl.rotation.y = Math.PI; f.g.add(pl); }
+        const bulbs = []; for (const sz of [1, -1]) for (let k = 0; k < 22; k++) { const u = k / 22, per = 2 * (bw + bh), d = u * per; let bx, by2; if (d < bw) { bx = -bw / 2 + d; by2 = by + bh; } else if (d < bw + bh) { bx = bw / 2; by2 = by + bh - (d - bw); } else if (d < 2 * bw + bh) { bx = bw / 2 - (d - bw - bh); by2 = by; } else { bx = -bw / 2; by2 = by + (d - 2 * bw - bh); }
+          const bm = new T.Mesh(new T.SphereGeometry(0.075, 8, 6), new T.MeshStandardMaterial({ color: 0xfff1b8, emissive: 0xffc94a, emissiveIntensity: 1 })); bm.position.set(bx, by2, sz * 0.36); f.g.add(bm); bulbs.push(bm); }
+        f.tick((t) => bulbs.forEach((b, k) => { b.material.emissiveIntensity = ((k + Math.floor(t * 4)) % 3 === 0) ? 2.2 : 0.5; }), bulbs[0]); }
+      // ---- the golden gate: dazzling bars, opens only for a golden visitor pass (E → the kid raises the pass, energy flies to the gate) ----
+      { const GH = 5.15, lw = E.gate / 2, gold = new T.MeshStandardMaterial({ color: 0xf5c518, metalness: 0.85, roughness: 0.22, emissive: 0xb07800, emissiveIntensity: 0.35 });
+        const leafMesh = (side) => { const g = new T.Group(), bar = (w2, h2, d2, x2, y2) => { const m2 = new T.Mesh(new T.BoxGeometry(w2, h2, d2), gold); m2.position.set(x2, y2, 0); m2.castShadow = true; g.add(m2); };
+          bar(lw, 0.16, 0.14, 0, 0.35); bar(lw, 0.16, 0.14, 0, GH - 0.55); bar(lw, 0.12, 0.12, 0, GH * 0.5); bar(0.16, GH - 0.2, 0.16, -lw / 2 + 0.08, (GH - 0.2) / 2); bar(0.16, GH - 0.2, 0.16, lw / 2 - 0.08, (GH - 0.2) / 2);
+          for (let k = 1; k < 12; k++) { const x2 = -lw / 2 + k * lw / 12, rod = new T.Mesh(new T.CylinderGeometry(0.035, 0.035, GH - 0.5, 8), gold); rod.position.set(x2, (GH - 0.5) / 2 + 0.2, 0); g.add(rod); const tip = new T.Mesh(new T.ConeGeometry(0.07, 0.3, 8), gold); tip.position.set(x2, GH - 0.15, 0); g.add(tip); }
+          const ring = new T.Mesh(new T.TorusGeometry(0.62, 0.07, 10, 32), gold); ring.position.set(side * (lw / 2 - 0.75), GH * 0.5, 0); g.add(ring);
+          const disc = new T.Mesh(new T.CircleGeometry(0.55, 32), new T.MeshStandardMaterial({ map: ZA.label('Z', { w: 256, h: 256, bg: '#3b0764', fg: '#ffd84a', size: 190, radius: 128 }), metalness: 0.3, roughness: 0.4 })); disc.position.copy(ring.position); disc.position.z = 0.02; g.add(disc); const disc2 = disc.clone(); disc2.rotation.y = Math.PI; disc2.position.z = -0.02; g.add(disc2);   // a Z that reads right from both sides
+          for (let k = 0; k < 5; k++) { const sw = new T.Mesh(new T.TorusGeometry(0.28, 0.03, 6, 16, Math.PI), gold); sw.position.set(-lw / 2 + (k + 0.5) * lw / 5, 0.85, 0); g.add(sw); }
+          return g; };
+        const gf = f.frame(0, 0), opts = { kind: 'swing', auto: false, manual: true, w: lw, h: GH, t: 0.2, range: 0 };
+        const DL = gf.door({ ...opts, x: -lw / 2, z: 0.2, ry: 0, mesh: leafMesh(1), swing: -1 }), DR = gf.door({ ...opts, x: lw / 2, z: 0.2, ry: Math.PI, mesh: leafMesh(1), swing: 1 });
+        const sparks = new T.Group(); f.g.add(sparks); const spm = new T.MeshBasicMaterial({ color: 0xfff3b0, transparent: true, opacity: 0.9 }); const sp = Array.from({ length: 26 }, (_, k) => { const m2 = new T.Mesh(new T.OctahedronGeometry(0.06), spm); m2.userData.p = [(Math.random() - 0.5) * E.gate, 0.4 + Math.random() * (GH - 0.6), (Math.random() < 0.5 ? -1 : 1) * 0.35, Math.random() * 6]; sparks.add(m2); return m2; });
+        const GG = W.goldenGate = { x: E.x, z: E.z + 0.2, y: 0, w: E.gate, h: GH, leaves: [DL, DR], mat: gold, glow: 0, openT: 0,
+          get isOpen() { return DL.want === 1; }, open() { DL.want = DR.want = 1; GG.openT = 0; }, close() { DL.want = DR.want = 0; } };
+        f.tick((t, dt = 1 / 60) => { gold.emissiveIntensity = 0.35 + Math.sin(t * 2.2) * 0.12 + GG.glow * 2.2; sp.forEach((m2) => { const q = m2.userData.p, tw = (Math.sin(t * 3 + q[3]) + 1) / 2; m2.position.set(q[0], q[1], q[2]); m2.scale.setScalar(0.25 + tw * tw * (1.1 + GG.glow * 0.8)); m2.rotation.y = t * 2 + q[3]; }); }, sparks);
+        // E near the gate (either side, while it is shut) → the pass ceremony (world.html listens for 'zworld-pass')
+        W.interacts.push({ test: (p) => !GG.isOpen && !GG.busy && Math.abs(p.x - GG.x) < E.gate / 2 + 0.5 && Math.abs(p.z - GG.z) < 3.2 && p.y < 2, label: () => '✨ Show your golden visitor pass', fn: () => dispatchEvent(new CustomEvent('zworld-pass', { detail: GG })) });
+        W.lanes.push({ x: E.x, z: E.z, ry: 0, hw: E.gate / 2, hd: 4, y: 0, h: GH }); }
+      // ---- the outer plaza fountain: a three-tier fountain with falling water veils, jets and ripples ----
+      const o = E.outer, fo = c.frame(o.x, o.z);
+      { const stone = 0xeadfca, stone2 = 0xd8c7a6, waterM = new T.MeshStandardMaterial({ color: 0x7cc4ff, transparent: true, opacity: 0.55, roughness: 0.05, metalness: 0.1, side: T.DoubleSide, depthWrite: false });
+        fo.cyl(3.4, 3.6, 0.75, 0, 0, 0, stone, { seg: 40 }); const inner = new T.Mesh(new T.CylinderGeometry(3.05, 3.05, 0.1, 40), M(0x3b82c4, { roughness: 0.2 })); inner.position.y = 0.62; fo.g.add(inner);
+        const pool = new T.Mesh(new T.CircleGeometry(3.05, 40), new T.MeshStandardMaterial({ color: 0x6fc0ff, transparent: true, opacity: 0.8, roughness: 0.05, metalness: 0.2 })); pool.rotation.x = -Math.PI / 2; pool.position.y = 0.69; fo.g.add(pool);
+        const rim = new T.Mesh(new T.TorusGeometry(3.45, 0.16, 8, 48), M(stone2)); rim.rotation.x = Math.PI / 2; rim.position.y = 0.76; fo.g.add(rim);
+        const tiers = [[0.42, 0.55, 1.7, 1.55, 1.3], [0.3, 0.38, 1.1, 2.75, 0.75]];   // [stemTop, stemBottom, height, bowlY, bowlR]
+        fo.cyl(0.55, 0.75, 1.55, 0, 0.6, 0, stone2, { seg: 20 });
+        const veils = [], ripples = [];
+        for (const [, , , by, br] of tiers) {
+          const bowl = new T.Mesh(new T.CylinderGeometry(br, br * 0.35, 0.38, 32), M(stone)); bowl.position.y = by; fo.g.add(bowl);
+          const bw2 = new T.Mesh(new T.CircleGeometry(br * 0.92, 32), pool.material); bw2.rotation.x = -Math.PI / 2; bw2.position.y = by + 0.2; fo.g.add(bw2);
+          const lip = new T.Mesh(new T.TorusGeometry(br, 0.07, 6, 32), M(stone2)); lip.rotation.x = Math.PI / 2; lip.position.y = by + 0.19; fo.g.add(lip);
+          const fall = by + 0.18 - (by === tiers[0][3] ? 0.7 : tiers[0][3] + 0.2); const veil = new T.Mesh(new T.CylinderGeometry(br + 0.04, br + 0.22, fall, 32, 1, true), waterM); veil.position.y = by + 0.18 - fall / 2; fo.g.add(veil); veils.push(veil);
+        }
+        const stem2 = new T.Mesh(new T.CylinderGeometry(0.22, 0.32, 1.0, 16), M(stone2)); stem2.position.y = 1.9; fo.g.add(stem2);
+        const fin = new T.Mesh(new T.SphereGeometry(0.22, 16, 12), M(0xfacc15, { metalness: 0.6, roughness: 0.3 })); fin.position.y = 3.25; fo.g.add(fin);
+        // jets: droplets on arcs from the top + a centre plume
+        const N = 140, dg = new T.BufferGeometry(), pos = new Float32Array(N * 3), seed = Array.from({ length: N }, (_, k) => [k / N * Math.PI * 2 * 7.3, Math.random()]);
+        dg.setAttribute('position', new T.BufferAttribute(pos, 3)); const drops = new T.Points(dg, new T.PointsMaterial({ color: 0xdff2ff, size: 0.09, transparent: true, opacity: 0.9, depthWrite: false })); drops.frustumCulled = false; fo.g.add(drops);
+        for (let k = 0; k < 3; k++) { const rp = new T.Mesh(new T.RingGeometry(0.8, 0.9, 40), new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.3, depthWrite: false })); rp.rotation.x = -Math.PI / 2; rp.position.y = 0.71; fo.g.add(rp); ripples.push(rp); }
+        fo.tick((t) => {
+          for (let k = 0; k < N; k++) { const [a, ph] = seed[k], u = (t * 0.55 + ph) % 1; let x, y, z;
+            if (k % 4 === 0) { x = Math.sin(a) * 0.05; z = Math.cos(a) * 0.05; y = 3.35 + 1.6 * Math.sin(u * Math.PI); }   // centre plume
+            else { const r = 0.2 + u * 2.1; x = Math.sin(a) * r; z = Math.cos(a) * r; y = 3.3 + u * 1.2 - u * u * 3.4; if (y < 0.7) y = 0.7; }
+            pos[k * 3] = x; pos[k * 3 + 1] = y; pos[k * 3 + 2] = z; }
+          dg.attributes.position.needsUpdate = true;
+          veils.forEach((v, i) => { v.material.opacity = 0.42 + Math.sin(t * 6 + i) * 0.08; });
+          ripples.forEach((rp, i) => { const u = (t * 0.4 + i / 3) % 1; rp.scale.setScalar(1 + u * 2.4); rp.material.opacity = 0.35 * (1 - u); });
+        }, drops);
+      }
       for (const sx of [-1, 1]) for (const sz of [-1, 1]) { fo.prop('island_lamp_post', sx * 5.5, 0, sz * 5.5, 0, 1, { col: false }); fo.col(0.3, 3, 0.3, sx * 5.5, 0, sz * 5.5); lamp(fo, sx * 5.5, sz * 5.5, 3.2); }
     }
 

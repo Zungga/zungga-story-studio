@@ -46,7 +46,7 @@
     dom.addEventListener('pointerup', endLook); dom.addEventListener('pointercancel', endLook); dom.addEventListener('lostpointercapture', endLook);
     dom.addEventListener('wheel', (e) => { camDist = clamp(camDist * (e.deltaY > 0 ? 1.1 : 0.91), 0.45, 3.2); e.preventDefault(); }, { passive: false });
 
-    let forced = null;   // test hook: { f, r, run }
+    let forced = null, act = null, cine = null;   // cine(dt) → { pos, look, fov? } overrides the camera (gate moment, bus flight)   // test hook: { f, r, run }
     const input = () => {
       if (forced) return forced;
       const f = (keys.has('KeyW') || keys.has('ArrowUp') ? 1 : 0) - (keys.has('KeyS') || keys.has('ArrowDown') ? 1 : 0);
@@ -78,7 +78,7 @@
         const p = s.curve.getPointAt(slide.t); pos.copy(p); yaw = Math.atan2(tg.x, tg.z); vel.set(0, 0, 0); void p0; return;
       }
 
-      const water = world.waterAt(pos.x, pos.z);
+      const water = world.waterAt(pos.x, pos.z, pos.y);
       const sup0 = world.support(pos.x, pos.z, pos.y, STEP);
       const deep = water && water.surf - Math.max(sup0.y, -1e9) > 0.7;
       const swimming = !!(water && deep && pos.y < water.surf - 0.35);
@@ -122,6 +122,7 @@
       for (const f of fadeMats) { f.mt.transparent = o < 0.99 ? true : f.t; f.mt.opacity = o < 0.99 ? f.o * o : f.o; f.mt.depthWrite = o > 0.6; } }
     function inLift() { for (const L of world.elevators || []) if (L.inside(pos)) return L; return null; }
     function placeCamera(dt) {
+      if (cine) { const c = cine(dt); if (c) { camPos.copy(c.pos); camLook.copy(c.look); camera.position.copy(c.pos); camera.lookAt(c.look); const fv = c.fov || CAM.fov; if (Math.abs(camera.fov - fv) > 0.05) { camera.fov = fv; camera.updateProjectionMatrix(); } fadeKid(1); return; } }
       if (mode === 'free') {
         const d = new T.Vector3(-Math.sin(free.yaw) * Math.cos(free.pitch), Math.sin(free.pitch), -Math.cos(free.yaw) * Math.cos(free.pitch));
         camera.position.copy(free.pos); camera.lookAt(free.pos.clone().add(d)); return;
@@ -181,6 +182,8 @@
           if (keys.has('KeyE')) free.pos.y += sp; if (keys.has('KeyQ')) free.pos.y -= sp; void f;
           placeCamera(dt); char.update(dt); return;
         }
+        // scripted moments: act = a pose held for a while (no moving); paused = the kid is elsewhere (in the bus), only the camera runs
+        if (act || api.paused) { if (prompt) { prompt = null; onPrompt && onPrompt(null); } if (act) { act.t -= dt; char.play(act.clip); const g = char.group; g.rotation.y = yaw; g.position.set(pos.x, visY, pos.z); char.update(dt); if (act.t <= 0) { const d = act.done; act = null; d && d(); } } placeCamera(dt); return; }
         const inp = input();
         if (mode === 'sit') {   // seated: any move (or E / Space) stands you up
           if (inp.f || inp.r || useQueued || jumpQueued) { useQueued = jumpQueued = false; setMode('walk'); char.setSeat(null); pos.x += Math.sin(yaw) * 0.55; pos.z += Math.cos(yaw) * 0.55; speed = 0; }
@@ -212,6 +215,8 @@
       get camera() { return { yaw: camYaw, pitch: camPitch, dist: camDist }; },
       // test hooks: drive the walker without a keyboard
       cam: CAM, CAM_DEFAULTS: CAM0, setCam(o) { Object.assign(CAM, o); },
+      act(clip, secs, done) { act = { clip, t: secs, done }; speed = 0; vel.set(0, 0, 0); }, get acting() { return !!act; }, paused: false,
+      setCine(fn) { cine = fn; if (!fn) camInit = true; },
       setInput(i) { forced = i; }, setCamYaw(y) { camYaw = y; }, setHeading(y) { yaw = y; steer = 0; }, jump() { jumpQueued = true; }, use() { useQueued = true; },
     };
     return api;

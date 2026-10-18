@@ -70,9 +70,9 @@
       P.ch.play(stops[0].clip, { instant: true }); P.ch.setExpression(o.expr || 'smile', true); crew.push(P); place(P);
     }
     // Rosie's reception desk just inside the main gate
-    { const E = G.entrance, f = W.frame('ground', E.x - 5.2, E.z - 10, Math.PI / 2);   // beside the main path, facing it f.box(2.6, 1.05, 0.9, -0, 0, 0, 0x6d28d9, { r: 0.08 }); f.box(2.8, 0.08, 1.05, 0, 1.05, 0, 0xfacc15, { col: false });
+    { const E = G.entrance, f = W.frame('ground', E.x + 4.6, E.z - 10.9, 0);   // just inside the golden gate, beside the path, facing the visitors coming in f.box(2.6, 1.05, 0.9, -0, 0, 0, 0x6d28d9, { r: 0.08 }); f.box(2.8, 0.08, 1.05, 0, 1.05, 0, 0xfacc15, { col: false });
       const sg = new T.Mesh(new T.PlaneGeometry(2.2, 0.45), new T.MeshStandardMaterial({ map: ZA.label('WELCOME TO ZUNGGA!', { w: 1024, h: 210, bg: '#fde68a', fg: '#3b0764', size: 110, radius: 30 }) })); sg.position.set(0, 0.6, 0.46); f.g.add(sg); }
-    { const E = G.entrance; named('main_entrance', 'rosie', [[-6.4, -10, 7, 'greet', Math.PI / 2], [-6.4, -10.6, 5, 'talk', Math.PI / 2]]); named('main_entrance', 'bruno', [[E.gate / 2 + 1.8, 4.5, 6, 'hands_on_hips', 0], [E.gate / 2 + 6, 6, 3, 'wave', 0], [E.gate / 2 + 1.8, 4.5, 4, 'arms_crossed', 0]], { expr: 'calm' }); }
+    { const E = G.entrance; named('main_entrance', 'rosie', [[4.6, -11.9, 7, 'greet', 0], [4.1, -12.0, 5, 'talk', 0.25]]); named('main_entrance', 'bruno', [[E.gate / 2 + 1.8, 4.5, 6, 'hands_on_hips', 0], [E.gate / 2 + 6, 6, 3, 'wave', 0], [E.gate / 2 + 1.8, 4.5, 4, 'arms_crossed', 0]], { expr: 'calm' }); }
     named('choco_garden', 'moss', [[-7, 4, 3, 'give', Math.PI], [-7, -5, 3, 'give', 0], [-2, 1, 3, 'give', Math.PI / 2]]);
     named('express_station', 'pip', [[-4, 1.6, 5, 'wave', 0.2], [5, 1.6, 4, 'point', 0.2], [0, 1.6, 4, 'wave', 0.1]]);
     { const R = G.plaza.r * 0.52, pts = []; for (let k = 0; k < 8; k++) { const a = k / 8 * Math.PI * 2; pts.push([Math.sin(a) * R, Math.cos(a) * R, 4, 'sweep', a + Math.PI / 2]); } named('main_plaza', 'bubbles', pts, { speed: 0.6 }); }

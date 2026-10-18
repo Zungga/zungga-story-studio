@@ -460,6 +460,7 @@
       hands_on_hips(t, p) { CLIPS.idle(t, p); if (P.hipR) { p.aR = P.hipR.slice(); p.aL = P.hipL.slice(); } p.hy *= 0.5; },
       hip_point_front(t, p) { CLIPS.idle(t, p); if (P.hipL) p.aL = P.hipL.slice(); p.aR = [-1.45, -0.1, 0.12, -0.05]; p.pointR = 1; p.hy = -0.05; p.rz = -0.04; },
       hip_point_up(t, p) { CLIPS.idle(t, p); if (P.hipL) p.aL = P.hipL.slice(); p.aR = [-0.4, 0, 2.6, -0.05]; p.pointR = 1; p.hx = -0.18; },
+      raise_pass(t, p) { CLIPS.idle(t, p); if (P.hipL) p.aL = P.hipL.slice(); p.aR = [0.05, 0, 2.95, -0.04]; p.hx = -0.2; p.y = Math.sin(t * 3) * 0.008; },   // holds something high in the right hand for everyone to see
       hip_point_side(t, p) { CLIPS.idle(t, p); if (P.hipL) p.aL = P.hipL.slice(); p.aR = [-0.15, 0, 1.55, -0.05]; p.pointR = 1; p.hy = 0.35; },
       sit(t, p) { CLIPS.idle(t, p); p.sit = 1; p.aL = [-0.4, 0, -0.35, -0.5]; p.aR = [-0.4, 0, 0.35, -0.5]; },
       sit_sad(t, p) { CLIPS.sit(t, p); p.hx = 0.25; p.rx = 0.12; p.aL = [-0.5, 0, -0.1, -0.8]; p.aR = [-0.5, 0, 0.1, -0.8]; },

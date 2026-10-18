@@ -4,6 +4,7 @@
  * Room furniture comes from ZFactory.dress[<room id>] (dress-first.js). */
 (() => {
   'use strict';
+  const TH = 5.3;   // tower half-size (the towers hold a 30-person lift)
   const T = THREE;
   function subtract(rects, h) {   // rects/h: [x0, z0, x1, z1]
     const out = [];
@@ -27,7 +28,7 @@
     const O = F.outline, gl = F.balcony.glass, hid = F.hidden;
     let slabs = [[O.x0, O.z0, O.x1, O.z1]];
     slabs = subtract(slabs, [gl.x0, gl.z0, gl.x1, gl.z1]);
-    for (const t of G.towers) slabs = subtract(slabs, [t.x - 3.5, t.z - 3.5, t.x + 3.5, t.z + 3.5]);
+    for (const t of G.towers) slabs = subtract(slabs, [t.x - TH, t.z - TH, t.x + TH, t.z + TH]);
     slabs = subtract(slabs, [hid.x0, hid.z0, hid.x1, hid.z1]);
     for (const [x0, z0, x1, z1] of slabs) { const me = c.box(x1 - x0, 0.6, z1 - z0, (x0 + x1) / 2, -0.6, (z0 + z1) / 2, deckM, { cast: false }); me.castShadow = false; }
     // the deck's rim + underside lights
@@ -89,7 +90,7 @@
     const parapet = (x1, z1, x2, z2) => c.wall(x1, z1, x2, z2, { h: H, t: 0.3, mat: M(0xe9d3b0), windows: [{ at: Math.hypot(x2 - x1, z2 - z1) / 2, w: Math.min(2.4, Math.hypot(x2 - x1, z2 - z1) - 0.6), h: 1.6, y: 2.2, glow: 0xdff3ff }] });
     const nc = F.corridors.find((k) => k.id === 'north_corridor'), scr = F.corridors.find((k) => k.id === 'south_corridor');
     for (const sx of [-1, 1]) { const x = sx * (O.x1 - 0.3); parapet(x, nc.z0, x, nc.z1); }                  // north corridor ends
-    const tw0 = G.towers[0]; for (const sx of [-1, 1]) { const x = sx * (O.x1 - 0.3); parapet(x, B.z0, x, tw0.z - 3.5); parapet(x, tw0.z + 3.5, x, B.z1); }   // balcony band beside the towers
+    const tw0 = G.towers[0]; for (const sx of [-1, 1]) { const x = sx * (O.x1 - 0.3); parapet(x, B.z0, x, tw0.z - TH); parapet(x, tw0.z + TH, x, B.z1); }   // balcony band beside the towers
     parapet(scr.x0, O.z1 - 0.1, scr.x1, O.z1 - 0.1);                                                          // south corridor end
 
     // ---------- hidden room behind the bookshelf (library's north-west corner) ----------
@@ -133,28 +134,28 @@
     for (const a of F.anchors) c.anchor(a[0], a[1], [a[2][0], a[2][1] - Y, a[2][2]], [a[3][0], a[3][1] - Y, a[3][2]]);
   }
 
-  // tower local frame: door side = local +x. 7 × 7 m outside, walls 0.5, lift shaft 2.6 in the middle,
-  // 9 flights of 8 steps (0.18 m) round the shaft: N → W → S → E → N → W → S → E → N, landings in the corners.
+  // tower local frame: door side = local +x. 2·TH square outside, walls 0.5, a big lift (5.6 × 5.6 m, ~30 people) in the middle,
+  // 4 long flights of 18 steps round the lift shaft: W → S → E → N (so the top arrives on the north side, away from the doors).
   function tower(W, tw, Y) {
     const ry = tw.door === 'e' ? 0 : Math.PI, gf = W.frame('ground', tw.x, tw.z, ry), M = W.M;
-    const half = 3.5, t = 0.5, inner = half - t, sh = 1.3, top = Y + 4.6, stoneM = new T.MeshStandardMaterial({ color: 0xc08a5a, roughness: 0.9 });
-    // walls: three solid sides + the door side with a door at the ground and one at the first floor
+    const half = TH, t = 0.5, inner = half - t, sh = 3.0, top = Y + 4.6, DW = 2.6, stoneM = new T.MeshStandardMaterial({ color: 0xc08a5a, roughness: 0.9 });
+    // walls: three solid sides + the door side with a wide door at the ground and one at the first floor
     gf.wall(-half + t / 2, -half + t / 2, half - t / 2, -half + t / 2, { h: top, t, mat: stoneM });
     gf.wall(-half + t / 2, half - t / 2, half - t / 2, half - t / 2, { h: top, t, mat: stoneM });
     gf.wall(-half + t / 2, -half + t / 2, -half + t / 2, half - t / 2, { h: top, t, mat: stoneM });
-    gf.wall(half - t / 2, -half + t / 2, half - t / 2, half - t / 2, { h: Y, t, mat: stoneM, doors: [{ at: half - t / 2, w: 1.6, h: 2.6 }] });           // ground door (east corridor, in front of the lift)
-    gf.wall(half - t / 2, -half + t / 2, half - t / 2, half - t / 2, { h: top - Y, y: Y, t, mat: stoneM, doors: [{ at: half - t / 2, w: 1.6, h: 2.6 }] });
-    for (const yy of [0, Y]) gf.frame(half - t / 2, 0, Math.PI / 2, yy).doubleDoor({ x: 0, z: 0, w: 1.6, h: 2.6, color: 0x6d28d9, label: 'Lift' });
+    gf.wall(half - t / 2, -half + t / 2, half - t / 2, half - t / 2, { h: Y, t, mat: stoneM, doors: [{ at: half - t / 2, w: DW, h: 3.0 }] });           // ground door (in front of the lift)
+    gf.wall(half - t / 2, -half + t / 2, half - t / 2, half - t / 2, { h: top - Y, y: Y, t, mat: stoneM, doors: [{ at: half - t / 2, w: DW, h: 3.0 }] });
+    for (const yy of [0, Y]) gf.frame(half - t / 2, 0, Math.PI / 2, yy).doubleDoor({ x: 0, z: 0, w: DW, h: 3.0, color: 0x6d28d9, label: 'Lift' });
     // ground floor of the tower
     gf.box(2 * inner, 0.1, 2 * inner, 0, 0, 0, 0xd6b38a, { cast: false });
-    // flights
-    const run = 2.6 / 8, rise = Y / 72, mid = (sh + inner) / 2, mat = 0xcaa27a;
+    // flights: one full turn round the shaft
+    const NP = 18, NF = 4, run = 2 * sh / NP, rise = Y / (NP * NF), mid = (sh + inner) / 2, mat = 0xcaa27a, OFF = 1;
     const flights = [[sh, -mid, Math.PI / 2], [-mid, -sh, Math.PI], [-sh, mid, -Math.PI / 2], [mid, sh, 0]];   // start point + direction for N, W, S, E sides
     const corners = [[-mid, -mid], [-mid, mid], [mid, mid], [mid, -mid]];                                       // NW, SW, SE, NE (landing after each side)
     let y = 0.1;
-    for (let k = 0; k < 9; k++) {
-      const [sx, sz, r] = flights[k % 4]; gf.stairs({ x: sx, z: sz, y0: y, y1: y + rise * 8, w: inner - sh - 0.02, ry: r, rise, run, mat, rails: false });
-      y += rise * 8; const [cx, cz] = corners[k % 4]; if (k < 8) gf.box(inner - sh - 0.02, 0.3, inner - sh - 0.02, cx, y - 0.3, cz, 0xb08a62, { cast: false });
+    for (let k = 0; k < NF; k++) {
+      const q = (k + OFF) % 4, [sx, sz, r] = flights[q]; gf.stairs({ x: sx, z: sz, y0: y, y1: y + rise * NP, w: inner - sh - 0.02, ry: r, rise, run, mat, rails: false });
+      y += rise * NP; const [cx, cz] = corners[q]; if (k < NF - 1) gf.box(inner - sh - 0.02, 0.3, inner - sh - 0.02, cx, y - 0.3, cz, 0xb08a62, { cast: false });
     }
     // top landing at Y on the W, S and E sides (the N side is the last flight coming up)
     const lw = inner - sh, slabT = 0.1;   // thin, so there is head room above the last flights
@@ -164,14 +165,14 @@
     gf.box(lw, slabT, lw, mid, Y - slabT, -mid, 0x8a5a3a, { cast: false });                  // NE corner (in front of the top door)
     // railing beside the stair opening on the north side at the top
     gf.box(0.08, 1.0, lw, sh + 0.05, Y, -mid, 0x7c3aed, { col: true, cast: false });
-    // the lift in the middle, door facing local +x (= the tower door side)
-    gf.elevator({ x: 0, z: 0, w: 2.2, d: 2.2, levels: [0.1, Y], names: ['Ground floor', 'First floor'], color: 0x7c3aed, side: Math.PI / 2 });
+    // the big lift in the middle, door facing local +x (= the tower door side)
+    gf.elevator({ x: 0, z: 0, w: 2 * sh - 0.4, d: 2 * sh - 0.4, doorW: 2.6, levels: [0.1, Y], names: ['Ground floor', 'First floor'], color: 0x7c3aed, side: Math.PI / 2 });
     // roof cone + flag
-    const roof = new T.Mesh(new T.ConeGeometry(5.2, 4.2, 4), M(0x6d28d9, { roughness: 0.55 })); roof.rotation.y = Math.PI / 4; roof.position.y = top + 2.1; roof.castShadow = true; gf.g.add(roof);
+    const roof = new T.Mesh(new T.ConeGeometry(half * 1.5, 5.2, 4), M(0x6d28d9, { roughness: 0.55 })); roof.rotation.y = Math.PI / 4; roof.position.y = top + 2.6; roof.castShadow = true; gf.g.add(roof);
     gf.roof(roof, { w: 2 * inner, d: 2 * inner, y0: -1, y1: top + 1 }); gf.col(2 * half, 0.4, 2 * half, 0, top, 0, { tag: 'roof' });
     const sign = new T.Mesh(new T.PlaneGeometry(2.6, 0.6), new T.MeshStandardMaterial({ map: ZA.label('LIFT · STAIRS', { w: 512, h: 120, bg: '#3b0764', fg: '#ffd84a', size: 64, radius: 20 }) })); sign.position.set(half + 0.02, 3.3, 0); sign.rotation.y = Math.PI / 2; gf.g.add(sign);
     const sign2 = sign.clone(); sign2.position.y = Y + 3.1; gf.g.add(sign2);
-    gf.area({ id: tw.id, num: 0, name: tw.id === 'tower_west' ? 'West tower (lift + stairs)' : 'East tower (lift + stairs)', x: 0, z: 0, w: 7, d: 7, y0: -0.5, y1: top });
+    gf.area({ id: tw.id, num: 0, name: tw.id === 'tower_west' ? 'West tower (lift + stairs)' : 'East tower (lift + stairs)', x: 0, z: 0, w: 2 * half, d: 2 * half, y0: -0.5, y1: top });
   }
 
   ZFactory.buildFirst = build;

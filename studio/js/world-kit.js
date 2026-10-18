@@ -143,11 +143,11 @@
         },
         water(points, width, surf, o = {}) {
           const wp = points.map(([x, z]) => W(x, z));
-          for (let i = 0; i < wp.length - 1; i++) waters.push({ kind: 'seg', ax: wp[i][0], az: wp[i][1], bx: wp[i + 1][0], bz: wp[i + 1][1], hw: width / 2, surf: oy + surf, flow: o.flow ?? 0.6 });
+          for (let i = 0; i < wp.length - 1; i++) waters.push({ kind: 'seg', ax: wp[i][0], az: wp[i][1], bx: wp[i + 1][0], bz: wp[i + 1][1], hw: width / 2, surf: oy + surf, deep: o.deep ?? 5, flow: o.flow ?? 0.6 });
           if (o.visual !== false) g.add(riverMesh(points, width + (o.overlap ?? 0.6), surf, o));
         },
         pool(x, z, w, d, surf, o = {}) {
-          const [wx, wz] = W(x, z); waters.push({ kind: 'rect', x: wx, z: wz, hx: w / 2, hz: d / 2, c: Math.cos(ry + (o.ry || 0)), s: Math.sin(ry + (o.ry || 0)), surf: oy + surf, round: !!o.round });
+          const [wx, wz] = W(x, z); waters.push({ kind: 'rect', x: wx, z: wz, hx: w / 2, hz: d / 2, c: Math.cos(ry + (o.ry || 0)), s: Math.sin(ry + (o.ry || 0)), surf: oy + surf, deep: o.deep ?? 5, round: !!o.round });
           if (o.visual !== false) { const me = new T.Mesh(o.round ? new T.CircleGeometry(w / 2, 40) : new T.PlaneGeometry(w, d), chocoWater(o)); me.rotation.x = -Math.PI / 2; me.rotation.z = o.ry || 0; me.position.set(x, surf, z); me.receiveShadow = true; me.userData.dynamic = true; g.add(me); }
         },
         // points: [[x, y, z], …] in this frame; the rider follows them from the first to the last
@@ -169,7 +169,7 @@
           return curve;
         },
         // a lift: cabin platform moving between levels (frame-relative y values); doors on the `side` (local +z by default)
-        elevator({ x, z, w = 2.2, d = 2.2, levels, names = [], color = 0x7c3aed, side = 0 }) {
+        elevator({ x, z, w = 2.2, d = 2.2, doorW, levels, names = [], color = 0x7c3aed, side = 0 }) {
           const eg = f.frame(x, z, side), cab = new T.Group(); eg.g.add(cab);
           const floorM = M(0xd4c2a8), wallM = M(color, { roughness: 0.5 }), glass = M(0xbfe8ff, { transparent: true, opacity: 0.25, roughness: 0.1 });
           // cabin: floor + back/side walls (move with it) + ceiling light
@@ -182,7 +182,7 @@
           eg.box(w + 0.4, top - bot, 0.2, 0, bot, -d / 2 - 0.1, color, { cast: false });
           eg.box(0.2, top - bot, d + 0.4, -w / 2 - 0.1, bot, 0, color, { cast: false }); eg.box(0.2, top - bot, d + 0.4, w / 2 + 0.1, bot, 0, color, { cast: false });
           // front: wall pieces between the door openings
-          const dw = Math.min(1.4, w - 0.4);
+          const dw = Math.min(doorW || 1.4, w - 0.4);
           for (let i = 0; i < levels.length; i++) {
             const y0 = levels[i], y1n = i < levels.length - 1 ? levels[i + 1] : top;
             eg.box(w + 0.4, Math.max(0.01, y1n - y0 - 2.5), 0.2, 0, y0 + 2.5, d / 2 + 0.1, color, { cast: false });
@@ -210,7 +210,7 @@
             interacts.push({ test: (p) => Math.hypot(p.x - bx, p.z - bz) < 1.6 && Math.abs(p.y - (oy + y0)) < 1.2 && !L.inside(p), label: () => 'Call the lift', fn: () => L.call(i) }); });
           return L;
         },
-        door({ x, y = 0, z, w = 1.4, h = 2.4, ry: r = 0, kind = 'slide', auto = true, label = 'Open', color = 0x8a5a33, t = 0.12, mesh, swing = 1, range = 2.6, onChange }) {
+        door({ x, y = 0, z, w = 1.4, h = 2.4, ry: r = 0, kind = 'slide', auto = true, manual = false, label = 'Open', color = 0x8a5a33, t = 0.12, mesh, swing = 1, range = 2.6, onChange }) {
           const dg = f.frame(x, z, r, y), [wx, wz] = W(x, z);
           const leaf = mesh || new T.Mesh(new T.BoxGeometry(w, h, t), M(color)); leaf.castShadow = true; const pivot = new T.Group(); dg.g.add(pivot); pivot.add(leaf);
           if (kind === 'swing' || kind === 'shelf' || kind === 'vault') { pivot.position.x = -w / 2; leaf.position.set(w / 2, mesh ? 0 : h / 2, 0); } else leaf.position.set(0, mesh ? 0 : h / 2, 0);
@@ -224,7 +224,7 @@
               col.on = D.open < 0.6;
             } };
           doors.push(D);
-          if (!auto) interacts.push({ test: (p) => Math.hypot(p.x - wx, p.z - wz) < 2.2 && Math.abs(p.y - D.y) < 1.5, label: () => (D.want ? 'Close' : label), fn: () => { D.want = D.want ? 0 : 1; } });
+          if (!auto && !manual) interacts.push({ test: (p) => Math.hypot(p.x - wx, p.z - wz) < 2.2 && Math.abs(p.y - D.y) < 1.5, label: () => (D.want ? 'Close' : label), fn: () => { D.want = D.want ? 0 : 1; } });
           return D;
         },
         // a pair of doors in a doorway (the library's classroom door, recoloured + named); they open as you come near and close behind you
@@ -354,9 +354,10 @@
         for (let t = 0.5; t < best; t += 0.5) { const q = o.clone().addScaledVector(dir, t); if (terrainAt(q.x, q.z) > q.y - 0.2 && o.y > terrainAt(o.x, o.z)) { best = Math.max(0.3, t - 0.5); break; } }
         return best;
       },
-      waterAt(x, z) {
+      waterAt(x, z, y) {   // y: only water whose body reaches down to y counts (so rooms under the river stay dry)
         let surf = -Infinity, flow = null;
         for (const w of waters) {
+          if (y != null && y < w.surf - w.deep) continue;
           if (w.kind === 'seg') { const vx = w.bx - w.ax, vz = w.bz - w.az, L2 = vx * vx + vz * vz, t = clamp(((x - w.ax) * vx + (z - w.az) * vz) / L2, 0, 1), dx = x - (w.ax + vx * t), dz = z - (w.az + vz * t); if (dx * dx + dz * dz < w.hw * w.hw && w.surf > surf) { surf = w.surf; const L = Math.sqrt(L2); flow = [vx / L * w.flow, vz / L * w.flow]; } }
           else { const dx = x - w.x, dz = z - w.z, lx = dx * w.c - dz * w.s, lz = dx * w.s + dz * w.c; const inside = w.round ? lx * lx + lz * lz < w.hx * w.hx : Math.abs(lx) < w.hx && Math.abs(lz) < w.hz; if (inside && w.surf > surf) { surf = w.surf; flow = null; } }
         }
