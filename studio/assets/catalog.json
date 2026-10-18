@@ -6577,6 +6577,2842 @@
         "stars"
       ],
       "usedIn": []
+    },
+    {
+      "id": "cf_syrup_tubes",
+      "label": "Bubbling syrup tubes machine",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "candy",
+        "lab",
+        "syrup",
+        "machine",
+        "tubes"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_lollipop_press",
+      "label": "Lollipop press machine",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "candy",
+        "lollipop",
+        "press",
+        "machine"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_swirl_machine",
+      "label": "Giant swirl-candy machine",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "candy",
+        "swirl",
+        "machine",
+        "lollipop"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_candy_shelf",
+      "label": "Shelf of candy jars",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "candy",
+        "shelf",
+        "jars",
+        "shop"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_lab_bench",
+      "label": "Candy lab bench with flasks",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "candy",
+        "lab",
+        "science",
+        "flask",
+        "table"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_candy_conveyor",
+      "label": "Candy conveyor belt",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "candy",
+        "conveyor",
+        "belt",
+        "machine"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_marshmallow_puffer",
+      "label": "Marshmallow puffer machine",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "marshmallow",
+        "machine",
+        "puffer"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_marshmallow_pile",
+      "label": "Giant marshmallow pile",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "marshmallow",
+        "pile",
+        "sweets"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_roasting_stand",
+      "label": "Marshmallow roasting stand",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "marshmallow",
+        "roasting",
+        "grill"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_cushion",
+      "label": "Big squishy cushion",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "cushion",
+        "pouf",
+        "soft",
+        "marshmallow"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_marshmallow_conveyor",
+      "label": "Marshmallow conveyor belt",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "marshmallow",
+        "conveyor",
+        "belt"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_sack_cocoa",
+      "label": "Cocoa sack",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "sack",
+        "ingredient",
+        "cocoa"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_sack_sugar",
+      "label": "Sugar sack",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "sack",
+        "ingredient",
+        "sugar"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_sack_milk",
+      "label": "Milk powder sack",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "sack",
+        "ingredient",
+        "milk"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_sack_nuts",
+      "label": "Nuts sack",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "sack",
+        "ingredient",
+        "nuts"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_flour_sack",
+      "label": "Flour sack",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "sack",
+        "ingredient",
+        "flour"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_marshmallow_sack",
+      "label": "Marshmallow sack",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "sack",
+        "ingredient",
+        "mallows"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_brick_oven",
+      "label": "Big brick oven",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "bakery",
+        "oven",
+        "brick",
+        "cookies"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_cookie_rack",
+      "label": "Rolling rack of cookie trays",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "bakery",
+        "cookies",
+        "rack",
+        "trays"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_cookie_tray",
+      "label": "Tray of cookies",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "bakery",
+        "cookies",
+        "tray"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_dough_table",
+      "label": "Dough rolling table",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "bakery",
+        "dough",
+        "table",
+        "rolling pin"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_cookie_display",
+      "label": "Cookie display counter",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "bakery",
+        "cookies",
+        "counter",
+        "display",
+        "shop"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_giant_cookie_sign",
+      "label": "Giant cookie sign",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "bakery",
+        "cookie",
+        "sign",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_cookie_conveyor",
+      "label": "Cookie conveyor belt",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "bakery",
+        "cookies",
+        "conveyor"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_choco_vat",
+      "label": "Chocolate mixing vat",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "chocolate",
+        "vat",
+        "mixer",
+        "kitchen",
+        "machine"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_tempering_table",
+      "label": "Chocolate tempering table",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "chocolate",
+        "tempering",
+        "table",
+        "kitchen",
+        "molds"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_choco_mold_rack",
+      "label": "Rack of chocolate moulds",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "chocolate",
+        "molds",
+        "rack",
+        "kitchen"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_choco_bar_conveyor",
+      "label": "Chocolate bar conveyor belt",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "chocolate",
+        "bar",
+        "conveyor",
+        "kitchen"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_wall_pipes",
+      "label": "Wall pipes with valves",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "pipes",
+        "valves",
+        "wall",
+        "factory"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_storage_rack",
+      "label": "Tall storage rack with sacks",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "warehouse",
+        "rack",
+        "shelf",
+        "sacks",
+        "storage"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_crate_stack",
+      "label": "Stack of wooden crates",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "crate",
+        "box",
+        "warehouse",
+        "storage"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_milk_cans",
+      "label": "Milk cans",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "milk",
+        "can",
+        "churn",
+        "warehouse",
+        "dairy"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_forklift",
+      "label": "Little forklift",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "forklift",
+        "warehouse",
+        "vehicle",
+        "truck"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_hand_truck",
+      "label": "Hand truck with sacks",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "hand truck",
+        "trolley",
+        "warehouse"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_rolling_ladder",
+      "label": "Rolling warehouse ladder",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "ladder",
+        "warehouse",
+        "library"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_workbench",
+      "label": "Workbench with tools",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "workbench",
+        "tools",
+        "workshop",
+        "spanner"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_wall_gears",
+      "label": "Turning wall gears",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "gears",
+        "machine",
+        "wall",
+        "workshop",
+        "cogs"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_robot_arm",
+      "label": "Robot arm",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "robot",
+        "arm",
+        "machine",
+        "workshop"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_pump_machine",
+      "label": "Water pump with a pipe to the roof",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "pump",
+        "water",
+        "pipe",
+        "machine",
+        "workshop"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_blueprint_board",
+      "label": "Blueprint board",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "blueprint",
+        "plan",
+        "wall",
+        "workshop"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_conveyor_parts",
+      "label": "Pile of spare conveyor parts",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "parts",
+        "conveyor",
+        "workshop",
+        "spare"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_tool_cabinet",
+      "label": "Rolling tool cabinet",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "tools",
+        "cabinet",
+        "workshop"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_boss_desk",
+      "label": "Mr. Choco's big desk",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "office",
+        "desk",
+        "boss",
+        "mr choco"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_boss_chair",
+      "label": "Fancy velvet boss chair",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "office",
+        "chair",
+        "boss",
+        "throne"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_bookshelf",
+      "label": "Tall bookshelf",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "office",
+        "bookshelf",
+        "books",
+        "library"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_portrait_choco",
+      "label": "Portrait of Mr. Choco",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "painting",
+        "portrait",
+        "wall",
+        "office"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_painting_river",
+      "label": "Chocolate river painting",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "painting",
+        "portrait",
+        "wall",
+        "office"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_trophy_cabinet",
+      "label": "Chocolate trophy cabinet",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "office",
+        "trophy",
+        "cabinet",
+        "awards"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_rug",
+      "label": "Fancy oval rug",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "rug",
+        "carpet",
+        "office",
+        "floor"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_choco_fountain",
+      "label": "Chocolate fountain",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "chocolate",
+        "fountain",
+        "party",
+        "office"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_control_desk",
+      "label": "Control console desk",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "control",
+        "console",
+        "desk",
+        "screens",
+        "buttons"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_big_monitor",
+      "label": "Big wall monitor (factory map)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "monitor",
+        "screen",
+        "control",
+        "map"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_operator_chair",
+      "label": "Operator swivel chair",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "chair",
+        "office",
+        "control",
+        "swivel"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_lever_panel",
+      "label": "Big lever panel",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "control",
+        "levers",
+        "panel",
+        "machine"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_coffee_machine",
+      "label": "Coffee machine",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "cafe",
+        "coffee",
+        "machine",
+        "kitchen"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_cake_display",
+      "label": "Cake display dome",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "cafe",
+        "cake",
+        "display",
+        "dessert"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_cafe_table_set",
+      "label": "Café table with chairs",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "cafe",
+        "table",
+        "chairs",
+        "dining"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_menu_board",
+      "label": "Café menu board",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "cafe",
+        "menu",
+        "board",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_hot_choco_dispenser",
+      "label": "Hot chocolate dispenser",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "cafe",
+        "hot chocolate",
+        "drink",
+        "dispenser"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_cafe_counter",
+      "label": "Café counter",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "cafe",
+        "counter",
+        "shop"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_luggage_cart",
+      "label": "Luggage cart with suitcases",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "station",
+        "luggage",
+        "cart",
+        "suitcase",
+        "travel"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_timetable_board",
+      "label": "Train timetable board",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "station",
+        "timetable",
+        "board",
+        "train"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_vending_machine",
+      "label": "Snack vending machine",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "vending",
+        "machine",
+        "snacks",
+        "station"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_candy_flower",
+      "label": "Candy flower",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "flower",
+        "candy",
+        "garden",
+        "plant"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_garden_sign",
+      "label": "Chocolate Garden sign",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "sign",
+        "garden",
+        "chocolate"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_candy_bench",
+      "label": "Candy-striped bench",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "bench",
+        "candy",
+        "garden",
+        "park",
+        "seat"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_giant_lollipop",
+      "label": "Giant lollipop",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "lollipop",
+        "candy",
+        "giant",
+        "outdoor"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_gumball_machine",
+      "label": "Giant gumball machine",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "candy",
+        "gumball",
+        "machine",
+        "sweets"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_cotton_candy_machine",
+      "label": "Cotton candy machine",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "candy",
+        "cotton candy",
+        "machine",
+        "fair"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_marshmallow_tower",
+      "label": "Tower of giant marshmallows",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "marshmallow",
+        "tower",
+        "stack",
+        "sweets"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_stand_mixer",
+      "label": "Giant dough mixer",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "bakery",
+        "mixer",
+        "dough",
+        "kitchen",
+        "machine"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_cookie_jar",
+      "label": "Giant cookie jar",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "bakery",
+        "cookies",
+        "jar"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_cocoa_grinder",
+      "label": "Cocoa bean grinder",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "chocolate",
+        "cocoa",
+        "grinder",
+        "kitchen"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_choco_bar_stack",
+      "label": "Stack of giant chocolate bars",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "chocolate",
+        "bars",
+        "stack",
+        "kitchen"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_pallet_sacks",
+      "label": "Pallet of sacks",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "warehouse",
+        "pallet",
+        "sacks",
+        "ingredient"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_sofa",
+      "label": "Velvet sofa",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "sofa",
+        "couch",
+        "office",
+        "living room"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_coffee_table",
+      "label": "Low coffee table with sweets",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "table",
+        "coffee table",
+        "office",
+        "living room"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_pendant_lamp",
+      "label": "Hanging pendant lamp",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "lamp",
+        "light",
+        "ceiling",
+        "cafe"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_cupcake_tower",
+      "label": "Cupcake tower",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "cupcake",
+        "cafe",
+        "dessert",
+        "party"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf_floor_globe",
+      "label": "Big floor globe",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-ground.js",
+      "tags": [
+        "factory",
+        "chocolate factory",
+        "globe",
+        "office",
+        "world",
+        "map"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_exec_desk",
+      "label": "Mr. Choco's grand desk",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "desk",
+        "office",
+        "boss"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_throne_chair",
+      "label": "Purple high-back boss chair",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "chair",
+        "boss",
+        "throne"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_armchair_pink",
+      "label": "Plump pink armchair",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "chair",
+        "armchair",
+        "sofa"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_armchair_teal",
+      "label": "Plump teal armchair",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "chair",
+        "armchair",
+        "sofa"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_sofa",
+      "label": "Comfy purple sofa",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "sofa",
+        "couch",
+        "seat"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_round_table",
+      "label": "Round meeting table",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "table",
+        "meeting",
+        "tea"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_chair",
+      "label": "Purple chair",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "chair",
+        "seat"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_chair_pink",
+      "label": "Pink chair",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "chair",
+        "seat"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_portrait_choco",
+      "label": "Portrait of Mr. Choco",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "portrait",
+        "painting",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_portrait_factory",
+      "label": "Painting of the factory",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "painting",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_portrait_founder",
+      "label": "Portrait of Granny Cocoa (founder)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "portrait",
+        "painting",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_choc_fountain",
+      "label": "Chocolate fountain",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "chocolate",
+        "fountain",
+        "food"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_trophy_shelf",
+      "label": "Trophy cabinet",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "trophy",
+        "shelf",
+        "awards"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_window_seat",
+      "label": "Cushioned window seat",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "seat",
+        "window",
+        "cushion"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_control_console",
+      "label": "Control console with screens",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "control",
+        "screens",
+        "console",
+        "desk"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_operator_chair",
+      "label": "Swivel operator chair",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "chair",
+        "office",
+        "swivel"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_wall_screen",
+      "label": "Giant live factory-map screen",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "screen",
+        "map",
+        "control",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_lever_panel",
+      "label": "Lever & dial panel",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "control",
+        "lever",
+        "dials",
+        "machine"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_status_tower",
+      "label": "Blinking status light tower",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "light",
+        "status",
+        "control"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_monitor_wall",
+      "label": "Security monitor wall (camera feeds)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "security",
+        "screens",
+        "cameras"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_monitor_wall_b",
+      "label": "Monitor wall (more cameras)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "security",
+        "screens",
+        "cameras"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_key_cabinet",
+      "label": "Key cabinet (wall)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "keys",
+        "security",
+        "cabinet",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_lockers",
+      "label": "Row of colourful lockers",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "lockers",
+        "storage"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_map_board",
+      "label": "Standing factory map board",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "map",
+        "board",
+        "security"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_bookshelf",
+      "label": "Tall bookshelf",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "books",
+        "shelf",
+        "library"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_bookshelf_b",
+      "label": "Tall bookshelf (other books)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "books",
+        "shelf",
+        "library"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_bookshelf_narrow",
+      "label": "Narrow bookshelf",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "books",
+        "shelf",
+        "library"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_bookshelf_low",
+      "label": "Low bookshelf",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "books",
+        "shelf",
+        "library"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_reading_table",
+      "label": "Long reading table with lamps",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "table",
+        "library",
+        "reading"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_big_globe",
+      "label": "Big spinning floor globe",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "globe",
+        "library",
+        "map"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_rolling_ladder",
+      "label": "Rolling library ladder",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "ladder",
+        "library"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_drafting_table",
+      "label": "Blueprint drafting table",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "blueprint",
+        "table",
+        "library"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_scroll_basket",
+      "label": "Basket of blueprint scrolls",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "scrolls",
+        "blueprints",
+        "library"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_archive_boxes",
+      "label": "Stack of archive boxes",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "boxes",
+        "archive",
+        "storage"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_tesla_coil",
+      "label": "Glowing idea coil",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "coil",
+        "lab",
+        "science",
+        "glow"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_holo_table",
+      "label": "Holographic chocolate table",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "hologram",
+        "table",
+        "lab",
+        "future"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_flask_bench",
+      "label": "Lab bench with bubbling flasks",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "lab",
+        "science",
+        "flasks",
+        "bench"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_friendly_robot",
+      "label": "Friendly helper robot",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "robot",
+        "lab",
+        "friend",
+        "helper"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_invention_machine",
+      "label": "Wacky invention machine",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "machine",
+        "invention",
+        "lab",
+        "gears"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_bubble_tank",
+      "label": "Bubbling experiment tank",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "lab",
+        "bubbles",
+        "tank",
+        "science"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_tasting_table",
+      "label": "Tasting table with treats",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "tasting",
+        "table",
+        "chocolate",
+        "cake"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_microscope_bench",
+      "label": "Microscope bench",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "microscope",
+        "lab",
+        "science",
+        "bench"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_mini_conveyor",
+      "label": "Small test conveyor",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "conveyor",
+        "quality",
+        "machine",
+        "chocolate"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_sample_rack",
+      "label": "Sample jar rack",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "samples",
+        "jars",
+        "shelf",
+        "lab"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_scale_table",
+      "label": "Table with digital scales",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "scale",
+        "weigh",
+        "lab"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_stage_screen",
+      "label": "Stage screen with the Zungga logo",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "screen",
+        "stage",
+        "logo",
+        "meeting"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_podium",
+      "label": "Speaker podium",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "podium",
+        "stage",
+        "speech",
+        "meeting"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_pedestal_cup",
+      "label": "Pedestal: golden cup",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "trophy",
+        "award",
+        "pedestal"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_pedestal_star",
+      "label": "Pedestal: star award",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "trophy",
+        "award",
+        "pedestal",
+        "star"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_pedestal_bar",
+      "label": "Pedestal: golden chocolate bar",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "trophy",
+        "award",
+        "pedestal",
+        "chocolate"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_pedestal_medal",
+      "label": "Pedestal: giant medal",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "medal",
+        "award",
+        "pedestal"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_cocoa_statue",
+      "label": "Golden cocoa-bean statue",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "statue",
+        "gold",
+        "cocoa",
+        "award"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_timeline_wall",
+      "label": "Our chocolate story timeline (wall)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "timeline",
+        "history",
+        "wall",
+        "fame"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_award_frame",
+      "label": "Framed award certificate (wall)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "award",
+        "certificate",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_whiteboard",
+      "label": "Whiteboard: how chocolate is made (wall)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "whiteboard",
+        "training",
+        "school",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_training_desk",
+      "label": "Double training desk with laptops",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "desk",
+        "training",
+        "laptop",
+        "school"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_practice_machine",
+      "label": "Practice wrapping machine",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "machine",
+        "training",
+        "practice"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_poster_wash",
+      "label": "Poster: wash your hands",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "poster",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_poster_team",
+      "label": "Poster: teamwork",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "poster",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_poster_safety",
+      "label": "Poster: hairnets on",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "poster",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_poster_ideas",
+      "label": "Poster: big ideas",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "poster",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_poster_health",
+      "label": "Poster: drink water",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "poster",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_poster_taste",
+      "label": "Poster: taste test",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "poster",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_poster_star",
+      "label": "Poster: you are a star",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "poster",
+        "wall"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_med_bed",
+      "label": "First-aid bed",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "bed",
+        "medical",
+        "first aid"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_privacy_curtain",
+      "label": "Privacy curtain on a rail",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "curtain",
+        "medical",
+        "first aid"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_med_cabinet",
+      "label": "Medicine cabinet with green cross",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "medicine",
+        "cabinet",
+        "first aid",
+        "cross"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_height_scale",
+      "label": "Height & weight scale",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "scale",
+        "height",
+        "medical"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_water_cooler",
+      "label": "Water cooler",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "water",
+        "cooler",
+        "office"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_firstaid_box",
+      "label": "First-aid kit box (wall)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "first aid",
+        "kit",
+        "wall",
+        "medical"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_bean_bag",
+      "label": "Squishy bean bag",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "bean bag",
+        "seat",
+        "cosy"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_filing_cabinet",
+      "label": "Filing cabinet",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "filing",
+        "cabinet",
+        "archive",
+        "office"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_filing_cabinet_teal",
+      "label": "Filing cabinet (teal)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "filing",
+        "cabinet",
+        "archive",
+        "office"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_archive_shelf",
+      "label": "Archive shelving with boxes",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "shelf",
+        "archive",
+        "boxes",
+        "storage"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_doc_cart",
+      "label": "Document trolley",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "cart",
+        "documents",
+        "archive"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_telescope",
+      "label": "Coin-operated viewing telescope",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "telescope",
+        "balcony",
+        "viewing"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_info_sign",
+      "label": "VISITOR OBSERVATION BALCONY sign",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "sign",
+        "balcony",
+        "info"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_info_sign_glass",
+      "label": "Glass floor info sign",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "sign",
+        "balcony",
+        "glass"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_balcony_bench",
+      "label": "Purple balcony bench",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "bench",
+        "balcony",
+        "seat"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_cobweb",
+      "label": "Dusty cobweb",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "cobweb",
+        "dusty",
+        "old"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_old_lantern",
+      "label": "Old flickering lantern",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "lantern",
+        "old",
+        "light"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_dusty_crate",
+      "label": "Dusty old crate",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "crate",
+        "box",
+        "old",
+        "dusty"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cf1_old_map",
+      "label": "Old treasure-style map (wall)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-first.js",
+      "tags": [
+        "map",
+        "old",
+        "wall",
+        "treasure"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_ancient_gear",
+      "label": "Ancient bronze gear on a stand",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "gear",
+        "ancient",
+        "machine",
+        "bronze"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_gear_wall",
+      "label": "Wall of meshing ancient gears",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "gear",
+        "gears",
+        "wall",
+        "machine",
+        "ancient"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_gear_tower",
+      "label": "Giant gear tower (ancient machine)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "gear",
+        "tower",
+        "giant",
+        "machine",
+        "ancient"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_piston",
+      "label": "Steam piston press",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "piston",
+        "press",
+        "steam",
+        "machine"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_boiler",
+      "label": "Copper boiler with glowing firebox",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "boiler",
+        "steam",
+        "copper",
+        "machine"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_conveyor",
+      "label": "Old conveyor belt with cocoa blocks",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "conveyor",
+        "belt",
+        "machine",
+        "factory"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_lever_panel",
+      "label": "Control panel with levers and dials",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "control",
+        "panel",
+        "lever",
+        "dial",
+        "machine"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_mine_cart",
+      "label": "Old mine cart with crystals",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "mine",
+        "cart",
+        "crystal",
+        "rails"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_rails",
+      "label": "Mine-cart rails (4 m)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "rails",
+        "mine",
+        "track"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_cobweb",
+      "label": "Dusty cobweb (corner)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "cobweb",
+        "web",
+        "dusty",
+        "old"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_barrel",
+      "label": "Ancient wooden barrel",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "barrel",
+        "old",
+        "storage",
+        "wood"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_crate",
+      "label": "Dusty wooden crate",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "crate",
+        "box",
+        "old",
+        "storage"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_sack",
+      "label": "Sack of cocoa beans",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "sack",
+        "cocoa",
+        "beans",
+        "storage"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_clay_jar",
+      "label": "Ancient clay jar",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "jar",
+        "clay",
+        "pot",
+        "amphora",
+        "ancient"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_ingredient_shelf",
+      "label": "Dusty shelf of glowing ingredient jars",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "shelf",
+        "jars",
+        "ingredients",
+        "glow",
+        "storage"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_scale",
+      "label": "Old brass balance scale",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "scale",
+        "balance",
+        "brass",
+        "old"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_hanging_lantern",
+      "label": "Hanging lantern on a chain",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "lantern",
+        "hanging",
+        "light",
+        "old"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_stone_sign",
+      "label": "Stone sign: THE FORGOTTEN FOUNDATION",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "sign",
+        "stone",
+        "forgotten",
+        "foundation",
+        "secret"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_rune_pillar",
+      "label": "Carved stone pillar with glowing runes",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "pillar",
+        "runes",
+        "stone",
+        "carved",
+        "magic"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_hanging_chain",
+      "label": "Old hanging chains",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "chain",
+        "hanging",
+        "old",
+        "dungeon"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_brazier",
+      "label": "Bronze brazier with fire",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "brazier",
+        "fire",
+        "bronze",
+        "ancient"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_glyph_mural",
+      "label": "Carved glyph mural (☀ ☾ ★ ♦ ✿ ♥)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "mural",
+        "glyph",
+        "symbols",
+        "carved",
+        "puzzle"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_wall_carving",
+      "label": "Ancient stone wall carving (glowing)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "carving",
+        "relief",
+        "ancient",
+        "wall",
+        "cocoa"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_wall_carving_machine",
+      "label": "Ancient wall carving: the first machine",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "carving",
+        "relief",
+        "ancient",
+        "wall",
+        "gears"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_wall_carving_stars",
+      "label": "Ancient wall carving: the founders’ stars",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "carving",
+        "relief",
+        "ancient",
+        "wall",
+        "stars"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_founder_maya",
+      "label": "Founder statue — Maya (the grower)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "statue",
+        "founder",
+        "zungga",
+        "history",
+        "pod"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_founder_benu",
+      "label": "Founder statue — Benu (the scholar)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "statue",
+        "founder",
+        "zungga",
+        "history",
+        "book"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_founder_lila",
+      "label": "Founder statue — Lila (the chef)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "statue",
+        "founder",
+        "zungga",
+        "history",
+        "spoon"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_founder_oskar",
+      "label": "Founder statue — Oskar (the inventor)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "statue",
+        "founder",
+        "zungga",
+        "history",
+        "gear"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_founder_ravi",
+      "label": "Founder statue — Ravi (the explorer)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "statue",
+        "founder",
+        "zungga",
+        "history",
+        "scroll"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_founder_noor",
+      "label": "Founder statue — Noor (the dreamer)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "statue",
+        "founder",
+        "zungga",
+        "history",
+        "star"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_zungga_banner",
+      "label": "Purple Zungga banner with golden star",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "banner",
+        "zungga",
+        "purple",
+        "star",
+        "flag"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_round_table",
+      "label": "Round stone table with engraved plaque",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "table",
+        "round",
+        "stone",
+        "plaque",
+        "history"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_candelabra",
+      "label": "Tall bronze candelabra",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "candles",
+        "candelabra",
+        "light",
+        "bronze"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_carved_column",
+      "label": "Carved stone column with glowing rune band",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "column",
+        "pillar",
+        "carved",
+        "stone",
+        "runes"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_scroll_shelf",
+      "label": "Shelf of golden recipe scrolls",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "scrolls",
+        "shelf",
+        "recipes",
+        "gold",
+        "vault"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_recipe_pedestal",
+      "label": "Pedestal with a golden recipe box",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "pedestal",
+        "recipe",
+        "gold",
+        "box",
+        "treasure"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_gold_stack",
+      "label": "Stack of gold bars and coins",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "gold",
+        "bars",
+        "coins",
+        "treasure",
+        "vault"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_big_safe",
+      "label": "Big ancient safe",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "safe",
+        "vault",
+        "gold",
+        "secure"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_magic_book_altar",
+      "label": "Altar with the glowing open magic book",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "book",
+        "magic",
+        "altar",
+        "glow",
+        "secret",
+        "spell"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_big_crystal",
+      "label": "Big glowing crystal formation (purple)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "crystal",
+        "big",
+        "glow",
+        "purple",
+        "magic"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_big_crystal_cyan",
+      "label": "Big glowing crystal formation (cyan)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "crystal",
+        "big",
+        "glow",
+        "cyan",
+        "magic"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_cocoa_grinder",
+      "label": "Ancient stone cocoa grinder (turning)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "grinder",
+        "mill",
+        "cocoa",
+        "stone",
+        "machine",
+        "ancient"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_rowboat",
+      "label": "Little wooden rowing boat",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "boat",
+        "rowboat",
+        "oars",
+        "dock"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_dock",
+      "label": "Small wooden dock with lantern post",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "dock",
+        "jetty",
+        "pier",
+        "wood",
+        "lantern"
+      ],
+      "usedIn": []
+    },
+    {
+      "id": "cfu_crystal_ledge",
+      "label": "Rock ledge with glowing crystals (wall)",
+      "category": "factory",
+      "file": "studio/worlds/chocolate-factory/dress-under.js",
+      "tags": [
+        "crystal",
+        "ledge",
+        "wall",
+        "glow",
+        "cave"
+      ],
+      "usedIn": []
     }
   ]
 }

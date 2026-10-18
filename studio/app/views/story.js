@@ -93,7 +93,7 @@ export async function mount(el, { app }) {
   return { flush: () => save.flush(), dirty: () => false };
 }
 const wc = (t) => { const n = (String(t || '').match(/[A-Za-z0-9']+/g) || []).length; return `${n} words · about ${Math.max(1, Math.round(n / 2.6))} s`; };
-export const placeLabel = (p) => ({ home: 'Home', shop: 'Shop', ground: 'School ground / outdoors', classroom: 'Classroom', bank: 'Bank', kitchen: 'Kitchen', bedroom: 'Bedroom', park: 'Park', supermarket: 'Supermarket', street: 'Street + bus stop', party: 'Birthday party', festival: 'Festival street (Diwali)', library: 'Library', night_ground: 'Playground at night', beach: 'Beach', market: 'Market street (food stalls)', village: 'Village (homes & huts)', camp: 'Campsite (campfire)', sports: 'Sports ground', cave: 'Cave' }[p] || p);
+export const placeLabel = (p) => ({ home: 'Home', shop: 'Shop', ground: 'School ground / outdoors', classroom: 'Classroom', bank: 'Bank', kitchen: 'Kitchen', bedroom: 'Bedroom', park: 'Park', supermarket: 'Supermarket', street: 'Street + bus stop', party: 'Birthday party', festival: 'Festival street (Diwali)', library: 'Library', night_ground: 'Playground at night', beach: 'Beach', market: 'Market street (food stalls)', village: 'Village (homes & huts)', camp: 'Campsite (campfire)', sports: 'Sports ground', cave: 'Cave' }[p] || window.__app?.library?.placeNames?.[p] || p);
 const strip = (d) => JSON.parse(JSON.stringify(d, (k, v) => (k === '_k' ? undefined : v)));
 // a project that started from a finished story has no draft: make one from its scenes
 export function draftFromStory(story, pj) {

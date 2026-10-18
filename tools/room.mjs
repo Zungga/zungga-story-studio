@@ -4,6 +4,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { chat, json, backend } from './llm.mjs';
+import { matchFactory } from '../studio/js/stage.js';   // also loads the factory layout (globalThis.ZFactory)
+
+// built worlds a story can be set in (walkable maps with every room already in 3D)
+const MAPS = { chocolate_factory: () => globalThis.ZFactory && globalThis.ZFactory.layout };
+const FLOOR_NAME = { ground: 'ground floor', first: 'first floor', under: 'underground (secret)' };
+function mapAreas(id) { const L = MAPS[id] && MAPS[id](); return L ? L.places.map((p) => ({ id: p.id, name: p.name, floor: FLOOR_NAME[p.floor] })) : null; }
+function mapRoom(id, name) { if (id !== 'chocolate_factory') return name; const m = matchFactory(name); const L = MAPS[id](); const p = m && L.places.find((x) => x.storyId === m); return p ? p.name : name; }
 
 const COLORS = ['#7c3aed', '#ec4899', '#0ea5e9', '#f59e0b', '#16a34a', '#ef4444', '#14b8a6', '#8b5cf6', '#f97316', '#64748b', '#a855f7', '#0891b2'];
 export const EMOTION_BEATS = ['joy', 'excitement', 'fear', 'sadness', 'anger', 'mistake', 'guilt', 'apology', 'pride', 'surprise'];
@@ -81,7 +88,8 @@ Relationships: ${p.relationships.map((r) => `${r.with}: ${r.feeling}`).join('; '
   async designMystery(note = '') {
     const s = this.r.setup, cast = this.r.personas.map((p) => this.card(p, { hidden: true })).join('\n\n');
     const kids = this.r.personas.filter((p) => p.kind === 'hero' || p.kind === 'main'), adults = this.r.personas.filter((p) => !kids.includes(p));
-    const ctx = `Premise: ${s.premise}\nAudience ${s.age}. World: ${s.worldText || '(design)'}\nCast:\n${cast}\n${s.ideas?.length ? 'Director notes:\n' + s.ideas.join('\n') : ''}\n${note ? 'Director instruction: ' + note : ''}`;
+    const areas = mapAreas(s.worldMap), areaList = areas ? areas.map((a) => `${a.name} (${a.floor})`).join('; ') : '';
+    const ctx = `Premise: ${s.premise}\nAudience ${s.age}. World: ${areas ? 'the Zungga Chocolate Factory — ONLY these places exist: ' + areaList + (s.worldText ? '. Director notes on the world: ' + s.worldText : '') : s.worldText || '(design)'}\nCast:\n${cast}\n${s.ideas?.length ? 'Director notes:\n' + s.ideas.join('\n') : ''}\n${note ? 'Director instruction: ' + note : ''}`;
     // a) the hidden solution: culprit, motive, exactly 4 clues (each found by a different kid's strength), 1-2 red herrings
     let bible = null;
     for (let k = 0; k < 3 && !bible; k++) {
@@ -111,11 +119,12 @@ JSON: {"culprit":"name","motive":"","how":"what they did and when","clues":[{"id
     const got = [], names = this.r.personas.map((p) => p.name).join(', ');
     for (let i = 0; i < skeleton.length; i++) {
       const st = skeleton[i], cl = C.find((c) => c.id === st[2]);
-      const f = await json([{ role: 'system', content: SYS_WRITER }, { role: 'user', content: `${ctx}\nHidden solution (do not reveal before the reveal step): ${bible.culprit} — ${bible.how}.\nAreas of the place: ${s.worldText || 'choose fitting areas'}\nStory steps so far:\n${got.map((g, k) => `${k + 1}. [${g.room}] ${g.goal}`).join('\n') || '(none yet)'}
+      const f = await json([{ role: 'system', content: SYS_WRITER }, { role: 'user', content: `${ctx}\nHidden solution (do not reveal before the reveal step): ${bible.culprit} — ${bible.how}.\nAreas of the place: ${areas ? 'use ONLY these exact names: ' + areas.map((a) => a.name).join(', ') : s.worldText || 'choose fitting areas'}\nStory steps so far:\n${got.map((g, k) => `${k + 1}. [${g.room}] ${g.goal}`).join('\n') || '(none yet)'}
 Write step ${i + 1} of ${skeleton.length}: "${st[1]}"${cl ? `. It MUST show this clue being found by ${cl.foundBy} in ${cl.where}: ${cl.clue} (${cl.how})` : ''}. Main feeling: ${st[3]}.
 JSON: {"room":"area","goal":"what happens, 2 concrete sentences","focus":["2-4 names from: ${names}"]}` }], { ...this.opts, maxTokens: 400, temperature: 0.7 });
-      got.push({ n: i + 1, room: f.room || cl?.where || '', goal: f.goal || st[1], focus: arrayIn(f.focus || [], 'focus') });
+      got.push({ n: i + 1, room: mapRoom(s.worldMap, f.room || cl?.where || ''), goal: f.goal || st[1], focus: arrayIn(f.focus || [], 'focus') });
     }
+    if (areas) for (const c of bible.clues) c.where = mapRoom(s.worldMap, c.where);
     this.r.bible = bible;
     this.r.plan = skeleton.map((st, i) => { const f = got.find((x) => +x.n === i + 1) || got[i] || {}; const cl = C.find((c) => c.id === st[2]);
       if (cl && !(String(f.goal || '').toLowerCase().includes(String(cl.foundBy).toLowerCase()))) f.goal = `${cl.foundBy} finds a clue in ${cl.where}: ${cl.clue}`;   // pin clue steps to their clue
@@ -129,6 +138,14 @@ JSON: {"room":"area","goal":"what happens, 2 concrete sentences","focus":["2-4 n
   // ---------- 3. the closed world ----------
   async designWorld(note = '') {
     const s = this.r.setup;
+    if (mapAreas(s.worldMap)) {   // a built world: every area already exists in 3D (and can be walked in Library → Walk the world)
+      const L = MAPS[s.worldMap]();
+      this.r.world = { name: L.name, map: s.worldMap, description: 'A walkable 3-floor chocolate factory: a factory city on the ground floor (chocolate river, cookie roads, train), an operations deck above it, and a secret underground reached only through the library bookshelf.', style: 'Zungga chunky candy-colour 3D',
+        rooms: L.places.map((p) => ({ id: p.id, name: p.name, floor: FLOOR_NAME[p.floor], description: `${p.name} — ${FLOOR_NAME[p.floor]}`, connects: [] })) };
+      this.r.stage = 'world';
+      this.post('showrunner', `World: ${L.name} — ${L.places.length} real places on 3 floors (all built in 3D). Press "Start the room" and the characters will begin.`, 'system');
+      this.save(); return this.r.world;
+    }
     const rooms = [...new Set(this.r.plan.map((p) => p.room).filter(Boolean))];
     const out = await json([{ role: 'system', content: SYS_WRITER }, { role: 'user', content: `Premise: ${s.premise}\nWorld description from the director: ${s.worldText || '(none — design it)'}\nRooms the plan already uses: ${rooms.join(', ')}\n${s.refs?.length ? 'The director uploaded reference images for the look (' + s.refs.length + ').' : ''}\n${note}
 Design ONE closed, connected location for the whole story, so every scene happens inside it and every camera angle shows a full, believable space. 8-14 areas including corridors / outside yard. Each area: what it looks like, what is in it (props, machines, decor that fills all walls), mood and lighting, and which areas it connects to.
@@ -236,7 +253,7 @@ JSON: {"scenes":[{"id":"","lines":[{"who":"","text":"","emotion":"","action":"",
           talking: sp ? sp.id : undefined, voice: sp ? sp.voice : 'narrator', emotion: l.emotion, action: l.action, cameraNote: l.camera, mood: /sad|guilt/.test(l.emotion || '') ? 'sad' : null });
       }
     }
-    return { title: this.r.setup.premise.slice(0, 60) || 'Writers room story', world, hero: (this.r.personas.find((p) => p.kind === 'hero') || this.r.personas[0])?.id, cast, scenes, fromRoom: true, worldDesign: this.r.world };
+    return { worldMap: this.r.setup.worldMap && mapAreas(this.r.setup.worldMap) ? this.r.setup.worldMap : undefined, title: this.r.setup.premise.slice(0, 60) || 'Writers room story', world, hero: (this.r.personas.find((p) => p.kind === 'hero') || this.r.personas[0])?.id, cast, scenes, fromRoom: true, worldDesign: this.r.world };
   }
 }
 function presetFor(p, world) {

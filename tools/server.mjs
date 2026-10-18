@@ -22,6 +22,7 @@ fs.mkdirSync(PROJECTS, { recursive: true });
 const { stage, check } = await import(pathToFileURL(P('studio/js/stage.js')).href);
 const { Room } = await import(pathToFileURL(P('tools/room.mjs')).href);
 const llm = await import(pathToFileURL(P('tools/llm.mjs')).href);
+const keys = await import(pathToFileURL(P('tools/keys.mjs')).href);
 
 // ---------- settings (local, never committed) ----------
 const DEFAULTS = {
@@ -32,7 +33,7 @@ const DEFAULTS = {
   render: { preset: '1080x1920', width: 1080, height: 1920, fps: 30, quality: 'final', subtitles: true, endCard: true },
   brand: { subtitlesBottom: true, overlaysTop: true, noTopDown: true, endCardLogo: true, rainForSad: true, closeUpOnMention: true },
   historyLimit: 60,
-  roomAI: 'local', roomCloudModel: 'claude-sonnet-5-5',
+  roomAI: 'auto', roomCloudModel: 'claude-sonnet-5-5', roomOpenAIModel: 'gpt-5',
 };
 function settings() { try { return deepMerge(structuredClone(DEFAULTS), JSON.parse(fs.readFileSync(SETTINGS, 'utf8'))); } catch { return structuredClone(DEFAULTS); } }
 function deepMerge(a, b) { for (const [k, v] of Object.entries(b || {})) a[k] = v && typeof v === 'object' && !Array.isArray(v) && a[k] && typeof a[k] === 'object' ? deepMerge(a[k], v) : v; return a; }
@@ -71,7 +72,8 @@ function library() {
     voices, sfx: files('studio/assets/sfx', /\.(mp3|wav|ogg)$/i), music: files('studio/assets/music', /\.(mp3|wav|ogg)$/i).map((f) => '../music/' + f),
     musicInfo: Object.fromEntries(files('studio/assets/music', /\.(mp3|wav|ogg)$/i).map((f) => ['../music/' + f, readJSON(P('studio/assets/music', f.replace(/\.[^.]+$/, '.json')), null)])),
     dialogues: (readJSON(P('studio/assets/dialogues/dialogues.json'), { lines: [] }).lines || []).map((l) => ({ ...l, file: '../dialogues/' + l.file })),
-    places: ['home', 'shop', 'ground', 'classroom', 'bank', 'kitchen', 'bedroom', 'park', 'supermarket', 'street', 'party', 'festival', 'library', 'night_ground', 'beach', 'market', 'village', 'camp', 'sports', 'cave'],
+    places: ['home', 'shop', 'ground', 'classroom', 'bank', 'kitchen', 'bedroom', 'park', 'supermarket', 'street', 'party', 'festival', 'library', 'night_ground', 'beach', 'market', 'village', 'camp', 'sports', 'cave', ...((globalThis.ZFactory && globalThis.ZFactory.layout) ? globalThis.ZFactory.layout.places.map((p) => p.storyId) : [])],
+    placeNames: Object.fromEntries(((globalThis.ZFactory && globalThis.ZFactory.layout) ? globalThis.ZFactory.layout.places : []).map((p) => [p.storyId, `${p.name} · Chocolate Factory${p.floor === 'first' ? ' (1st floor)' : p.floor === 'under' ? ' (underground)' : ''}`])),
     requests: readJSON(path.join(PROJECTS, '_library-requests.json'), []),
   };
 }
@@ -220,7 +222,7 @@ function renderJob(id, o = {}) {
 function storyJob(id, input) {
   const d = pdir(id), s = settings(), lib = library();
   const req = { ...input, model: input.model || s.storyModel, world: input.world || readJSON(path.join(d, 'project.json')).world || s.world,
-    presets: (input.world || s.world) === 'people' ? lib.peoplePresets : (input.world || s.world) === 'explorers' ? lib.explorerPresets : (input.world || s.world) === 'humans' ? lib.humanPresets : lib.toonPresets, places: lib.places, props: lib.props.map((p) => p.label) };
+    presets: (input.world || s.world) === 'people' ? lib.peoplePresets : (input.world || s.world) === 'explorers' ? lib.explorerPresets : (input.world || s.world) === 'humans' ? lib.humanPresets : lib.toonPresets, places: lib.places.filter((p) => !p.startsWith('cf_')), props: lib.props.map((p) => p.label) };
   return addJob('story', id, input.redoScene ? `Story AI · redo scene ${input.redoScene}` : 'Story AI · writing', async (j) => {
     update(j, { message: 'Loading the story model (the first time downloads it, ~4 GB)…' });
     const out = await proc(j, python(), [P('tools/story_ai.py')], { input: JSON.stringify(req), onLine: (l) => { if (/^STATUS /.test(l)) update(j, { message: l.slice(7) }); const m = l.match(/^PROGRESS ([\d.]+)/); if (m) update(j, { progress: +m[1] }); } });
@@ -295,6 +297,19 @@ const routes = [];
 const route = (method, pattern, fn) => routes.push({ method, re: new RegExp('^' + pattern.replace(/:(\w+)/g, '(?<$1>[^/]+)') + '$'), fn });
 
 route('GET', '/api/health', async () => health());
+// ---------- walk-through notes (studio/world.html): saved next to the world so they can be read and fixed ----------
+const worldDir = (id) => { if (!/^[a-z0-9_]+$/.test(id)) throw httpError(400, 'Bad world id'); const d = P('studio/worlds', id.replace(/_/g, '-')); if (!fs.existsSync(d)) throw httpError(404, 'No such world'); return d; };
+route('GET', '/api/world-notes/:id', async (req, q, m) => readJSON(path.join(worldDir(m.id), 'notes.json'), []));
+route('POST', '/api/world-notes/:id', async (req, q, m) => {
+  const d = worldDir(m.id), b = await jsonBody(req), list = readJSON(path.join(d, 'notes.json'), []), id = 'n' + Date.now().toString(36);
+  const note = { id, at: new Date().toISOString(), text: String(b.text || '').slice(0, 2000), pos: b.pos, area: b.area, areaId: b.areaId, cam: b.cam, mode: b.mode, done: false };
+  if (typeof b.image === 'string' && b.image.startsWith('data:image/jpeg;base64,')) { fs.mkdirSync(path.join(d, 'notes'), { recursive: true }); fs.writeFileSync(path.join(d, 'notes', id + '.jpg'), Buffer.from(b.image.split(',')[1], 'base64')); note.image = 'notes/' + id + '.jpg'; }
+  list.push(note); writeJSON(path.join(d, 'notes.json'), list); return note;
+});
+// sound mixer defaults (Walk the World → Mixer → Save): studio/assets/mix.json, in git so they ship as the defaults
+route('GET', '/api/mix', async () => readJSON(P('studio/assets/mix.json'), {}));
+route('PUT', '/api/mix', async (req) => { const b = await jsonBody(req), cur = readJSON(P('studio/assets/mix.json'), {}), clean = (o) => Object.fromEntries(Object.entries(o || {}).filter(([, v]) => typeof v === 'number' && v >= 0 && v <= 3).map(([k, v]) => [k, Math.round(v * 100) / 100]));
+  const next = { ...cur, world: { ...(cur.world || {}), ...clean(b.world) }, video: { ...(cur.video || {}), ...clean(b.video) }, saved: new Date().toISOString() }; writeJSON(P('studio/assets/mix.json'), next); return next; });
 route('GET', '/api/settings', async () => settings());
 route('PUT', '/api/settings', async (req) => { const b = await jsonBody(req); const cur = readJSON(SETTINGS, {}); writeJSON(SETTINGS, deepMerge(cur, b)); return settings(); });
 route('POST', '/api/settings/reset', async () => { fs.rmSync(SETTINGS, { force: true }); return settings(); });
@@ -403,7 +418,16 @@ route('DELETE', '/api/music/:file', async (req, q, m) => { const f = path.basena
 const rooms = new Map();
 function roomOf(id) { const d = pdir(id); let r = rooms.get(id); if (!r) { r = new Room({ root, dir: d, settings, broadcast, project: id }); r.load(); rooms.set(id, r); } return r; }   // one live instance per project (the room may be running)
 const roomJob = (id, title, fn) => addJob('room', id, title, async (j) => { const r = roomOf(id); update(j, { message: 'Thinking…' }); await fn(r, (k, msg) => update(j, { progress: k, message: msg })); return { ok: true }; });
-const publicRoom = (r) => ({ ...r.r, ai: llm.backend(settings()), cloudAvailable: llm.cloudAvailable() });
+const publicRoom = async (r) => ({ ...r.r, ai: await llm.backend(settings()), cloudAvailable: await llm.cloudAvailable() });
+// cloud AI keys: the UI only ever sees whether a key is set + its last 4 characters
+route('GET', '/api/keys', async () => ({ keys: await keys.status(), using: await llm.backend(settings()) }));
+route('PUT', '/api/keys/:provider', async (req, q, m) => {
+  const { key } = await jsonBody(req), k = String(key || '').trim();
+  if (!keys.PROVIDERS[m.provider]) throw httpError(404, 'Unknown provider'); if (k.length < 20) throw httpError(400, 'That does not look like an API key');
+  try { await llm.testKey(m.provider, k, settings()); } catch (e) { throw httpError(400, e.message); }
+  await keys.setKey(m.provider, k); return { keys: await keys.status(), using: await llm.backend(settings()) };
+});
+route('DELETE', '/api/keys/:provider', async (req, q, m) => { await keys.removeKey(m.provider); return { keys: await keys.status(), using: await llm.backend(settings()) }; });
 route('GET', '/api/projects/:id/room', async (req, q, m) => publicRoom(roomOf(m.id)));
 route('PUT', '/api/projects/:id/room/setup', async (req, q, m) => { const r = roomOf(m.id), b = await jsonBody(req); r.r.setup = { ...r.r.setup, ...b }; r.save(); return publicRoom(r); });
 route('POST', '/api/projects/:id/room/personas', async (req, q, m) => { const b = await jsonBody(req); return roomJob(m.id, b.only ? 'Room · adding a persona' : 'Room · creating personas', (r) => r.createPersonas({ only: b.only || null })); });

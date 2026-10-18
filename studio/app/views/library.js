@@ -39,7 +39,7 @@ export async function mount(el, { app, extra }) {
   const go = (t) => { tab = t; sessionStorage.setItem('zs-libtab', t); render(); };
   function render() {
     clear(el, h('div.page', { style: { maxWidth: '1240px' } },
-      h('div.page-head', h('div', h('h1', 'Library'), h('p', 'Everything the studio can put in a story — all drawn in code, so it renders the same on any Mac.'))),
+      h('div.page-head', h('div', h('h1', 'Library'), h('p', 'Everything the studio can put in a story — all drawn in code, so it renders the same on any Mac.')), h('div.actions', btn('Walk the Chocolate Factory', () => window.open('/studio/world.html', '_blank'), 'primary', 'pin'))),
       h('div.tabs', { style: { border: 0, padding: '0 0 14px' } }, [['assets', 'Assets'], ['characters', 'Characters'], ['sounds', 'Sounds & dialogues'], ['voices', 'Voices'], ['add', 'Add asset & requests']].map(([k, l]) => h('button.tab' + (tab === k ? '.on' : ''), { onclick: () => go(k) }, l))),
       ({ assets, characters, sounds, voices, add }[tab])()));
   }

@@ -23,6 +23,7 @@
   function safeExpr(ch, e, instant) { try { ch.setExpression(e, instant); } catch (err) { try { ch.setExpression(NEAR[e] || 'smile', instant); } catch (err2) { ch.setExpression('neutral', instant); } } }
 
   // where each place sits in the one shared world (sets are built once)
+  const WORLD_OFF = [0, 0, -700];   // where connected worlds (the chocolate factory) are built, far away from the small sets
   const PLACES = {
     home:      { origin: [0, 0, 0], set: 'home_room', sky: 0xfff3e6 },
     shop:      { origin: [14, 0, 0], set: 'shop_counter', sky: 0xbfe3ff, ground: true },
@@ -48,7 +49,11 @@
     cave:        { origin: [0, 0, -80], set: 'cave_set', sky: 0x0b0c12, night: true },
   };
 
+  const ENGINE_BASE = document.currentScript && document.currentScript.src ? new URL('..', document.currentScript.src).href : '../';
   async function create(opts) {
+    // default video mix (Walk the World → Mixer → Save writes studio/assets/mix.json)
+    const VMIX = { voice: 1, music: 1, ambience: 1, sfx: 1 };
+    try { const r = await fetch(ENGINE_BASE + 'assets/mix.json', { cache: 'no-store' }); if (r.ok) Object.assign(VMIX, (await r.json()).video || {}); } catch { /* defaults */ }
     const storyDir = opts.storyDir.endsWith('/') ? opts.storyDir : opts.storyDir + '/';
     let story = opts.story ? JSON.parse(JSON.stringify(opts.story)) : await (await fetch(storyDir + 'story.json', { cache: 'no-store' })).json();
     const W = opts.width || story.format?.width || 1080, H = opts.height || story.format?.height || 1920;
@@ -124,14 +129,14 @@
     cues = [];
     timeline.forEach((e, i) => {
       const sc = e.scene;
-      for (const x of sc.sfx || []) cues.push({ file: x.file, start: e.start + x.at * e.dur, vol: x.vol ?? 0.8, dur: null, loop: false });
-      if (sc.ambience) cues.push({ file: sc.ambience.file, start: e.start, vol: sc.ambience.vol ?? 0.5, dur: e.dur, loop: true });
+      for (const x of sc.sfx || []) cues.push({ file: x.file, start: e.start + x.at * e.dur, vol: (x.vol ?? 0.8) * VMIX.sfx, dur: null, loop: false });
+      if (sc.ambience) cues.push({ file: sc.ambience.file, start: e.start, vol: (sc.ambience.vol ?? 0.5) * VMIX.ambience, dur: e.dur, loop: true });
       if (sc.weather && sc.weather.thunder) for (const th of sc.weather.thunder) { const at = typeof th === 'object' ? th.at : th; cues.push({ file: 'thunder.wav', start: e.start + at * e.dur + 0.35, vol: 0.35, dur: null, loop: false }); }
       for (const pr of sc.props || []) if (pr.coins && pr.coins.sound) for (let k = 0; k < pr.coins.count; k++) {
         const fk = pr.coins.start + (k + 1) / pr.coins.count * (pr.coins.end - pr.coins.start);
-        cues.push({ file: pr.coins.sound, start: e.start + fk * e.dur + 0.28, vol: pr.coins.vol ?? 0.35, dur: null, loop: false });
+        cues.push({ file: pr.coins.sound, start: e.start + fk * e.dur + 0.28, vol: (pr.coins.vol ?? 0.35) * VMIX.sfx, dur: null, loop: false });
       }
-      if (story.music && story.music.file && i === 0) cues.push({ file: story.music.file, start: 0, vol: story.music.vol ?? 0.15, dur: total, loop: true, music: true, offset: story.music.start || 0, fadeIn: story.music.fadeIn ?? 0.6, fadeOut: story.music.fadeOut ?? 2 });   // offset = where in the track the story starts
+      if (story.music && story.music.file && i === 0) cues.push({ file: story.music.file, start: 0, vol: (story.music.vol ?? 0.15) * VMIX.music, dur: total, loop: true, music: true, offset: story.music.start || 0, fadeIn: story.music.fadeIn ?? 0.6, fadeOut: story.music.fadeOut ?? 2 });   // offset = where in the track the story starts
     });
     }
     prepare();
@@ -202,6 +207,7 @@
       party: { warm: [1.08, 1.0, 0.95], bloom: 0.6, aperture: 0.5, vignette: 0.35, sat: 1.1 },
       library: { warm: [1.1, 1.0, 0.88], bloom: 0.45, aperture: 0.55, vignette: 0.4, sat: 1.0 },
     };
+    if (window.ZFactory && ZFactory.layout) for (const fp of ZFactory.layout.places) if (!PLACES[fp.storyId]) PLACES[fp.storyId] = { origin: [fp.spot[0] + WORLD_OFF[0], fp.spot[1] + WORLD_OFF[1], fp.spot[2] + WORLD_OFF[2]], world: 'chocolate_factory', factory: true, sky: fp.dark ? 0x120c18 : 0xbfe3ff, outdoor: fp.outdoor, dark: fp.dark, label: fp.name, room: fp.room ? { x0: fp.room.x0 + WORLD_OFF[0], x1: fp.room.x1 + WORLD_OFF[0], z0: fp.room.z0 + WORLD_OFF[2], z1: fp.room.z1 + WORLD_OFF[2], y0: fp.room.y0, y1: fp.room.y1 } : null };
     let look = LOOKS.home;
 
     // shared world: ground + all places
@@ -213,6 +219,7 @@
     // a place is built the first time a story uses it (unknown / not-yet-built sets fall back to home)
     function ensurePlace(name) {
       if (places[name]) return places[name];
+      const p0 = PLACES[name]; if (p0 && p0.world) return ensureWorldPlace(name, p0);
       const p = PLACES[name]; if (!p || !ZAssets.has(p.set)) { if (name !== 'home') console.warn('Place not available:', name); return ensurePlace('home'); }
       const r = ZAssets.build(p.set); r.group.position.set(...p.origin); scene.add(r.group);
       const box = new T.Box3().setFromObject(r.group);
@@ -228,6 +235,25 @@
         const g = ZAssets.build(id).group; g.position.copy(pl.o).add(new T.Vector3(x, 0, z)); g.scale.multiplyScalar(sc); g.rotation.y = (x * 7 + z * 3) % 6.28; scene.add(g);
       }
       r.group.traverse((o) => { if (o.isMesh) { o.castShadow = o.castShadow !== false; o.receiveShadow = true; } });
+      return pl;
+    }
+    // the Zungga Chocolate Factory: one connected 3-floor world, built once (far from the small sets); each room is a place 'cf_<id>'
+    let factoryW = null;
+    function ensureWorldPlace(name, p) {
+      if (!factoryW) {
+        if (!window.ZWorld || !window.ZFactory || !ZFactory.buildGround) { console.warn('Factory world scripts are not loaded on this page'); return ensurePlace('home'); }
+        const root = new T.Group(); root.position.set(...WORLD_OFF); scene.add(root);
+        const W = ZWorld.create(root); ZFactory.buildGround(W); ZFactory.buildFirst(W); ZFactory.buildUnder(W); if (ZFactory.finish) ZFactory.finish(W); for (const k of Object.keys(W.floors)) W.bake(W.floors[k]);
+        root.updateMatrixWorld(true); factoryW = { W, root, last: 0 };
+      }
+      const o = new T.Vector3(...p.origin);
+      const pl = places[name] = { ...p, name, group: factoryW.root, r: { group: factoryW.root }, box: new T.Box3().setFromCenterAndSize(o.clone().add(new T.Vector3(0, 2, 0)), new T.Vector3(10, 4, 10)), door: null, o,
+        ticks: [(t) => { const dt = Math.max(0, Math.min(0.1, t - factoryW.last)) || 1 / 30; factoryW.last = t; factoryW.W.update(t, dt, null); }] };
+      pl.enter = () => {   // the roof of the building we are in comes off (like a doll's house); underground hides the floors above
+        const lp = { x: p.origin[0] - WORLD_OFF[0], y: p.origin[1], z: p.origin[2] - WORLD_OFF[2] };
+        for (const r of factoryW.W.roofs) { const dx = lp.x - r.x, dz = lp.z - r.z, lx = dx * r.c - dz * r.s, lz = dx * r.s + dz * r.c; r.obj.visible = !(Math.abs(lx) < r.hx && Math.abs(lz) < r.hz && lp.y > r.y0 && lp.y < r.y1); }
+        const F = factoryW.W.floors; F.under.visible = !!p.dark; F.ground.visible = F.first.visible = !p.dark;
+      };
       return pl;
     }
     const placeOf = (name) => places[name] || ensurePlace(name);
@@ -344,7 +370,8 @@
       for (const c of coins) c.mesh.parent && c.mesh.parent.remove(c.mesh); coins = [];
       sceneProps = {};
       const sc = timeline[i].scene, place = placeOf(sc.place);
-      scene.background = new T.Color(place.sky); scene.fog = new T.Fog(place.sky, 18, 60);
+      if (place.enter) place.enter();
+      scene.background = new T.Color(place.sky); scene.fog = place.factory ? new T.Fog(place.sky, place.dark ? 14 : 40, place.dark ? 55 : 160) : new T.Fog(place.sky, 18, 60);
       // lights follow the place
       sun.position.copy(place.o).add(new T.Vector3(4, 9, 6)); sun.target.position.copy(place.o);
       fill.position.copy(place.o).add(new T.Vector3(-5, 4, 4)); fill.target.position.copy(place.o);
@@ -366,7 +393,9 @@
         hemi.color.set(0xffe9d2); hemi.groundColor.set(0xb98a62); baseHemi = hemi.intensity = 0.95;
         windowGlow.position.copy(place.o).add(new T.Vector3(1.7, 1.8, -1.6)); windowGlow.intensity = 6;
       } else { sun.color.set(0xfff0dc); hemi.color.set(0xeaf2ff); hemi.groundColor.set(0xb59a7a); }
-      if (place.night) {   // moonlight + warm lamp light from the set's lamps (emissive) — still readable for kids
+      if (place.dark) {   // underground: warm torchlight and glowing crystals (the world has its own lights), no sun
+        sun.intensity = 0.15; sun.color.set(0xffc58a); hemi.color.set(0xb7a3ff); hemi.groundColor.set(0x3a2a20); baseHemi = hemi.intensity = 0.45; fill.intensity = 0.3; renderer.toneMappingExposure = 1.15;
+      } else if (place.night) {   // moonlight + warm lamp light from the set's lamps (emissive) — still readable for kids
         sun.color.set(0xa8bcff); sun.intensity = 0.7; hemi.color.set(0x6b7bb8); hemi.groundColor.set(0x23283d); baseHemi = hemi.intensity = 0.55; fill.intensity = 0.35; renderer.toneMappingExposure = 1.1;
         windowGlow.position.copy(place.o).add(new T.Vector3(-1.5, 3, 0.5)); windowGlow.intensity = 5;
       } else if (place.evening) {   // golden dusk with diya glow
@@ -652,7 +681,9 @@
     let hiBox = null;     // editor: outline of the selected actor / prop
     function draw() {
       planCamera(lt);
-      const p = freeCam || camPlan.at(lt - camSegStart); camera.position.copy(p.pos); camera.lookAt(p.look); lastCam = { pos: p.pos.clone(), look: p.look.clone() };
+      const p = freeCam || camPlan.at(lt - camSegStart);
+      if (!freeCam) { const rm = placeOf(timeline[cur].scene.place).room; if (rm) p.pos = new T.Vector3(Math.min(rm.x1, Math.max(rm.x0, p.pos.x)), Math.min(rm.y1, Math.max(rm.y0, p.pos.y)), Math.min(rm.z1, Math.max(rm.z0, p.pos.z))); }   // factory rooms: stay inside the walls
+      camera.position.copy(p.pos); camera.lookAt(p.look); lastCam = { pos: p.pos.clone(), look: p.look.clone() };
       const fx = timeline[cur].scene.fx;
       if (fx && fx.shake && !freeCam) {   // camera shake (same every render: noise from the clock)
         const sh = fx.shake, k = typeof sh === 'object' ? sh.amount ?? 0.5 : sh, on = typeof sh !== 'object' || (lt / timeline[cur].dur >= (sh.from ?? 0) && lt / timeline[cur].dur <= (sh.to ?? 1));

@@ -10,7 +10,20 @@
  */
 
 // ---------- places ----------
+import '../worlds/chocolate-factory/layout.js';   // the Zungga Chocolate Factory (3 floors) — its rooms are places too ('cf_<room id>')
+const FACTORY = (globalThis.ZFactory && globalThis.ZFactory.layout) || null;
+const FACTORY_PLACES = FACTORY ? FACTORY.places : [];
+const normName = (s) => String(s || '').toLowerCase().replace(/[’`]/g, "'").replace(/^\s*\d+\s*[·.\-:]\s*/, '').replace(/^the\s+/, '').replace(/[^a-z0-9' &]+/g, ' ').replace(/\s+/g, ' ').trim();
+// a story place name → a factory place ('cf_candy_lab'), or null
+export function matchFactory(name) {
+  const n = normName(name); if (!n || !FACTORY) return null;
+  const byName = FACTORY_PLACES.find((p) => normName(p.name) === n || p.id === n.replace(/ /g, '_') || p.storyId === n); if (byName) return byName.storyId;
+  if (FACTORY.aliases[n]) return 'cf_' + FACTORY.aliases[n];
+  const part = FACTORY_PLACES.find((p) => { const pn = normName(p.name); return pn.length > 5 && (n.includes(pn) || (n.length > 6 && pn.includes(n))); }); if (part) return part.storyId;
+  const al = Object.keys(FACTORY.aliases).sort((a, b) => b.length - a.length).find((k) => k.length > 4 && n.includes(k)); return al ? 'cf_' + FACTORY.aliases[al] : null;
+}
 export const PLACE_IDS = ['home', 'shop', 'ground', 'classroom', 'bank', 'kitchen', 'bedroom', 'park', 'supermarket', 'street', 'party', 'festival', 'library', 'night_ground', 'beach', 'market', 'village', 'camp', 'sports', 'cave'];
+for (const p of FACTORY_PLACES) PLACE_IDS.push(p.storyId);
 const PLACE_WORDS = {   // checked in order: specific places first
   cave: ['cave', 'cavern', 'crystals', 'tunnel'],
   beach: ['beach', 'sea', 'waves', 'sand', 'shore', 'ocean', 'sunrise', 'sunset'],
@@ -33,7 +46,9 @@ const PLACE_WORDS = {   // checked in order: specific places first
   ground: ['ground', 'playground', 'outside', 'outdoor', 'outdoors', 'garden', 'field', 'yard', 'bench', 'court', 'tree', 'rain', 'walk', 'path', 'forest', 'beach'],
   classroom: ['classroom', 'class', 'school', 'lesson', 'exam', 'test', 'teacher', 'desk'],
 };
-export function matchPlace(name = '', narration = '') {
+export function matchPlace(name = '', narration = '', factory = false) {
+  if (String(name).startsWith('cf_') && PLACE_IDS.includes(String(name).trim())) return { id: String(name).trim(), exact: true };
+  if (factory) { const f = matchFactory(name); return f ? { id: f, exact: true } : { id: 'cf_main_plaza', exact: !name }; }
   narration = String(narration).replace(/piggy[\s-]*bank/gi, 'piggy');   // a piggy bank is not a bank
   const words = tokens(name);
   const order = Object.keys(PLACE_WORDS);
@@ -73,6 +88,8 @@ const DESK_SEATS = [[1.3, 0, 0.93], [0.7, 0, 0.93], [-1.3, 0, -0.42], [-1.9, 0, 
 const BENCH = [[0, 0, 0.08], [0.5, 0, 0.1], [-0.5, 0, 0.1]];
 const SHOPKEEPER_AT = [0, 0, -0.55], TEACHER_AT = [-0.7, 0, -2.55];
 // a spot to show a mentioned object in each place (surfaces the sets really have)
+// factory rooms have no fixed furniture positions: a loose half-circle facing the camera (+z)
+const FACTORY_SLOTS = [[0, 0, 0], [-0.95, 0, 0.25], [0.95, 0, 0.25], [-1.8, 0, 0.6], [1.8, 0, 0.6], [-0.5, 0, -0.7], [0.5, 0, -0.7], [-1.4, 0, -0.5], [1.4, 0, -0.5]];
 const SURFACE = {
   shop: (k) => [-0.3 + k * 0.28, 1.04, 0.12],          // on the counter
   classroom: (k) => [0.75 + k * 0.18, 0.8, 0.47],      // on rio's desk
@@ -212,7 +229,7 @@ function faceToward(from, to, bias = 0.55) {   // turn toward someone, but keep 
 export function stageScene(sd, i, ctx) {
   const { draft, catalog, castById, report } = ctx, n = draft.scenes.length;
   const narration = String(sd.narration || '').trim();
-  const pm = matchPlace(sd.place, narration); if (sd.place && !pm.exact) report.missing.push({ scene: i + 1, kind: 'place', name: sd.place, chosen: pm.id, suggestions: PLACE_IDS.map((id) => ({ id, label: id })) });
+  const pm = matchPlace(sd.place || sd.room, narration, ctx.factory); if ((sd.place || sd.room) && !pm.exact) report.missing.push({ scene: i + 1, kind: 'place', name: sd.place || sd.room, chosen: pm.id, suggestions: (ctx.factory ? PLACE_IDS.filter((id) => id.startsWith('cf_')) : PLACE_IDS.filter((id) => !id.startsWith('cf_'))).map((id) => ({ id, label: id })) });
   const clauses = narration.split(/(?<=[,.?!;])\s+/).filter(Boolean);
   const place = pm.id, lineMood = sd.mood || emotionOf(narration), mood = sd.mood || emotionOf(clauses[0] || narration), sad = lineMood === 'sad' || lineMood === 'worried';
   const heroId = draft.hero || draft.cast[0]?.id;
@@ -220,6 +237,7 @@ export function stageScene(sd, i, ctx) {
   if (!ids.includes(heroId) && castById[heroId] && !sd.noHero) ids.unshift(heroId);
   ids = [...new Set(ids)];
   const sc = { id: sd.id ?? i + 1, title: sd.title || `Scene ${i + 1}`, place, narration, actors: {}, beats: [], props: [], camera: [], auto: true };
+  const surf = SURFACE[place] || ((k) => [-0.45 + k * 0.32, 0, 1.0]);   // factory places: on the floor in front of the group
   if (sd.mood && ['soft'].includes(sd.mood)) sc.mood = 'soft';
   if (sd.talking && castById[sd.talking]) sc.talking = sd.talking;
   for (const k of ['voice', 'episode', 'episodeTitle', 'emotion', 'action', 'cameraNote', 'room']) if (sd[k] != null) sc[k] = sd[k];
@@ -236,7 +254,7 @@ export function stageScene(sd, i, ctx) {
     else if (kind === 'teacher' && place === 'classroom') a.at = TEACHER_AT.slice();
     else if (sitting && (place === 'ground' || place === 'night_ground') && bench < BENCH.length) { a.at = BENCH[bench++].slice(); a.anim = sad ? 'sit_sad' : 'sit'; }
     else if (sitting && place === 'classroom' && desk < DESK_SEATS.length) { a.at = DESK_SEATS[desk++].slice(); a.anim = 'sit'; a.seat = true; a.face = 3.14; }
-    else { const s = SLOTS[place]; a.at = s[slot++ % s.length].slice(); }
+    else { const s = SLOTS[place] || FACTORY_SLOTS; a.at = s[slot++ % s.length].slice(); }
     if (['sad', 'worried'].includes(a.expr) && id !== heroId) a.expr = 'worried';
     if (!['neutral', 'smile', 'big_smile', 'sad', 'surprised', 'thinking', 'worried', 'determined', 'idea', 'stern', 'confused', 'angry'].includes(a.expr)) a.expr = 'smile';
     sc.actors[id] = a;
@@ -299,10 +317,10 @@ export function stageScene(sd, i, ctx) {
     if (p.id === 'lightbulb') { if (sc.actors[doer]) sc.props.push({ id: 'lightbulb', attach: doer + '.head', at: [0, 0.27, 0], ...(cw ? { showWord: cw, onWord: cw, onOffset: 0.1 } : { show: 0.12, on: 0.15 }), auto: true }); shown.push(p.id); continue; }
     if (p.id === 'coin_box') {
       const coinsW = cueWord(narration, 'coins') || cueWord(narration, 'saved') || cw;
-      sc.props.push({ id: 'coin_box', at: SURFACE[place](k++), ...(coinsW ? { coins: { count: 8, startWord: coinsW, startOffset: 0.2, endWord: coinsW, endOffset: 2.2, sound: 'coin-register.mp3', vol: 0.3 } } : {}), auto: true });
+      sc.props.push({ id: 'coin_box', at: surf(k++), ...(coinsW ? { coins: { count: 8, startWord: coinsW, startOffset: 0.2, endWord: coinsW, endOffset: 2.2, sound: 'coin-register.mp3', vol: 0.3 } } : {}), auto: true });
       shown.push(p.id); continue;
     }
-    sc.props.push({ id: p.id, at: SURFACE[place](k++), ...(cw ? { showWord: cw, showOffset: -0.35 } : {}), auto: true });
+    sc.props.push({ id: p.id, at: surf(k++), ...(cw ? { showWord: cw, showOffset: -0.35 } : {}), auto: true });
     shown.push(p.id);
   }
   // money said in the line: the hero shows it in their hand right then, and a small counter tracks it
@@ -321,12 +339,12 @@ export function stageScene(sd, i, ctx) {
     const mm = nm.match(/₹\s?(\d+)|(\d+)\s*rupee/);
     if (mm) {   // money: the nearest note / coin the library has (₹1, ₹2, ₹5 → a coin; others → the closest note), amounts alone are just numbers
       const v = +(mm[1] || mm[2]), id = /coin/.test(nm) || v < 10 ? 'coin_5' : MONEY[v] || null;
-      if (id && !shown.includes(id) && id !== 'coin_5') { const cw = cueWord(narration, String(v)) || cueWord(narration, 'rupees'); sc.props.push({ id, at: SURFACE[place](k++), ...(cw ? { showWord: cw, showOffset: -0.35 } : {}), auto: true }); shown.push(id); }
+      if (id && !shown.includes(id) && id !== 'coin_5') { const cw = cueWord(narration, String(v)) || cueWord(narration, 'rupees'); sc.props.push({ id, at: surf(k++), ...(cw ? { showWord: cw, showOffset: -0.35 } : {}), auto: true }); shown.push(id); }
       continue;
     }
     const nt = tokens(nm).map(stem);
     const found = catalog.find((p) => p.id === nm || tokens(p.label).join(' ') === tokens(nm).join(' ') || propWords(p).includes(stem(nm))) || catalog.find((p) => !SKIP_PROPS.has(p.id) && nt.length && nt.every((w) => propWords(p).includes(w) || (p.tags || []).map(stem).includes(w)));
-    if (found) { if (!shown.includes(found.id) && !SKIP_PROPS.has(found.id)) { const cw = cueWord(narration, nm); sc.props.push({ id: found.id, at: SURFACE[place](k++), ...(cw ? { showWord: cw, showOffset: -0.35 } : {}), auto: true }); shown.push(found.id); } }
+    if (found) { if (!shown.includes(found.id) && !SKIP_PROPS.has(found.id)) { const cw = cueWord(narration, nm); sc.props.push({ id: found.id, at: surf(k++), ...(cw ? { showWord: cw, showOffset: -0.35 } : {}), auto: true }); shown.push(found.id); } }
     else report.missing.push({ scene: i + 1, kind: 'prop', name: nm, suggestions: suggest(nm, catalog) });
   }
 
@@ -392,7 +410,9 @@ export function stage(draft, catalog, presets = {}) {
     else if (world === 'toon') { if (presets.toonPresets && !presets.toonPresets.includes(c.preset)) report.missing.push({ kind: 'character', name: c.id, preset: c.preset, suggestions: (presets.toonPresets || []).slice(0, 6).map((id) => ({ id, label: id })) }); cast[c.id] = { cast: c.preset, ...(c.look ? { look: c.look } : {}), ...(c.colors ? { colors: c.colors } : {}) }; }
     else { if (presets.peoplePresets && !presets.peoplePresets.includes(c.preset)) report.missing.push({ kind: 'character', name: c.id, preset: c.preset, suggestions: (presets.peoplePresets || []).slice(0, 6).map((id) => ({ id, label: id })) }); cast[c.id] = { preset: c.preset, ...(c.wear ? { wear: c.wear } : {}) }; }
   }
-  const ctx = { draft, catalog, castById, report };
+  // one closed world: the chocolate factory, when the draft says so or most scene places are factory rooms
+  const factory = draft.worldMap === 'chocolate_factory' || ((draft.scenes || []).length > 0 && (draft.scenes || []).filter((sd) => matchFactory(sd.place || sd.room) && !PLACE_IDS.slice(0, 20).includes(String(sd.place || '').trim())).length >= Math.max(1, (draft.scenes || []).length * 0.3));
+  const ctx = { draft, catalog, castById, report, factory };
   const scenes = (draft.scenes || []).map((sd, i) => (sd.locked && sd.staged ? sd.staged : stageScene(sd, i, ctx)));
   const story = {
     title: draft.title || 'Untitled story', format: { width: 1080, height: 1920, fps: 30 },

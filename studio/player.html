@@ -73,6 +73,16 @@
 <script src="characters/toons.js"></script>
 <script src="characters/explorers.js"></script>
 <script type="module" src="characters/humans.js"></script>
+<script src="js/world-kit.js"></script>
+<script src="worlds/chocolate-factory/layout.js"></script>
+<script src="worlds/chocolate-factory/dress-ground.js"></script>
+<script src="worlds/chocolate-factory/dress-first.js"></script>
+<script src="worlds/chocolate-factory/dress-under.js"></script>
+<script src="worlds/chocolate-factory/ground.js"></script>
+<script src="worlds/chocolate-factory/first.js"></script>
+<script src="worlds/chocolate-factory/people.js"></script>
+<script src="worlds/chocolate-factory/under.js"></script>
+<script src="worlds/chocolate-factory/fill.js"></script>
 <script src="js/camera-moves.js"></script>
 <script src="js/story-engine.js"></script>
 <script src="js/puppets2d.js"></script>
@@ -99,6 +109,7 @@ let frameNo = 0;
 window.__render = {
   total: eng.total, fps: eng.fps, frames: Math.ceil(eng.total * eng.fps),
   timeline: eng.timeline.map((e) => ({ id: e.scene.id, start: e.start, dur: e.dur })), cues: eng.cues, sfxDir: eng.sfxDir, voiceDir,
+  shot(t) { eng.seek(t); eng.step(1 / eng.fps); frameNo = Math.round(t * eng.fps) + 1; return eng.canvas.toDataURL('image/jpeg', 0.9); },   // one still at time t (previews / tests)
   frame(i) { if (i === 0) { eng.seek(0); frameNo = 0; } else { while (frameNo < i) { eng.step(1 / eng.fps); frameNo++; } } return eng.canvas.toDataURL('image/jpeg', 0.92); },
 };
 window.__eng = eng;

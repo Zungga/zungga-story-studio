@@ -52,14 +52,15 @@ const partial = first > 0 || last < Math.ceil(info.total * info.fps);
 const tag = !opt('voice') || voiceDir === 'voice' ? '' : '-' + path.basename(voiceDir).replace(/^voice-/, '');
 const outFile = opt('out') ? path.join(outDir, path.basename(opt('out')).replace(/(\.mp4)?$/, '.mp4')) : path.join(outDir, partial ? `${story}${tag}-scenes-${from.id}-${to.id}.mp4` : `${story}${tag}.mp4`);
 
-// audio: every scene's clip placed at its start (relative to t0)
+// audio: every scene's clip placed at its start (relative to t0); the voice level comes from studio/assets/mix.json (Mixer → Save)
+const VOICE_VOL = (() => { try { return JSON.parse(fs.readFileSync(path.join(root, 'studio/assets/mix.json'), 'utf8')).video?.voice ?? 1; } catch { return 1; } })();
 const inputs = [], filters = [];
 for (const e of info.timeline) {
   const wav = path.join(storyDir, voiceDir, `scene-${String(e.id).padStart(2, '0')}.wav`);
   if (!fs.existsSync(wav) || e.start + e.dur <= t0 || e.start >= t1) continue;
   const k = inputs.filter((x) => x === '-i').length + 1, delay = Math.max(0, Math.round((e.start - t0) * 1000)), trim = Math.max(0, t0 - e.start);
   inputs.push('-i', wav);
-  filters.push(`[${k}:a]atrim=start=${trim.toFixed(3)},asetpts=PTS-STARTPTS,adelay=${delay}|${delay}[a${k}]`);
+  filters.push(`[${k}:a]atrim=start=${trim.toFixed(3)},asetpts=PTS-STARTPTS,volume=${VOICE_VOL},adelay=${delay}|${delay}[a${k}]`);
 }
 // sound effects / ambience at their cue times (loops are cut to length)
 for (const c of info.cues || []) {

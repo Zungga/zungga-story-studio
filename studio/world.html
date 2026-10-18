@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Walk the World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #1f1a33; --p: #7c3aed; --pl: #ede9fe; --panel: rgba(255, 255, 255, 0.93); --muted: #6b6480; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #cfe8ff; font-family: Fredoka, system-ui, sans-serif; color: var(--ink); }
+  #c { position: fixed; inset: 0; display: block; }
+  .hud { position: fixed; pointer-events: none; }
+  #where { top: 14px; left: 14px; background: var(--panel); border-radius: 14px; padding: 10px 14px; box-shadow: 0 6px 20px rgba(30, 20, 60, 0.15); min-width: 220px; }
+  #where b { display: block; font-size: 20px; } #where small { color: var(--muted); font-size: 13px; }
+  #toast { top: 18%; left: 50%; transform: translateX(-50%); background: rgba(59, 7, 100, 0.85); color: #ffd84a; font-size: 30px; font-weight: 700; padding: 10px 26px; border-radius: 18px; opacity: 0; transition: opacity 0.4s; white-space: nowrap; }
+  #prompt { bottom: 70px; left: 50%; transform: translateX(-50%); background: var(--panel); padding: 9px 16px; border-radius: 12px; font-size: 17px; display: none; box-shadow: 0 6px 20px rgba(30, 20, 60, 0.2); }
+  #prompt kbd, .keys kbd { background: var(--p); color: #fff; border-radius: 6px; padding: 1px 8px; font-family: inherit; font-weight: 600; }
+  #map { top: 14px; right: 14px; background: var(--panel); border-radius: 14px; padding: 8px; box-shadow: 0 6px 20px rgba(30, 20, 60, 0.15); pointer-events: auto; }
+  #map canvas { display: block; border-radius: 8px; } #map .row { display: flex; gap: 4px; margin-top: 6px; }
+  #map button { flex: 1; border: 0; border-radius: 8px; padding: 4px 0; font: 600 12px Fredoka, system-ui; background: var(--pl); color: var(--p); cursor: pointer; } #map button.on { background: var(--p); color: #fff; }
+  #keys { bottom: 14px; left: 14px; font-size: 13px; color: #fff; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); }
+  #panel { position: fixed; top: 0; left: 0; bottom: 0; width: 320px; background: var(--panel); box-shadow: 4px 0 24px rgba(30, 20, 60, 0.2); transform: translateX(-100%); transition: transform 0.25s; overflow: auto; padding: 14px 14px 30px; box-sizing: border-box; z-index: 5; }
+  #panel.open { transform: none; } #panel h2 { margin: 0 0 4px; font-size: 20px; } #panel h3 { margin: 16px 0 6px; font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  #panel .it { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 9px; cursor: pointer; font-size: 14px; } #panel .it:hover { background: var(--pl); }
+  #panel .n { width: 22px; height: 22px; border-radius: 50%; background: var(--p); color: #fff; font-size: 12px; display: grid; place-items: center; flex: none; }
+  #panel .ok { margin-left: auto; color: #16a34a; font-weight: 700; } #panel .prog { font-size: 13px; color: var(--muted); }
+  #panel textarea { width: 100%; box-sizing: border-box; border: 1px solid #ddd; border-radius: 8px; font: 14px Fredoka, system-ui; padding: 6px; }
+  .btns { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; } .btns button { border: 0; border-radius: 9px; padding: 7px 10px; background: var(--p); color: #fff; font: 600 13px Fredoka, system-ui; cursor: pointer; } .btns button.ghost { background: var(--pl); color: var(--p); }
+  #menuBtn { position: fixed; bottom: 14px; right: 14px; z-index: 6; border: 0; border-radius: 12px; padding: 9px 14px; background: var(--p); color: #fff; font: 600 14px Fredoka, system-ui; cursor: pointer; box-shadow: 0 6px 20px rgba(30, 20, 60, 0.25); }
+  #loading { position: fixed; inset: 0; display: grid; place-items: center; background: #f4f0ff; z-index: 9; font-size: 22px; color: var(--p); }
+  #noteBox { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); background: #fff; border-radius: 16px; padding: 16px; width: 360px; box-shadow: 0 20px 60px rgba(30, 20, 60, 0.35); z-index: 8; display: none; }
+  #noteBox textarea { width: 100%; height: 90px; box-sizing: border-box; border-radius: 10px; border: 1px solid #ddd; font: 15px Fredoka, system-ui; padding: 8px; }
+  #mixBtn { position: fixed; bottom: 14px; right: 230px; z-index: 6; border: 0; border-radius: 12px; padding: 9px 14px; background: #fff; color: var(--p); font: 600 14px Fredoka, system-ui; cursor: pointer; box-shadow: 0 6px 20px rgba(30, 20, 60, 0.25); }
+  #mixer { position: fixed; right: 14px; top: 312px; bottom: 64px; width: 340px; overflow: auto; background: var(--panel); border-radius: 16px; box-shadow: 0 12px 40px rgba(30, 20, 60, 0.3); padding: 12px 14px; z-index: 7; display: none; }
+  #mixer h3 { margin: 10px 0 4px; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; } #mixer .r { display: grid; grid-template-columns: 1fr 130px 40px; align-items: center; gap: 6px; font-size: 13px; padding: 2px 0; }
+  #mixer input[type=range] { width: 100%; accent-color: #7c3aed; } #mixer .v { text-align: right; color: var(--muted); font-size: 12px; } #mixer .r.live b { color: #16a34a; }
+  #fps { position: fixed; top: 8px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #fff; text-shadow: 0 1px 2px #000; pointer-events: none; }
+</style></head>
+<body>
+<canvas id="c"></canvas>
+<div id="loading">Building the Zungga Chocolate Factory…</div>
+<div id="where" class="hud"><b id="areaName">—</b><small id="floorName">Ground floor</small></div>
+<div id="toast" class="hud"></div>
+<div id="prompt" class="hud"></div>
+<div id="map" class="hud"><canvas id="mm" width="240" height="240"></canvas><div class="row"><button data-f="first">1st</button><button data-f="ground">Ground</button><button data-f="under">Under</button></div></div>
+<div id="keys" class="hud keys"><kbd>W</kbd><kbd>S</kbd> walk · <kbd>A</kbd><kbd>D</kbd> turn · <kbd>Shift</kbd> run · <kbd>Space</kbd> jump/swim up · <kbd>E</kbd> use · drag = look · <kbd>F</kbd> free cam · <kbd>M</kbd> menu · <kbd>N</kbd> note · <kbd>P</kbd> photo · <kbd>K</kbd> sound</div>
+<div id="fps"></div>
+<button id="menuBtn">☰ Places &amp; checklist</button>
+<button id="mixBtn">🔊 Mixer</button>
+<div id="mixer"></div>
+<div id="panel"></div>
+<div id="noteBox"><b>Note at this spot</b><p style="margin:4px 0 8px;color:#6b6480;font-size:13px" id="noteWhere"></p><textarea id="noteText" placeholder="e.g. this wall is missing, make the vat bigger…"></textarea><div class="btns"><button id="noteSave">Save note</button><button class="ghost" id="noteCancel">Cancel</button></div></div>
+
+<script src="../vendor/three.min.js"></script>
+<script src="assets/core.js"></script>
+<script src="assets/money.js"></script><script src="assets/food.js"></script><script src="assets/toys.js"></script><script src="assets/school.js"></script>
+<script src="assets/furniture.js"></script><script src="assets/shop.js"></script><script src="assets/brand.js"></script><script src="assets/nature.js"></script>
+<script src="assets/sets.js"></script><script src="assets/bank.js"></script><script src="assets/home.js"></script><script src="assets/transport.js"></script>
+<script src="assets/tech.js"></script><script src="assets/street.js"></script><script src="assets/village.js"></script><script src="assets/outdoors.js"></script>
+<script src="assets/animals.js"></script><script src="assets/garage.js"></script><script src="assets/sports.js"></script><script src="assets/sky.js"></script>
+<script src="assets/seasons.js"></script><script src="assets/cave.js"></script>
+<script src="characters/toons.js"></script>
+<script src="js/world-kit.js"></script>
+<script src="js/walker.js"></script>
+<script src="js/world-audio.js"></script>
+<script src="worlds/chocolate-factory/layout.js"></script>
+<script src="worlds/chocolate-factory/props.js" onerror="this.remove()"></script>
+<script src="worlds/chocolate-factory/dress-ground.js"></script>
+<script src="worlds/chocolate-factory/dress-first.js"></script>
+<script src="worlds/chocolate-factory/dress-under.js"></script>
+<script src="worlds/chocolate-factory/people.js"></script>
+<script src="worlds/chocolate-factory/ground.js"></script>
+<script src="worlds/chocolate-factory/first.js"></script>
+<script src="worlds/chocolate-factory/under.js"></script>
+<script src="worlds/chocolate-factory/fill.js"></script>
+<script>
+(async () => {
+  'use strict';
+  const T = THREE, $ = (s) => document.querySelector(s), q = new URLSearchParams(location.search), L = ZFactory.layout;
+  await new Promise((r) => setTimeout(r, 30));
+  // ---------- renderer / scene ----------
+  const canvas = $('#c'), renderer = new T.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, +(q.get('pr') || 1.5))); renderer.shadowMap.enabled = true; renderer.shadowMap.type = T.PCFSoftShadowMap;
+  renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05; renderer.outputColorSpace = T.SRGBColorSpace;
+  const scene = new T.Scene(), camera = new T.PerspectiveCamera(55, 1, 0.1, 1200);
+  const skyTex = ZA.tex((c, w, h) => { const g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#6fb5ff'); g.addColorStop(0.55, '#bfe0ff'); g.addColorStop(1, '#fde7c8'); c.fillStyle = g; c.fillRect(0, 0, w, h); }, 16, 256);
+  const sky = new T.Mesh(new T.SphereGeometry(850, 32, 16), new T.MeshBasicMaterial({ map: skyTex, side: T.BackSide, fog: false })); scene.add(sky);
+  const hemi = new T.HemisphereLight(0xeaf4ff, 0xb08a62, 1.15); scene.add(hemi);
+  const sun = new T.DirectionalLight(0xfff0d8, 2.4); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); const sc = sun.shadow.camera; sc.left = -32; sc.right = 32; sc.top = 32; sc.bottom = -32; sc.near = 1; sc.far = 220; sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.03; scene.add(sun, sun.target);
+  const lantern = new T.PointLight(0xffd6a0, 0, 12, 1.4); scene.add(lantern);
+  scene.fog = new T.Fog(0xcfe8ff, 220, 800);
+  // distant hills
+  for (let i = 0; i < 18; i++) { const a = i / 18 * Math.PI * 2, r = 330 + (i % 3) * 45, hill = new T.Mesh(new T.SphereGeometry(55 + (i % 4) * 16, 18, 10, 0, Math.PI * 2, 0, Math.PI / 2), new T.MeshStandardMaterial({ color: [0x7fb85a, 0x6aa84f, 0x8cc063][i % 3], roughness: 1 })); hill.position.set(Math.sin(a) * r, -2, Math.cos(a) * r); hill.scale.y = 0.55; scene.add(hill); }
+
+  // ---------- the world ----------
+  const t0 = performance.now();
+  const W = ZWorld.create(scene);
+  ZFactory.buildGround(W); ZFactory.buildFirst(W); ZFactory.buildUnder(W); const cleared = ZFactory.finish(W);
+  const built = performance.now();
+  const stats = {}; for (const k of Object.keys(W.floors)) stats[k] = W.bake(W.floors[k]);
+  const baked = performance.now();
+  const crowd = ZFactory.people ? ZFactory.people(W) : null;
+  // ---------- the box kid ----------
+  const kid = ZCharacters.toon({ ...ZCharacters.TOON_PRESETS.hero }); kid.group.traverse((o) => { if (o.isMesh) { o.castShadow = true; } }); scene.add(kid.group);
+  const startArea = q.get('at');
+  const walker = ZWalker.create({ world: W, camera, dom: canvas, char: kid, start: { x: L.ground.entrance.outer.x + 4, y: 0.05, z: L.ground.entrance.outer.z + 9, yaw: Math.PI },
+    onArea: (a) => onArea(a), onPrompt: (p) => { const el = $('#prompt'); el.style.display = p ? 'block' : 'none'; if (p) el.innerHTML = `<kbd>E</kbd> ${p}`; }, onMode: (m) => { if (m === 'swim') { toast('Swimming!'); audio.play('splash', 0.9); } } });
+
+  // ---------- sounds of every place (made live; start on the first click / key) ----------
+  const audio = ZWorldAudio.create();
+  const startAudio = () => audio.start(); addEventListener('pointerdown', startAudio); addEventListener('keydown', startAudio);
+  addEventListener('zworld-door', (e) => { const d = e.detail, p = walker.pos, dist = Math.hypot(d.x - p.x, d.z - p.z) + Math.abs(d.y - p.y) * 2; if (dist < 18) audio.play(d.open ? 'door' : 'doorClose', 1 - dist / 18); });
+  // ---------- the mixer: a level for every sound; Save writes studio/assets/mix.json (the defaults for everyone + the videos) ----------
+  const MIX_LABEL = { master: 'Master volume', water: 'Chocolate river', fountain: 'Plaza fountain', waterfall: 'Waterfalls', birds: 'Birds (open land)', vats: 'Chocolate vats (kitchen)', machines: 'Machines (workshop, machinery hall)', beeps: 'Console beeps (control rooms)', bakery: 'Ovens (bakery)', cafe: 'Chatter (café, meeting, training)', lab: 'Bubbles (labs)', puff: 'Puffs (marshmallow)', warehouse: 'Crates (warehouse)', cave: 'Underground wind + drips', magic: 'Magic shimmer (vault, chamber)', train: 'Train', door: 'Doors', splash: 'Splash', whistle: 'Train whistle' };
+  const VID_LABEL = { voice: 'Voice', music: 'Background music', ambience: 'Ambience (rain, waves…)', sfx: 'Sound effects (coins, thunder…)' };
+  let MIX = { world: {}, video: { voice: 1, music: 1, ambience: 1, sfx: 1 } };
+  try { const r = await fetch('/api/mix'); if (r.ok) MIX = { ...MIX, ...(await r.json()) }; else { const r2 = await fetch('assets/mix.json'); if (r2.ok) MIX = { ...MIX, ...(await r2.json()) }; } } catch { /* defaults */ }
+  audio.mix = MIX.world;
+  function renderMixer() {
+    const row = (grp, k, label) => { const v = MIX[grp][k] ?? (k === 'master' ? 0.8 : 1), live = grp === 'world' && audio._lv && audio._lv[k] > 0.01; return `<div class="r${live ? ' live' : ''}"><span>${live ? '<b>●</b> ' : ''}${label}</span><input type="range" min="0" max="${k === 'master' ? 1.5 : 2}" step="0.05" value="${v}" data-g="${grp}" data-k="${k}"><span class="v">${Math.round(v * 100)}%</span></div>`; };
+    $('#mixer').innerHTML = `<b style="font-size:16px">Sound mixer</b><div class="prog" style="font-size:12px;color:#6b6480">Move a slider and listen. ● = playing here now. Save makes these the defaults (for everyone, and for videos).</div>
+      <h3>Factory world</h3>${Object.keys(MIX_LABEL).map((k) => row('world', k, MIX_LABEL[k])).join('')}
+      <h3>Story videos (defaults)</h3>${Object.keys(VID_LABEL).map((k) => row('video', k, VID_LABEL[k])).join('')}
+      <div class="btns"><button id="mixSave">Save as default</button><button class="ghost" id="mixReset">Reset to 100%</button><button class="ghost" id="mixClose">Close</button></div><div id="mixMsg" style="font-size:12px;color:#6b6480;margin-top:6px">${MIX.saved ? 'Last saved ' + new Date(MIX.saved).toLocaleString() : ''}</div>`;
+    $('#mixer').querySelectorAll('input[type=range]').forEach((el) => el.oninput = () => { MIX[el.dataset.g][el.dataset.k] = +el.value; el.nextElementSibling.textContent = Math.round(el.value * 100) + '%'; audio.mix = MIX.world; if (el.dataset.g === 'world' && ['door', 'splash', 'whistle'].includes(el.dataset.k)) audio.play(el.dataset.k === 'door' ? 'door' : el.dataset.k, 1); });
+    $('#mixSave').onclick = async () => { try { const r = await fetch('/api/mix', { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ world: MIX.world, video: MIX.video }) }); if (!r.ok) throw new Error(); MIX = { ...MIX, ...(await r.json()) }; $('#mixMsg').textContent = 'Saved ✓ — studio/assets/mix.json'; toast('Mixer saved'); } catch { $('#mixMsg').textContent = 'Could not save (is the studio server running?)'; } };
+    $('#mixReset').onclick = () => { for (const k of Object.keys(MIX_LABEL)) MIX.world[k] = k === 'master' ? 0.8 : 1; for (const k of Object.keys(VID_LABEL)) MIX.video[k] = 1; audio.mix = MIX.world; renderMixer(); };
+    $('#mixClose').onclick = () => { $('#mixer').style.display = 'none'; };
+  }
+  $('#mixBtn').onclick = () => { const m = $('#mixer'); m.style.display = m.style.display === 'block' ? 'none' : 'block'; if (m.style.display === 'block') { audio.start(); renderMixer(); } };
+  setInterval(() => { if ($('#mixer').style.display === 'block' && !$('#mixer').matches(':hover')) renderMixer(); }, 1500);   // refresh the ● "playing here" marks
+
+  const BED_OF = { chocolate_kitchen: 'vats', machine_workshop: 'machines', control_room: 'beeps', control_room_f1: 'beeps', security_center: 'beeps', cookie_bakery: 'bakery', workers_cafe: 'cafe', candy_lab: 'lab', innovation_lab: 'lab', quality_lab: 'lab', marshmallow_workshop: 'puff', ingredient_warehouse: 'warehouse', meeting_hall: 'cafe', training_room: 'cafe', machinery_hall: 'machines', secret_chamber: 'magic', recipe_vault: 'magic' };
+  const BEDS = ['water', 'fountain', 'waterfall', 'birds', 'vats', 'machines', 'beeps', 'bakery', 'cafe', 'lab', 'puff', 'warehouse', 'cave', 'magic', 'train'];
+  const segD = (x, z, P) => { let d = 1e9; for (let i = 0; i < P.length - 1; i++) { const [ax, az] = P[i], [bx, bz] = P[i + 1], vx = bx - ax, vz = bz - az, t = Math.max(0, Math.min(1, ((x - ax) * vx + (z - az) * vz) / (vx * vx + vz * vz))); d = Math.min(d, Math.hypot(x - ax - vx * t, z - az - vz * t)); } return d; };
+  let lastEngine = null, engineSpeed = 0, wasStopped = true;
+  function updateAudio(dt) {
+    const p = walker.mode === 'free' ? camera.position : walker.pos, fl = floorOf(p.y), a = walker.area, G = L.ground, lv = {}; for (const b of BEDS) lv[b] = 0;
+    const indoor = a && (G.buildings.some((b) => b.id === a.id) || L.first.rooms.some((r) => r.id === a.id)), out = indoor ? 0.3 : 1;
+    if (fl === 'ground' || fl === 'first') {
+      const up = fl === 'first' ? 0.45 : 1;
+      lv.water = Math.max(0, 1 - segD(p.x, p.z, G.river.points) / 26) * 0.55 * out * up;
+      lv.fountain = Math.max(0, 1 - Math.hypot(p.x - G.plaza.x, p.z - G.plaza.z) / (G.plaza.r + 14)) * 0.5 * out * up;
+      lv.waterfall = Math.max(0, 1 - Math.min(Math.hypot(p.x - G.pool.x, p.z - G.pool.z), Math.hypot(p.x - G.aqueduct.x, p.z - (G.aqueduct.z0 + G.aqueduct.z1) / 2)) / 38) * 0.7 * out;
+      { let dB = 1e9; for (const b of G.buildings) dB = Math.min(dB, Math.max(Math.abs(p.x - b.x) - b.w / 2, Math.abs(p.z - b.z) - b.d / 2, 0));
+        const B2 = L.bounds, dEdge = Math.min(p.x - B2.x0, B2.x1 - p.x, p.z - B2.z0, B2.z1 - p.z), dGarden = Math.hypot(p.x - G.garden.x, p.z - G.garden.z);
+        const open = Math.max(0, Math.min(1, (dB - 8) / 18)), edge = Math.max(Math.max(0, Math.min(1, 1 - (dEdge - 6) / 40)), Math.max(0, Math.min(1, 1 - (dGarden - 10) / 25)));
+        lv.birds = indoor || fl !== 'ground' ? 0 : open * edge * 0.4; }
+      if (W.train) { const e = W.train.cars[0].position, d = Math.hypot(e.x - p.x, e.z - p.z); lv.train = Math.max(0, 1 - d / 55) * 0.65 * out;
+        if (lastEngine) { const sp = Math.hypot(e.x - lastEngine.x, e.z - lastEngine.z) / Math.max(dt, 1e-3); engineSpeed += (sp - engineSpeed) * Math.min(1, dt * 3); audio.trainSpeed(Math.min(1, engineSpeed / 10)); if (wasStopped && engineSpeed > 0.6 && d < 90) audio.play('whistle', Math.max(0.2, 1 - d / 90)); wasStopped = engineSpeed < 0.2; }
+        lastEngine = e.clone(); }
+    } else { lv.cave = 0.55; const R = L.under.rooms.find((r) => r.id === 'chocolate_reservoir'), pl = R.pool; lv.water = Math.max(0, 1 - Math.hypot(p.x - (pl.x0 + pl.x1) / 2, p.z - (pl.z0 + pl.z1) / 2) / 40) * 0.6; lv.waterfall = lv.water * 0.6; }
+    if (a && BED_OF[a.id]) lv[BED_OF[a.id]] = Math.max(lv[BED_OF[a.id]], 0.55);
+    for (const b of BEDS) audio.level(b, lv[b]); audio._lv = lv;
+    audio.update(dt);
+  }
+
+  // ---------- floors: what is visible where ----------
+  const floorOf = (y) => (y < -3.5 ? 'under' : y > 9 ? 'first' : 'ground');
+  const FLOOR_LABEL = { ground: 'Ground floor · factory city', first: 'First floor · operations', under: 'Underground · the forgotten foundation' };
+  let viewFloor = null, freeShowAll = true;
+  function applyFloor(f, force) {
+    if (f === viewFloor && !force) return; viewFloor = f;
+    const free = walker.mode === 'free';
+    W.floors.under.visible = free ? freeShowAll || f === 'under' : f === 'under';
+    W.floors.ground.visible = free ? freeShowAll || f !== 'under' : f !== 'under';
+    W.floors.first.visible = free ? freeShowAll || f !== 'under' : f !== 'under';
+    W.floors.shaft.visible = true;
+    if (window.__only) for (const k of Object.keys(W.floors)) W.floors[k].visible = window.__only.includes(k);
+    const ug = f === 'under' && !free;
+    sky.visible = !ug; scene.fog.color.set(ug ? 0x120c18 : 0xcfe8ff); scene.fog.near = ug ? 12 : 220; scene.fog.far = ug ? 90 : 800; scene.background = ug ? new T.Color(0x0b0810) : null;
+    hemi.intensity = ug ? 0.28 : 1.15; hemi.color.set(ug ? 0x9b8cff : 0xeaf4ff); sun.intensity = ug ? 0 : 2.4; lantern.intensity = ug ? 14 : 0;
+    $('#floorName').textContent = FLOOR_LABEL[f]; mapFloor = f; document.querySelectorAll('#map button').forEach((b) => b.classList.toggle('on', b.dataset.f === f));
+  }
+
+  // ---------- areas, toast, checklist ----------
+  const visited = new Set(JSON.parse((() => { try { return localStorage.getItem('zw-visited-' + L.id) || '[]'; } catch { return '[]'; } })()));
+  let toastT = 0; function toast(s) { const el = $('#toast'); el.textContent = s; el.style.opacity = 1; clearTimeout(toastT); toastT = setTimeout(() => { el.style.opacity = 0; }, 2200); }
+  function onArea(a) {
+    $('#areaName').textContent = a ? (a.num ? `${a.num} · ${a.name}` : a.name) : (viewFloor === 'ground' ? 'Factory grounds' : '—');
+    if (a) { toast(a.num ? `${a.num} · ${a.name}` : a.name); if (!visited.has(a.id)) { visited.add(a.id); try { localStorage.setItem('zw-visited-' + L.id, JSON.stringify([...visited])); } catch { /* private mode */ } renderPanel(); } }
+  }
+  const PLACES = L.places;   // the checklist: every numbered place on all three floors
+  function renderPanel() {
+    const done = PLACES.filter((p) => visited.has(p.id)).length;
+    const grp = (f, title) => `<h3>${title}</h3>` + PLACES.filter((p) => p.floor === f).sort((a, b) => a.num - b.num).map((p) => `<div class="it" data-go="${p.id}"><span class="n">${p.num || '•'}</span>${p.name}${visited.has(p.id) ? '<span class="ok">✓</span>' : ''}</div>`).join('');
+    const anc = (f) => W.anchors.filter((a) => a.floor === f).map((a) => `<div class="it" data-anchor="${a.id}"><span class="n" style="background:#0ea5e9">📷</span>${a.id} · ${a.label}</div>`).join('');
+    $('#panel').innerHTML = `<h2>Zungga Chocolate Factory</h2><div class="prog">${done} of ${PLACES.length} places visited · click a place to go there</div>
+      <div class="btns"><button id="bFree">Free camera (F)</button><button class="ghost" id="bShot">Photo (P)</button><button class="ghost" id="bNote">Note (N)</button><button class="ghost" id="bReset">Reset checklist</button></div>
+      ${grp('ground', 'Ground floor')}${grp('first', 'First floor')}${grp('under', 'Underground')}
+      <h3>Camera anchors</h3>${anc('ground')}${anc('first')}${anc('under')}
+      <h3>Notes</h3><div id="notesList" class="prog">…</div>`;
+    $('#bFree').onclick = () => walker.toggleFree(); $('#bShot').onclick = shot; $('#bNote').onclick = openNote; $('#bReset').onclick = () => { visited.clear(); try { localStorage.removeItem('zw-visited-' + L.id); } catch { /* */ } renderPanel(); };
+    document.querySelectorAll('[data-go]').forEach((el) => el.onclick = () => goPlace(el.dataset.go));
+    document.querySelectorAll('[data-anchor]').forEach((el) => el.onclick = () => { const a = W.anchors.find((x) => x.id === el.dataset.anchor); walker.view(a.pos, a.look); applyFloor(floorOf(a.pos[1]), true); });
+    loadNotes();
+  }
+  // standing spot for every place: door of the building / room centre / known spots
+  function spotFor(id) {   // where the kid lands: the building door / the place's story spot (layout.js)
+    const G = L.ground, b = G.buildings.find((x) => x.id === id);
+    if (b) { const o = { n: [0, -1], s: [0, 1], e: [1, 0], w: [-1, 0] }[b.door]; const dd = (b.door === 'e' || b.door === 'w' ? b.w : b.d) / 2; return [b.x + o[0] * (dd + 2.5), 0.05, b.z + o[1] * (dd + 2.5), Math.atan2(-o[0], -o[1])]; }
+    const p = L.places.find((x) => x.id === id); if (!p) return null;
+    return [p.spot[0], p.spot[1] + 0.02, p.spot[2] + (p.floor === 'first' ? 2 : 0), Math.PI];
+  }
+  function goPlace(id) { const s = spotFor(id); if (!s) return; if (walker.mode === 'free') walker.toggleFree(); walker.teleport([s[0], s[1] + 0.05, s[2]], s[3]); applyFloor(floorOf(s[1]), true); $('#panel').classList.remove('open'); }
+
+  // ---------- minimap ----------
+  const mm = $('#mm'), mx = mm.getContext('2d'); let mapFloor = 'ground';
+  document.querySelectorAll('#map button').forEach((b) => b.onclick = () => { mapFloor = b.dataset.f; document.querySelectorAll('#map button').forEach((x) => x.classList.toggle('on', x === b)); });
+  const B = L.bounds, S = 236 / Math.max(B.x1 - B.x0, B.z1 - B.z0), toMap = (x, z) => [2 + (x - B.x0) * S, 2 + (z - B.z0) * S];
+  const FCOL = { ground: '#fde68a', first: '#ddd6fe', under: '#57534e' };
+  function drawMap() {
+    mx.clearRect(0, 0, 240, 240); mx.fillStyle = mapFloor === 'under' ? '#1c1917' : '#a7d98a'; mx.fillRect(0, 0, 240, 240);
+    if (mapFloor === 'ground') {
+      mx.strokeStyle = '#8b5a3c'; mx.lineWidth = L.ground.river.width * S; mx.lineCap = 'round'; mx.beginPath(); L.ground.river.points.forEach(([x, z], i) => { const [a, b] = toMap(x, z); i ? mx.lineTo(a, b) : mx.moveTo(a, b); }); mx.stroke();
+      const lp = L.ground.boulevard.loop; mx.strokeStyle = '#e2b77c'; mx.lineWidth = lp.w * S; const [a0, b0] = toMap(lp.x0, lp.z0), [a1, b1] = toMap(lp.x1, lp.z1); mx.beginPath(); mx.roundRect(a0, b0, a1 - a0, b1 - b0, lp.r * S); mx.stroke();
+      const tk = L.ground.track; mx.strokeStyle = '#6b7280'; mx.lineWidth = 1.5; const [c0, d0] = toMap(tk.x0, tk.z0), [c1, d1] = toMap(tk.x1, tk.z1); mx.beginPath(); mx.roundRect(c0, d0, c1 - c0, d1 - d0, tk.r * S); mx.stroke();
+      const [px, pz] = toMap(0, -12); mx.fillStyle = '#e9c99a'; mx.beginPath(); mx.arc(px, pz, 15 * S, 0, 7); mx.fill();
+    }
+    if (mapFloor === 'first') { const o = L.first.outline, [a0, b0] = toMap(o.x0, o.z0), [a1, b1] = toMap(o.x1, o.z1); mx.fillStyle = '#c9a77c'; mx.fillRect(a0, b0, a1 - a0, b1 - b0); const g = L.first.balcony.glass, [g0, h0] = toMap(g.x0, g.z0), [g1, h1] = toMap(g.x1, g.z1); mx.fillStyle = '#bfe8ff'; mx.fillRect(g0, h0, g1 - g0, h1 - h0); }
+    for (const a of W.areas) {
+      if (a.floor !== mapFloor && !(mapFloor === 'under' && a.floor === 'shaft')) continue; if (a.w < 2 || (!a.num && !/tower|shaft/.test(a.id))) continue; if (a.id === 'cookie_boulevard') continue;
+      const p = a.pts.map(([x, z]) => toMap(x, z)); mx.fillStyle = visited.has(a.id) ? '#c4b5fd' : FCOL[mapFloor]; mx.strokeStyle = '#3b0764'; mx.lineWidth = 1; mx.beginPath(); p.forEach(([x, y], i) => i ? mx.lineTo(x, y) : mx.moveTo(x, y)); mx.closePath(); mx.fill(); mx.stroke();
+      if (a.num) { const [cx, cy] = toMap(a.x, a.z); mx.fillStyle = '#7c3aed'; mx.beginPath(); mx.arc(cx, cy, 7, 0, 7); mx.fill(); mx.fillStyle = '#fff'; mx.font = '600 9px Fredoka'; mx.textAlign = 'center'; mx.textBaseline = 'middle'; mx.fillText(a.num, cx, cy + 0.5); }
+    }
+    for (const n of notes) if (floorOf(n.pos[1]) === mapFloor) { const [x, y] = toMap(n.pos[0], n.pos[2]); mx.fillStyle = '#ef4444'; mx.beginPath(); mx.arc(x, y, 3, 0, 7); mx.fill(); }
+    if (floorOf(walker.pos.y) === mapFloor || walker.mode === 'free') { const p = walker.mode === 'free' ? camera.position : walker.pos, [x, y] = toMap(p.x, p.z), yw = walker.mode === 'free' ? Math.atan2(-camera.getWorldDirection(new T.Vector3()).x, -camera.getWorldDirection(new T.Vector3()).z) + Math.PI : walker.yaw; mx.save(); mx.translate(x, y); mx.rotate(-yw + Math.PI); mx.fillStyle = '#ef4444'; mx.strokeStyle = '#fff'; mx.lineWidth = 2; mx.beginPath(); mx.moveTo(0, -8); mx.lineTo(5.5, 6); mx.lineTo(0, 3); mx.lineTo(-5.5, 6); mx.closePath(); mx.stroke(); mx.fill(); mx.restore(); }
+  }
+
+  // ---------- notes (saved through the studio server into the world folder) ----------
+  let notes = [];
+  async function loadNotes() { try { const r = await fetch('/api/world-notes/' + L.id); notes = r.ok ? await r.json() : []; } catch { notes = []; } const el = $('#notesList'); if (el) el.innerHTML = notes.length ? notes.slice().reverse().map((n) => `<div class="it" data-note="${n.id}"><span class="n" style="background:#ef4444">!</span>${n.text.replace(/</g, '&lt;')}<small style="margin-left:auto;color:#999">${n.area || ''}</small></div>`).join('') : 'No notes yet — press N anywhere.'; document.querySelectorAll('[data-note]').forEach((e) => e.onclick = () => { const n = notes.find((x) => x.id === e.dataset.note); if (n) { walker.view(n.cam.pos, n.cam.look); applyFloor(floorOf(n.pos[1]), true); } }); }
+  function openNote() { const a = walker.area; $('#noteWhere').textContent = `${a ? a.name : 'Factory grounds'} · ${FLOOR_LABEL[floorOf(walker.pos.y)]}`; $('#noteBox').style.display = 'block'; $('#noteText').value = ''; setTimeout(() => $('#noteText').focus(), 20);  }
+  $('#noteCancel').onclick = () => { $('#noteBox').style.display = 'none'; };
+  $('#noteSave').onclick = async () => {
+    const text = $('#noteText').value.trim(); if (!text) return; const p = walker.mode === 'free' ? camera.position : walker.pos, look = camera.position.clone().add(camera.getWorldDirection(new T.Vector3()).multiplyScalar(4));
+    const n = { text, pos: [+p.x.toFixed(2), +p.y.toFixed(2), +p.z.toFixed(2)], area: walker.area ? walker.area.name : '', areaId: walker.area ? walker.area.id : '', cam: { pos: camera.position.toArray().map((v) => +v.toFixed(2)), look: look.toArray().map((v) => +v.toFixed(2)) }, mode: walker.mode, image: renderer.domElement.toDataURL('image/jpeg', 0.7) };
+    try { const r = await fetch('/api/world-notes/' + L.id, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(n) }); if (!r.ok) throw new Error(await r.text()); toast('Note saved'); } catch (e) { toast('Could not save the note (is the studio server running?)'); }
+    $('#noteBox').style.display = 'none'; loadNotes();
+  };
+  function shot() { const a = document.createElement('a'); a.href = renderer.domElement.toDataURL('image/png'); a.download = `factory-${(walker.area && walker.area.id) || 'view'}-${Date.now()}.png`; a.click(); }
+
+  // ---------- keys ----------
+  addEventListener('keydown', (e) => {
+    if (/INPUT|TEXTAREA/.test(e.target.tagName)) { if (e.key === 'Escape') $('#noteBox').style.display = 'none'; return; }
+    if (e.code === 'KeyM' || e.code === 'Tab') { $('#panel').classList.toggle('open'); e.preventDefault();  }
+    if (e.code === 'KeyN') { e.preventDefault(); openNote(); }
+    if (e.code === 'KeyP') shot();
+    if (e.code === 'KeyK') { audio.muted = !audio.muted; toast(audio.muted ? 'Sound off (K)' : 'Sound on (K)'); }
+    if (e.code === 'KeyC' && walker.mode === 'free') { W.ceilings.forEach((m) => { m.visible = !m.visible; }); }
+    if (e.code === 'KeyV' && walker.mode === 'free') { freeShowAll = !freeShowAll; applyFloor(viewFloor, true); }
+    if (e.code === 'KeyF') setTimeout(() => applyFloor(floorOf(walker.mode === 'free' ? camera.position.y : walker.pos.y), true), 0);
+  });
+  $('#menuBtn').onclick = () => $('#panel').classList.toggle('open');
+
+  // ---------- resize + loop ----------
+  function resize() { const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+  addEventListener('resize', resize); resize();
+  let last = performance.now(), time = 0, frames = 0, fpsT = 0, cullT = 1;
+  let paused = false;
+  // simulate: steer the kid through waypoints [[x, z], …] (or { use: true } / { jump: true } / { wait: s }) at 60 Hz; returns a trace
+  function sim(steps, { maxT = 120, run = false, tol = 0.35 } = {}) {
+    paused = true; const trace = []; let i = 0, simT = 0, waitT = 0; const dt = 1 / 60;
+    while (i < steps.length && simT < maxT) {
+      const st = steps[i];
+      if (st.use) { walker.use(); walker.setInput({ f: 0, r: 0, run: false }); walker.update(dt); W.update(time += dt, dt, walker.pos); simT += dt; i++; continue; }
+      if (st.jump) { walker.jump(); i++; continue; }
+      if (st.wait != null) { walker.setInput({ f: 0, r: 0, run: false }); walker.update(dt); W.update(time += dt, dt, walker.pos); simT += dt; waitT += dt; if (waitT >= st.wait) { waitT = 0; i++; } continue; }
+      const dx = st[0] - walker.pos.x, dz = st[1] - walker.pos.z, d = Math.hypot(dx, dz);
+      if (d < (st[2] ?? tol)) { i++; continue; }
+      walker.setHeading(Math.atan2(dx, dz)); walker.setInput({ f: 1, r: 0, run });
+      walker.update(dt); W.update(time += dt, dt, walker.pos); simT += dt;
+      if (Math.round(simT * 60) % 15 === 0) trace.push([+walker.pos.x.toFixed(2), +walker.pos.y.toFixed(2), +walker.pos.z.toFixed(2), walker.mode]);
+    }
+    walker.setInput(null); paused = false;
+    return { done: i >= steps.length, step: i, t: +simT.toFixed(1), end: [+walker.pos.x.toFixed(2), +walker.pos.y.toFixed(2), +walker.pos.z.toFixed(2)], mode: walker.mode, trace };
+  }
+  function frame(now) {
+    const dt = Math.min(0.05, (now - last) / 1000); last = now; if (paused) { requestAnimationFrame(frame); return; } time += dt;
+    walker.update(dt); W.update(time, dt, walker.pos); updateAudio(dt); if ((cullT += dt) > 0.25) { cullT = 0; W.cull(camera.position, walker.mode === 'free' ? 80 : 55); } if (crowd) crowd.update(time, dt, walker.mode === 'free' ? camera.position : walker.pos);
+    const ref = walker.mode === 'free' ? camera.position : walker.pos;
+    applyFloor(floorOf(walker.mode === 'free' ? camera.position.y : walker.pos.y));
+    sun.position.set(ref.x + 30, ref.y + 60, ref.z + 22); sun.target.position.set(ref.x, ref.y, ref.z); sun.target.updateMatrixWorld();
+    lantern.position.set(walker.pos.x, walker.pos.y + 2.2, walker.pos.z);
+    renderer.render(scene, camera);
+    frames++; fpsT += dt; if (fpsT > 0.5) { $('#fps').textContent = `${Math.round(frames / fpsT)} fps · ${renderer.info.render.calls} draws`; frames = 0; fpsT = 0; drawMap(); }
+    requestAnimationFrame(frame);
+  }
+  renderPanel(); applyFloor('ground', true);
+  if (startArea) { if (W.anchors.find((a) => a.id === startArea)) { const a = W.anchors.find((x) => x.id === startArea); walker.view(a.pos, a.look); applyFloor(floorOf(a.pos[1]), true); } else goPlace(startArea); }
+  if (q.get('ceil') === '0') W.ceilings.forEach((m) => { m.visible = false; });
+  if (q.get('only')) { const keep = q.get('only').split(','); setTimeout(() => { for (const k of Object.keys(W.floors)) W.floors[k].visible = keep.includes(k); }, 50); window.__only = keep; }
+  if (q.get('cam')) { const [px, py, pz, lx, ly, lz] = q.get('cam').split(',').map(Number); walker.view([px, py, pz], [lx, ly, lz]); applyFloor(floorOf(py), true); }
+  $('#loading').remove();
+  // ---------- clearance audit: can the kid (r 0.35) walk from every door to the room centre? ----------
+  function clear(x0, z0, x1, z1, y, r = 0.35) {
+    const n = Math.max(2, Math.ceil(Math.hypot(x1 - x0, z1 - z0) / 0.25)), bad = [];
+    for (let i = 0; i <= n; i++) { const p = { x: x0 + (x1 - x0) * i / n, z: z0 + (z1 - z0) * i / n }, q0 = { ...p }; const sup = W.support(p.x, p.z, y + 0.3, 0.6).y; W.push(p, r, Math.max(y, sup), 1.1, 0.42); if (Math.hypot(p.x - q0.x, p.z - q0.z) > 0.02) bad.push([+q0.x.toFixed(2), +q0.z.toFixed(2)]); }
+    return bad;
+  }
+  function audit() {
+    for (const D of W.doors) if (D.auto) D.col.on = false;   // doors open for people: test the doorways themselves
+    const out = [], G = L.ground, F = L.first, U = L.under, DIR = { n: [0, -1], s: [0, 1], e: [1, 0], w: [-1, 0] };
+    for (const b of G.buildings) { const o = DIR[b.door], dd = (b.door === 'e' || b.door === 'w' ? b.w : b.d) / 2; const bad = clear(b.x + o[0] * (dd + 1.5), b.z + o[1] * (dd + 1.5), b.x + o[0] * 1.5, b.z + o[1] * 1.5, 0.13); if (bad.length) out.push({ room: b.id, door: b.door, bad: bad.slice(0, 6), n: bad.length }); }
+    for (const r of F.rooms) { const cx = (r.x0 + r.x1) / 2, cz = (r.z0 + r.z1) / 2, w = r.x1 - r.x0, d = r.z1 - r.z0; for (const [side, at] of r.doors) { const o = DIR[side], half = side === 'n' || side === 's' ? d / 2 : w / 2, ax = side === 'n' || side === 's' ? cx + at : cx + o[0] * (half + 1.2), az = side === 'n' || side === 's' ? cz + o[1] * (half + 1.2) : cz + at; const bad = clear(ax, az, cx + (side === 'n' || side === 's' ? at : 0), cz + (side === 'e' || side === 'w' ? at : 0), F.y); if (bad.length) out.push({ room: r.id, door: side, bad: bad.slice(0, 6), n: bad.length }); } }
+    for (const D of W.doors) if (D.auto) D.col.on = D.open < 0.6;
+    return out;
+  }
+  window.__world = { crowd, clear, audit, sim, W, walker, kid, camera, scene, renderer, applyFloor, goPlace, spotFor, stats, timing: { build: Math.round(built - t0), bake: Math.round(baked - built) }, floorOf };
+  window.__ready = true;
+  requestAnimationFrame(frame);
+})().catch((e) => { document.body.insertAdjacentHTML('beforeend', `<pre style="position:fixed;inset:20px;background:#fff;color:#b91c1c;z-index:99;padding:16px;overflow:auto">${e.stack}</pre>`); console.error(e); });
+</script>
+</body></html>

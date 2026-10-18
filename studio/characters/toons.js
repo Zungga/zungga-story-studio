@@ -463,6 +463,18 @@
       hip_point_side(t, p) { CLIPS.idle(t, p); if (P.hipL) p.aL = P.hipL.slice(); p.aR = [-0.15, 0, 1.55, -0.05]; p.pointR = 1; p.hy = 0.35; },
       sit(t, p) { CLIPS.idle(t, p); p.sit = 1; p.aL = [-0.4, 0, -0.35, -0.5]; p.aR = [-0.4, 0, 0.35, -0.5]; },
       sit_sad(t, p) { CLIPS.sit(t, p); p.hx = 0.25; p.rx = 0.12; p.aL = [-0.5, 0, -0.1, -0.8]; p.aR = [-0.5, 0, 0.1, -0.8]; },
+      // movement clips for walking around worlds (jump / fall / swim / slide / climb)
+      jump(t, p) { p.aL = [-0.3, 0, -2.3, -0.3]; p.aR = [-0.3, 0, 2.3, -0.3]; p.fL = 0.06; p.fR = -0.04; p.lift = [0.05, 0.03]; p.hx = -0.08; },
+      fall(t, p) { const w = Math.sin(t * 14) * 0.25; p.aL = [0, 0, -1.6 + w, -0.2]; p.aR = [0, 0, 1.6 - w, -0.2]; p.fL = 0.05; p.fR = -0.05; p.lift = [0.04, 0.02]; },
+      swim(t, p) { const w = t * 5, s = Math.sin(w), c = Math.cos(w); p.rx = 1.15; p.hx = -0.9; p.aL = [-1.6 - s * 1.4, 0, -0.35 + c * 0.3, -0.25]; p.aR = [-1.6 + s * 1.4, 0, 0.35 - c * 0.3, -0.25]; p.fL = Math.sin(w * 1.5) * 0.08; p.fR = -Math.sin(w * 1.5) * 0.08; p.y = Math.sin(t * 2) * 0.02; },
+      tread(t, p) { const s = Math.sin(t * 4); p.aL = [-0.4, 0, -1.0 + s * 0.3, -0.4]; p.aR = [-0.4, 0, 1.0 - s * 0.3, -0.4]; p.fL = s * 0.06; p.fR = -s * 0.06; p.y = Math.sin(t * 2) * 0.02; p.hx = -0.1; },
+      // work clips for people doing their jobs (factory workers, shopkeepers…)
+      stir(t, p) { CLIPS.idle(t, p); const a = t * 3.2; p.aR = [-1.15 + Math.sin(a) * 0.25, 0, 0.25 + Math.cos(a) * 0.25, -0.7]; p.aL = [-1.1 + Math.sin(a) * 0.25, 0, -0.25 + Math.cos(a) * 0.25, -0.7]; p.rz = Math.sin(a) * 0.05; p.hx = 0.15; },
+      carry(t, p) { CLIPS.walk(t, p); p.aL = [-1.25, 0, -0.18, -0.55]; p.aR = [-1.25, 0, 0.18, -0.55]; p.hx = -0.05; },
+      carry_idle(t, p) { CLIPS.idle(t, p); p.aL = [-1.25, 0, -0.18, -0.55]; p.aR = [-1.25, 0, 0.18, -0.55]; },
+      hammer(t, p) { CLIPS.idle(t, p); const k = Math.max(0, Math.sin(t * 6)); p.aR = [-2.2 + k * 1.3, 0, 0.2, -0.4 - k * 0.6]; p.aL = [-0.9, 0, -0.2, -0.6]; p.hx = 0.2; },
+      type(t, p) { CLIPS.idle(t, p); const k = Math.sin(t * 14) * 0.05; p.aR = [-1.0 + k, 0, 0.15, -0.9]; p.aL = [-1.0 - k, 0, -0.15, -0.9]; p.hx = 0.18; },
+      slide(t, p) { p.sit = 1; p.rx = -0.25; p.aL = [-0.2, 0, -2.0, -0.2]; p.aR = [-0.2, 0, 2.0, -0.2]; p.hx = -0.15; p.hz = Math.sin(t * 3) * 0.06; },
     };
     // angry: tint toward red + smoke puffs above the head; dizzy: stars circling the head
     const tints = (B.tintMats || []).map((m) => ({ m, c: m.color ? m.color.clone() : null, e: m.emissive ? m.emissive.clone() : null, ei: m.emissiveIntensity }));
