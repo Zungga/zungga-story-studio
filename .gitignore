@@ -24,3 +24,6 @@ projects/
 settings.local.json
 *.tmp
 
+
+# rig test of an adult model — not for kids content, stays local
+studio/characters/glb/medic.glb

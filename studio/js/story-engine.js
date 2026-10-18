@@ -18,6 +18,9 @@
   const lerp = (a, b, t) => a + (b - a) * t, clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const easeIO = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
   const FPS = 30, DT = 1 / FPS;
+  // characters differ in which faces they have: fall back to a near one instead of failing
+  const NEAR = { excited: 'big_smile', proud: 'smile', calm: 'smile', guilty: 'sad', scared: 'worried', happy: 'big_smile', playful: 'smile', confident: 'smile', shy: 'smile', focused: 'thinking', laughing: 'big_smile', shocked: 'surprised', cheeky: 'smile', protective: 'determined' };
+  function safeExpr(ch, e, instant) { try { ch.setExpression(e, instant); } catch (err) { try { ch.setExpression(NEAR[e] || 'smile', instant); } catch (err2) { ch.setExpression('neutral', instant); } } }
 
   // where each place sits in the one shared world (sets are built once)
   const PLACES = {
@@ -290,8 +293,8 @@
       // cast entries: { "cast": "teacher" } = a cartoon-world preset, { "toon": "cat" } = a cartoon kind, otherwise a person preset
       const tp0 = cfg.cast && ZCharacters.TOON_PRESETS ? ZCharacters.TOON_PRESETS[cfg.cast] : null;
       const tp = tp0 && (cfg.look || cfg.colors) ? { ...tp0, look: { ...(tp0.look || {}), ...(cfg.look || {}) }, colors: { ...(tp0.colors || {}), ...(cfg.colors || {}) } } : tp0;   // per-story outfit / colour changes
-      const ch = tp ? ZCharacters.toon(tp) : cfg.toon ? ZCharacters.toon({ kind: cfg.toon, colors: cfg.colors }) : ZCharacters.person(cfg), holder = new T.Group();
-      if (tp || cfg.toon) cfg.height = ch.params.height; holder.add(ch.group); holder.visible = false; scene.add(holder);
+      const ch = cfg.human && ZCharacters.human ? ZCharacters.human({ preset: cfg.human }) : cfg.explorer && ZCharacters.explorer ? ZCharacters.explorer({ preset: cfg.explorer, outfit: cfg.outfit, outfit_colors: cfg.colors }) : tp ? ZCharacters.toon(tp) : cfg.toon ? ZCharacters.toon({ kind: cfg.toon, colors: cfg.colors }) : ZCharacters.person(cfg), holder = new T.Group();   // { explorer: 'kai', outfit: 'detective' } = a Zungga Explorer
+      if (tp || cfg.toon || cfg.explorer || cfg.human) cfg.height = ch.params.height; holder.add(ch.group); holder.visible = false; scene.add(holder);
       ch.group.traverse((o) => { if (o.isMesh) o.castShadow = true; });
       const entry = { ch, holder, cfg, src: JSON.stringify(c) };
       if (asVariant) return entry;
@@ -299,10 +302,12 @@
     }
     const baseCast = {}, variants = {};   // a scene can dress someone differently: { "look": {...} } on the scene's actor builds a variant once
     function variantFor(id, a) {
-      const key = id + '|' + JSON.stringify([a.look || null, a.colors || null, a.wear || null]);
-      if (!variants[key]) { const c = JSON.parse(baseCast[id].src); if (a.look) c.look = { ...(c.look || {}), ...a.look }; if (a.colors) c.colors = { ...(c.colors || {}), ...a.colors }; if (a.wear) c.wear = { ...(c.wear || {}), ...a.wear }; variants[key] = buildActor(id, c, true); }
+      const key = id + '|' + JSON.stringify([a.look || null, a.colors || null, a.wear || null, a.outfit || null]);
+      if (!variants[key]) { const c = JSON.parse(baseCast[id].src); if (a.look) c.look = { ...(c.look || {}), ...a.look }; if (a.colors) c.colors = { ...(c.colors || {}), ...a.colors }; if (a.wear) c.wear = { ...(c.wear || {}), ...a.wear }; if (a.outfit) c.outfit = a.outfit; variants[key] = buildActor(id, c, true); }
       return variants[key];
     }
+    async function preloadHumans(st) { for (const c of Object.values(st.cast || {})) if (c.human && ZCharacters.loadHuman) await ZCharacters.loadHuman(c.human); }   // realistic GLB humans load once
+    await preloadHumans(story);
     for (const [id, c] of Object.entries(story.cast)) buildActor(id, c);
     await preloadImages(story);
 
@@ -393,12 +398,12 @@
       for (const id of Object.keys(cast)) cast[id] = baseCast[id];
       for (const id of Object.keys(cast)) if (!story.cast[id]) { scene.remove(cast[id].holder); delete cast[id]; delete baseCast[id]; }   // removed from the cast
       for (const c of [...Object.values(cast), ...Object.values(variants)]) { c.holder.visible = false; clearGrip(c.ch.rig.armR.grip); clearGrip(c.ch.rig.armL.grip); c.ch.setTalk(null); }
-      for (const [id, a] of Object.entries(sc.actors || {})) if (cast[id] && (a.look || a.colors || a.wear)) cast[id] = variantFor(id, a);
+      for (const [id, a] of Object.entries(sc.actors || {})) if (cast[id] && (a.look || a.colors || a.wear || a.outfit)) cast[id] = variantFor(id, a);
       for (const [id, a] of Object.entries(sc.actors || {})) {
         const c = cast[id]; if (!c) { console.warn('Actor not in cast:', id); continue; }
         c.holder.visible = true; c.holder.position.copy(place.o).add(new T.Vector3(...a.at)); c.holder.rotation.y = a.face ?? 0;
         c.ch.setSeat(a.seat == null || a.seat === false ? ((sc.place === 'ground' || sc.place === 'night_ground') && /^sit/.test(a.anim || '') ? 0.45 : null) : (a.seat === true ? (sc.place === 'classroom' ? 0.44 : 0.45) : a.seat));   // sit ON the bench / desk seat
-        c.ch.play(a.anim || 'idle', { instant: true }); c.ch.setExpression(a.expr || 'neutral', true);
+        c.ch.play(a.anim || 'idle', { instant: true }); safeExpr(c.ch, a.expr || 'neutral', true);
         if (a.hold) for (const [hand, item] of Object.entries(a.hold)) holdItem(id, hand, item);
       }
       if (soft && sc.actors) { const id = Object.keys(sc.actors)[0], c = cast[id]; spot.intensity = 9; spot.position.copy(c.holder.position).add(new T.Vector3(1.2, 3.2, 2.2)); spot.target.position.copy(c.holder.position).add(new T.Vector3(0, 0.8, 0)); }
@@ -439,7 +444,7 @@
         const [id, part] = tk.split(':');
         if (cast[id]) {
           const c = cast[id]; c.holder.updateMatrixWorld(true);
-          if ((part === 'upper' || part === 'head') && (c.cfg.cast || c.cfg.toon)) {   // cartoon heads are big boxes: frame the real head
+          if ((part === 'upper' || part === 'head') && (c.cfg.cast || c.cfg.toon || c.cfg.explorer) && !c.cfg.human) {   // cartoon heads are big boxes: frame the real head
             const hb = new T.Box3().setFromObject(c.ch.rig.headC);
             if (part === 'upper') hb.expandByPoint(c.ch.rig.chest.getWorldPosition(new T.Vector3()));
             box.union(hb.expandByScalar(0.04));
@@ -481,7 +486,7 @@
       if (b.actor && !cast[b.actor]) return;
       if (b.actor) {
         const c = cast[b.actor];
-        if (b.anim) c.ch.play(b.anim); if (b.expr) c.ch.setExpression(b.expr);
+        if (b.anim) c.ch.play(b.anim); if (b.expr) safeExpr(c.ch, b.expr);
         if (b.face != null) tweens.push({ kind: 'face', c, from: c.holder.rotation.y, to: b.face, t0: lt, d: 0.4 });
         if (b.hold) for (const [hand, item] of Object.entries(b.hold)) holdItem(b.actor, hand, item);
       }
@@ -686,7 +691,7 @@
       sfxBuffer: (f) => sfxBuffers[f], sfxDir: 'studio/assets/sfx/', scene, camera,
       // ---- editing (studio) ----
       async update(next, keepTime = true) {   // apply an edited story: rebuild only characters whose look changed, re-time everything
-        story = JSON.parse(JSON.stringify(next));
+        story = JSON.parse(JSON.stringify(next)); await preloadHumans(story);
         for (const [id, c] of Object.entries(story.cast)) if (!cast[id] || cast[id].src !== JSON.stringify(c)) buildActor(id, c);
         for (const sc of story.scenes) ensurePlace(sc.place);
         await loadClips(story.scenes); await preloadImages(story); prepare(); await loadSfx();

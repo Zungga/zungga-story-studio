@@ -3,10 +3,10 @@ import { h, $, clear, icon, btn, toast, fmtBytes, promptBox } from './ui.js';
 import { api, connect, onEvent, jobs } from './api.js';
 
 const VIEWS = {
-  home: () => import('./views/home.js'), idea: () => import('./views/idea.js'), story: () => import('./views/story.js'), build: () => import('./views/build.js'),
+  home: () => import('./views/home.js'), idea: () => import('./views/idea.js'), room: () => import('./views/room.js'), story: () => import('./views/story.js'), build: () => import('./views/build.js'),
   studio: () => import('./views/editor.js'), generate: () => import('./views/generate.js'), library: () => import('./views/library.js'), settings: () => import('./views/settings.js'),
 };
-const STEPS = [['idea', 'Idea', 'idea'], ['story', 'Story', 'story'], ['build', 'Build', 'build'], ['studio', 'Studio', 'studio'], ['generate', 'Generate', 'generate']];
+const STEPS = [['idea', 'Idea', 'idea'], ['room', 'Writers\' Room', 'users'], ['story', 'Story', 'story'], ['build', 'Build', 'build'], ['studio', 'Studio', 'studio'], ['generate', 'Generate', 'generate']];
 
 export const app = {
   project: null, library: null, settings: null, view: null, route: null,

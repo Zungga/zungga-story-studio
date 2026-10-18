@@ -14,6 +14,7 @@ export async function mount(el, { app }) {
       h('div.grid.g2', { style: { alignItems: 'start' } },
         h('div.card.pad', h('h3', { style: { marginBottom: '8px' } }, 'AI models'),
           row('Story writer', select(STORY_MODELS.concat(STORY_MODELS.some(([m]) => m === s.storyModel) ? [] : [[s.storyModel, s.storyModel]]), s.storyModel, (v) => save({ storyModel: v }, 'Story model changed — it downloads on first use'))),
+          row('Writers\' Room AI', select([['local', 'Local (this Mac)'], ['cloud', 'Cloud — Claude (needs ANTHROPIC_API_KEY)']], s.roomAI || 'local', (v) => save({ roomAI: v }, v === 'cloud' ? 'Cloud selected — used when the key is set, otherwise local' : 'Local selected'))),
           row('Voice', h('span.small', 'Qwen3-TTS 1.7B (cloning) · mlx-audio')),
           row('Word timing', h('span.small', s.whisperModel)),
           row('Python', h('input.input', { value: s.python, onchange: (e) => save({ python: e.target.value }) })),

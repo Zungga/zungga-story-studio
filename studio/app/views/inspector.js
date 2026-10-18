@@ -149,11 +149,11 @@ function charTab(c, body) {
 function holdSel(c, value, onchange) { return select([['', 'Nothing'], ...c.props().filter((p) => !['furniture', 'sets', 'nature', 'brand', 'shop'].includes(p.category)).map((p) => [p.id, p.label])], value || '', (v) => onchange(v || null)); }
 function addBeat(c, b) { let k = -1; c.set('Add to timeline', (s) => { s.beats = s.beats || []; setTiming(c.E, b, c.si, c.tLocal()); s.beats.push(b); k = s.beats.length - 1; }); setTimeout(() => c.E.select({ kind: 'beat', beatKind: b.expr ? 'expr' : 'act', si: c.si, k }, 'characters'), 0); }
 function newCastMember(c) {
-  const { E } = c, toon = E.story.world !== 'people' && Object.values(E.story.cast).some((x) => x.cast), list = (toon ? E.lib.toonPresets : E.lib.peoplePresets).concat(E.lib.characters.filter((x) => (x.world || 'toon') === (toon ? 'toon' : 'people')).map((x) => ({ id: 'custom:' + x.id, label: x.label + ' (yours)', custom: x })));
+  const { E } = c, expl = E.story.world === 'explorers' || Object.values(E.story.cast).some((x) => x.explorer), toon = !expl && E.story.world !== 'people' && Object.values(E.story.cast).some((x) => x.cast), list = (expl ? E.lib.explorerPresets : toon ? E.lib.toonPresets : E.lib.peoplePresets).concat(E.lib.characters.filter((x) => (x.world || 'toon') === (toon ? 'toon' : 'people')).map((x) => ({ id: 'custom:' + x.id, label: x.label + ' (yours)', custom: x })));
   const nameIn = h('input.input', { placeholder: 'e.g. ravi' }), pick = select(list.map((p) => [p.id, p.label]), list[0]?.id, () => {});
   modal('New character', [h('label.field', h('span', 'Look'), pick), h('label.field', h('span', 'Name in this story (one word)'), nameIn)], { actions: [{ label: 'Cancel', value: null }, { label: 'Add to scene', cls: 'primary', run: (close) => {
     const p = list.find((x) => x.id === pick.value); let id = (nameIn.value || p.label).toLowerCase().replace(/[^a-z0-9_]/g, '_').replace(/^_+|_+$/g, '') || 'friend'; while (E.story.cast[id]) id += '_2';
-    const entry = p.custom ? { [toon ? 'cast' : 'preset']: p.custom.base, ...(p.custom.look ? { look: p.custom.look } : {}), ...(p.custom.colors ? { colors: p.custom.colors } : {}), ...(p.custom.wear ? { wear: p.custom.wear } : {}) } : toon ? { cast: p.id } : { preset: p.id };
+    const entry = expl ? { explorer: p.id } : p.custom ? { [toon ? 'cast' : 'preset']: p.custom.base, ...(p.custom.look ? { look: p.custom.look } : {}), ...(p.custom.colors ? { colors: p.custom.colors } : {}), ...(p.custom.wear ? { wear: p.custom.wear } : {}) } : toon ? { cast: p.id } : { preset: p.id };
     c.set('New character', (s, st) => { st.cast[id] = entry; s.actors = s.actors || {}; s.actors[id] = { at: [r2(0.6 - Object.keys(s.actors).length * 0.5), 0, 0.7], face: 0, anim: 'idle', expr: 'smile' }; }, { structural: true }); close(); setTimeout(() => E.select({ kind: 'actor', id }), 50);
   } }] });
 }
@@ -163,7 +163,10 @@ function outfitSec(c, id) {
   const src = scope === 'scene' ? a : ce, setO = (label, fn) => c.set(label, (s, st) => fn(scope === 'scene' ? s.actors[id] : st.cast[id]), { scene: scope === 'scene' ? c.si : null });
   const scopeChips = chips([['story', 'Whole story'], ['scene', 'This scene only']], [scope], (v) => { E.outfitScope = v; E.renderInspector(); }, { multi: false });
   const kids = [scopeChips];
-  if (ce.cast) {
+  if (ce.explorer) {
+    kids.push(row('Outfit', select([['', 'Everyday (from the character sheet)'], ['detective', 'Detective (trench coat + magnifier)']], (scope === 'scene' ? a.outfit : ce.outfit) || '', (v) => setO('Outfit', (o) => { if (v) o.outfit = v; else delete o.outfit; }))));
+    kids.push(h('p.small.muted', 'Looks follow the Zungga Explorers bible (hair, emblem, colours are locked).'));
+  } else if (ce.cast) {
     const tp = Z.TOON_PRESETS[ce.cast] || {}, kind = tp.kind;
     if (kind === 'boxkid' || kind === 'cat') {
       const keys = kind === 'boxkid' ? [['head', 'Head box', 0x9442c8], ['face', 'Face', 0xf6cdb4], ['cap', 'Cap', 0xf6912a], ['overalls', 'Overalls', 0xf07a24], ['sole', 'Shoes', 0x5b2a9c]] : [['body', 'Fur', 0xf9c623], ['belly', 'Belly', 0x2c6bcf], ['blue', 'Details', 0x2a62c4]];
@@ -181,7 +184,7 @@ function outfitSec(c, id) {
     }
     kids.push(h('p.small.muted', 'Every t-shirt carries the Zungga logo. No school uniforms.'));
   }
-  if ((scope === 'scene' && (a.look || a.colors || a.wear)) || (scope === 'story' && (ce.look || ce.colors || ce.wear))) kids.push(h('button.link-btn', { onclick: () => setO('Outfit back to default', (o) => { delete o.look; delete o.colors; delete o.wear; }) }, icon('refresh', 13), 'Back to their usual look'));
+  if (!ce.explorer && ((scope === 'scene' && (a.look || a.colors || a.wear)) || (scope === 'story' && (ce.look || ce.colors || ce.wear)))) kids.push(h('button.link-btn', { onclick: () => setO('Outfit back to default', (o) => { delete o.look; delete o.colors; delete o.wear; }) }, icon('refresh', 13), 'Back to their usual look'));
   return sec('Outfit & colours', kids);
 }
 

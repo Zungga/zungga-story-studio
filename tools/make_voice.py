@@ -48,9 +48,15 @@ def pitch(path):   # median voiced pitch (Hz)
 def words(t): return len(re.findall(r"[A-Za-z']+", t))
 
 takes = int(sys.argv[sys.argv.index('--takes') + 1]) if '--takes' in sys.argv else 3
-ref_wav = os.path.join(root, 'selected-voices', voice, 'reference.wav'); ref_text = cfg['reproduce']['ref_text']
-ref_pitch, ref_rate = pitch(ref_wav), words(ref_text) / duration(ref_wav)
-print(f'reference: {ref_pitch:.0f} Hz, {ref_rate:.2f} words/s')
+_VOICES = {}
+def use_voice(name):   # each scene can have its own voice ("voice": "girl"); the story voice is the default
+    global cfg, ref_wav, ref_text, ref_pitch, ref_rate
+    if name not in _VOICES:
+        c = json.load(open(os.path.join(root, 'selected-voices', name, 'voice.json')))
+        w = os.path.join(root, 'selected-voices', name, 'reference.wav'); t = c['reproduce']['ref_text']
+        _VOICES[name] = (c, w, t, pitch(w), words(t) / duration(w)); print(f'voice {name}: {_VOICES[name][3]:.0f} Hz, {_VOICES[name][4]:.2f} words/s')
+    cfg, ref_wav, ref_text, ref_pitch, ref_rate = _VOICES[name]
+use_voice(voice)
 
 def pace_match(path, text):
     # cloned lines tend to rush: slow them toward the reference pace (pitch unchanged), never more than 20%
@@ -86,6 +92,8 @@ for sc in story['scenes']:
     redo = force == 'all' or (force is not None and force == str(sc['id']))
     if os.path.exists(dst) and not redo:
         durations[name] = round(duration(dst), 3); print('reuse', name, durations[name]); continue
+    sv = sc.get('voice') if not arg('--voice') else None
+    use_voice(sv if sv and os.path.exists(os.path.join(root, 'selected-voices', sv, 'reference.wav')) else voice)
     norm = lambda t: re.sub(r'[^a-z ]', '', t.lower()).split()
     if norm(ref_text)[:len(norm(sc['narration']))] == norm(sc['narration']):
         cut_reference(sc['narration'], dst); durations[name] = round(duration(dst), 3); print('reference', name, durations[name]); continue

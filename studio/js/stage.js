@@ -222,6 +222,7 @@ export function stageScene(sd, i, ctx) {
   const sc = { id: sd.id ?? i + 1, title: sd.title || `Scene ${i + 1}`, place, narration, actors: {}, beats: [], props: [], camera: [], auto: true };
   if (sd.mood && ['soft'].includes(sd.mood)) sc.mood = 'soft';
   if (sd.talking && castById[sd.talking]) sc.talking = sd.talking;
+  for (const k of ['voice', 'episode', 'episodeTitle', 'emotion', 'action', 'cameraNote', 'room']) if (sd[k] != null) sc[k] = sd[k];
 
   // --- positions
   const people = ids.filter((id) => ['person', 'shopkeeper', 'teacher', 'bankstaff'].includes(castKind(castById[id])));
@@ -254,6 +255,9 @@ export function stageScene(sd, i, ctx) {
   if (standing.length > 1) { const cx = standing.reduce((s, [, a]) => s + a.at[0], 0) / standing.length, cz = standing.reduce((s, [, a]) => s + a.at[2], 0) / standing.length; for (const [, a] of standing) a.face = faceToward(a.at, [cx, 0, cz]); }
   if (place === 'shop') for (const [id, a] of Object.entries(sc.actors)) if (castKind(castById[id]) !== 'shopkeeper' && castKind(castById[id]) !== 'planet' && castKind(castById[id]) !== 'cat') a.face = 3.14;
 
+  // the speaker's feeling from the script (Writers' Room) drives their face
+  const EMO = { happy: 'big_smile', excited: 'excited', sad: 'sad', angry: 'angry', worried: 'worried', surprised: 'surprised', thinking: 'thinking', guilty: 'sad', proud: 'proud', scared: 'worried', calm: 'calm', confused: 'confused', determined: 'determined' };
+  if (sd.emotion && sc.talking && sc.actors[sc.talking]) sc.actors[sc.talking].expr = EMO[String(sd.emotion).toLowerCase()] || sc.actors[sc.talking].expr;
   // --- actions on words (hero, or whoever talks)
   const doer = sc.talking || heroId;
   if (sc.actors[doer]) {
@@ -382,7 +386,10 @@ export function stage(draft, catalog, presets = {}) {
   const world = draft.world || 'toon', castById = {}, cast = {};
   for (const c of draft.cast || []) {
     castById[c.id] = c;
-    if (world === 'toon') { if (presets.toonPresets && !presets.toonPresets.includes(c.preset)) report.missing.push({ kind: 'character', name: c.id, preset: c.preset, suggestions: (presets.toonPresets || []).slice(0, 6).map((id) => ({ id, label: id })) }); cast[c.id] = { cast: c.preset, ...(c.look ? { look: c.look } : {}), ...(c.colors ? { colors: c.colors } : {}) }; }
+    if ((world === 'humans' || world === 'explorers') && presets.peoplePresets && presets.peoplePresets.includes(c.preset) && !(presets.humanPresets || []).concat(presets.explorerPresets || []).includes(c.preset)) { cast[c.id] = { preset: c.preset }; }   // adults: people-world characters (no realistic adults yet)
+    else if (world === 'humans') { cast[c.id] = { human: c.preset }; }
+    else if (world === 'explorers') { if (presets.explorerPresets && !presets.explorerPresets.includes(c.preset)) report.missing.push({ kind: 'character', name: c.id, preset: c.preset, suggestions: (presets.explorerPresets || []).map((id) => ({ id, label: id })) }); cast[c.id] = { explorer: c.preset, ...(c.outfit ? { outfit: c.outfit } : {}) }; }
+    else if (world === 'toon') { if (presets.toonPresets && !presets.toonPresets.includes(c.preset)) report.missing.push({ kind: 'character', name: c.id, preset: c.preset, suggestions: (presets.toonPresets || []).slice(0, 6).map((id) => ({ id, label: id })) }); cast[c.id] = { cast: c.preset, ...(c.look ? { look: c.look } : {}), ...(c.colors ? { colors: c.colors } : {}) }; }
     else { if (presets.peoplePresets && !presets.peoplePresets.includes(c.preset)) report.missing.push({ kind: 'character', name: c.id, preset: c.preset, suggestions: (presets.peoplePresets || []).slice(0, 6).map((id) => ({ id, label: id })) }); cast[c.id] = { preset: c.preset, ...(c.wear ? { wear: c.wear } : {}) }; }
   }
   const ctx = { draft, catalog, castById, report };

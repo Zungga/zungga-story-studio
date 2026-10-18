@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zungga Explorers</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#f5f2fb;font-family:Fredoka,sans-serif}#stage{position:fixed;inset:0 280px 0 0}aside{position:fixed;top:0;right:0;bottom:0;width:280px;background:#fff;padding:14px;overflow:auto;box-shadow:0 0 30px #0001}
+h1{font-size:20px;margin:0 0 8px}button{font:inherit;font-size:13px;border:0;border-radius:9px;padding:6px 8px;margin:2px;background:#f1edfb;cursor:pointer}button.on{background:#7c3aed;color:#fff}h2{font-size:12px;letter-spacing:.1em;color:#777;text-transform:uppercase;margin:12px 0 4px}</style></head>
+<body><div id="stage"></div><aside><h1>Zungga Explorers</h1><div id="who"></div><h2>Outfit</h2><div id="out"></div><h2>Expression</h2><div id="ex"></div><h2>Animation</h2><div id="an"></div></aside>
+<script src="../vendor/three.min.js"></script><script src="characters/explorers.js"></script>
+<script>
+const T = THREE, Z = ZCharacters, q = new URLSearchParams(location.search);
+const r = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true }); r.setPixelRatio(Math.min(2, devicePixelRatio)); r.shadowMap.enabled = true; r.shadowMap.type = T.VSMShadowMap; r.toneMapping = T.ACESFilmicToneMapping; r.toneMappingExposure = 1.05; r.outputColorSpace = T.SRGBColorSpace;
+document.getElementById('stage').appendChild(r.domElement);
+const scene = new T.Scene(); scene.background = new T.Color(q.get('bg') || 0xf7f4fb);
+scene.add(new T.HemisphereLight(0xffffff, 0xd9c8b4, 1.15)); const key = new T.DirectionalLight(0xfff1e0, 2.6); key.position.set(1.5, 3, 2.5); key.castShadow = true; key.shadow.mapSize.set(2048, 2048); key.shadow.radius = 6; key.shadow.bias = -0.0004; key.shadow.normalBias = 0.02; Object.assign(key.shadow.camera, { left: -3, right: 3, top: 3, bottom: -1 }); scene.add(key);
+const rim = new T.DirectionalLight(0xdfe8ff, 1.4); rim.position.set(-2, 2.5, -2.5); scene.add(rim); const fill = new T.DirectionalLight(0xffffff, 0.5); fill.position.set(-2, 1, 2); scene.add(fill);
+const fl = new T.Mesh(new T.CircleGeometry(8, 48), new T.ShadowMaterial({ opacity: 0.16 })); fl.rotation.x = -Math.PI / 2; fl.receiveShadow = true; scene.add(fl);
+const cam = new T.PerspectiveCamera(28, 1, 0.01, 50);
+const ids = Object.keys(Z.EXPLORER_PRESETS); let mode = q.get('mode') || 'lineup', who = q.get('who') || 'kai', outfit = q.get('outfit') || '', chars = [];
+function build() {
+  for (const c of chars) scene.remove(c.group); chars = [];
+  if (mode === 'lineup') ids.forEach((id, i) => { const c = Z.explorer({ preset: id, outfit }); c.group.position.x = (i - 2) * 0.62; scene.add(c.group); chars.push(c); });
+  else if (mode === 'turn') [0, 0.75, 1.57, 3.14].forEach((a, i) => { const c = Z.explorer({ preset: who, outfit }); c.group.position.x = (i - 1.5) * 0.62; c.group.rotation.y = a; scene.add(c.group); chars.push(c); });
+  else { const c = Z.explorer({ preset: who, outfit }); scene.add(c.group); chars.push(c); }
+  const ex = q.get('expr'), an = q.get('anim'); for (const c of chars) { if (ex) c.setExpression(ex, true); if (an) c.play(an, { instant: true }); }
+}
+function frame() { const w = r.domElement.parentElement.clientWidth, h = innerHeight; r.setSize(w, h); cam.aspect = w / h;
+  if (mode === 'face') { const hc = chars[0].rig.headC.getWorldPosition(new T.Vector3()); cam.position.set(hc.x + 0.05, hc.y + 0.02, hc.z + 0.85); cam.lookAt(hc); }
+  else if (mode === 'single') { cam.position.set(0.9, 0.95, 3.0); cam.lookAt(0, 0.68, 0); }
+  else { cam.position.set(0, 1.0, 5.6); cam.lookAt(0, 0.7, 0); } cam.updateProjectionMatrix(); }
+let t0 = performance.now(), simT = +(q.get('t') || 0);
+function loop(now) { requestAnimationFrame(loop); const dt = q.has('t') ? 0 : Math.min(0.05, (now - t0) / 1000); t0 = now; for (const c of chars) c.update(dt); frame(); r.render(scene, cam); }
+build(); if (q.has('t')) for (const c of chars) c.update(simT); requestAnimationFrame(loop); addEventListener('resize', frame);
+const btns = (el, list, cur, fn) => { document.getElementById(el).innerHTML = list.map((x) => `<button data-v="${x}" class="${x === cur ? 'on' : ''}">${x || 'casual'}</button>`).join(''); document.querySelectorAll('#' + el + ' button').forEach((b) => b.onclick = () => { fn(b.dataset.v); document.querySelectorAll('#' + el + ' button').forEach((x) => x.classList.toggle('on', x === b)); }); };
+btns('who', ['lineup', ...ids], mode === 'lineup' ? 'lineup' : who, (v) => { if (v === 'lineup') mode = 'lineup'; else { mode = 'single'; who = v; } build(); });
+btns('out', ['', 'detective'], outfit, (v) => { outfit = v; build(); });
+btns('ex', Z.EXPLORER_EXPRESSIONS, '', (v) => chars.forEach((c) => c.setExpression(v)));
+btns('an', ['idle', 'talk', 'walk', 'run', 'wave', 'think', 'cheer', 'arms_crossed', 'hands_on_hips', 'point', 'thumbs_up', 'peace', 'jump', 'look_far', 'victory', 'sit'], '', (v) => chars.forEach((c) => c.play(v)));
+window.__ready = true;
+</script></body></html>

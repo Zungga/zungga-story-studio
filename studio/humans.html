@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Realistic humans</title>
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#f2f0f6;font-family:system-ui}#stage{position:fixed;inset:0 260px 0 0}aside{position:fixed;top:0;right:0;bottom:0;width:260px;background:#fff;padding:12px;overflow:auto}button{font:inherit;font-size:12px;border:0;border-radius:8px;padding:5px 7px;margin:2px;background:#eee;cursor:pointer}h3{font-size:12px;margin:10px 0 4px;color:#666}</style></head>
+<body><div id="stage"></div><aside><b>Realistic humans</b><h3>Expression</h3><div id="ex"></div><h3>Animation</h3><div id="an"></div></aside>
+<script src="../vendor/three.min.js"></script>
+<script type="module">
+import './characters/humans.js';
+const T = THREE, Z = ZCharacters, q = new URLSearchParams(location.search);
+const r = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true }); r.setPixelRatio(Math.min(2, devicePixelRatio)); r.shadowMap.enabled = true; r.toneMapping = T.ACESFilmicToneMapping; r.outputColorSpace = T.SRGBColorSpace;
+document.getElementById('stage').appendChild(r.domElement);
+const scene = new T.Scene(); scene.background = new T.Color(0xf2f0f6);
+scene.add(new T.HemisphereLight(0xffffff, 0xcdb9a3, 1.1)); const key = new T.DirectionalLight(0xfff1e0, 2.4); key.position.set(1.5, 3, 2.5); key.castShadow = true; key.shadow.mapSize.set(2048, 2048); Object.assign(key.shadow.camera, { left: -2, right: 2, top: 2, bottom: -1 }); key.shadow.bias = -0.0004; scene.add(key);
+const rim = new T.DirectionalLight(0xdfe8ff, 1.2); rim.position.set(-2, 2.5, -2.5); scene.add(rim);
+const fl = new T.Mesh(new T.CircleGeometry(6, 48), new T.ShadowMaterial({ opacity: 0.18 })); fl.rotation.x = -Math.PI / 2; fl.receiveShadow = true; scene.add(fl);
+const cam = new T.PerspectiveCamera(30, 1, 0.01, 50);
+const ids = (q.get('who') || 'kai').split(','); const chars = [];
+for (const id of ids) await Z.loadHuman(id);
+ids.forEach((id, i) => { const c = Z.human(id); c.group.position.x = (i - (ids.length - 1) / 2) * 0.7; c.group.rotation.y = +(q.get('ry') || 0); scene.add(c.group); chars.push(c); });
+if (q.get('expr')) chars.forEach((c) => c.setExpression(q.get('expr'))); if (q.get('anim')) chars.forEach((c) => c.play(q.get('anim'), { instant: true }));
+const bb = new T.Box3(); chars.forEach((c) => bb.union(new T.Box3().setFromObject(c.group))); const H = bb.max.y - bb.min.y, Y0 = bb.min.y, mode = q.get('mode') || 'full';
+function frame() { const w = r.domElement.parentElement.clientWidth, h = innerHeight; r.setSize(w, h); cam.aspect = w / h;
+  if (mode === 'face') { const hp = chars[0].rig.head.getWorldPosition(new T.Vector3()); cam.position.set(hp.x + 0.05, hp.y + 0.06, hp.z + 0.75); cam.lookAt(hp.x, hp.y + 0.06, hp.z); }
+  else { cam.position.set(0.4, Y0 + H * 0.6, Math.max(1.6, H * 2.6) + ids.length * 0.4); cam.lookAt(0, Y0 + H * 0.5, 0); } cam.updateProjectionMatrix(); }
+let t0 = performance.now(); const fixed = q.has('t'); if (fixed) { const steps = Math.round(+q.get('t') * 30); for (let i = 0; i < steps; i++) chars.forEach((c) => c.update(1 / 30)); }
+function loop(now) { requestAnimationFrame(loop); const dt = fixed ? 0 : Math.min(0.05, (now - t0) / 1000); t0 = now; if (!fixed) chars.forEach((c) => c.update(dt)); frame(); r.render(scene, cam); }
+requestAnimationFrame(loop);
+const btns = (el, list, fn) => { document.getElementById(el).innerHTML = list.map((x) => `<button>${x}</button>`).join(''); document.querySelectorAll('#' + el + ' button').forEach((b) => b.onclick = () => fn(b.textContent)); };
+btns('ex', Z.HUMAN_EXPRESSIONS, (v) => chars.forEach((c) => c.setExpression(v))); btns('an', chars[0].ANIMATIONS, (v) => chars.forEach((c) => c.play(v)));
+window.__ready = true;
+</script></body></html>

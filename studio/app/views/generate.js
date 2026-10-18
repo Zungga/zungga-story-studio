@@ -19,6 +19,7 @@ export async function mount(el, { app }) {
     if (JSON.stringify(s2) !== JSON.stringify(P.story)) { await api.put(`/api/projects/${pid}/story?label=Generate settings`, s2); P = await app.reloadProject(); }
     const ids = P.story.scenes.map((s) => s.id);
     try {
+      if (st.mode === 'episodes') { const r = await api.post(`/api/projects/${pid}/render`, { mode: 'episodes', width: st.width, height: st.height, fps: st.fps, quality: st.quality, subtitles: st.subtitles, endCard: st.endCard, voiceDir: st.voiceDir || undefined, fileName: st.fileName || undefined }); toast(`${r.episodes} episode videos queued — watch the jobs indicator`, 'ok', 6000); return; }
       running = await api.post(`/api/projects/${pid}/render`, { width: st.width, height: st.height, fps: st.fps, quality: st.quality, subtitles: st.subtitles, endCard: st.endCard, from: st.from > 1 ? ids[st.from - 1] : null, to: st.to < n ? ids[st.to - 1] : null, voiceDir: st.voiceDir || undefined, fileName: st.fileName || undefined });
       render(); await waitJob(running.id, (j) => { running = j; const b = el.querySelector('#rprog'); if (b) { b.querySelector('b').textContent = j.status === 'queued' ? 'Waiting for another job to finish…' : j.message; b.querySelector('i').style.width = Math.round(j.progress * 100) + '%'; } });
     } catch (e) { toast(e.message, 'error', 8000); }
@@ -34,6 +35,7 @@ export async function mount(el, { app }) {
           h('div.grid', { style: { gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px', marginBottom: '12px' } }, PRESETS.map(([id, label, note, wh]) => h('div.preset' + (st.preset === id ? '.on' : ''), { onclick: () => { st.preset = id; if (wh) [st.width, st.height] = wh; render(); } },
             h('div.shape', { style: wh ? { width: (wh[0] > wh[1] ? 44 : 44 * wh[0] / wh[1]) + 'px', height: (wh[1] >= wh[0] ? 44 : 44 * wh[1] / wh[0]) + 'px' } : { width: '30px', height: '30px', borderRadius: '50%' } }), h('b', label), h('small.muted', note)))),
           st.preset === 'custom' ? row('Size', h('div.fctl', num(st.width, (v) => (st.width = v || 1080), { step: 2, w: 90 }), '×', num(st.height, (v) => (st.height = v || 1920), { step: 2, w: 90 }))) : null,
+          (P.story.scenes.some((sc) => sc.episode) ? row('Output', select([['full', 'Full film (one file)'], ['episodes', `Episodes (one file each · ${new Set(P.story.scenes.map((sc) => sc.episode || 1)).size} files)`]], st.mode || 'full', (v) => { st.mode = v; render(); })) : null),
           row('Frame rate', select([[24, '24 fps (film)'], [30, '30 fps (standard)'], [60, '60 fps (smooth)']], st.fps, (v) => { st.fps = +v; render(); })),
           row('Quality', select([['final', 'Final (best, slower)'], ['draft', 'Draft (quick check)']], st.quality, (v) => { st.quality = v; render(); })),
           row('Scenes', h('div.fctl', select(P.story.scenes.map((s, i) => [i + 1, `${i + 1}. ${s.title}`]), st.from, (v) => { st.from = +v; if (st.to < st.from) st.to = st.from; render(); }), 'to', select(P.story.scenes.map((s, i) => [i + 1, `${i + 1}. ${s.title}`]), st.to, (v) => { st.to = +v; if (st.from > st.to) st.from = st.to; render(); }))),

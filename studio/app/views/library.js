@@ -15,6 +15,7 @@ function build(kind, spec) {
   const Z = window.ZCharacters;
   if (kind === 'prop') return spec.startsWith('img:') ? null : ZAssets.build(spec).group;
   if (kind === 'toon') { const tp = Z.TOON_PRESETS[spec.base || spec]; const o = spec.base ? { ...tp, look: { ...(tp.look || {}), ...(spec.look || {}) }, colors: { ...(tp.colors || {}), ...(spec.colors || {}) } } : tp; const ch = Z.toon(o); ch.setExpression?.('smile', true); return ch.group; }
+  if (kind === 'explorer') { const ch = Z.explorer({ preset: spec.base || spec, outfit: spec.outfit }); ch.setExpression('smile', true); return ch.group; }
   const P = Z.PRESETS[spec.base || spec]; const ch = Z.person(spec.base ? { ...P, wear: { ...(P.wear || {}), ...(spec.wear || {}) } } : P); return ch.group;
 }
 const thumbCache = {};
@@ -65,12 +66,14 @@ export async function mount(el, { app, extra }) {
       h('div',
         h('div.section-title', { style: { marginTop: 0 } }, 'Your characters'),
         mine.length ? h('div.grid', { style: { gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '10px' } }, mine.map((c) => card('m:' + c.id + JSON.stringify(c), c.world === 'people' ? 'person' : 'toon', c, c.label, `based on ${c.base}`, () => { selC = clone(c); render(); }, selC?.id === c.id))) : h('p.muted.small', 'None yet — pick any character below and press “Make my own version”.'),
+        h('div.section-title', 'Zungga Explorers'), h('div.grid', { style: { gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '10px' } }, (lib.explorerPresets || []).flatMap((p) => [card('x:' + p.id, 'explorer', p.id, p.label.split(' — ')[0], p.label.split(' — ')[1] || '', () => { selC = { base: p.id, world: 'explorers', label: p.label, preset: true, explorer: true }; render(); }, selC?.explorer && selC.base === p.id && !selC.outfit), card('xd:' + p.id, 'explorer', { base: p.id, outfit: 'detective' }, p.label.split(' — ')[0] + ' · detective', 'detective look', () => { selC = { base: p.id, world: 'explorers', label: p.label + ' (detective)', preset: true, explorer: true, outfit: 'detective' }; render(); }, selC?.explorer && selC.base === p.id && selC.outfit)])),
         h('div.section-title', 'Cartoon world'), h('div.grid', { style: { gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '10px' } }, toon.map((p) => card('t:' + p.id, 'toon', p.id, p.label, p.role, () => { selC = { base: p.id, world: 'toon', label: p.label, preset: true }; render(); }, selC?.preset && selC.base === p.id))),
         h('div.section-title', 'People'), h('div.grid', { style: { gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '10px' } }, people.map((p) => card('h:' + p.id, 'person', p.id, p.label, 'person', () => { selC = { base: p.id, world: 'people', label: p.label, preset: true }; render(); }, selC?.preset && selC.base === p.id)))),
       selC ? maker() : h('div.card.pad.muted', 'Pick a character to see it turn, or to make your own version (new colours and clothes).'));
   }
   function maker() {
-    const c = selC, Z = window.ZCharacters, isToon = c.world !== 'people', kind = isToon ? 'toon' : 'person', v = viewer(kind, c.preset ? c.base : c);
+    const c = selC, Z = window.ZCharacters, isToon = c.world !== 'people', kind = c.explorer ? 'explorer' : isToon ? 'toon' : 'person', v = viewer(kind, c.explorer ? { base: c.base, outfit: c.outfit } : c.preset ? c.base : c);
+    if (c.explorer) return h('div.card.pad', { style: { position: 'sticky', top: '10px' } }, v, h('h3', { style: { margin: '10px 0 4px' } }, c.label), h('p.small.muted', 'From the Zungga Explorers character bible. Pick them in a story with the “Zungga Explorers” world.'));
     const upd = () => v.set(kind, c.preset ? c.base : c);
     const kids = [v, h('h3', { style: { margin: '10px 0 6px' } }, c.preset ? c.label : 'Character maker')];
     if (c.preset) { kids.push(h('p.small.muted', isToon ? (Z.TOON_PRESETS[c.base]?.role || '') : 'Person'), btn('Make my own version', () => { selC = { id: null, base: c.base, world: c.world, label: c.label + ' (mine)' }; render(); }, 'primary', 'wand')); return h('div.card.pad', { style: { position: 'sticky', top: '10px' } }, kids); }

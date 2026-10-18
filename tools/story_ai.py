@@ -38,7 +38,7 @@ Each scene is ONE narration line of 1-3 sentences (12-45 words) that a voice act
 Places: every scene's "place" must be exactly one of: {', '.join(places)} (ground = outdoors / park / school ground).
 Characters you can use (use these ids exactly):
 {cast_list}
-{"The main character is always 'hero' (the box kid). 'helper_cat' helps with physical things, 'idea_planet' helps with ideas. Everyone else is folk." if world == 'toon' else "Pick a hero from the kids. Girls may only use: mira, tara, mom, older_sister."}
+{"The main character is always 'hero' (the box kid). 'helper_cat' helps with physical things, 'idea_planet' helps with ideas. Everyone else is folk." if world == 'toon' else "These are the Zungga Explorers, five 10-11 year old friends who solve everyday mysteries together: kai (the curious leader, 'Let's figure it out!'), rio (the energetic spark, 'Let's gooo!'), tara (the logical observer, 'Wait... this clue makes sense!'), mira (the creative imaginer, 'What if we tried it another way?'), jax (the tough, loyal protector, 'Nobody messes with my team!'). The narrator is one of them (usually kai)." if world in ('explorers', 'humans') else "Pick a hero from the kids. Girls may only use: mira, tara, mom, older_sister."}
 Objects the studio already has (prefer them, mention them by name in the narration): {', '.join(props[:60])}.
 The narrator is the main character. In the narration call other characters by role ("my friend", "Mom", "the shopkeeper"), never by their id.
 Every scene's "characters" list includes the main character unless they are truly absent.
@@ -111,6 +111,7 @@ used = list(dict.fromkeys([draft.get('hero')] + list(draft.get('cast') or []) + 
 used = [c for c in used if c in ids] or ([('hero' if 'hero' in ids else presets[0]['id'])] if presets else [])
 hero = draft.get('hero') if draft.get('hero') in ids else used[0]
 if world == 'toon' and 'hero' in ids: hero = 'hero'   # the box kid is always the main character in the cartoon world
+if world in ('explorers', 'humans') and hero not in ids and 'kai' in ids: hero = 'kai'
 if req.get('hero') in ids: hero = req['hero']
 if hero not in used: used.insert(0, hero)
 labels = {p['id']: p['label'] for p in presets}

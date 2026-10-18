@@ -12,7 +12,7 @@ export async function mount(el, { app }) {
   // every scene keeps its own id (its voice clip is scene-<id>.wav), so reordering never mixes up clips
   const ensureIds = () => { const seen = new Set(); let next = Math.max(0, ...d.scenes.map((s) => +s.id || 0)) + 1; for (const s of d.scenes) { if (!s.id || seen.has(s.id)) s.id = next++; seen.add(s.id); } };
   ensureIds();
-  const presets = () => (d.world === 'people' ? lib.peoplePresets : lib.toonPresets).concat(lib.characters.filter((c) => (c.world || 'toon') === (d.world || 'toon')).map((c) => ({ id: c.id, label: c.label + ' (yours)', custom: c })));
+  const presets = () => ((W) => (W === 'people' ? lib.peoplePresets : W === 'explorers' ? lib.explorerPresets : W === 'humans' ? lib.humanPresets.concat(lib.peoplePresets.filter((x) => !lib.humanPresets.some((hp) => hp.id === x.id))) : lib.toonPresets))(d.world).concat(lib.characters.filter((c) => (c.world || 'toon') === (d.world || 'toon')).map((c) => ({ id: c.id, label: c.label + ' (yours)', custom: c })));
   const save = debounce(async () => { app.setSaved('saving'); try { await api.put(`/api/projects/${pid}/draft`, strip(d)); app.setSaved('saved'); } catch (e) { app.setSaved('error'); } }, 700);
   const changed = (rerender = false) => { ensureIds(); app.setSaved('dirty'); save(); if (rerender) render(); };
   let busy = false;
@@ -47,7 +47,7 @@ export async function mount(el, { app }) {
   function render() {
     const castIds = d.cast.map((c) => c.id), labelOf = (id) => d.cast.find((c) => c.id === id)?.label || id;
     clear(el, h('div.page',
-      h('div.page-head', h('div', h('h1', d.title || 'Story'), h('p', `${d.scenes.length} scenes · ${d.world === 'people' ? 'People' : 'Cartoon world'} · narrated by ${labelOf(d.hero)}`)),
+      h('div.page-head', h('div', h('h1', d.title || 'Story'), h('p', `${d.scenes.length} scenes · ${d.world === 'people' ? 'People' : d.world === 'explorers' ? 'Zungga Explorers' : 'Cartoon world'} · narrated by ${labelOf(d.hero)}`)),
         h('div.actions', btn('Redo whole story', async () => { if (await confirmBox('Write a new version?', 'The story AI writes the whole story again. Locked scenes stay as they are.', 'Redo')) redoAll(); }, '', 'refresh'),
           btn('Add scene', () => { d.scenes.push({ title: `Scene ${d.scenes.length + 1}`, place: d.scenes.at(-1)?.place || 'home', narration: '', characters: [d.hero], _k: Math.random().toString(36).slice(2) }); changed(true); }, '', 'plus'),
           btn('Accept story → Build', accept, 'primary', 'check'))),
@@ -87,7 +87,7 @@ export async function mount(el, { app }) {
         if (!v) return; const cp = pl.find((p) => p.id === v); let id = v.replace(/[^a-z0-9_]/gi, '_').toLowerCase(), k = 2; while (d.cast.some((c) => c.id === id)) id = `${v}_${k++}`;
         d.cast.push(cp.custom ? { id, preset: cp.custom.base, custom: v, label: cp.custom.label, look: cp.custom.look, colors: cp.custom.colors, wear: cp.custom.wear } : { id, preset: v, label: cp.label }); changed(true);
       })),
-      h('p.small.muted', { style: { marginTop: '10px' } }, d.world === 'toon' ? 'Cartoon world: the box kid is the main character, the yellow cat helps with physical things, the flying planet helps with ideas.' : 'People: girls use the Mira, Tara, Mom or older sister looks.'));
+      h('p.small.muted', { style: { marginTop: '10px' } }, d.world === 'explorers' ? 'Zungga Explorers: Kai leads, Rio is the spark, Tara observes, Mira imagines, Jax protects.' : d.world === 'toon' ? 'Cartoon world: the box kid is the main character, the yellow cat helps with physical things, the flying planet helps with ideas.' : 'People: girls use the Mira, Tara, Mom or older sister looks.'));
   }
   render();
   return { flush: () => save.flush(), dirty: () => false };
@@ -99,8 +99,8 @@ const strip = (d) => JSON.parse(JSON.stringify(d, (k, v) => (k === '_k' ? undefi
 export function draftFromStory(story, pj) {
   if (!story) return null;
   return {
-    title: story.title, world: story.world || (Object.values(story.cast || {}).some((c) => c.cast) ? 'toon' : 'people'), hero: story.hero || Object.keys(story.cast || {})[0], prompt: pj?.prompt || '', voice: story.voice?.voice,
-    cast: Object.entries(story.cast || {}).map(([id, c]) => ({ id, preset: c.cast || c.preset || id, label: id[0].toUpperCase() + id.slice(1), ...(c.look ? { look: c.look } : {}), ...(c.colors ? { colors: c.colors } : {}), ...(c.wear ? { wear: c.wear } : {}) })),
+    title: story.title, world: story.world || (Object.values(story.cast || {}).some((c) => c.human) ? 'humans' : Object.values(story.cast || {}).some((c) => c.explorer) ? 'explorers' : Object.values(story.cast || {}).some((c) => c.cast) ? 'toon' : 'people'), hero: story.hero || Object.keys(story.cast || {})[0], prompt: pj?.prompt || '', voice: story.voice?.voice,
+    cast: Object.entries(story.cast || {}).map(([id, c]) => ({ id, preset: c.human || c.explorer || c.cast || c.preset || id, label: id[0].toUpperCase() + id.slice(1), ...(c.look ? { look: c.look } : {}), ...(c.colors ? { colors: c.colors } : {}), ...(c.wear ? { wear: c.wear } : {}) })),
     scenes: story.scenes.map((s) => ({ id: s.id, title: s.title, place: s.place, narration: s.narration, characters: Object.keys(s.actors || {}), talking: s.talking, mood: s.mood === 'soft' ? 'soft' : null })),
   };
 }

@@ -20,6 +20,8 @@ const P = (...a) => path.join(root, ...a);
 const PROJECTS = P('projects'), SETTINGS = P('settings.local.json');
 fs.mkdirSync(PROJECTS, { recursive: true });
 const { stage, check } = await import(pathToFileURL(P('studio/js/stage.js')).href);
+const { Room } = await import(pathToFileURL(P('tools/room.mjs')).href);
+const llm = await import(pathToFileURL(P('tools/llm.mjs')).href);
 
 // ---------- settings (local, never committed) ----------
 const DEFAULTS = {
@@ -30,6 +32,7 @@ const DEFAULTS = {
   render: { preset: '1080x1920', width: 1080, height: 1920, fps: 30, quality: 'final', subtitles: true, endCard: true },
   brand: { subtitlesBottom: true, overlaysTop: true, noTopDown: true, endCardLogo: true, rainForSad: true, closeUpOnMention: true },
   historyLimit: 60,
+  roomAI: 'local', roomCloudModel: 'claude-sonnet-5-5',
 };
 function settings() { try { return deepMerge(structuredClone(DEFAULTS), JSON.parse(fs.readFileSync(SETTINGS, 'utf8'))); } catch { return structuredClone(DEFAULTS); } }
 function deepMerge(a, b) { for (const [k, v] of Object.entries(b || {})) a[k] = v && typeof v === 'object' && !Array.isArray(v) && a[k] && typeof a[k] === 'object' ? deepMerge(a[k], v) : v; return a; }
@@ -62,6 +65,8 @@ function library() {
     props: readJSON(P('studio/assets/catalog.json'), { props: [] }).props,
     uploads: files('studio/assets/uploads', /\.(png|jpe?g|webp)$/i).map((f) => ({ id: 'img:' + f, label: f.replace(/\.[^.]+$/, ''), category: 'uploads' })),
     toonPresets: toon, peoplePresets: people,
+    humanPresets: fs.existsSync(P('studio/characters/glb')) ? fs.readdirSync(P('studio/characters/glb')).filter((f) => f.endsWith('.glb')).map((f) => { const id = f.replace('.glb', ''); return { id, label: id[0].toUpperCase() + id.slice(1) + ' (realistic)', role: 'kid' }; }) : [],
+    explorerPresets: presetsFrom('studio/characters/explorers.js', /^ {4}(\w+): \{ label: '([^']+)', role: '([^']+)'()/gm),
     characters: readJSON(path.join(PROJECTS, '_characters.json'), []),
     voices, sfx: files('studio/assets/sfx', /\.(mp3|wav|ogg)$/i), music: files('studio/assets/music', /\.(mp3|wav|ogg)$/i).map((f) => '../music/' + f),
     musicInfo: Object.fromEntries(files('studio/assets/music', /\.(mp3|wav|ogg)$/i).map((f) => ['../music/' + f, readJSON(P('studio/assets/music', f.replace(/\.[^.]+$/, '.json')), null)])),
@@ -117,7 +122,7 @@ function voiceState(id) {
   const vdir = st.voice?.defaultDir || 'voice', lines = readJSON(path.join(d, 'voice', 'lines.json'), {}), words = readJSON(path.resolve(d, vdir, 'words.json'), {});
   const scenes = st.scenes.map((sc) => {
     const name = `scene-${String(sc.id).padStart(2, '0')}.wav`, has = fs.existsSync(path.resolve(d, vdir, name));
-    const stale = vdir === 'voice' && has && lines[sc.id] && (lines[sc.id].text !== sc.narration || lines[sc.id].voice !== (st.voice?.voice || 'boy-calm'));
+    const stale = vdir === 'voice' && has && lines[sc.id] && (lines[sc.id].text !== sc.narration || lines[sc.id].voice !== (sc.voice || st.voice?.voice || 'boy-calm'));
     return { id: sc.id, has, stale: !!stale, timed: !!words[name] };
   });
   return { dir: vdir, borrowed: vdir !== 'voice', scenes, ready: scenes.every((s) => s.has && !s.stale) };
@@ -168,11 +173,11 @@ function voiceJob(id, { scenes, voice, takes } = {}) {
     st.voice = { ...(st.voice || {}), voice: v }; writeJSON(path.join(d, 'story.json'), st);
     const vd = path.join(d, 'voice'); fs.mkdirSync(vd, { recursive: true });
     const lines = readJSON(path.join(vd, 'lines.json'), {}), want = scenes ? new Set(scenes.map(Number)) : null;
-    const todo = st.scenes.filter((sc) => { const f = path.join(vd, `scene-${String(sc.id).padStart(2, '0')}.wav`); return (want ? want.has(sc.id) : true) && (want || !fs.existsSync(f) || lines[sc.id]?.text !== sc.narration || lines[sc.id]?.voice !== v); });
+    const todo = st.scenes.filter((sc) => { const f = path.join(vd, `scene-${String(sc.id).padStart(2, '0')}.wav`); return (want ? want.has(sc.id) : true) && (want || !fs.existsSync(f) || lines[sc.id]?.text !== sc.narration || lines[sc.id]?.voice !== (sc.voice || v)); });
     for (const sc of todo) fs.rmSync(path.join(vd, `scene-${String(sc.id).padStart(2, '0')}.wav`), { force: true });
     let done = 0; const n = Math.max(1, todo.length);
     update(j, { message: todo.length ? `Making ${todo.length} voice line${todo.length > 1 ? 's' : ''}…` : 'All lines are up to date — timing words…' });
-    await proc(j, python(), [P('tools/make_voice.py'), d, '--voice', v, '--takes', String(takes || 3)], {
+    await proc(j, python(), [P('tools/make_voice.py'), d, ...(st.scenes.some((sc) => sc.voice) ? [] : ['--voice', v]), '--takes', String(takes || 3)], {   // per-character voices when scenes carry them
       env: { PYTHON: python() },
       onLine: (l) => {
         if (/^(made|reference) scene/.test(l)) { done++; update(j, { progress: 0.9 * done / n, message: `Voice line ${done} of ${n} done` }); }
@@ -180,7 +185,7 @@ function voiceJob(id, { scenes, voice, takes } = {}) {
         else if (/^total/.test(l)) update(j, { progress: 0.9, message: 'Timing every word…' });
       },
     });
-    for (const sc of st.scenes) lines[sc.id] = { text: sc.narration, voice: v };
+    for (const sc of st.scenes) lines[sc.id] = { text: sc.narration, voice: sc.voice || v };
     writeJSON(path.join(vd, 'lines.json'), lines); touch(id); broadcast({ type: 'voice', project: id });
     return { voice: voiceState(id) };
   });
@@ -215,7 +220,7 @@ function renderJob(id, o = {}) {
 function storyJob(id, input) {
   const d = pdir(id), s = settings(), lib = library();
   const req = { ...input, model: input.model || s.storyModel, world: input.world || readJSON(path.join(d, 'project.json')).world || s.world,
-    presets: (input.world || s.world) === 'people' ? lib.peoplePresets : lib.toonPresets, places: lib.places, props: lib.props.map((p) => p.label) };
+    presets: (input.world || s.world) === 'people' ? lib.peoplePresets : (input.world || s.world) === 'explorers' ? lib.explorerPresets : (input.world || s.world) === 'humans' ? lib.humanPresets : lib.toonPresets, places: lib.places, props: lib.props.map((p) => p.label) };
   return addJob('story', id, input.redoScene ? `Story AI · redo scene ${input.redoScene}` : 'Story AI · writing', async (j) => {
     update(j, { message: 'Loading the story model (the first time downloads it, ~4 GB)…' });
     const out = await proc(j, python(), [P('tools/story_ai.py')], { input: JSON.stringify(req), onLine: (l) => { if (/^STATUS /.test(l)) update(j, { message: l.slice(7) }); const m = l.match(/^PROGRESS ([\d.]+)/); if (m) update(j, { progress: +m[1] }); } });
@@ -332,7 +337,7 @@ route('POST', '/api/projects/:id/stage', async (req, q, m) => {   // draft → s
   const b = await jsonBody(req), d = pdir(m.id), lib = library(), draft = b.draft || readJSON(path.join(d, 'draft.json'));
   if (!draft) throw httpError(400, 'No draft to build from');
   const props = lib.props.concat(lib.uploads);
-  const { story, report } = stage(draft, props, { toonPresets: lib.toonPresets.map((p) => p.id), peoplePresets: lib.peoplePresets.map((p) => p.id) });
+  const { story, report } = stage(draft, props, { humanPresets: lib.humanPresets.map((p) => p.id), explorerPresets: lib.explorerPresets.map((p) => p.id), toonPresets: lib.toonPresets.map((p) => p.id), peoplePresets: lib.peoplePresets.map((p) => p.id) });
   const prev = readJSON(path.join(d, 'story.json'));
   if (prev && b.keepEdits !== false) {   // re-building keeps scenes the user already changed by hand, when their line is the same
     story.scenes = story.scenes.map((sc) => { const old = prev.scenes.find((o) => o.id === sc.id); return old && old.narration === sc.narration && old.edited ? old : sc; });
@@ -345,7 +350,20 @@ route('POST', '/api/projects/:id/stage', async (req, q, m) => {   // draft → s
 route('POST', '/api/projects/:id/check', async (req, q, m) => { const lib = library(), b = await jsonBody(req); return check(b.story || readJSON(path.join(pdir(m.id), 'story.json')), lib.props.concat(lib.uploads)); });
 route('GET', '/api/projects/:id/voice', async (req, q, m) => { pdir(m.id); return voiceState(m.id); });
 route('POST', '/api/projects/:id/voice', async (req, q, m) => voiceJob(m.id, await jsonBody(req)));
-route('POST', '/api/projects/:id/render', async (req, q, m) => renderJob(m.id, await jsonBody(req)));
+route('POST', '/api/projects/:id/render', async (req, q, m) => {
+  const b = await jsonBody(req);
+  if (b.mode !== 'episodes') return renderJob(m.id, b);
+  // one video per episode (scenes carry "episode" from the Writers' Room)
+  const st = readJSON(path.join(pdir(m.id), 'story.json')), groups = new Map();
+  for (const sc of st.scenes) { const e = sc.episode || 1; if (!groups.has(e)) groups.set(e, []); groups.get(e).push(sc); }
+  const jobsMade = [];
+  for (const [e, scs] of [...groups.entries()].sort((a, c) => a[0] - c[0])) {
+    if (b.episodes && b.episodes.length && !b.episodes.includes(e)) continue;
+    const base = b.fileName ? slug(b.fileName) : slug(st.title);
+    jobsMade.push(renderJob(m.id, { ...b, from: scs[0].id, to: scs[scs.length - 1].id, fileName: `${base}-ep${String(e).padStart(2, '0')}` }));
+  }
+  return { episodes: jobsMade.length, jobs: jobsMade, id: jobsMade[0]?.id };
+});
 route('POST', '/api/projects/:id/story-ai', async (req, q, m) => storyJob(m.id, await jsonBody(req)));
 route('GET', '/api/projects/:id/exports', async (req, q, m) => { const ed = path.join(pdir(m.id), 'exports'); if (!fs.existsSync(ed)) return []; return fs.readdirSync(ed).filter((f) => f.endsWith('.mp4')).map((f) => { const meta = readJSON(path.join(ed, f.replace(/\.mp4$/, '.json')), {}); const st = fs.statSync(path.join(ed, f)); return { name: f, file: `/projects/${m.id}/exports/${f}`, size: st.size, made: meta.made || st.mtime.toISOString(), ...meta }; }).sort((a, b) => b.made.localeCompare(a.made)); });
 route('DELETE', '/api/projects/:id/exports/:file', async (req, q, m) => { const f = path.join(pdir(m.id), 'exports', path.basename(m.file)); fs.rmSync(f, { force: true }); fs.rmSync(f.replace(/\.mp4$/, '.json'), { force: true }); return { ok: true }; });
@@ -380,6 +398,41 @@ route('POST', '/api/music/download', async (req) => {
   return credit;
 });
 route('DELETE', '/api/music/:file', async (req, q, m) => { const f = path.basename(m.file).replace(/\.[^.]+$/, ''); for (const ext of ['.mp3', '.json']) fs.rmSync(P('studio/assets/music', f + ext), { force: true }); return { ok: true }; });
+
+// ---------- Writers' Room ----------
+const rooms = new Map();
+function roomOf(id) { const d = pdir(id); let r = rooms.get(id); if (!r) { r = new Room({ root, dir: d, settings, broadcast, project: id }); r.load(); rooms.set(id, r); } return r; }   // one live instance per project (the room may be running)
+const roomJob = (id, title, fn) => addJob('room', id, title, async (j) => { const r = roomOf(id); update(j, { message: 'Thinking…' }); await fn(r, (k, msg) => update(j, { progress: k, message: msg })); return { ok: true }; });
+const publicRoom = (r) => ({ ...r.r, ai: llm.backend(settings()), cloudAvailable: llm.cloudAvailable() });
+route('GET', '/api/projects/:id/room', async (req, q, m) => publicRoom(roomOf(m.id)));
+route('PUT', '/api/projects/:id/room/setup', async (req, q, m) => { const r = roomOf(m.id), b = await jsonBody(req); r.r.setup = { ...r.r.setup, ...b }; r.save(); return publicRoom(r); });
+route('POST', '/api/projects/:id/room/personas', async (req, q, m) => { const b = await jsonBody(req); return roomJob(m.id, b.only ? 'Room · adding a persona' : 'Room · creating personas', (r) => r.createPersonas({ only: b.only || null })); });
+route('PUT', '/api/projects/:id/room/personas/:pid', async (req, q, m) => { const r = roomOf(m.id), b = await jsonBody(req), p = r.r.personas.find((x) => x.id === m.pid); if (!p) throw httpError(404, 'No such persona'); Object.assign(p, b, { id: p.id }); p.suggested = (p.suggested || []).filter((f) => !(f in b)); r.post('showrunner', `${p.name}'s card was updated by the Director.`, 'system'); r.save(); return publicRoom(r); });
+route('DELETE', '/api/projects/:id/room/personas/:pid', async (req, q, m) => { const r = roomOf(m.id), p = r.r.personas.find((x) => x.id === m.pid); if (!p) throw httpError(404, 'No such persona'); r.r.personas = r.r.personas.filter((x) => x !== p); r.post('showrunner', `${p.name} was removed from the cast.`, 'system'); r.save(); return publicRoom(r); });
+route('GET', '/api/projects/:id/room/impact/:pid', async (req, q, m) => { const r = roomOf(m.id), p = r.r.personas.find((x) => x.id === m.pid); const name = (p?.name || m.pid).toLowerCase(); const eps = (r.r.outline?.episodes || []).filter((e) => e.scenes.some((sc) => (sc.characters || []).some((c) => String(c).toLowerCase() === name) || (r.r.script[sc.id]?.lines || []).some((l) => String(l.who).toLowerCase() === name))); return { episodes: eps.map((e) => e.n), steps: r.r.plan.filter((s) => (s.focus || []).some((f) => String(f).toLowerCase() === name)).map((s) => s.step) }; });
+route('POST', '/api/projects/:id/room/rewrite', async (req, q, m) => { const b = await jsonBody(req); return roomJob(m.id, `Room · rewriting episodes ${(b.episodes || []).join(', ')}`, async (r, prog) => { const eps = r.r.outline.episodes.filter((e) => (b.episodes || []).includes(e.n)); let k = 0; for (const ep of eps) { for (const sc of ep.scenes) delete r.r.script[sc.id]; await r.writeEpisode(ep); prog(++k / eps.length, `Episode ${ep.n} rewritten`); } r.post('showrunner', `Rewrote episode${eps.length > 1 ? 's' : ''} ${eps.map((e) => e.n).join(', ')} with the changes.`, 'system'); }); });
+route('POST', '/api/projects/:id/room/mystery', async (req, q, m) => { const b = await jsonBody(req); return roomJob(m.id, 'Room · designing the mystery', (r) => r.designMystery(b.note || '')); });
+route('POST', '/api/projects/:id/room/world', async (req, q, m) => { const b = await jsonBody(req); return roomJob(m.id, 'Room · designing the world', (r) => r.designWorld(b.note || '')); });
+route('POST', '/api/projects/:id/room/run', async (req, q, m) => { const r = roomOf(m.id), b = await jsonBody(req); if (!r.r.plan.length) throw httpError(400, 'Design the mystery first'); r.run({ steps: b.steps || 999 }).catch(() => {}); return { ok: true }; });
+route('POST', '/api/projects/:id/room/stop', async (req, q, m) => { const r = roomOf(m.id); r.stop(); return { ok: true }; });
+route('POST', '/api/projects/:id/room/director', async (req, q, m) => { const r = roomOf(m.id), b = await jsonBody(req); if (!String(b.text || '').trim()) throw httpError(400, 'Empty message'); r.director(String(b.text)).catch((e) => r.post('showrunner', 'I could not process that: ' + e.message, 'system')); return { ok: true }; });
+route('POST', '/api/projects/:id/room/outline', async (req, q, m) => roomJob(m.id, 'Room · making the outline', (r) => r.makeOutline()));
+route('POST', '/api/projects/:id/room/script', async (req, q, m) => roomJob(m.id, 'Room · writing the scenes', (r, prog) => r.writeScript(prog)));
+route('POST', '/api/projects/:id/room/fresh', async (req, q, m) => { const r = roomOf(m.id), b = await jsonBody(req); const keep = r.r.setup; r.r = { ...(await import(pathToFileURL(P('tools/room.mjs')).href)).defaultRoom(), setup: { ...keep, ideas: b.keepIdeas ? keep.ideas : [] }, personas: b.keepPersonas ? r.r.personas : [] }; r.r.stage = r.r.personas.length ? 'personas' : 'setup'; r.save(); return publicRoom(r); });
+route('PUT', '/api/projects/:id/room/outline', async (req, q, m) => { const r = roomOf(m.id); r.r.outline = await jsonBody(req); r.save(); return publicRoom(r); });
+route('PUT', '/api/projects/:id/room/script/:sid', async (req, q, m) => { const r = roomOf(m.id); r.r.script[m.sid] = await jsonBody(req); r.save(); return { ok: true }; });
+route('POST', '/api/projects/:id/room/handoff', async (req, q, m) => {
+  const r = roomOf(m.id), b = await jsonBody(req), d = pdir(m.id);
+  if (!r.r.outline || !Object.keys(r.r.script).length) throw httpError(400, 'Write the scenes first');
+  const draft = r.toDraft(b.world || 'humans'); writeJSON(path.join(d, 'draft.json'), draft);
+  touch(m.id, { step: 'story', world: draft.world, name: readJSON(path.join(d, 'project.json')).name }); r.r.stage = 'done'; r.save();
+  return { ok: true, scenes: draft.scenes.length };
+});
+route('POST', '/api/projects/:id/room/refs', async (req, q, m) => {   // reference images for the world / characters
+  const d = pdir(m.id), name = slug(q.get('name') || 'ref') + (path.extname(q.get('name') || '.png').toLowerCase().match(/^\.(png|jpe?g|webp)$/) ? path.extname(q.get('name')).toLowerCase() : '.png');
+  fs.mkdirSync(path.join(d, 'refs'), { recursive: true }); fs.writeFileSync(path.join(d, 'refs', name), await body(req, 20 * 1024 * 1024));
+  const r = roomOf(m.id); r.r.setup.refs = [...new Set([...(r.r.setup.refs || []), name])]; r.save(); return publicRoom(r);
+});
 
 route('GET', '/api/stories', async () => fs.readdirSync(P('stories')).filter((s) => fs.existsSync(P('stories', s, 'story.json'))).map((s) => ({ id: s, title: readJSON(P('stories', s, 'story.json'), {}).title, engine: readJSON(P('stories', s, 'story.json'), {}).engine || '3d' })));
 route('GET', '/api/jobs', async () => [...jobs.values()].map(pub).sort((a, b) => b.created - a.created));
