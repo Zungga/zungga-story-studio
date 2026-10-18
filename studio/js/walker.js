@@ -12,7 +12,7 @@
   'use strict';
   const T = THREE;
   const R = 0.3, H = 1.1, STEP = 0.42, SNAP = 0.55, G = 28, JUMP = 7.2, WALK = 2.8, RUN = 6, BACK = 0.6, ACC = 14, RUN_ACC = 18, TURN = 3.2, SWIM = 2.3, SWIM_FAST = 3.6;
-  const CAM0 = { back: 5.2, up: 1.45, look: 1.15, ahead: 4, side: 0, orbit: 0, stiff: 5, fov: 55 };   // the island's on-foot camera, a little lower; every value can be changed (Camera panel) and saved
+  const CAM0 = { back: 9.9, up: 3.5, look: 0.2, ahead: 6.2, side: 3.0, orbit: 0, stiff: 3.5, fov: 63 };   // the user's chosen view (2026-10-18)   // the island's on-foot camera, a little lower; every value can be changed (Camera panel) and saved
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v)), wrap = (a) => Math.atan2(Math.sin(a), Math.cos(a));
 
   function create({ world, camera, dom, char, start = { x: 0, y: 0, z: 0, yaw: 0 }, onArea, onPrompt, onMode }) {

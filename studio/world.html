@@ -311,38 +311,43 @@
   if (q.get('only')) { const keep = q.get('only').split(','); setTimeout(() => { for (const k of Object.keys(W.floors)) W.floors[k].visible = keep.includes(k); }, 50); window.__only = keep; }
   if (q.get('cam')) { const [px, py, pz, lx, ly, lz] = q.get('cam').split(',').map(Number); walker.view([px, py, pz], [lx, ly, lz]); applyFloor(floorOf(py), true); }
   // ---------- the school bus: arriving from the island (?from=island&back=…) and riding back ----------
-  const backURL = q.get('back');
-  addEventListener('zworld-bus', () => { if (backURL) { toast('All aboard! Back to the island 🚌'); audio.play('whistle', 1); setTimeout(() => { location.href = backURL; }, 1300); } else toast('This bus goes to the island — open Play mode on the resume site to ride it 🚌'); });
+  const backURL = q.get('back') || (STUDIO ? null : '../../index.html?play&from=factory');   // on the resume site the bus always goes back to the island
   const dropped = [];   // kids the bus drops off (they walk into the factory)
-  if (q.get('from') === 'island' && W.busStop) {
-    const B = L.bounds, stopZ = B.z1 - 8, laneX = -1.6, doorX = laneX + 1.9;
-    let bus = null;
+  // the school bus: always parked at the stop by the south gate (ride it back to the island); arriving from the island it drives in and drops you off
+  let bus = null, busCol = null, busBusy = false;
+  const BUS = W.busStop ? { stopZ: L.bounds.z1 - 8, laneX: -1.6 } : null;
+  if (BUS) {
     if (ZAssets.has('school_bus')) { bus = ZAssets.build('school_bus').group; bus.updateMatrixWorld(true); const bb = new T.Box3().setFromObject(bus), sx = bb.max.x - bb.min.x, sz = bb.max.z - bb.min.z; const k = 9 / Math.max(sx, sz); bus.scale.multiplyScalar(k); if (sx > sz) bus.rotation.y = Math.PI / 2; }
     else { bus = new T.Group(); const m = new T.Mesh(new T.BoxGeometry(2.5, 2.8, 9.5), new T.MeshStandardMaterial({ color: 0xfacc15 })); m.position.y = 1.6; bus.add(m); }
-    bus.traverse((o) => { if (o.isMesh) o.castShadow = true; }); W.floors.ground.add(bus); bus.position.set(laneX, 0, B.z1 + 70);
-    const busCol = W.frame('ground', laneX, stopZ, 0).col(2.8, 3.2, 9.8, 0, 0, 0); busCol.on = false;   // the parked bus is solid
-    // watch it arrive from beside the stop; you are on the bus (hidden) until it stops
+    bus.traverse((o) => { if (o.isMesh) o.castShadow = true; }); W.floors.ground.add(bus); bus.position.set(BUS.laneX, 0, BUS.stopZ);
+    busCol = W.frame('ground', BUS.laneX, BUS.stopZ, 0).col(2.8, 3.2, 9.8, 0, 0, 0);   // the parked bus is solid
+    W.interacts.unshift({ test: (p) => !busBusy && Math.abs(p.x - (BUS.laneX + 2.2)) < 2.2 && Math.abs(p.z - (BUS.stopZ + 1.2)) < 3 && p.y < 2, label: () => 'Ride the school bus back to the island', fn: () => dispatchEvent(new CustomEvent('zworld-bus')) });
+  }
+  const gatesOpen = (sec) => { const until = performance.now() + sec * 1000; (function g() { for (const D of W.busGate || []) D.want = 1; if (performance.now() < until) requestAnimationFrame(g); })(); };
+  if (bus && q.get('from') === 'island') {
+    const B = L.bounds, stopZ = BUS.stopZ, doorX = BUS.laneX + 1.9; busBusy = true; busCol.on = false; bus.position.z = B.z1 + 70; gatesOpen(6);
     kid.group.visible = false; walker.setInput({ f: 0, r: 0, run: false });
-    walker.view([doorX + 8, 2.4, stopZ - 7], [laneX, 1.3, stopZ + 8]);
-    const others = ['friend_boy', 'friend_girl', 'best_friend'];
-    const t0 = performance.now(), zAt = (t) => { if (t < 4) { const k = t / 4, e = 1 - (1 - k) * (1 - k); return B.z1 + 70 - (B.z1 + 70 - stopZ) * e; } if (t < 9) return stopZ; const k = (t - 9) / 5; return stopZ + k * k * 90; };
-    let stage = 0;
+    walker.view([doorX + 8, 2.4, stopZ - 7], [BUS.laneX, 1.3, stopZ + 8]);
+    const others = ['friend_boy', 'friend_girl', 'best_friend'], t0 = performance.now(); let stage = 0;
     (function busAnim() {
-      const t = (performance.now() - t0) / 1000; bus.position.z = zAt(t);
-      for (const D of W.busGate || []) D.want = t < 13 ? 1 : D.want;
-      busCol.on = t >= 3.9 && t < 9;
-      if (stage === 0 && t >= 4.4) {   // the door opens: you step off
-        stage = 1; if (walker.mode === 'free') walker.toggleFree(); walker.teleport([doorX, 0.05, stopZ + 1.2], Math.PI / 2); kid.group.visible = true; walker.setInput({ f: 1, r: 0, run: false });
-        setTimeout(() => walker.setInput(null), 2200); toast('Welcome to the Zungga Chocolate Factory! 🍫'); audio.play('chime', 1);
-      }
-      if (stage >= 1 && stage <= others.length && t >= 4.9 + stage * 0.9) {   // …and the other kids after you
+      const t = (performance.now() - t0) / 1000, k = Math.min(1, t / 4); bus.position.z = B.z1 + 70 - (B.z1 + 70 - stopZ) * (1 - (1 - k) * (1 - k));
+      if (t >= 3.9) busCol.on = true;
+      if (stage === 0 && t >= 4.4) { stage = 1; busBusy = false; if (walker.mode === 'free') walker.toggleFree(); walker.teleport([doorX, 0.05, stopZ + 1.2], Math.PI / 2); kid.group.visible = true; walker.setInput({ f: 1, r: 0, run: false }); setTimeout(() => walker.setInput(null), 2200); toast('Welcome to the Zungga Chocolate Factory! 🍫'); audio.play('chime', 1); }
+      if (stage >= 1 && stage <= others.length && t >= 4.9 + stage * 0.9) {
         const ch = ZCharacters.toon({ ...ZCharacters.TOON_PRESETS[others[stage - 1]] }); ch.group.traverse((o) => { if (o.isMesh) o.castShadow = true; }); W.floors.ground.add(ch.group);
         const E = L.ground.entrance, n = stage, path = [[doorX + 1.6, stopZ + 1.2 - n * 0.3], [doorX + 3 + n, stopZ - 5], [E.outer.x + (n - 2) * 2.2, E.outer.z + E.outer.r + 1], [E.x + (n - 2) * 1.6, E.z + 4], [E.x + (n - 2) * 2.5, E.z - 8], [L.ground.plaza.x + (n - 2) * 3, L.ground.plaza.z + L.ground.plaza.ring[1] + 3]];
         dropped.push({ ch, path, i: 0, x: doorX, z: stopZ + 1.2, yaw: Math.PI / 2 }); stage++;
       }
-      if (t < 15) requestAnimationFrame(busAnim); else bus.parent && bus.parent.remove(bus);
+      if (stage <= others.length) requestAnimationFrame(busAnim);   // the bus stays parked, waiting to take you back
     })();
   }
+  addEventListener('zworld-bus', () => {
+    if (!bus || busBusy) return; busBusy = true;
+    if (!backURL) { toast('This bus goes to the island — open Play mode on the resume site to ride it 🚌'); busBusy = false; return; }
+    toast('All aboard! Back to the island 🚌'); audio.play('whistle', 1); kid.group.visible = false; walker.setInput({ f: 0, r: 0, run: false }); busCol.on = false; gatesOpen(4);
+    walker.view([BUS.laneX + 8, 2.6, BUS.stopZ - 6], [BUS.laneX, 1.4, BUS.stopZ + 6]);
+    const t0 = performance.now(); (function leave() { const t = (performance.now() - t0) / 1000; bus.position.z = BUS.stopZ + t * t * 6; if (t < 2.4) requestAnimationFrame(leave); else location.href = backURL; })();
+  });
   function updateDropped(dt) {
     for (const d of dropped) {
       const tgt = d.path[d.i];

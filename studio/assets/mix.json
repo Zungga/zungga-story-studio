@@ -1,5 +1,42 @@
 {
-  "note": "Volume levels set in Walk the World → Mixer (Save). world = the factory soundscape (multipliers, 1 = default); video = default mix for rendered story videos.",
-  "world": { "master": 0.8, "water": 0.6, "fountain": 0.7, "waterfall": 0.6, "birds": 0.8, "vats": 1, "machines": 0.9, "beeps": 0.8, "bakery": 1, "cafe": 0.9, "lab": 1, "puff": 1, "warehouse": 1, "cave": 1, "magic": 1, "train": 0.9, "door": 1, "splash": 1, "whistle": 0.8, "chime": 1, "step": 1 },
-  "video": { "voice": 1, "music": 1, "ambience": 1, "sfx": 1 }
+  "note": "Volume levels set in Walk the World \u2192 Mixer (Save). world = the factory soundscape (multipliers, 1 = default); video = default mix for rendered story videos.",
+  "world": {
+    "master": 0.2,
+    "water": 0.1,
+    "fountain": 0.1,
+    "waterfall": 0.1,
+    "birds": 0.8,
+    "vats": 1,
+    "machines": 0.9,
+    "beeps": 0.8,
+    "bakery": 1,
+    "cafe": 0.9,
+    "lab": 1,
+    "puff": 1,
+    "warehouse": 1,
+    "cave": 1,
+    "magic": 1,
+    "train": 0.9,
+    "door": 1,
+    "splash": 0.1,
+    "whistle": 0.8,
+    "chime": 1,
+    "step": 1
+  },
+  "video": {
+    "voice": 1,
+    "music": 1,
+    "ambience": 1,
+    "sfx": 1
+  },
+  "camera": {
+    "back": 9.9,
+    "up": 3.5,
+    "look": 0.2,
+    "ahead": 6.2,
+    "side": 3.0,
+    "orbit": 0,
+    "stiff": 3.5,
+    "fov": 63
+  }
 }
