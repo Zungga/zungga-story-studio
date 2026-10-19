@@ -41,3 +41,4 @@ voice-casting/*/*.wav
 !selected-voices/tara/*.wav
 !selected-voices/mira/*.wav
 !selected-voices/uncle/*.wav
+selected-voices/narrator-viral/
