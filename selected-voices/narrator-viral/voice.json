@@ -1,0 +1,10 @@
+{
+  "name": "narrator-viral",
+  "note": "The earlier adult male narrator, cut from the first 10 s of rme/This Wasn't My Baby.mp3 (someone else's recording: local only, never publish).",
+  "reproduce": {
+    "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-Base-8bit",
+    "ref_audio": "reference.wav",
+    "ref_text": "I was holding my wife's hand through the last push when our baby finally cried, but then the nurse froze. My heart started pounding with fear. Is he okay? She nodded slowly and handed me my son.!!!!!!!!!!!!!!!!!!!!!!!",
+    "speed": 1.0
+  }
+}

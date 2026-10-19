@@ -29,10 +29,15 @@ settings.local.json
 studio/characters/glb/medic.glb
 
 # our own generated voices are real assets: the chosen reference clips + the story's Rio clips are kept in git
-# (the narrator stays local — it is cloned from someone else's recording, not ours to publish)
+# (narrator-viral stays local — it is cloned from someone else's recording, not ours to publish)
 !selected-voices/girl/*.wav
 !selected-voices/boy-calm/*.wav
 !selected-voices/boy-deep/*.wav
 !stories/pocket-money/voice/*.wav
 # voice casting samples (listen + pick in studio/voice-casting.html; the picked voice is kept in selected-voices/)
 voice-casting/*/*.wav
+!selected-voices/narrator/*.wav
+!selected-voices/rio/*.wav
+!selected-voices/tara/*.wav
+!selected-voices/mira/*.wav
+!selected-voices/uncle/*.wav

@@ -1,14 +1,23 @@
 {
   "name": "narrator",
-  "selected": "2026-10-11",
-  "chosen_from": "This Wasn't My Baby 😳.mp3 (user-supplied, first 10 s). Check you have the speaker's permission before publishing anything made with this voice.",
-  "engine": "Qwen3-TTS via mlx-audio 0.5.8 (local, Apple Silicon)",
+  "character": "Narrator",
+  "selected": "2026-10-20",
+  "engine": "Qwen3-TTS via mlx-audio (local)",
   "language": "english",
+  "design": {
+    "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-VoiceDesign-8bit",
+    "instruct": "A cheerful, kind Indian man in his thirties, a favourite storyteller for young children, speaking English with a light Indian accent, warm, playful and clear, relaxed pace.",
+    "note": "Designing again gives a SIMILAR voice; clone reference.wav for the exact one."
+  },
   "reproduce": {
     "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-Base-8bit",
     "ref_audio": "reference.wav",
-    "ref_text": "I was holding my wife's hand through the last push when our baby finally cried, but then the nurse froze. My heart started pounding with fear. Is he okay? She nodded slowly and handed me my son,",
+    "ref_text": "It was the hottest day of the whole summer. The sun was shining, the roads were sizzling, and everyone in the colony was thirsty. That is when Rio had a big idea.",
     "speed": 1.0
   },
-  "reference": { "file": "reference.wav", "sample_rate": 24000 }
+  "reference": {
+    "file": "reference.wav",
+    "seconds": 9.9,
+    "sample_rate": 24000
+  }
 }

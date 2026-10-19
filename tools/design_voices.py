@@ -25,6 +25,9 @@ def gen(text, instruct, dst):
 if len(sys.argv) > 1 and sys.argv[1] == 'pick':
     cid, k = sys.argv[2], int(sys.argv[3]); ch = next(c for c in cast['characters'] if c['id'] == cid)
     src = os.path.join(root, 'voice-casting', cid, f'option-{k}.wav'); vdir = os.path.join(root, 'selected-voices', cid); os.makedirs(vdir, exist_ok=True)
+    old = os.path.join(vdir, 'voice.json')   # never lose a voice that did not come from casting: keep it as <id>-backup-<date>
+    if os.path.exists(old) and 'character' not in json.load(open(old)):
+        bk = vdir + '-backup-' + datetime.date.today().isoformat(); shutil.copytree(vdir, bk, dirs_exist_ok=True); print('kept the old voice as', bk)
     shutil.copy(src, os.path.join(vdir, 'reference.wav'))
     with wave.open(src) as w: secs = w.getnframes() / w.getframerate(); sr = w.getframerate()
     json.dump({ 'name': cid, 'character': ch['name'], 'selected': datetime.date.today().isoformat(), 'engine': 'Qwen3-TTS via mlx-audio (local)', 'language': 'english',

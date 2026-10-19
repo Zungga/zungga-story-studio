@@ -1,0 +1,23 @@
+{
+  "name": "tara",
+  "character": "Tara (clever observer girl)",
+  "selected": "2026-10-20",
+  "engine": "Qwen3-TTS via mlx-audio (local)",
+  "language": "english",
+  "design": {
+    "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-VoiceDesign-8bit",
+    "instruct": "A ten-year-old Indian girl speaking English with a light Indian accent, calm, clever and thoughtful, clear and precise, a young child's voice, medium pace.",
+    "note": "Designing again gives a SIMILAR voice; clone reference.wav for the exact one."
+  },
+  "reproduce": {
+    "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-Base-8bit",
+    "ref_audio": "reference.wav",
+    "ref_text": "Wait, Rio. Let me check my notebook. Lemons were thirty rupees, sugar was twenty, and the cups were twenty. So we spent seventy rupees in total. Hmm, that is a lot.",
+    "speed": 1.0
+  },
+  "reference": {
+    "file": "reference.wav",
+    "seconds": 13.6,
+    "sample_rate": 24000
+  }
+}

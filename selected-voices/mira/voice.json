@@ -1,0 +1,23 @@
+{
+  "name": "mira",
+  "character": "Mira (creative, bubbly girl)",
+  "selected": "2026-10-20",
+  "engine": "Qwen3-TTS via mlx-audio (local)",
+  "language": "english",
+  "design": {
+    "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-VoiceDesign-8bit",
+    "instruct": "An eleven-year-old Indian girl speaking English with a light Indian accent, gentle, curious and careful, soft clear young voice, unhurried.",
+    "note": "Chosen from Tara's option 3 sample. Clone reference.wav for the exact voice."
+  },
+  "reproduce": {
+    "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-Base-8bit",
+    "ref_audio": "reference.wav",
+    "ref_text": "Wait, Rio. Let me check my notebook. Lemons were thirty rupees, sugar was twenty, and the cups were twenty. So we spent seventy rupees in total. Hmm, that is a lot.",
+    "speed": 1.0
+  },
+  "reference": {
+    "file": "reference.wav",
+    "seconds": 15.5,
+    "sample_rate": 24000
+  }
+}
