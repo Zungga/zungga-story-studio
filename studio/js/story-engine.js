@@ -47,6 +47,8 @@
     camp:        { origin: [-80, 0, 40], set: 'camp_set', sky: 0x3a2f5c, outdoor: true, evening: true },
     sports:      { origin: [-80, 0, -40], set: 'sports_set', sky: 0xbfe3ff, outdoor: true },
     cave:        { origin: [0, 0, -80], set: 'cave_set', sky: 0x0b0c12, night: true },
+    // Zungga pilot episodes
+    colony:      { origin: [0, 0, 160], set: 'colony_set', sky: 0xbfe3ff, outdoor: true },
   };
 
   const ENGINE_BASE = document.currentScript && document.currentScript.src ? new URL('..', document.currentScript.src).href : '../';
@@ -97,7 +99,7 @@
     timeline = story.scenes.map((sc, i) => {
       const words = sc.narration.split(/\s+/).length;
       const dur = (buffers[i] ? buffers[i].duration : words / 2.6) + pause + (i === story.scenes.length - 1 ? 1.8 : 0);   // last scene holds the end card a little
-      const e = { scene: sc, start: acc, dur: dur + (sc.extraTime || 0) }; acc += e.dur; return e;
+      const e = { scene: sc, start: acc, dur: dur + (sc.extraTime || 0) + (sc.pause ? sc.pause.seconds || 8 : 0), voice: buffers[i] ? buffers[i].duration : words / 2.6 }; acc += e.dur; return e;
     });
     total = acc;
 
@@ -121,6 +123,7 @@
       for (const pr of sc.props || []) { if (pr.showWord) pr.show = f(pr.showWord, pr.showOffset || 0); if (pr.onWord) pr.on = f(pr.onWord, pr.onOffset || 0); if (pr.coins) { if (pr.coins.startWord) pr.coins.start = f(pr.coins.startWord, pr.coins.startOffset || 0); if (pr.coins.endWord) pr.coins.end = f(pr.coins.endWord, pr.coins.endOffset || 0); } }
       if (sc.counter) { const c = sc.counter; if (c.startWord) c.start = f(c.startWord, c.startOffset || 0); if (c.endWord) c.end = f(c.endWord, c.endOffset || 0); for (const st of c.steps || []) if (st.word) st.at = f(st.word, st.offset || 0); }
       if (sc.caption && sc.caption.atWord) sc.caption.at = f(sc.caption.atWord, sc.caption.atOffset || 0);
+      for (const cd of sc.cards || []) { if (cd.word) cd.at = f(cd.word, cd.offset || 0); if (cd.untilWord) cd.until = f(cd.untilWord, cd.untilOffset || 0); for (const it of cd.items || []) if (it.word) it.at = f(it.word, it.offset || 0); }
       for (const x of sc.sfx || []) if (x.word) x.at = f(x.word, x.offset || 0);
       for (const x of (sc.weather && sc.weather.thunder) || []) if (typeof x === 'object' && x.word) x.at = f(x.word, x.offset || 0);
     });
@@ -130,6 +133,8 @@
     timeline.forEach((e, i) => {
       const sc = e.scene;
       for (const x of sc.sfx || []) cues.push({ file: x.file, start: e.start + x.at * e.dur, vol: (x.vol ?? 0.8) * VMIX.sfx, dur: null, loop: false });
+      if (sc.pause) { const p0 = e.start + e.voice + 0.25, n = sc.pause.seconds || 8; for (let k = 0; k < n; k++) cues.push({ file: 'tick.wav', start: p0 + k, vol: 0.35 * VMIX.sfx, dur: null, loop: false }); cues.push({ file: 'ding.wav', start: p0 + n - 0.05, vol: 0.5 * VMIX.sfx, dur: null, loop: false }); cues.push({ file: 'pop.wav', start: p0 - 0.15, vol: 0.45 * VMIX.sfx, dur: null, loop: false }); }
+      for (const cd of sc.cards || []) if (cd.sound !== false) cues.push({ file: cd.sound || 'pop.wav', start: e.start + (cd.at || 0) * e.dur, vol: 0.4 * VMIX.sfx, dur: null, loop: false });
       if (sc.ambience) cues.push({ file: sc.ambience.file, start: e.start, vol: (sc.ambience.vol ?? 0.5) * VMIX.ambience, dur: e.dur, loop: true });
       if (sc.weather && sc.weather.thunder) for (const th of sc.weather.thunder) { const at = typeof th === 'object' ? th.at : th; cues.push({ file: 'thunder.wav', start: e.start + at * e.dur + 0.35, vol: 0.35, dur: null, loop: false }); }
       for (const pr of sc.props || []) if (pr.coins && pr.coins.sound) for (let k = 0; k < pr.coins.count; k++) {
@@ -206,6 +211,7 @@
       supermarket: { warm: [1.0, 1.0, 1.0], bloom: 0.35, aperture: 0.4, vignette: 0.28, sat: 1.06 },
       party: { warm: [1.08, 1.0, 0.95], bloom: 0.6, aperture: 0.5, vignette: 0.35, sat: 1.1 },
       library: { warm: [1.1, 1.0, 0.88], bloom: 0.45, aperture: 0.55, vignette: 0.4, sat: 1.0 },
+      colony: { warm: [1.09, 1.0, 0.9], bloom: 0.45, aperture: 0.38, vignette: 0.3, sat: 1.12 },   // a hot, bright summer day
     };
     if (window.ZFactory && ZFactory.layout) for (const fp of ZFactory.layout.places) if (!PLACES[fp.storyId]) PLACES[fp.storyId] = { origin: [fp.spot[0] + WORLD_OFF[0], fp.spot[1] + WORLD_OFF[1], fp.spot[2] + WORLD_OFF[2]], world: 'chocolate_factory', factory: true, sky: fp.dark ? 0x120c18 : 0xbfe3ff, outdoor: fp.outdoor, dark: fp.dark, label: fp.name, room: fp.room ? { x0: fp.room.x0 + WORLD_OFF[0], x1: fp.room.x1 + WORLD_OFF[0], z0: fp.room.z0 + WORLD_OFF[2], z1: fp.room.z1 + WORLD_OFF[2], y0: fp.room.y0, y1: fp.room.y1 } : null };
     let look = LOOKS.home;
@@ -643,6 +649,8 @@
         g2.fillStyle = '#fff'; g2.textAlign = 'center'; g2.textBaseline = 'middle'; lines.forEach((l, i) => g2.fillText(l, W / 2, y + 18 + lh / 2 + i * lh));
         g2.restore();
       }
+      drawCards(W, H, sc, e, f, y);
+      drawPause(W, H, sc, e);
       // subtitles (the narration) at the BOTTOM, each chunk shown from its first spoken word
       const voiceDur = buffers[cur] ? buffers[cur].duration : e.dur - pause;
       const chunks = subtitleChunks(sc.narration), wl = wordsMap[`scene-${String(sc.id).padStart(2, '0')}.wav`];
@@ -656,6 +664,7 @@
       if (chunk && optv('subtitles') !== false) {
         g2.font = '600 44px Fredoka'; const lines = wrapLines(chunk.text, W - 220), lh = 56, bh = lines.length * lh + 36, y0 = H - 250 - bh;
         pill(80, y0, W - 160, bh, 28, 'rgba(31,26,51,0.75)');
+        drawSpeaker(W, H, sc, e, y0 - 76);
         g2.fillStyle = '#fff'; g2.textAlign = 'center'; g2.textBaseline = 'middle'; lines.forEach((l, i) => g2.fillText(l, W / 2, y0 + 18 + lh / 2 + i * lh));
       }
       // end card (logo) on the last scene
@@ -665,6 +674,90 @@
         g2.fillStyle = `rgba(255,255,255,${0.96 * k})`; g2.fillRect(0, 0, W, H);
         if (logoImg.complete && logoImg.naturalWidth) { const lw = 760 * (0.9 + 0.1 * k), lh2 = lw * logoImg.naturalHeight / logoImg.naturalWidth; g2.globalAlpha = k; g2.drawImage(logoImg, W / 2 - lw / 2, H * 0.42 - lh2 / 2, lw, lh2); g2.globalAlpha = 1; }
       }
+    }
+    // ---------- pitch overlays: info cards, the kid-answer pause, the speaker's name ----------
+    const pop = (k) => { k = clamp(k, 0, 1); return k < 1 ? 1 + 2.7 * Math.pow(k - 1, 3) + 1.7 * Math.pow(k - 1, 2) : 1; };   // ease-out-back 0→1
+    function tile(x, y, w, h, fillTop, fillBot, r = 34) { const gr = g2.createLinearGradient(0, y, 0, y + h); gr.addColorStop(0, fillTop); gr.addColorStop(1, fillBot || fillTop); g2.save(); g2.shadowColor = 'rgba(30,15,60,0.28)'; g2.shadowBlur = 24; g2.shadowOffsetY = 8; pill(x, y, w, h, r, gr); g2.restore(); }
+    function txt(t, x, y, size, color, weight = 700, align = 'center') { g2.font = `${weight} ${size}px Fredoka`; g2.fillStyle = color; g2.textAlign = align; g2.textBaseline = 'middle'; g2.fillText(t, x, y); }
+    function fitTxt(t, x, y, size, maxW, color, weight = 700) { let s2 = size; g2.font = `${weight} ${s2}px Fredoka`; while (g2.measureText(t).width > maxW && s2 > 16) { s2 -= 2; g2.font = `${weight} ${s2}px Fredoka`; } txt(t, x, y, s2, color, weight); }
+    function scaleAt(cx, cy, k, fn) { g2.save(); g2.translate(cx, cy); g2.scale(k, k); g2.translate(-cx, -cy); fn(); g2.restore(); }
+    function drawCards(W, H, sc, e, f, yTop) {
+      for (const cd of sc.cards || []) {
+        const at = cd.at ?? 0, until = cd.until ?? 1; if (f < at || f > until) continue;
+        const tIn = (f - at) * e.dur, tOut = (until - f) * e.dur, fade = clamp(tOut / 0.3, 0, 1), y0 = cd.y ?? Math.max(yTop, 300);
+        g2.save(); g2.globalAlpha = fade;
+        const items = cd.items || [], itemK = (it, i) => it.at != null ? clamp(((f - it.at) * e.dur) / 0.45, 0, 1) : clamp((tIn - i * (cd.step ?? 0.35)) / 0.45, 0, 1);
+        if (cd.title) { const k = pop(tIn / 0.4); scaleAt(W / 2, y0 + 36, k, () => { g2.font = '700 40px Fredoka'; const tw = g2.measureText(cd.title).width + 80; pill(W / 2 - tw / 2, y0, tw, 72, 36, cd.titleColor || BRAND.purple); txt(cd.title, W / 2, y0 + 37, 40, '#fff'); }); }
+        const yI = y0 + (cd.title ? 100 : 0);
+        if (cd.style === 'row') {   // 2–4 tiles side by side: big icon, big value, small label
+          const n = items.length, gap = 26, tw = Math.min(300, (W - 120 - gap * (n - 1)) / n), th = cd.h || 300, x0 = W / 2 - (n * tw + (n - 1) * gap) / 2;
+          items.forEach((it, i) => { const k = itemK(it, i); if (k <= 0) return; const x = x0 + i * (tw + gap), cx = x + tw / 2;
+            scaleAt(cx, yI + th / 2, pop(k), () => { tile(x, yI, tw, th, '#ffffff', it.tint || '#fff7d6'); txt(it.icon || '', cx, yI + th * 0.3, th * 0.27, '#000', 400); fitTxt(it.value || '', cx, yI + th * 0.63, 64, tw - 30, it.color || BRAND.purple, 800); fitTxt(it.label || '', cx, yI + th * 0.84, 34, tw - 26, BRAND.ink, 600); }); });
+        } else if (cd.style === 'equation') {   // a sum written big: parts appear one by one, the answer last
+          const parts = items, k0 = pop(tIn / 0.4); g2.font = '800 78px Fredoka'; const widths = parts.map((it) => g2.measureText(it.text).width), tot = widths.reduce((a2, b2) => a2 + b2, 0) + 24 * (parts.length - 1), bw = Math.min(W - 80, tot + 90), bh = cd.sub ? 210 : 160;
+          scaleAt(W / 2, yI + bh / 2, k0, () => { tile(W / 2 - bw / 2, yI, bw, bh, '#ffffff', '#f5f0ff'); let x = W / 2 - tot / 2; const sc2 = Math.min(1, (W - 140) / tot);
+            g2.save(); g2.translate(W / 2, 0); g2.scale(sc2, 1); g2.translate(-W / 2, 0);
+            parts.forEach((it, i) => { const k = itemK(it, i); if (k > 0) { g2.save(); g2.globalAlpha *= clamp(k * 1.5, 0, 1); txt(it.text, x + widths[i] / 2, yI + 82 - (1 - pop(k)) * 20, 78, it.color || (it.answer ? BRAND.pink : BRAND.ink), 800); g2.restore(); } x += widths[i] + 24; });
+            g2.restore(); if (cd.sub) fitTxt(cd.sub, W / 2, yI + 160, 40, bw - 60, cd.subColor || BRAND.purple, 700); });
+        } else if (cd.style === 'missions') {   // the real-world mission: choose one of three, a grown-up approves
+          const th = 196, gap = 22;
+          items.forEach((it, i) => { const k = itemK(it, i); if (k <= 0) return; const y = yI + i * (th + gap), x = 70, w = W - 140;
+            scaleAt(W / 2, y + th / 2, pop(k), () => { tile(x, y, w, th, it.top || '#ffffff', it.bot || '#fef3c7'); g2.beginPath(); g2.arc(x + 88, y + th / 2, 56, 0, Math.PI * 2); g2.fillStyle = it.color || BRAND.violet; g2.fill(); txt(String(i + 1), x + 88, y + th / 2 + 2, 62, '#fff', 800);
+              txt(it.icon || '', x + 205, y + th / 2, 86, '#000', 400); g2.font = '700 40px Fredoka'; const lines = wrapLines(it.text, w - 330); lines.slice(0, 3).forEach((l, j) => txt(l, x + 265, y + th / 2 + (j - (Math.min(3, lines.length) - 1) / 2) * 48, 40, BRAND.ink, 700, 'left')); }); });
+          if (cd.footer) { const k = clamp((tIn - items.length * (cd.step ?? 0.35) - 0.2) / 0.4, 0, 1); if (k > 0) { const y = yI + items.length * (th + gap) + 6; scaleAt(W / 2, y + 40, pop(k), () => { g2.font = '700 38px Fredoka'; const tw = g2.measureText(cd.footer).width + 70; pill(W / 2 - tw / 2, y, tw, 80, 40, '#16a34a'); txt(cd.footer, W / 2, y + 41, 38, '#fff'); }); } }
+        } else if (cd.style === 'lesson' || cd.style === 'note') {   // a key idea on a bright card
+          const k = pop(tIn / 0.45); g2.font = `700 ${cd.size || 52}px Fredoka`; const lines = wrapLines(cd.text || '', W - 260), lh = (cd.size || 52) * 1.22, bh = lines.length * lh + 80;
+          scaleAt(W / 2, yI + bh / 2, k, () => { tile(110, yI, W - 220, bh, cd.top || '#fff7d6', cd.bot || '#fde68a'); lines.forEach((l, i) => txt(l, W / 2, yI + 40 + lh / 2 + i * lh, cd.size || 52, cd.color || BRAND.purple, 800)); });
+        } else if (cd.style === 'badges') {   // round medals
+          const n = items.length, R = 130, gap = 60, x0 = W / 2 - (n * 2 * R + (n - 1) * gap) / 2 + R;
+          items.forEach((it, i) => { const k = itemK(it, i); if (k <= 0) return; const cx = x0 + i * (2 * R + gap), cy = yI + R + 10, wob = Math.sin((tIn - i * 0.35) * 5) * 0.06 * clamp(1 - tIn / 2, 0, 1);
+            g2.save(); g2.translate(cx, cy); g2.rotate(wob); g2.scale(pop(k), pop(k)); g2.translate(-cx, -cy);
+            for (let r2 = 0; r2 < 16; r2++) { const a2 = r2 / 16 * Math.PI * 2 + tIn * 0.4; g2.fillStyle = 'rgba(252,199,44,0.35)'; g2.beginPath(); g2.moveTo(cx, cy); g2.arc(cx, cy, R * 1.35, a2, a2 + 0.12); g2.fill(); }
+            const gr = g2.createRadialGradient(cx - 30, cy - 40, 10, cx, cy, R); gr.addColorStop(0, '#fff1a8'); gr.addColorStop(1, it.color || '#f8a51b'); g2.fillStyle = gr; g2.beginPath(); g2.arc(cx, cy, R, 0, Math.PI * 2); g2.fill(); g2.lineWidth = 12; g2.strokeStyle = '#fff'; g2.stroke();
+            txt(it.icon || '⭐', cx, cy - 22, 92, '#000', 400); fitTxt(it.text || '', cx, cy + 66, 34, R * 1.6, '#4b2a8c', 800); g2.restore(); });
+        }
+        g2.restore();
+      }
+    }
+    // the pause: the episode stops and asks the kid; a countdown ring ticks while they answer out loud
+    function drawPause(W, H, sc, e) {
+      const P = sc.pause; if (!P) return false; const n = P.seconds || 8, t = lt - e.voice - 0.25; if (t < -0.2 || t > n + 0.2) return false;
+      const k = clamp((t + 0.2) / 0.4, 0, 1), out = clamp((n + 0.2 - t) / 0.3, 0, 1), a = Math.min(k, out), left = Math.max(0, Math.ceil(n - t));
+      g2.save(); g2.globalAlpha = a;
+      const vg = g2.createLinearGradient(0, 0, 0, H); vg.addColorStop(0, 'rgba(30,10,60,0.55)'); vg.addColorStop(0.3, 'rgba(30,10,60,0.05)'); vg.addColorStop(0.62, 'rgba(30,10,60,0.0)'); vg.addColorStop(1, 'rgba(30,10,60,0.6)'); g2.fillStyle = vg; g2.fillRect(0, 0, W, H);
+      const KIND = { look: ['👀', 'LOOK!', '#13b5c6'], choose: ['✋', 'CHOOSE!', '#ff4f8b'], count: ['🔢', 'COUNT!', '#f8a51b'], think: ['💭', 'THINK!', '#7c5cf2'] }[P.kind || 'think'];
+      // banner + prompt
+      scaleAt(W / 2, 120, pop(k), () => { pill(W / 2 - 300, 70, 600, 104, 52, '#ffffff'); txt('⏸', W / 2 - 230, 124, 52, KIND[2], 700); txt('PAUSE & ' + KIND[1], W / 2 + 30, 124, 52, BRAND.purple, 800); });
+      g2.font = '800 56px Fredoka'; const lines = wrapLines(P.prompt || '', W - 160); lines.forEach((l, i) => { g2.save(); g2.shadowColor = 'rgba(0,0,0,0.5)'; g2.shadowBlur = 14; txt(l, W / 2, 240 + i * 68, 56, '#fff', 800); g2.restore(); });
+      // countdown ring
+      const cy = 240 + lines.length * 68 + 120, R = 96, frac = clamp(t / n, 0, 1);
+      g2.beginPath(); g2.arc(W / 2, cy, R, 0, Math.PI * 2); g2.fillStyle = 'rgba(255,255,255,0.95)'; g2.fill();
+      g2.lineWidth = 18; g2.strokeStyle = '#ede9fe'; g2.beginPath(); g2.arc(W / 2, cy, R - 14, 0, Math.PI * 2); g2.stroke();
+      g2.strokeStyle = KIND[2]; g2.lineCap = 'round'; g2.beginPath(); g2.arc(W / 2, cy, R - 14, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * (1 - frac)); g2.stroke();
+      const beat = 1 + 0.08 * Math.max(0, Math.cos((t % 1) * Math.PI * 2)); scaleAt(W / 2, cy, beat, () => txt(String(left), W / 2, cy + 4, 92, BRAND.purple, 800));
+      txt(KIND[0], W / 2 + R + 50, cy, 70, '#000', 400);
+      // choose: three picture cards · count: the items to count, one per beat
+      if (P.kind === 'choose' && P.cards) {
+        const tw = (W - 120 - 2 * 24) / 3, th = 380, y = H - th - 170;
+        P.cards.forEach((c2, i) => { const kk = pop(clamp((t - i * 0.25) / 0.4, 0, 1)); const x = 60 + i * (tw + 24), cx = x + tw / 2;
+          scaleAt(cx, y + th / 2, kk, () => { tile(x, y, tw, th, '#ffffff', c2.tint || '#f5f0ff'); g2.beginPath(); g2.arc(cx, y + 62, 46, 0, Math.PI * 2); g2.fillStyle = c2.color || BRAND.violet; g2.fill(); txt(String(i + 1), cx, y + 64, 56, '#fff', 800);
+            txt(c2.icon || '', cx, y + 175, 104, '#000', 400); g2.font = '700 36px Fredoka'; wrapLines(c2.text, tw - 30).slice(0, 3).forEach((l, j) => txt(l, cx, y + 272 + j * 42, 36, BRAND.ink, 700)); }); });
+        txt('Show me with your fingers! ☝️ ✌️ 🤟', W / 2, H - 120, 42, '#fff', 800);
+      }
+      if (P.kind === 'count' && P.count) {
+        const C = P.count, N = C.n, per = Math.min(130, (W - 100) / N), x0 = W / 2 - per * N / 2 + per / 2, y = H - 470;
+        for (let i = 0; i < N; i++) { const kk = pop(clamp((t - 0.3 - i * (n - 1.5) / N) / 0.35, 0, 1)); if (kk <= 0) continue; const cx = x0 + i * per;
+          scaleAt(cx, y, kk, () => { txt(C.icon || '🥤', cx, y, per * 0.78, '#000', 400); pill(cx - per * 0.42, y + per * 0.48, per * 0.84, 56, 28, '#fff'); fitTxt(C.tag || '₹10', cx, y + per * 0.48 + 29, 34, per * 0.78, '#16a34a', 800); }); }
+        txt(C.question || 'How much money?', W / 2, H - 260, 50, '#fff', 800); txt('? ? ?', W / 2, H - 190, 60, '#fcc72c', 800);
+      }
+      if (P.kind === 'look') { const bob = Math.sin(t * 5) * 14; txt(P.hint || '👀 Look carefully at the picture!', W / 2, H - 230 + bob, 48, '#fff', 800); }
+      g2.restore(); return true;
+    }
+    function drawSpeaker(W, H, sc, e, y) {   // the speaker's name on a coloured tag just above the subtitles
+      const who = sc.talking && story.cast[sc.talking], name = sc.speaker || (who && who.name) || (sc.narrator ? 'Narrator' : null); if (!name || optv('subtitles') === false || lt > e.voice + 0.3) return;
+      const col = (who && who.color) || (sc.narrator ? '#4b2a8c' : BRAND.violet), k = pop(clamp(lt / 0.35, 0, 1));
+      g2.font = '800 38px Fredoka'; const tw = g2.measureText(name).width + 60;
+      scaleAt(110 + tw / 2, y + 30, k, () => { pill(110, y, tw, 64, 32, col); txt(name, 110 + tw / 2, y + 33, 38, '#fff', 800); });
     }
     const chunkCache = new Map();
     function subtitleChunks(text) {

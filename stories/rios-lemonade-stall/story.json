@@ -1,0 +1,3684 @@
+{
+ "title": "Rio's Lemonade Stall",
+ "episode": 1,
+ "world": "explorers",
+ "format": {
+  "width": 1080,
+  "height": 1920,
+  "fps": 30
+ },
+ "voice": {
+  "engine": "qwen3-tts-local",
+  "voice": "narrator",
+  "pauseAfter": 0.55
+ },
+ "hero": "rio",
+ "cast": {
+  "rio": {
+   "explorer": "rio",
+   "name": "Rio",
+   "color": "#f97316"
+  },
+  "tara": {
+   "explorer": "tara",
+   "name": "Tara",
+   "color": "#0d9488"
+  },
+  "mira": {
+   "explorer": "mira",
+   "name": "Mira",
+   "color": "#ec4899"
+  },
+  "uncle": {
+   "explorer": "thatha",
+   "name": "Thatha",
+   "color": "#7c3aed"
+  },
+  "appa": {
+   "explorer": "appa"
+  },
+  "amma": {
+   "explorer": "amma"
+  },
+  "arun": {
+   "explorer": "arun"
+  },
+  "priya": {
+   "explorer": "priya"
+  }
+ },
+ "music": {
+  "file": "../music/be-happy-free-music-antarcticbreeze-745ea2.mp3",
+  "vol": 0.09,
+  "start": 0,
+  "fadeIn": 1.5,
+  "fadeOut": 3,
+  "credit": "\"Be Happy\" by ANtarcticbreeze (CC BY 3.0, Jamendo)"
+ },
+ "options": {
+  "subtitles": true,
+  "endCard": true
+ },
+ "note": "Zungga pilot episode 1 for Class 3–5 (Tamil Nadu + Karnataka state boards). Built by make_story.py from SCRIPT.md.",
+ "scenes": [
+  {
+   "id": 1,
+   "title": "Scene 1",
+   "place": "colony",
+   "narration": "It was the hottest day of the whole summer. The sun was shining, the roads were sizzling, and everyone in the colony was thirsty. That is when Rio had a big idea.",
+   "voice": "narrator",
+   "narrator": true,
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      0,
+      0,
+      -0.55
+     ],
+     "face": 0,
+     "anim": "idle",
+     "expr": "happy",
+     "hold": {
+      "R": "lemon",
+      "L": "lemon"
+     }
+    },
+    "appa": {
+     "at": [
+      9.0,
+      0,
+      1.0
+     ],
+     "anim": "walk",
+     "expr": "smile",
+     "path": [
+      {
+       "at": 0.1,
+       "pos": [
+        9.0,
+        0,
+        1.0
+       ]
+      },
+      {
+       "at": 0.55,
+       "pos": [
+        -1.6,
+        0,
+        -2.0
+       ]
+      },
+      {
+       "at": 1.0,
+       "pos": [
+        -0.9,
+        0,
+        -8.6
+       ]
+      }
+     ]
+    },
+    "amma": {
+     "at": [
+      10.6,
+      0,
+      1.5
+     ],
+     "anim": "walk",
+     "expr": "smile",
+     "path": [
+      {
+       "at": 0.18,
+       "pos": [
+        10.6,
+        0,
+        1.5
+       ]
+      },
+      {
+       "at": 0.59,
+       "pos": [
+        -1.3,
+        0,
+        -2.0
+       ]
+      },
+      {
+       "at": 1.0,
+       "pos": [
+        -0.5,
+        0,
+        -8.6
+       ]
+      }
+     ]
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "beats": [
+    {
+     "word": "idea",
+     "actor": "rio",
+     "anim": "jump",
+     "expr": "excited"
+    }
+   ],
+   "camera": [
+    {
+     "move": "fixed",
+     "pos": [
+      7,
+      7.5,
+      15
+     ],
+     "look": [
+      0,
+      1.5,
+      -5
+     ],
+     "toPos": [
+      1.6,
+      1.9,
+      5.2
+     ],
+     "toLook": [
+      0,
+      1.0,
+      -0.4
+     ],
+     "speed": 1,
+     "smooth": 1
+    }
+   ],
+   "sfx": [
+    {
+     "file": "sparkle.wav",
+     "word": "idea",
+     "vol": 0.5
+    }
+   ],
+   "fx": {
+    "transition": "white"
+   }
+  },
+  {
+   "id": 2,
+   "title": "Scene 2",
+   "place": "colony",
+   "narration": "Lemonade! Ice-cold lemonade! I will open the coolest shop in the whole colony!",
+   "voice": "rio",
+   "talking": "rio",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      0,
+      0,
+      -0.55
+     ],
+     "face": 0,
+     "anim": "cheer",
+     "expr": "excited",
+     "hold": {
+      "R": "lemon"
+     }
+    },
+    "tara": {
+     "at": [
+      -1.1,
+      0,
+      0.15
+     ],
+     "face": 0.55,
+     "hold": {
+      "L": "notebook"
+     },
+     "anim": "idle",
+     "expr": "smile"
+    },
+    "mira": {
+     "at": [
+      1.1,
+      0,
+      0.2
+     ],
+     "face": -0.5,
+     "anim": "wave",
+     "expr": "big_smile"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "camera": [
+    {
+     "move": "push_in",
+     "focus": [
+      "rio"
+     ],
+     "from": "mid",
+     "to": "close",
+     "angle": 8,
+     "elevation": 10
+    }
+   ],
+   "caption": {
+    "text": "🍋 RIO'S COOL LEMONADE 🍋",
+    "atWord": "coolest",
+    "big": true
+   }
+  },
+  {
+   "id": 3,
+   "title": "Scene 3",
+   "place": "colony",
+   "narration": "A shop needs things to sell, Rio. What do we have to buy first?",
+   "voice": "tara",
+   "talking": "tara",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      0,
+      0,
+      -0.55
+     ],
+     "face": 0,
+     "anim": "idle",
+     "expr": "smile"
+    },
+    "tara": {
+     "at": [
+      -1.1,
+      0,
+      0.15
+     ],
+     "face": 0.55,
+     "hold": {
+      "L": "notebook"
+     },
+     "anim": "think",
+     "expr": "thinking"
+    },
+    "mira": {
+     "at": [
+      1.1,
+      0,
+      0.2
+     ],
+     "face": -0.5,
+     "anim": "idle",
+     "expr": "curious"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "camera": [
+    {
+     "move": "orbit",
+     "focus": [
+      "tara",
+      "rio"
+     ],
+     "distance": "mid",
+     "angle": -20,
+     "elevation": 12
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "title": "Scene 4",
+   "place": "colony",
+   "narration": "So they went shopping. Lemons cost thirty rupees. Sugar cost twenty rupees. And paper cups cost twenty rupees.",
+   "voice": "narrator",
+   "narrator": true,
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      4.1,
+      0,
+      0.3
+     ],
+     "face": 1.25,
+     "anim": "point",
+     "expr": "excited"
+    },
+    "tara": {
+     "at": [
+      3.7,
+      0,
+      -0.6
+     ],
+     "face": 1.45,
+     "anim": "idle",
+     "expr": "thinking"
+    },
+    "mira": {
+     "at": [
+      3.5,
+      0,
+      1.0
+     ],
+     "face": 1.05,
+     "anim": "idle",
+     "expr": "smile"
+    }
+   },
+   "props": [
+    {
+     "id": "stall_fresh_fruits",
+     "at": [
+      7.6,
+      0,
+      -0.1
+     ],
+     "rot": [
+      0,
+      -1.5708,
+      0
+     ],
+     "scale": 0.75
+    }
+   ],
+   "beats": [
+    {
+     "word": "Lemons",
+     "actor": "rio",
+     "anim": "give",
+     "hold": {
+      "R": "lemon_basket"
+     }
+    },
+    {
+     "word": "Sugar",
+     "actor": "tara",
+     "anim": "give",
+     "hold": {
+      "R": "sugar_pack"
+     }
+    },
+    {
+     "word": "cups",
+     "actor": "mira",
+     "anim": "cheer",
+     "hold": {
+      "R": "paper_cups"
+     }
+    }
+   ],
+   "camera": [
+    {
+     "move": "fixed",
+     "pos": [
+      6.3,
+      1.6,
+      1.95
+     ],
+     "look": [
+      3.8,
+      0.7,
+      0.1
+     ],
+     "toPos": [
+      6.1,
+      1.5,
+      1.85
+     ],
+     "toLook": [
+      3.8,
+      0.72,
+      0.1
+     ]
+    }
+   ],
+   "cards": [
+    {
+     "style": "row",
+     "word": "Lemons",
+     "y": 1010,
+     "title": "🛒 SHOPPING LIST",
+     "items": [
+      {
+       "icon": "🍋",
+       "value": "₹30",
+       "label": "Lemons",
+       "word": "thirty"
+      },
+      {
+       "icon": "🍚",
+       "value": "₹20",
+       "label": "Sugar",
+       "word": "twenty"
+      },
+      {
+       "icon": "🥤",
+       "value": "₹20",
+       "label": "Paper cups",
+       "word": "twenty#2"
+      }
+     ]
+    }
+   ],
+   "sfx": [
+    {
+     "file": "coin-register.mp3",
+     "word": "thirty",
+     "vol": 0.25
+    },
+    {
+     "file": "coin-register.mp3",
+     "word": "twenty",
+     "vol": 0.25
+    },
+    {
+     "file": "coin-register.mp3",
+     "word": "twenty#2",
+     "vol": 0.25
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "title": "Scene 5",
+   "place": "colony",
+   "narration": "Thirty plus twenty plus twenty. We spent seventy rupees.",
+   "voice": "tara",
+   "talking": "tara",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "tara": {
+     "at": [
+      0,
+      0,
+      0.9
+     ],
+     "face": 0,
+     "anim": "count",
+     "expr": "focused",
+     "hold": {
+      "L": "notebook"
+     }
+    },
+    "rio": {
+     "at": [
+      0.9,
+      0,
+      0.6
+     ],
+     "face": -0.6,
+     "anim": "idle",
+     "expr": "curious"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "camera": [
+    {
+     "move": "push_in",
+     "focus": [
+      "tara"
+     ],
+     "from": "mid",
+     "to": "close",
+     "angle": 12,
+     "elevation": 8
+    }
+   ],
+   "cards": [
+    {
+     "style": "equation",
+     "word": "Thirty",
+     "sub": "Money SPENT",
+     "subColor": "#dc2626",
+     "items": [
+      {
+       "text": "30",
+       "word": "Thirty"
+      },
+      {
+       "text": "+",
+       "word": "plus"
+      },
+      {
+       "text": "20",
+       "word": "twenty"
+      },
+      {
+       "text": "+",
+       "word": "plus#2"
+      },
+      {
+       "text": "20",
+       "word": "twenty#2"
+      },
+      {
+       "text": "=",
+       "word": "spent"
+      },
+      {
+       "text": "₹70",
+       "word": "seventy",
+       "answer": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "title": "Scene 6",
+   "place": "colony",
+   "narration": "No problem! We have twelve cups of lemonade. Ten rupees a cup. We will be rich!",
+   "voice": "rio",
+   "talking": "rio",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      0,
+      0,
+      -0.55
+     ],
+     "face": 0,
+     "anim": "thumbs_up",
+     "expr": "big_smile"
+    },
+    "tara": {
+     "at": [
+      -1.1,
+      0,
+      0.15
+     ],
+     "face": 0.55,
+     "hold": {
+      "L": "notebook"
+     },
+     "anim": "idle",
+     "expr": "smile"
+    },
+    "mira": {
+     "at": [
+      1.1,
+      0,
+      0.2
+     ],
+     "face": -0.5,
+     "anim": "cheer",
+     "expr": "excited"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.42,
+      0.78,
+      0.06
+     ],
+     "showWord": "twelve"
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.27,
+      0.78,
+      0.06
+     ],
+     "showWord": "twelve"
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.12,
+      0.78,
+      0.06
+     ],
+     "showWord": "twelve"
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.02999999999999997,
+      0.78,
+      0.06
+     ],
+     "showWord": "twelve"
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.18,
+      0.78,
+      0.06
+     ],
+     "showWord": "twelve"
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.33,
+      0.78,
+      0.06
+     ],
+     "showWord": "twelve"
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.42,
+      0.78,
+      0.19
+     ],
+     "showWord": "twelve"
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.27,
+      0.78,
+      0.19
+     ],
+     "showWord": "twelve"
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.12,
+      0.78,
+      0.19
+     ],
+     "showWord": "twelve"
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.02999999999999997,
+      0.78,
+      0.19
+     ],
+     "showWord": "twelve"
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.18,
+      0.78,
+      0.19
+     ],
+     "showWord": "twelve"
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.33,
+      0.78,
+      0.19
+     ],
+     "showWord": "twelve"
+    }
+   ],
+   "camera": [
+    {
+     "move": "fixed",
+     "pos": [
+      0.9,
+      1.5,
+      2.4
+     ],
+     "look": [
+      0,
+      0.95,
+      0.05
+     ],
+     "toPos": [
+      0.5,
+      1.35,
+      1.9
+     ],
+     "toLook": [
+      0,
+      0.9,
+      0.0
+     ]
+    }
+   ],
+   "cards": [
+    {
+     "style": "row",
+     "word": "twelve",
+     "items": [
+      {
+       "icon": "🥤",
+       "value": "12",
+       "label": "cups",
+       "word": "twelve"
+      },
+      {
+       "icon": "💰",
+       "value": "₹10",
+       "label": "each cup",
+       "word": "Ten"
+      }
+     ]
+    }
+   ],
+   "beats": [
+    {
+     "word": "rich",
+     "actor": "rio",
+     "anim": "jump",
+     "expr": "excited"
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "title": "Scene 7",
+   "place": "colony",
+   "narration": "Arre, lemonade on such a hot day? Wonderful! One cup for me, young man.",
+   "voice": "uncle",
+   "talking": "uncle",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "uncle": {
+     "at": [
+      3.4,
+      0,
+      1.4
+     ],
+     "anim": "walk",
+     "expr": "big_smile",
+     "hold": {
+      "R": "note_10"
+     },
+     "path": [
+      {
+       "at": 0,
+       "pos": [
+        3.4,
+        0,
+        1.4
+       ]
+      },
+      {
+       "at": 0.32,
+       "pos": [
+        0.35,
+        0,
+        0.95
+       ]
+      }
+     ]
+    },
+    "rio": {
+     "at": [
+      0,
+      0,
+      -0.55
+     ],
+     "face": 0,
+     "anim": "wave",
+     "expr": "big_smile"
+    },
+    "tara": {
+     "at": [
+      -1.1,
+      0,
+      0.15
+     ],
+     "face": 0.55,
+     "hold": {
+      "L": "notebook"
+     },
+     "anim": "idle",
+     "expr": "smile"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.42,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.27,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.12,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.02999999999999997,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.18,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.33,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.42,
+      0.78,
+      0.19
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.27,
+      0.78,
+      0.19
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.12,
+      0.78,
+      0.19
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.02999999999999997,
+      0.78,
+      0.19
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.18,
+      0.78,
+      0.19
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.33,
+      0.78,
+      0.19
+     ]
+    }
+   ],
+   "beats": [
+    {
+     "word": "Wonderful",
+     "actor": "uncle",
+     "anim": "talk",
+     "face": 3.14159
+    },
+    {
+     "word": "cup",
+     "actor": "uncle",
+     "anim": "give"
+    }
+   ],
+   "camera": [
+    {
+     "move": "fixed",
+     "pos": [
+      -2.0,
+      1.55,
+      2.4
+     ],
+     "look": [
+      0.4,
+      1.05,
+      0.6
+     ],
+     "toPos": [
+      -1.5,
+      1.45,
+      2.0
+     ],
+     "toLook": [
+      0.35,
+      1.0,
+      0.6
+     ]
+    }
+   ],
+   "sfx": [
+    {
+     "file": "coin-register.mp3",
+     "word": "man",
+     "offset": 0.2,
+     "vol": 0.4
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "title": "Scene 8",
+   "place": "colony",
+   "narration": "One by one, five people bought a cup. Fifty rupees went into Rio's box.",
+   "voice": "narrator",
+   "narrator": true,
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      0,
+      0,
+      -0.55
+     ],
+     "face": 0,
+     "anim": "give",
+     "expr": "big_smile"
+    },
+    "mira": {
+     "at": [
+      1.1,
+      0,
+      0.2
+     ],
+     "face": -0.5,
+     "anim": "cheer",
+     "expr": "happy"
+    },
+    "arun": {
+     "at": [
+      0.2,
+      0,
+      1.05
+     ],
+     "face": 3.14159,
+     "anim": "idle",
+     "expr": "smile"
+    },
+    "priya": {
+     "at": [
+      -0.5,
+      0,
+      1.15
+     ],
+     "face": 3.34159,
+     "anim": "wave",
+     "expr": "big_smile"
+    },
+    "amma": {
+     "at": [
+      0.9,
+      0,
+      1.3
+     ],
+     "face": 2.84159,
+     "anim": "idle",
+     "expr": "smile"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.42,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.27,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.12,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.02999999999999997,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.18,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.33,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.42,
+      0.78,
+      0.19
+     ]
+    }
+   ],
+   "camera": [
+    {
+     "move": "pull_back",
+     "focus": [
+      "rio",
+      "arun",
+      "amma"
+     ],
+     "from": "close",
+     "to": "mid",
+     "angle": 25,
+     "elevation": 14
+    }
+   ],
+   "counter": {
+    "from": 10,
+    "to": 50,
+    "label": "Money GOT 💰",
+    "startWord": "One",
+    "endWord": "Fifty"
+   },
+   "sfx": [
+    {
+     "file": "coin-register.mp3",
+     "word": "one",
+     "vol": 0.3
+    },
+    {
+     "file": "coin-register.mp3",
+     "word": "five",
+     "vol": 0.3
+    },
+    {
+     "file": "coin-register.mp3",
+     "word": "Fifty",
+     "vol": 0.35
+    }
+   ]
+  },
+  {
+   "id": 9,
+   "title": "Scene 9",
+   "place": "colony",
+   "narration": "But then, nobody came. The sun got hotter, the ice melted, and the lemonade turned warm.",
+   "voice": "narrator",
+   "narrator": true,
+   "light": {
+    "sunAngle": 10,
+    "sunHeight": 1.0,
+    "sunColor": "#ffd9a0",
+    "ambient": 0.7
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      0,
+      0,
+      -0.55
+     ],
+     "face": 0,
+     "anim": "hands_on_hips",
+     "expr": "worried"
+    },
+    "mira": {
+     "at": [
+      1.1,
+      0,
+      0.2
+     ],
+     "face": -0.5,
+     "anim": "idle",
+     "expr": "sad"
+    },
+    "appa": {
+     "at": [
+      9.0,
+      0,
+      1.0
+     ],
+     "anim": "walk",
+     "expr": "smile",
+     "path": [
+      {
+       "at": 0.15,
+       "pos": [
+        9.0,
+        0,
+        1.0
+       ]
+      },
+      {
+       "at": 0.575,
+       "pos": [
+        -1.6,
+        0,
+        -2.0
+       ]
+      },
+      {
+       "at": 1.0,
+       "pos": [
+        -0.9,
+        0,
+        -8.6
+       ]
+      }
+     ]
+    },
+    "amma": {
+     "at": [
+      10.6,
+      0,
+      1.5
+     ],
+     "anim": "walk",
+     "expr": "smile",
+     "path": [
+      {
+       "at": 0.22999999999999998,
+       "pos": [
+        10.6,
+        0,
+        1.5
+       ]
+      },
+      {
+       "at": 0.615,
+       "pos": [
+        -1.3,
+        0,
+        -2.0
+       ]
+      },
+      {
+       "at": 1.0,
+       "pos": [
+        -0.5,
+        0,
+        -8.6
+       ]
+      }
+     ]
+    },
+    "arun": {
+     "at": [
+      12.2,
+      0,
+      1.0
+     ],
+     "anim": "walk",
+     "expr": "smile",
+     "path": [
+      {
+       "at": 0.31,
+       "pos": [
+        12.2,
+        0,
+        1.0
+       ]
+      },
+      {
+       "at": 0.655,
+       "pos": [
+        -1.0,
+        0,
+        -2.0
+       ]
+      },
+      {
+       "at": 1.0,
+       "pos": [
+        -0.09999999999999998,
+        0,
+        -8.6
+       ]
+      }
+     ]
+    },
+    "priya": {
+     "at": [
+      13.8,
+      0,
+      1.5
+     ],
+     "anim": "walk",
+     "expr": "smile",
+     "path": [
+      {
+       "at": 0.39,
+       "pos": [
+        13.8,
+        0,
+        1.5
+       ]
+      },
+      {
+       "at": 0.6950000000000001,
+       "pos": [
+        -0.7000000000000002,
+        0,
+        -2.0
+       ]
+      },
+      {
+       "at": 1.0,
+       "pos": [
+        0.30000000000000016,
+        0,
+        -8.6
+       ]
+      }
+     ]
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.42,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.27,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.12,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.02999999999999997,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.18,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.33,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.42,
+      0.78,
+      0.19
+     ]
+    }
+   ],
+   "beats": [
+    {
+     "word": "warm",
+     "actor": "rio",
+     "anim": "idle",
+     "expr": "sad"
+    }
+   ],
+   "camera": [
+    {
+     "move": "fixed",
+     "pos": [
+      0,
+      3.2,
+      8.5
+     ],
+     "look": [
+      0,
+      0.9,
+      -1.5
+     ],
+     "toPos": [
+      0,
+      2.0,
+      5.0
+     ],
+     "toLook": [
+      0,
+      1.0,
+      -0.5
+     ]
+    }
+   ],
+   "fx": {
+    "shake": {
+     "amount": 0.12
+    }
+   },
+   "caption": {
+    "text": "☀️ So hot… and nobody comes!",
+    "atWord": "nobody"
+   }
+  },
+  {
+   "id": 10,
+   "title": "Scene 10",
+   "place": "colony",
+   "narration": "Wait. We spent seventy rupees, and we only got fifty. Did we… lose money?!",
+   "voice": "rio",
+   "talking": "rio",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      0,
+      0,
+      -0.55
+     ],
+     "face": 0,
+     "anim": "think",
+     "expr": "shocked"
+    },
+    "tara": {
+     "at": [
+      -1.1,
+      0,
+      0.15
+     ],
+     "face": 0.55,
+     "hold": {
+      "L": "notebook"
+     },
+     "anim": "idle",
+     "expr": "worried"
+    },
+    "mira": {
+     "at": [
+      1.1,
+      0,
+      0.2
+     ],
+     "face": -0.5,
+     "anim": "idle",
+     "expr": "worried"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.42,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.27,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.12,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.02999999999999997,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.18,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      0.33,
+      0.78,
+      0.06
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.42,
+      0.78,
+      0.19
+     ]
+    }
+   ],
+   "camera": [
+    {
+     "move": "push_in",
+     "focus": [
+      "rio"
+     ],
+     "from": "mid",
+     "to": "close",
+     "zoom": 0.85,
+     "angle": 0,
+     "elevation": 6
+    }
+   ],
+   "cards": [
+    {
+     "style": "row",
+     "word": "spent",
+     "items": [
+      {
+       "icon": "🛒",
+       "value": "₹70",
+       "label": "SPENT",
+       "color": "#dc2626",
+       "tint": "#fee2e2",
+       "word": "seventy"
+      },
+      {
+       "icon": "💰",
+       "value": "₹50",
+       "label": "GOT",
+       "color": "#16a34a",
+       "tint": "#dcfce7",
+       "word": "fifty"
+      }
+     ]
+    }
+   ],
+   "beats": [
+    {
+     "word": "lose",
+     "actor": "rio",
+     "anim": "idle",
+     "expr": "shocked"
+    }
+   ],
+   "fx": {
+    "shake": {
+     "amount": 0.4,
+     "from": 0.75,
+     "to": 0.9
+    }
+   }
+  },
+  {
+   "id": 11,
+   "title": "Scene 11",
+   "place": "colony",
+   "narration": "Seventy minus fifty is twenty. We lost twenty rupees.",
+   "voice": "tara",
+   "talking": "tara",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "tara": {
+     "at": [
+      0,
+      0,
+      0.9
+     ],
+     "face": 0,
+     "anim": "count",
+     "expr": "sad",
+     "hold": {
+      "L": "notebook"
+     }
+    },
+    "rio": {
+     "at": [
+      0.9,
+      0,
+      0.6
+     ],
+     "face": -0.6,
+     "anim": "idle",
+     "expr": "sad"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "camera": [
+    {
+     "move": "push_in",
+     "focus": [
+      "tara"
+     ],
+     "from": "mid",
+     "to": "close",
+     "angle": -10,
+     "elevation": 8
+    }
+   ],
+   "cards": [
+    {
+     "style": "equation",
+     "word": "Seventy",
+     "sub": "LOSS 😟",
+     "subColor": "#dc2626",
+     "items": [
+      {
+       "text": "70",
+       "word": "Seventy"
+      },
+      {
+       "text": "−",
+       "word": "minus"
+      },
+      {
+       "text": "50",
+       "word": "fifty"
+      },
+      {
+       "text": "=",
+       "word": "is"
+      },
+      {
+       "text": "₹20",
+       "word": "twenty",
+       "answer": true,
+       "color": "#dc2626"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": 12,
+   "title": "Scene 12",
+   "place": "colony",
+   "narration": "Friends, help me! Look carefully at the street. Where is everybody going? Say it out loud!",
+   "voice": "rio",
+   "talking": "rio",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      0,
+      0,
+      0.7
+     ],
+     "face": 0,
+     "anim": "point",
+     "expr": "excited"
+    },
+    "appa": {
+     "at": [
+      9.0,
+      0,
+      1.0
+     ],
+     "anim": "walk",
+     "expr": "smile",
+     "path": [
+      {
+       "at": 0.0,
+       "pos": [
+        9.0,
+        0,
+        1.0
+       ]
+      },
+      {
+       "at": 0.5,
+       "pos": [
+        -1.6,
+        0,
+        -2.0
+       ]
+      },
+      {
+       "at": 1.0,
+       "pos": [
+        -0.9,
+        0,
+        -8.6
+       ]
+      }
+     ]
+    },
+    "amma": {
+     "at": [
+      10.6,
+      0,
+      1.5
+     ],
+     "anim": "walk",
+     "expr": "smile",
+     "path": [
+      {
+       "at": 0.08,
+       "pos": [
+        10.6,
+        0,
+        1.5
+       ]
+      },
+      {
+       "at": 0.54,
+       "pos": [
+        -1.3,
+        0,
+        -2.0
+       ]
+      },
+      {
+       "at": 1.0,
+       "pos": [
+        -0.5,
+        0,
+        -8.6
+       ]
+      }
+     ]
+    },
+    "arun": {
+     "at": [
+      12.2,
+      0,
+      1.0
+     ],
+     "anim": "walk",
+     "expr": "smile",
+     "path": [
+      {
+       "at": 0.16,
+       "pos": [
+        12.2,
+        0,
+        1.0
+       ]
+      },
+      {
+       "at": 0.58,
+       "pos": [
+        -1.0,
+        0,
+        -2.0
+       ]
+      },
+      {
+       "at": 1.0,
+       "pos": [
+        -0.09999999999999998,
+        0,
+        -8.6
+       ]
+      }
+     ]
+    },
+    "priya": {
+     "at": [
+      13.8,
+      0,
+      1.5
+     ],
+     "anim": "walk",
+     "expr": "smile",
+     "path": [
+      {
+       "at": 0.24,
+       "pos": [
+        13.8,
+        0,
+        1.5
+       ]
+      },
+      {
+       "at": 0.62,
+       "pos": [
+        -0.7000000000000002,
+        0,
+        -2.0
+       ]
+      },
+      {
+       "at": 1.0,
+       "pos": [
+        0.30000000000000016,
+        0,
+        -8.6
+       ]
+      }
+     ]
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "pause": {
+    "kind": "look",
+    "seconds": 6,
+    "prompt": "Where is everybody going?",
+    "hint": "👀 Look at the people!"
+   },
+   "camera": [
+    {
+     "move": "push_in",
+     "focus": [
+      "rio"
+     ],
+     "from": "mid",
+     "to": "close",
+     "angle": 0,
+     "elevation": 5,
+     "untilWord": "loud",
+     "untilOffset": 0.4
+    },
+    {
+     "move": "fixed",
+     "pos": [
+      2.2,
+      2.3,
+      4.5
+     ],
+     "look": [
+      -0.8,
+      1.2,
+      -6.5
+     ],
+     "toPos": [
+      1.0,
+      2.0,
+      2.5
+     ],
+     "toLook": [
+      -0.7,
+      1.3,
+      -7.5
+     ]
+    }
+   ]
+  },
+  {
+   "id": 13,
+   "title": "Scene 13",
+   "place": "colony",
+   "narration": "Yes! To the park! Everyone is going to the park.",
+   "voice": "narrator",
+   "narrator": true,
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "appa": {
+     "at": [
+      -2.4,
+      0,
+      -2.4
+     ],
+     "anim": "walk",
+     "expr": "smile",
+     "path": [
+      {
+       "at": 0.0,
+       "pos": [
+        -2.4,
+        0,
+        -2.4
+       ]
+      },
+      {
+       "at": 1.0,
+       "pos": [
+        -0.9,
+        0,
+        -9.0
+       ]
+      }
+     ]
+    },
+    "amma": {
+     "at": [
+      -1.9,
+      0,
+      -1.7999999999999998
+     ],
+     "anim": "walk",
+     "expr": "smile",
+     "path": [
+      {
+       "at": 0.0,
+       "pos": [
+        -1.9,
+        0,
+        -1.7999999999999998
+       ]
+      },
+      {
+       "at": 1.0,
+       "pos": [
+        -0.5,
+        0,
+        -9.0
+       ]
+      }
+     ]
+    },
+    "arun": {
+     "at": [
+      -1.4,
+      0,
+      -2.4
+     ],
+     "anim": "walk",
+     "expr": "smile",
+     "path": [
+      {
+       "at": 0.0,
+       "pos": [
+        -1.4,
+        0,
+        -2.4
+       ]
+      },
+      {
+       "at": 1.0,
+       "pos": [
+        -0.09999999999999998,
+        0,
+        -9.0
+       ]
+      }
+     ]
+    },
+    "priya": {
+     "at": [
+      -0.8999999999999999,
+      0,
+      -1.7999999999999998
+     ],
+     "anim": "walk",
+     "expr": "smile",
+     "path": [
+      {
+       "at": 0.0,
+       "pos": [
+        -0.8999999999999999,
+        0,
+        -1.7999999999999998
+       ]
+      },
+      {
+       "at": 1.0,
+       "pos": [
+        0.30000000000000016,
+        0,
+        -9.0
+       ]
+      }
+     ]
+    },
+    "rio": {
+     "at": [
+      0,
+      0,
+      0.7
+     ],
+     "face": 3.14159,
+     "anim": "look_far",
+     "expr": "surprised"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "camera": [
+    {
+     "move": "fixed",
+     "pos": [
+      1.3,
+      1.9,
+      2.6
+     ],
+     "look": [
+      -0.7,
+      1.3,
+      -6.5
+     ],
+     "toPos": [
+      0.9,
+      1.7,
+      1.9
+     ],
+     "toLook": [
+      -0.7,
+      1.4,
+      -7.5
+     ]
+    }
+   ],
+   "cards": [
+    {
+     "style": "lesson",
+     "word": "park",
+     "text": "🎈 Everyone is going to the PARK! 🎈"
+    }
+   ],
+   "sfx": [
+    {
+     "file": "ding.wav",
+     "word": "Yes",
+     "vol": 0.4
+    }
+   ]
+  },
+  {
+   "id": 14,
+   "title": "Scene 14",
+   "place": "colony",
+   "narration": "So what should I do? One: shout louder, right here. Two: take my stall to the park. Three: close my shop and go home. Show me with your fingers: one, two or three!",
+   "voice": "rio",
+   "talking": "rio",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      0,
+      0,
+      0.7
+     ],
+     "face": 0,
+     "anim": "think",
+     "expr": "thinking"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "pause": {
+    "kind": "choose",
+    "seconds": 8,
+    "prompt": "What should Rio do?",
+    "cards": [
+     {
+      "icon": "📢",
+      "text": "Shout louder right here",
+      "color": "#f8a51b"
+     },
+     {
+      "icon": "🌳",
+      "text": "Take the stall to the park",
+      "color": "#16a34a"
+     },
+     {
+      "icon": "🏠",
+      "text": "Close the shop, go home",
+      "color": "#7c5cf2"
+     }
+    ]
+   },
+   "beats": [
+    {
+     "word": "One",
+     "actor": "rio",
+     "anim": "count"
+    },
+    {
+     "word": "Show",
+     "actor": "rio",
+     "anim": "wave",
+     "expr": "big_smile"
+    }
+   ],
+   "camera": [
+    {
+     "move": "push_in",
+     "focus": [
+      "rio"
+     ],
+     "from": "mid",
+     "to": "close",
+     "angle": 0,
+     "elevation": 5
+    }
+   ]
+  },
+  {
+   "id": 15,
+   "title": "Scene 15",
+   "place": "colony",
+   "narration": "Two! Two! Go where the people are! And I will paint a giant smiling lemon sign!",
+   "voice": "mira",
+   "talking": "mira",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "mira": {
+     "at": [
+      0.3,
+      0,
+      0.8
+     ],
+     "face": -0.2,
+     "anim": "jump",
+     "expr": "excited"
+    },
+    "rio": {
+     "at": [
+      -0.6,
+      0,
+      0.6
+     ],
+     "face": 0.4,
+     "anim": "cheer",
+     "expr": "big_smile"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "big_lemon_sign",
+     "at": [
+      1.3,
+      0,
+      0.9
+     ],
+     "showWord": "paint",
+     "rot": [
+      0,
+      -0.35,
+      0
+     ]
+    }
+   ],
+   "beats": [
+    {
+     "word": "paint",
+     "actor": "mira",
+     "anim": "point",
+     "expr": "big_smile"
+    }
+   ],
+   "camera": [
+    {
+     "move": "orbit",
+     "focus": [
+      "mira",
+      "rio"
+     ],
+     "distance": "mid",
+     "angle": 15,
+     "elevation": 10
+    }
+   ],
+   "cards": [
+    {
+     "style": "badges",
+     "word": "Two",
+     "items": [
+      {
+       "icon": "✌️",
+       "text": "Answer: 2!",
+       "color": "#22c55e"
+      }
+     ]
+    }
+   ],
+   "fx": {
+    "particles": {
+     "type": "sparkles",
+     "amount": 0.4
+    }
+   }
+  },
+  {
+   "id": 16,
+   "title": "Scene 16",
+   "place": "colony",
+   "narration": "So they added fresh ice, put up Mira's sign, and moved the stall to the park gate.",
+   "voice": "narrator",
+   "narrator": true,
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      -0.6,
+      0,
+      -6.65
+     ],
+     "face": 0,
+     "anim": "wave",
+     "expr": "big_smile"
+    },
+    "mira": {
+     "at": [
+      0.6,
+      0,
+      -5.4
+     ],
+     "face": -0.4,
+     "anim": "cheer",
+     "expr": "happy"
+    },
+    "tara": {
+     "at": [
+      -1.8,
+      0,
+      -5.5
+     ],
+     "face": 0.5,
+     "anim": "thumbs_up",
+     "expr": "smile",
+     "hold": {
+      "L": "notebook"
+     }
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      -0.6,
+      0,
+      -6.1
+     ]
+    },
+    {
+     "id": "big_lemon_sign",
+     "at": [
+      0.9,
+      0,
+      -5.6
+     ],
+     "rot": [
+      0,
+      -0.3,
+      0
+     ]
+    },
+    {
+     "id": "ice_bucket",
+     "at": [
+      -0.48,
+      0.78,
+      -6.0
+     ],
+     "showWord": "ice"
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -1.02,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.87,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.72,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.5700000000000001,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.42,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.26999999999999996,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -1.02,
+      0.78,
+      -5.909999999999999
+     ]
+    }
+   ],
+   "camera": [
+    {
+     "move": "fixed",
+     "pos": [
+      3.2,
+      4.2,
+      1.5
+     ],
+     "look": [
+      -0.6,
+      0.9,
+      -6.3
+     ],
+     "toPos": [
+      1.4,
+      1.9,
+      -2.0
+     ],
+     "toLook": [
+      -0.6,
+      1.0,
+      -6.3
+     ]
+    }
+   ],
+   "sfx": [
+    {
+     "file": "whoosh.wav",
+     "word": "moved",
+     "vol": 0.5
+    }
+   ],
+   "fx": {
+    "transition": "flash"
+   }
+  },
+  {
+   "id": 17,
+   "title": "Scene 17",
+   "place": "colony",
+   "narration": "Two cups please! My grandchildren are very thirsty!",
+   "voice": "uncle",
+   "talking": "uncle",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "uncle": {
+     "at": [
+      -0.4,
+      0,
+      -4.9
+     ],
+     "face": 3.14159,
+     "anim": "talk",
+     "expr": "big_smile",
+     "hold": {
+      "R": "note_20"
+     }
+    },
+    "arun": {
+     "at": [
+      0.2,
+      0,
+      -4.7
+     ],
+     "face": 3.4415899999999997,
+     "anim": "jump",
+     "expr": "excited"
+    },
+    "priya": {
+     "at": [
+      -1.1,
+      0,
+      -4.8
+     ],
+     "face": 2.84159,
+     "anim": "wave",
+     "expr": "big_smile"
+    },
+    "rio": {
+     "at": [
+      -0.6,
+      0,
+      -6.65
+     ],
+     "face": 0,
+     "anim": "give",
+     "expr": "big_smile"
+    },
+    "amma": {
+     "at": [
+      1.4,
+      0,
+      -5.0
+     ],
+     "face": -2.6,
+     "anim": "idle",
+     "expr": "smile"
+    },
+    "appa": {
+     "at": [
+      -2.2,
+      0,
+      -5.2
+     ],
+     "face": 2.4,
+     "anim": "idle",
+     "expr": "smile"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      -0.6,
+      0,
+      -6.1
+     ]
+    },
+    {
+     "id": "big_lemon_sign",
+     "at": [
+      0.9,
+      0,
+      -5.6
+     ],
+     "rot": [
+      0,
+      -0.3,
+      0
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -1.02,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.87,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.72,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.5700000000000001,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.42,
+      0.78,
+      -6.04
+     ]
+    }
+   ],
+   "camera": [
+    {
+     "move": "fixed",
+     "pos": [
+      2.6,
+      3.1,
+      -1.0
+     ],
+     "look": [
+      -0.6,
+      0.85,
+      -5.7
+     ],
+     "toPos": [
+      2.0,
+      2.6,
+      -1.9
+     ],
+     "toLook": [
+      -0.6,
+      0.9,
+      -5.8
+     ]
+    }
+   ],
+   "sfx": [
+    {
+     "file": "coin-register.mp3",
+     "word": "please",
+     "vol": 0.4
+    }
+   ]
+  },
+  {
+   "id": 18,
+   "title": "Scene 18",
+   "place": "colony",
+   "narration": "Now a maths question! I have seven cups left. Each cup is ten rupees. If I sell them all, how much money will I get? Count with me!",
+   "voice": "rio",
+   "talking": "rio",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      -0.6,
+      0,
+      -5.2
+     ],
+     "face": 0,
+     "anim": "point",
+     "expr": "excited"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      -0.6,
+      0,
+      -6.1
+     ]
+    },
+    {
+     "id": "big_lemon_sign",
+     "at": [
+      0.9,
+      0,
+      -5.6
+     ],
+     "rot": [
+      0,
+      -0.3,
+      0
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -1.02,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.87,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.72,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.5700000000000001,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.42,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.26999999999999996,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -1.02,
+      0.78,
+      -5.909999999999999
+     ]
+    }
+   ],
+   "pause": {
+    "kind": "count",
+    "seconds": 10,
+    "prompt": "7 cups × ₹10 each = ?",
+    "count": {
+     "n": 7,
+     "icon": "🥤",
+     "tag": "₹10",
+     "question": "How much money will Rio get?"
+    }
+   },
+   "beats": [
+    {
+     "word": "seven",
+     "actor": "rio",
+     "anim": "count"
+    },
+    {
+     "word": "Count",
+     "actor": "rio",
+     "anim": "cheer",
+     "expr": "big_smile"
+    }
+   ],
+   "camera": [
+    {
+     "move": "push_in",
+     "focus": [
+      "rio"
+     ],
+     "from": "mid",
+     "to": "close",
+     "angle": 5,
+     "elevation": 6
+    }
+   ]
+  },
+  {
+   "id": 19,
+   "title": "Scene 19",
+   "place": "colony",
+   "narration": "Ten, twenty, thirty, forty, fifty, sixty, seventy! Seventy rupees! Plus the fifty we already had makes one hundred and twenty.",
+   "voice": "tara",
+   "talking": "tara",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "tara": {
+     "at": [
+      -0.6,
+      0,
+      -5.2
+     ],
+     "face": 0,
+     "anim": "count",
+     "expr": "focused",
+     "hold": {
+      "L": "notebook"
+     }
+    },
+    "rio": {
+     "at": [
+      0.3,
+      0,
+      -5.5
+     ],
+     "face": -0.5,
+     "anim": "idle",
+     "expr": "happy"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      -0.6,
+      0,
+      -6.1
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -1.02,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.87,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.72,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.5700000000000001,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.42,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.26999999999999996,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -1.02,
+      0.78,
+      -5.909999999999999
+     ]
+    }
+   ],
+   "camera": [
+    {
+     "move": "push_in",
+     "focus": [
+      "tara"
+     ],
+     "from": "mid",
+     "to": "close",
+     "angle": -8,
+     "elevation": 8
+    }
+   ],
+   "cards": [
+    {
+     "style": "row",
+     "word": "Ten",
+     "untilWord": "Plus",
+     "h": 230,
+     "items": [
+      {
+       "icon": "🥤",
+       "value": "10",
+       "label": "",
+       "word": "Ten"
+      },
+      {
+       "icon": "🥤",
+       "value": "20",
+       "label": "",
+       "word": "twenty"
+      },
+      {
+       "icon": "🥤",
+       "value": "30",
+       "label": "",
+       "word": "thirty"
+      },
+      {
+       "icon": "🥤",
+       "value": "40",
+       "label": "",
+       "word": "forty"
+      }
+     ]
+    },
+    {
+     "style": "equation",
+     "word": "Plus",
+     "sub": "Money GOT",
+     "subColor": "#16a34a",
+     "items": [
+      {
+       "text": "₹70",
+       "word": "Plus"
+      },
+      {
+       "text": "+",
+       "word": "the"
+      },
+      {
+       "text": "₹50",
+       "word": "fifty#2"
+      },
+      {
+       "text": "=",
+       "word": "makes"
+      },
+      {
+       "text": "₹120",
+       "word": "hundred",
+       "answer": true,
+       "color": "#16a34a"
+      }
+     ]
+    }
+   ],
+   "counter": {
+    "from": 50,
+    "to": 120,
+    "label": "Money GOT 💰",
+    "startWord": "Plus",
+    "endWord": "twenty#2"
+   },
+   "sfx": [
+    {
+     "file": "pop.wav",
+     "word": "Ten",
+     "vol": 0.3
+    },
+    {
+     "file": "pop.wav",
+     "word": "twenty",
+     "vol": 0.3
+    },
+    {
+     "file": "pop.wav",
+     "word": "thirty",
+     "vol": 0.3
+    },
+    {
+     "file": "pop.wav",
+     "word": "forty",
+     "vol": 0.3
+    },
+    {
+     "file": "pop.wav",
+     "word": "fifty",
+     "vol": 0.3
+    },
+    {
+     "file": "pop.wav",
+     "word": "sixty",
+     "vol": 0.3
+    },
+    {
+     "file": "pop.wav",
+     "word": "seventy",
+     "vol": 0.3
+    }
+   ]
+  },
+  {
+   "id": 20,
+   "title": "Scene 20",
+   "place": "colony",
+   "narration": "We spent seventy. One hundred and twenty minus seventy is fifty. We made fifty rupees of profit!",
+   "voice": "tara",
+   "talking": "tara",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "tara": {
+     "at": [
+      -0.6,
+      0,
+      -5.2
+     ],
+     "face": 0,
+     "anim": "count",
+     "expr": "happy",
+     "hold": {
+      "L": "notebook"
+     }
+    },
+    "rio": {
+     "at": [
+      0.3,
+      0,
+      -5.5
+     ],
+     "face": -0.5,
+     "anim": "cheer",
+     "expr": "excited"
+    },
+    "mira": {
+     "at": [
+      -1.4,
+      0,
+      -5.4
+     ],
+     "face": 0.5,
+     "anim": "jump",
+     "expr": "excited"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      -0.6,
+      0,
+      -6.1
+     ]
+    }
+   ],
+   "camera": [
+    {
+     "move": "pull_back",
+     "focus": [
+      "tara",
+      "rio",
+      "mira"
+     ],
+     "from": "close",
+     "to": "mid",
+     "angle": 0,
+     "elevation": 8
+    }
+   ],
+   "cards": [
+    {
+     "style": "equation",
+     "word": "One",
+     "sub": "PROFIT! 🎉",
+     "subColor": "#16a34a",
+     "items": [
+      {
+       "text": "120",
+       "word": "One"
+      },
+      {
+       "text": "−",
+       "word": "minus"
+      },
+      {
+       "text": "70",
+       "word": "seventy#2"
+      },
+      {
+       "text": "=",
+       "word": "is"
+      },
+      {
+       "text": "₹50",
+       "word": "fifty",
+       "answer": true,
+       "color": "#16a34a"
+      }
+     ]
+    },
+    {
+     "style": "lesson",
+     "word": "profit",
+     "y": 640,
+     "size": 44,
+     "text": "PROFIT = Money got − Money spent"
+    }
+   ],
+   "fx": {
+    "particles": {
+     "type": "confetti",
+     "amount": 0.55,
+     "from": 0.7
+    }
+   },
+   "sfx": [
+    {
+     "file": "sparkle.wav",
+     "word": "profit",
+     "vol": 0.6
+    }
+   ]
+  },
+  {
+   "id": 21,
+   "title": "Scene 21",
+   "place": "colony",
+   "narration": "Profit! If you said two, you think like a real business person. And if you counted seventy, you are a maths star!",
+   "voice": "rio",
+   "talking": "rio",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      -0.6,
+      0,
+      -5.2
+     ],
+     "face": 0,
+     "anim": "victory",
+     "expr": "big_smile"
+    },
+    "tara": {
+     "at": [
+      -1.5,
+      0,
+      -5.4
+     ],
+     "face": 0.4,
+     "anim": "thumbs_up",
+     "expr": "happy",
+     "hold": {
+      "L": "notebook"
+     }
+    },
+    "mira": {
+     "at": [
+      0.3,
+      0,
+      -5.4
+     ],
+     "face": -0.4,
+     "anim": "peace",
+     "expr": "big_smile"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      -0.6,
+      0,
+      -6.1
+     ]
+    },
+    {
+     "id": "big_lemon_sign",
+     "at": [
+      0.9,
+      0,
+      -5.6
+     ],
+     "rot": [
+      0,
+      -0.3,
+      0
+     ]
+    }
+   ],
+   "camera": [
+    {
+     "move": "push_in",
+     "focus": [
+      "rio",
+      "tara",
+      "mira"
+     ],
+     "from": "wide",
+     "to": "mid",
+     "angle": 0,
+     "elevation": 10
+    }
+   ],
+   "cards": [
+    {
+     "style": "badges",
+     "word": "business",
+     "items": [
+      {
+       "icon": "🧠",
+       "text": "Business Brain",
+       "color": "#a78bfa",
+       "word": "business"
+      },
+      {
+       "icon": "⭐",
+       "text": "Maths Star",
+       "color": "#f8a51b",
+       "word": "maths"
+      }
+     ]
+    }
+   ],
+   "fx": {
+    "particles": {
+     "type": "confetti",
+     "amount": 0.6
+    }
+   },
+   "sfx": [
+    {
+     "file": "sparkle.wav",
+     "word": "business",
+     "vol": 0.6
+    },
+    {
+     "file": "sparkle.wav",
+     "word": "maths",
+     "vol": 0.6
+    }
+   ]
+  },
+  {
+   "id": 22,
+   "title": "Scene 22",
+   "place": "colony",
+   "narration": "Remember: before you sell, count what you spend. Then sell where your customers are!",
+   "voice": "narrator",
+   "narrator": true,
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      -0.6,
+      0,
+      -6.65
+     ],
+     "face": 0,
+     "anim": "give",
+     "expr": "big_smile"
+    },
+    "priya": {
+     "at": [
+      -0.3,
+      0,
+      -5.2
+     ],
+     "face": 3.14159,
+     "anim": "idle",
+     "expr": "happy"
+    },
+    "arun": {
+     "at": [
+      0.5,
+      0,
+      -5.3
+     ],
+     "face": 2.74159,
+     "anim": "idle",
+     "expr": "smile"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      -0.6,
+      0,
+      -6.1
+     ]
+    },
+    {
+     "id": "big_lemon_sign",
+     "at": [
+      0.9,
+      0,
+      -5.6
+     ],
+     "rot": [
+      0,
+      -0.3,
+      0
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -1.02,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.87,
+      0.78,
+      -6.04
+     ]
+    },
+    {
+     "id": "lemonade_cup",
+     "at": [
+      -0.72,
+      0.78,
+      -6.04
+     ]
+    }
+   ],
+   "camera": [
+    {
+     "move": "fixed",
+     "pos": [
+      4.5,
+      3.4,
+      0.5
+     ],
+     "look": [
+      -0.6,
+      1.0,
+      -6.2
+     ],
+     "toPos": [
+      3.0,
+      2.6,
+      -1.2
+     ],
+     "toLook": [
+      -0.6,
+      1.0,
+      -6.3
+     ]
+    }
+   ],
+   "cards": [
+    {
+     "style": "lesson",
+     "word": "Remember",
+     "text": "1️⃣ Count what you SPEND",
+     "size": 50
+    },
+    {
+     "style": "lesson",
+     "word": "sell#2",
+     "y": 470,
+     "text": "2️⃣ Sell where your CUSTOMERS are",
+     "size": 50
+    }
+   ]
+  },
+  {
+   "id": 23,
+   "title": "Scene 23",
+   "place": "colony",
+   "narration": "Now it is YOUR turn! Pick one mission, do it in real life, and ask a grown-up at home to approve it.",
+   "voice": "rio",
+   "talking": "rio",
+   "light": {
+    "sunAngle": 35,
+    "sunHeight": 0.85,
+    "sunColor": "#fff1d0",
+    "ambient": 0.62
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      -0.6,
+      0,
+      -5.0
+     ],
+     "face": 0,
+     "anim": "point",
+     "expr": "excited"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      -0.6,
+      0,
+      -6.1
+     ]
+    }
+   ],
+   "extraTime": 4.5,
+   "camera": [
+    {
+     "move": "push_in",
+     "focus": [
+      "rio"
+     ],
+     "from": "mid",
+     "to": "close",
+     "angle": 0,
+     "elevation": 4
+    }
+   ],
+   "cards": [
+    {
+     "style": "missions",
+     "word": "mission",
+     "title": "🚀 YOUR MISSION · choose one",
+     "step": 0.6,
+     "footer": "✅ A grown-up at home approves",
+     "items": [
+      {
+       "icon": "🍋",
+       "text": "Do 10 lemon-squeeze jumps! (jump + squeeze your hands)",
+       "color": "#f8a51b"
+      },
+      {
+       "icon": "🛍️",
+       "text": "Help a grown-up put the shopping away. Find 3 price tags!",
+       "color": "#13b5c6"
+      },
+      {
+       "icon": "🎨",
+       "text": "Draw your own shop sign with a price on it!",
+       "color": "#ff4f8b"
+      }
+     ]
+    }
+   ],
+   "sfx": [
+    {
+     "file": "sparkle.wav",
+     "word": "mission",
+     "vol": 0.5
+    }
+   ]
+  },
+  {
+   "id": 24,
+   "title": "Scene 24",
+   "place": "colony",
+   "narration": "Next time, a new lemonade stall opens right across the road, selling lemonade for only five rupees! What will Rio do?",
+   "voice": "narrator",
+   "narrator": true,
+   "light": {
+    "sunAngle": 60,
+    "sunHeight": 0.6,
+    "sunColor": "#ffd7a8",
+    "ambient": 0.55
+   },
+   "actors": {
+    "rio": {
+     "at": [
+      -0.6,
+      0,
+      -6.65
+     ],
+     "face": 0.9,
+     "anim": "idle",
+     "expr": "shocked"
+    },
+    "tara": {
+     "at": [
+      -1.5,
+      0,
+      -5.6
+     ],
+     "face": 1.2,
+     "anim": "idle",
+     "expr": "worried",
+     "hold": {
+      "L": "notebook"
+     }
+    },
+    "mira": {
+     "at": [
+      0.4,
+      0,
+      -5.4
+     ],
+     "face": 1.6,
+     "anim": "idle",
+     "expr": "surprised"
+    }
+   },
+   "props": [
+    {
+     "id": "rio_stall",
+     "at": [
+      -0.6,
+      0,
+      -6.1
+     ]
+    },
+    {
+     "id": "rival_stall",
+     "at": [
+      5.2,
+      0,
+      -6.0
+     ],
+     "rot": [
+      0,
+      -0.5,
+      0
+     ],
+     "showWord": "new"
+    },
+    {
+     "id": "zungga_logo",
+     "endCard": true,
+     "show": 0.88
+    }
+   ],
+   "camera": [
+    {
+     "move": "fixed",
+     "pos": [
+      -3.2,
+      1.6,
+      -2.2
+     ],
+     "look": [
+      5.2,
+      1.4,
+      -6.0
+     ],
+     "toPos": [
+      -1.0,
+      1.5,
+      -3.4
+     ],
+     "toLook": [
+      5.2,
+      1.5,
+      -6.0
+     ],
+     "untilWord": "five",
+     "untilOffset": 0.3
+    },
+    {
+     "move": "push_in",
+     "focus": [
+      "rio"
+     ],
+     "from": "mid",
+     "to": "close",
+     "zoom": 0.8,
+     "angle": 40,
+     "elevation": 6
+    }
+   ],
+   "caption": {
+    "text": "NEXT TIME: ₹10 vs ₹5! 😱",
+    "atWord": "What",
+    "big": true
+   },
+   "fx": {
+    "shake": {
+     "amount": 0.35,
+     "from": 0.55,
+     "to": 0.65
+    }
+   },
+   "sfx": [
+    {
+     "file": "whoosh.wav",
+     "word": "new",
+     "vol": 0.5
+    },
+    {
+     "file": "thunder.wav",
+     "word": "five",
+     "vol": 0.18
+    }
+   ]
+  }
+ ]
+}

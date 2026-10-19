@@ -94,6 +94,17 @@
       outfit: { kind: 'worker', top: 0xd6b98c, overalls: 0x6b4423, bottom: 'pants', pants: 0x6b4423, shoe: 0x3b2416, shoe2: 0x6b4423, belt: 0x3b2416, boots: true } },
     vanilla: { label: 'Vanilla — Quality Inspector', role: 'quality inspector', H: 1.3, build: 0.9, skin: 0xebab7e, hair: 'wavy', hairColor: 0x6b3a1f, brow: 0x4a2814, eyes: 0x4a2a14, female: true, glasses: 0xec4899, hat: { kind: 'chef', color: 0xffffff }, prop: 'magnifier',
       outfit: { kind: 'worker', top: 0xf8f4ec, apron: 0xf472b6, bottom: 'pants', pants: 0x6b3a1f, shoe: 0xec4899, shoe2: 0xffffff } },
+    // everyday colony folk (episode extras): a grandfather, parents, neighbour kids — plain clothes, no work hats
+    thatha: { label: 'Thatha — Friendly Grandfather', role: 'grandfather', H: 1.6, build: 1.12, skin: 0xc98a5c, hair: 'short', hairColor: 0xd9d9d9, brow: 0xcfcfcf, eyes: 0x3a2214, mustache: 0xe5e5e5, glasses: 0x3b2a20,
+      outfit: { kind: 'worker', top: 0xf7f3e8, blazer: 0x8a6a45, bottom: 'pants', pants: 0xe9e2cf, shoe: 0x5b3420, shoe2: 0x5b3420 } },
+    appa: { label: 'Appa — Colony Dad', role: 'dad', H: 1.62, build: 1.08, skin: 0xb9784d, hair: 'short', hairColor: 0x1d1410, brow: 0x1d1410, eyes: 0x3a2214, mustache: 0x1d1410,
+      outfit: { kind: 'worker', top: 0x3b82f6, bottom: 'pants', pants: 0x334155, shoe: 0x3b2416, shoe2: 0x3b2416 } },
+    amma: { label: 'Amma — Colony Mom', role: 'mom', H: 1.55, build: 1.0, skin: 0xc98a5c, hair: 'buns', hairColor: 0x15100c, brow: 0x15100c, eyes: 0x3a2214, female: true,
+      outfit: { kind: 'worker', top: 0xdb2777, bottom: 'pants', pants: 0xfde68a, shoe: 0xb45309, shoe2: 0xb45309 } },
+    arun: { label: 'Arun — Neighbour Boy', role: 'kid', H: 1.22, build: 0.95, skin: 0xa86a42, hair: 'messy', hairColor: 0x1d1410, brow: 0x1d1410, eyes: 0x3a2214,
+      outfit: { kind: 'worker', top: 0x22c55e, bottom: 'shorts', pants: 0x1e3a8a, shoe: 0xffffff, shoe2: 0x22c55e } },
+    priya: { label: 'Priya — Neighbour Girl', role: 'kid', H: 1.2, build: 0.9, skin: 0xc98a5c, hair: 'ponytail', hairColor: 0x15100c, brow: 0x15100c, eyes: 0x3a2214, female: true,
+      outfit: { kind: 'worker', top: 0xf97316, bottom: 'pants', pants: 0x7c3aed, shoe: 0xffffff, shoe2: 0xf97316 } },
   };
   // detective look (the second sheet): beige trench coat, waistcoat, shirt + coloured tie, dark trousers, magnifying glass
   const DETECTIVE_TIE = { kai: 0x6d3fc0, rio: 0x6b3a1e, tara: 0x14b3c8, mira: 0xe9658f, jax: 0xc0282d };

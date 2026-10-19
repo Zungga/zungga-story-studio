@@ -8,7 +8,7 @@
 <script src="assets/core.js"></script>
 <script>
 // load the asset files listed in ?files=a,b,c (default: all known) synchronously, in order
-const FILES = (new URLSearchParams(location.search).get('files') || 'money,food,toys,school,furniture,shop,brand,nature,sets,bank,home,transport,tech,street,village,outdoors,islanders,animals,garage,sports,sky,seasons,cave,places').split(',');
+const FILES = (new URLSearchParams(location.search).get('files') || 'money,food,toys,school,furniture,shop,brand,nature,sets,bank,home,transport,tech,street,village,outdoors,islanders,animals,garage,sports,sky,seasons,cave,places,lemonade').split(',');
 for (const f of FILES) document.write(`<script src="assets/${f}.js" onerror="window.__missing=(window.__missing||[]).concat('${f}')"><\/script>`);
 if (!new URLSearchParams(location.search).get('files')) for (const f of ['layout', 'living', 'dress-ground', 'dress-first', 'dress-under']) document.write(`<script src="worlds/chocolate-factory/${f}.js"><\/script>`);   // the factory world's props (cf_…)
 </script>
