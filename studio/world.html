@@ -176,8 +176,6 @@
   }
   const windowMats = [];   // the glowing window panes (brighter at night)
   scene.fog = new T.Fog(0xcfe8ff, 110, 620);   // a soft haze: the far side of the compound melts into the mist
-  // distant hills
-  for (let i = 0; i < 18; i++) { const a = i / 18 * Math.PI * 2, r = 330 + (i % 3) * 45, hill = new T.Mesh(new T.SphereGeometry(55 + (i % 4) * 16, 18, 10, 0, Math.PI * 2, 0, Math.PI / 2), new T.MeshStandardMaterial({ color: [0x7fb85a, 0x6aa84f, 0x8cc063][i % 3], roughness: 1 })); hill.position.set(Math.sin(a) * r, -2, Math.cos(a) * r); hill.scale.y = 0.55; scene.add(hill); }
 
   // ---------- the world ----------
   const t0 = performance.now();

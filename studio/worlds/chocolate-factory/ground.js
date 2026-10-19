@@ -58,8 +58,29 @@
       geo.setAttribute('color', new T.Float32BufferAttribute(col, 3)); geo.computeVertexNormals();
       const gt = grassTex(); gt.repeat.set(SX / 6, SZ / 6);
       const me = new T.Mesh(geo, new T.MeshStandardMaterial({ map: gt, vertexColors: true, roughness: 0.95 })); me.receiveShadow = true; me.userData.noBake = true; c.g.add(me);
-      // the land outside the factory walls
-      const out = new T.Mesh(new T.RingGeometry(Math.max(L.bounds.x1, L.bounds.z1) + 6, 900, 96), new T.MeshStandardMaterial({ color: 0x8cc063, roughness: 1 })); out.rotation.x = -Math.PI / 2; out.position.y = -0.05; out.receiveShadow = true; out.userData.noBake = true; c.g.add(out);
+      // the factory is an island: open flat land outside the walls, a sandy beach, then the ocean all round to the misty horizon
+      const icx = (L.bounds.x0 + L.bounds.x1) / 2, icz = (L.bounds.z0 + L.bounds.z1) / 2, IR = (a) => 245 + 10 * Math.sin(3 * a + 0.6) + 6 * Math.sin(7 * a + 2.1) + 4 * Math.sin(11 * a);
+      W.island = { x: icx, z: icz, R: IR };
+      { const N = 240, sh = new T.Shape(); for (let k = 0; k <= N; k++) { const a = k / N * Math.PI * 2, r = IR(a); const x = Math.cos(a) * r, y = -Math.sin(a) * r; k ? sh.lineTo(x, y) : sh.moveTo(x, y); }
+        const lg = new T.ShapeGeometry(sh, 2); lg.rotateX(-Math.PI / 2); const gt2 = grassTex(); gt2.repeat.set(70, 70);
+        const uvs = lg.attributes.uv; for (let k = 0; k < uvs.count; k++) uvs.setXY(k, (uvs.getX(k) + 260) / 520, (uvs.getY(k) + 260) / 520);
+        const land = new T.Mesh(lg, new T.MeshStandardMaterial({ map: gt2, color: 0xb9dd8c, roughness: 1 })); land.position.set(icx, -0.06, icz); land.receiveShadow = true; land.userData.noBake = true; c.g.add(land);
+        // beach: sand sloping from the grass down under the water
+        const pos = [], idx = [], col = [], sandC = new T.Color(0xf1dfae), wetC = new T.Color(0xc9ae7c), BW = 26, RS = 4;
+        for (let k = 0; k <= N; k++) { const a = k / N * Math.PI * 2, r0 = IR(a); for (let j2 = 0; j2 <= RS; j2++) { const u = j2 / RS, r = r0 - 2 + u * BW, y = -0.04 - Math.pow(u, 1.4) * 1.6; pos.push(icx + Math.cos(a) * r, y, icz - Math.sin(a) * r); const cc = sandC.clone().lerp(wetC, Math.min(1, u * 1.6)); col.push(cc.r, cc.g, cc.b); } }
+        for (let k = 0; k < N; k++) for (let j2 = 0; j2 < RS; j2++) { const a0 = k * (RS + 1) + j2, b0 = a0 + RS + 1; idx.push(a0, b0, a0 + 1, a0 + 1, b0, b0 + 1); }
+        const bg = new T.BufferGeometry(); bg.setAttribute('position', new T.Float32BufferAttribute(pos, 3)); bg.setAttribute('color', new T.Float32BufferAttribute(col, 3)); bg.setIndex(idx); bg.computeVertexNormals();
+        const beach = new T.Mesh(bg, new T.MeshStandardMaterial({ vertexColors: true, roughness: 1, side: T.DoubleSide })); beach.receiveShadow = true; beach.userData.noBake = true; c.g.add(beach);
+        // ocean: rippling blue (a scrolling bump texture), deeper colour far out, foam lapping at the shore
+        const waveTex = ZA.tex((cx2, w, h) => { cx2.fillStyle = '#808080'; cx2.fillRect(0, 0, w, h); for (let k = 0; k < 900; k++) { const x = Math.random() * w, y = Math.random() * h, rr = 3 + Math.random() * 14, g2 = cx2.createRadialGradient(x, y, 0, x, y, rr), v = Math.random() < 0.5 ? 255 : 0; g2.addColorStop(0, `rgba(${v},${v},${v},0.22)`); g2.addColorStop(1, `rgba(${v},${v},${v},0)`); cx2.fillStyle = g2; for (const ox of [-w, 0, w]) for (const oy of [-h, 0, h]) cx2.fillRect(x + ox - rr, y + oy - rr, rr * 2, rr * 2); } }, 256, 256);
+        waveTex.wrapS = waveTex.wrapT = T.RepeatWrapping; waveTex.repeat.set(160, 160); const wave2 = waveTex.clone(); wave2.needsUpdate = true; wave2.repeat.set(97, 97);
+        const deep = ZA.tex((cx2, w, h) => { const g2 = cx2.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2); g2.addColorStop(0, '#5fd0e6'); g2.addColorStop(0.16, '#36a9d8'); g2.addColorStop(0.45, '#1f7fbf'); g2.addColorStop(1, '#18609e'); cx2.fillStyle = g2; cx2.fillRect(0, 0, w, h); }, 256, 256);
+        const seaM = new T.MeshStandardMaterial({ map: deep, bumpMap: waveTex, bumpScale: 1.2, roughness: 0.22, metalness: 0.15 }), sea = new T.Mesh(new T.CircleGeometry(1700, 96), seaM);
+        sea.rotation.x = -Math.PI / 2; sea.position.set(icx, -0.55, icz); sea.receiveShadow = true; sea.userData.noBake = true; c.g.add(sea);
+        const foamPos = [], foamIdx = []; for (let k = 0; k <= N; k++) { const a = k / N * Math.PI * 2, r = IR(a) - 2 + 0.62 * 26; for (const d of [-1.6, 2.2]) foamPos.push(Math.cos(a) * (r + d), 0, -Math.sin(a) * (r + d)); } for (let k = 0; k < N; k++) { const a0 = k * 2; foamIdx.push(a0, a0 + 2, a0 + 1, a0 + 1, a0 + 2, a0 + 3); }
+        const fg = new T.BufferGeometry(); fg.setAttribute('position', new T.Float32BufferAttribute(foamPos, 3)); fg.setIndex(foamIdx);
+        const foam = new T.Mesh(fg, new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5, depthWrite: false, side: T.DoubleSide })); foam.position.set(icx, -0.5, icz); foam.userData.noBake = true; c.g.add(foam);
+        c.tick((t) => { waveTex.offset.set(t * 0.012, t * 0.007); wave2.offset.set(-t * 0.009, t * 0.011); const w2 = Math.sin(t * 0.8); sea.position.y = -0.55 + w2 * 0.06; foam.position.y = -0.5 + w2 * 0.06; foam.scale.setScalar(1 + w2 * 0.004); foam.material.opacity = 0.32 + (w2 + 1) * 0.16; }, sea); }
     }
     // ---------- water ----------
     c.water(riv.points, riv.width, riv.surf, { overlap: 1.9, flow: 0.7, rep: 1 });
@@ -166,6 +187,10 @@
         const D = c.frame(sx * 2, B.z1, sx < 0 ? 0 : Math.PI).door({ x: 0, z: 0, w: 4, h: 3.2, kind: 'swing', auto: true, mesh: leaf, swing: -1, range: 7 }); W.busGate = (W.busGate || []).concat(D); }
       // the bus road from the gate out into the countryside, and the bus stop just inside
       ribbon([[0, B.z1 + 90], [0, B.z1 - 3]], 7, { y: 0.03 });
+        // the road runs on to the beach and ends at a little wooden pier
+        { const IS = W.island, ez = IS.z + IS.R(-Math.PI / 2), pf = c.frame(0, ez, 0); ribbon([[0, L.bounds.z1 + 88], [0, ez - 1]], 7, { y: 0.03 });
+          pf.box(4, 0.25, 30, 0, 0.35, 12, 0x9a6b3f, { col: false }); for (let k = 0; k < 6; k++) for (const sx of [-1.8, 1.8]) pf.cyl(0.18, 0.18, 2.6, sx, -2.2, 0 + k * 5.5, 0x6b4a2b, { col: false });
+          for (const sx of [-1.95, 1.95]) pf.box(0.12, 0.9, 30, sx, 0.6, 12, 0x6b4a2b, { col: false }); }
       { const bf = c.frame(7.5, B.z1 - 7, Math.PI); bf.box(5.2, 0.25, 2.4, 0, 2.8, 0.6, 0x6d28d9, { col: false }); for (const x of [-2.4, 2.4]) for (const z of [-0.4, 1.6]) bf.cyl(0.08, 0.08, 2.8, x, 0, z, 0xd1d5db, { col: false }); bf.col(5.2, 2.8, 0.2, 0, 0, 1.6);
         bf.box(3.2, 0.12, 0.6, 0, 0.5, 1.2, 0xb7793f); const sg = new T.Mesh(new T.PlaneGeometry(3.4, 0.9), new T.MeshStandardMaterial({ map: ZA.label('🚌 SCHOOL BUS → ISLAND', { w: 1024, h: 240, bg: '#3b0764', fg: '#ffd84a', size: 110, radius: 30 }) })); sg.position.set(0, 3.5, 0.6); sg.rotation.y = Math.PI; bf.g.add(sg); const sg2 = sg.clone(); sg2.rotation.y = 0; sg2.position.z = 0.62; bf.g.add(sg2);
         W.busStop = { x: 2.5, z: B.z1 - 8, faceZ: -1 }; blocks.push([2, B.z1 - 9, 12, 10]);   // keep trees off the bus stop + turning area
