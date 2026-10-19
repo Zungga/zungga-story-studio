@@ -1,0 +1,30 @@
+{
+  "note": "Pilot cast for 'Rio's Lemonade Stall' (Class 3-5). Three different voice ideas per character; listen in studio/voice-casting.html and pick one each.",
+  "characters": [
+    { "id": "narrator", "name": "Narrator", "line": "It was the hottest day of the whole summer. The sun was shining, the roads were sizzling, and everyone in the colony was thirsty. That is when Rio had a big idea.",
+      "options": [
+        "A warm, friendly Indian woman in her thirties telling a story to young children in English with a gentle Indian accent, clear and expressive, full of wonder, unhurried pace.",
+        "A cheerful, kind Indian man in his thirties, a favourite storyteller for young children, speaking English with a light Indian accent, warm, playful and clear, relaxed pace.",
+        "A bright, gentle young Indian woman in her twenties narrating a children's cartoon in English with a soft Indian accent, smiling voice, lively and magical, medium pace." ] },
+    { "id": "rio", "name": "Rio (hero, energetic boy)", "line": "Yes! Rio's Cool Lemonade, only ten rupees a cup! Come on, come on, who wants a cold drink? This is going to be the best shop in the whole world!",
+      "options": [
+        "A ten-year-old Indian boy speaking English with a light Indian accent, super energetic, excited and fast, cheeky and fun, a young child's voice.",
+        "A nine-year-old Indian boy speaking English with a light Indian accent, cheerful, bouncy and confident, clear young child's voice, medium pace.",
+        "An eleven-year-old Indian boy speaking English with a light Indian accent, enthusiastic, slightly husky young voice, full of big ideas, quick and animated." ] },
+    { "id": "tara", "name": "Tara (clever observer girl)", "line": "Wait, Rio. Let me check my notebook. Lemons were thirty rupees, sugar was twenty, and the cups were twenty. So we spent seventy rupees in total. Hmm, that is a lot.",
+      "options": [
+        "A ten-year-old Indian girl speaking English with a light Indian accent, calm, clever and thoughtful, clear and precise, a young child's voice, medium pace.",
+        "A nine-year-old Indian girl speaking English with a light Indian accent, smart and confident, a little serious but kind, crisp young voice.",
+        "An eleven-year-old Indian girl speaking English with a light Indian accent, gentle, curious and careful, soft clear young voice, unhurried." ] },
+    { "id": "mira", "name": "Mira (creative, bubbly girl)", "line": "Ooh, ooh, I know! Let's make a giant sign with a smiling lemon on it! Bright yellow, with sparkles! Everybody will see it from the park and come running!",
+      "options": [
+        "A nine-year-old Indian girl speaking English with a light Indian accent, bubbly, giggly and dreamy, very expressive, high young child's voice.",
+        "An eight-year-old Indian girl speaking English with a light Indian accent, sweet, excited and imaginative, bright little voice, fast when excited.",
+        "A ten-year-old Indian girl speaking English with a light Indian accent, sunny, artistic and playful, sing-song young voice." ] },
+    { "id": "uncle", "name": "Customer uncle (friendly grown-up)", "line": "Arre, lemonade on such a hot day? Wonderful! Give me one cup, young man. Ten rupees? Here you go. Mmm, very nice, very cool!",
+      "options": [
+        "A friendly middle-aged Indian man speaking English with an Indian accent, cheerful and warm, jolly uncle voice, relaxed pace.",
+        "An older Indian grandfather speaking English with an Indian accent, kind, slow and smiling, slightly gravelly voice.",
+        "A lively Indian man in his forties speaking English with an Indian accent, loud, funny and good-natured, energetic." ] }
+  ]
+}

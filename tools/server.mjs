@@ -273,7 +273,7 @@ async function storage() {
 
 // ---------- static files ----------
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.wav': 'audio/wav', '.mp3': 'audio/mpeg', '.ogg': 'audio/ogg', '.mp4': 'video/mp4', '.ico': 'image/x-icon', '.woff2': 'font/woff2' };
-const PUBLIC = ['studio', 'vendor', 'stories', 'projects', 'exports', 'selected-voices', 'docs'];
+const PUBLIC = ['studio', 'vendor', 'stories', 'projects', 'exports', 'selected-voices', 'voice-casting', 'docs'];
 function serveStatic(req, res, pathname) {
   if (pathname === '/' || pathname === '/studio' || pathname === '/studio/') { res.writeHead(302, { Location: '/studio/app.html' }); return res.end(); }
   const p = path.normalize(path.join(root, decodeURIComponent(pathname)));
@@ -308,6 +308,11 @@ route('POST', '/api/world-notes/:id', async (req, q, m) => {
 });
 // sound mixer defaults (Walk the World → Mixer → Save): studio/assets/mix.json, in git so they ship as the defaults
 route('GET', '/api/mix', async () => readJSON(P('studio/assets/mix.json'), {}));
+// voice casting: the samples to listen to, and keeping one as a character's saved voice (tools/design_voices.py pick)
+route('GET', '/api/casting', async () => { const c = readJSON(P('voice-casting/cast.json'), { characters: [] }); for (const ch of c.characters) ch.picked = readJSON(P(`selected-voices/${ch.id}/voice.json`), null)?.design?.instruct || null; return c; });
+route('POST', '/api/casting/pick', async (req) => { const { id, option } = await jsonBody(req); if (!/^[a-z0-9_-]+$/.test(id) || ![1, 2, 3].includes(+option)) throw new Error('bad pick');
+  await new Promise((ok, bad) => { const p = spawn(python(), ['tools/design_voices.py', 'pick', id, String(+option)], { cwd: root }); let err = ''; p.stderr.on('data', (d) => { err += d; }); p.on('close', (c) => (c ? bad(new Error(err.slice(-300))) : ok())); });
+  return { ok: true, id, option: +option }; });
 route('PUT', '/api/mix', async (req) => { const b = await jsonBody(req), cur = readJSON(P('studio/assets/mix.json'), {}), clean = (o) => Object.fromEntries(Object.entries(o || {}).filter(([, v]) => typeof v === 'number' && v >= 0 && v <= 3).map(([k, v]) => [k, Math.round(v * 100) / 100]));
   const camClean = (o) => Object.fromEntries(Object.entries(o || {}).filter(([, v]) => typeof v === 'number' && Math.abs(v) <= 360).map(([k, v]) => [k, Math.round(v * 100) / 100]));
   const next = { ...cur, world: { ...(cur.world || {}), ...clean(b.world) }, video: { ...(cur.video || {}), ...clean(b.video) }, ...(b.camera ? { camera: { ...(cur.camera || {}), ...camClean(b.camera) } } : {}), saved: new Date().toISOString() }; writeJSON(P('studio/assets/mix.json'), next); return next; });

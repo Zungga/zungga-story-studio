@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voice Casting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #1f1a33; --p: #7c3aed; --pl: #ede9fe; --muted: #6b6480; --card: #fff; --bg: #f6f3ff; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: Fredoka, system-ui, sans-serif; }
+  header { padding: 28px 20px 8px; max-width: 980px; margin: 0 auto; }
+  h1 { margin: 0 0 6px; font-size: 30px; } header p { margin: 0; color: var(--muted); font-size: 16px; }
+  main { max-width: 980px; margin: 0 auto; padding: 12px 16px 60px; display: grid; gap: 18px; }
+  .ch { background: var(--card); border-radius: 18px; padding: 18px; box-shadow: 0 6px 20px rgba(60, 30, 120, 0.08); }
+  .ch h2 { margin: 0 0 4px; font-size: 21px; } .line { color: var(--muted); font-style: italic; margin: 0 0 14px; font-size: 15px; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .opt { border: 2px solid var(--pl); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .opt.on { border-color: var(--p); background: #faf7ff; }
+  .opt b { font-size: 15px; } .opt small { color: var(--muted); font-size: 13px; line-height: 1.35; min-height: 52px; }
+  audio { width: 100%; }
+  button { border: 0; border-radius: 10px; padding: 9px 12px; font: 600 14px Fredoka, system-ui; cursor: pointer; background: var(--pl); color: var(--p); }
+  .opt.on button { background: var(--p); color: #fff; }
+  #msg { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: #3b0764; color: #ffd84a; padding: 10px 18px; border-radius: 12px; opacity: 0; transition: opacity 0.3s; }
+</style></head>
+<body>
+<header><h1>🎙️ Voice casting — Rio's Lemonade Stall</h1><p>Each character has three different voices. Listen, then press <b>Choose this voice</b> for the one you like. Every episode will use the chosen voice from then on.</p></header>
+<main id="list">Loading…</main>
+<div id="msg"></div>
+<script>
+  const $ = (s) => document.querySelector(s), esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const toast = (t) => { const m = $('#msg'); m.textContent = t; m.style.opacity = 1; clearTimeout(toast.h); toast.h = setTimeout(() => { m.style.opacity = 0; }, 2200); };
+  async function load() {
+    const c = await (await fetch('/api/casting', { cache: 'no-store' })).json();
+    $('#list').innerHTML = c.characters.map((ch) => `<section class="ch"><h2>${esc(ch.name)}</h2><p class="line">“${esc(ch.line)}”</p><div class="opts">${ch.options.map((o, i) => `
+      <div class="opt ${ch.picked === o ? 'on' : ''}"><b>Voice ${i + 1}${ch.picked === o ? ' — chosen ✓' : ''}</b><small>${esc(o)}</small>
+      <audio controls preload="none" src="/voice-casting/${ch.id}/option-${i + 1}.wav"></audio>
+      <button data-id="${ch.id}" data-k="${i + 1}">${ch.picked === o ? 'Chosen ✓' : 'Choose this voice'}</button></div>`).join('')}</div></section>`).join('');
+    document.querySelectorAll('button[data-id]').forEach((b) => b.onclick = async () => {
+      b.textContent = 'Saving…'; const r = await fetch('/api/casting/pick', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: b.dataset.id, option: +b.dataset.k }) });
+      toast(r.ok ? 'Saved ✓' : 'Could not save'); load(); });
+    // only one sample plays at a time
+    document.querySelectorAll('audio').forEach((a) => a.onplay = () => document.querySelectorAll('audio').forEach((o) => { if (o !== a) o.pause(); }));
+  }
+  load();
+</script>
+</body></html>
