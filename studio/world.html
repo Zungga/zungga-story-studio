@@ -101,13 +101,46 @@
   const hemi = new T.HemisphereLight(0xeaf4ff, 0xb08a62, 1.15); scene.add(hemi);
   const sun = new T.DirectionalLight(0xfff0d8, 2.4); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); const sc = sun.shadow.camera; sc.left = -32; sc.right = 32; sc.top = 32; sc.bottom = -32; sc.near = 1; sc.far = 220; sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.03; scene.add(sun, sun.target);
   const lantern = new T.PointLight(0xffd6a0, 0, 12, 1.4); scene.add(lantern);
-  // ---------- sky life: drifting clouds, and for the night a dark sky, stars and a moon ----------
+  // ---------- sky life: a soft misty cloud cover (layers overhead + banks on the horizon + low wisps), the sun by day,
+  //            the moon and twinkling stars by night. Everything sky-side follows the camera, so it is always "far away". ----------
   const nightTex = ZA.tex((c, w, h) => { const g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#060a1f'); g.addColorStop(0.55, '#16204a'); g.addColorStop(1, '#3a2f5c'); c.fillStyle = g; c.fillRect(0, 0, w, h); }, 16, 256);
   const skyNight = new T.Mesh(new T.SphereGeometry(840, 32, 16), new T.MeshBasicMaterial({ map: nightTex, side: T.BackSide, fog: false, transparent: true, opacity: 0, depthWrite: false })); scene.add(skyNight);
-  const stars = (() => { const n = 1800, pos = new Float32Array(n * 3); for (let i = 0; i < n; i++) { const th = Math.random() * Math.PI * 2, ph = Math.random() * Math.PI * 0.45; pos.set([Math.cos(th) * Math.sin(ph) * 800, Math.cos(ph) * 800 + 20, Math.sin(th) * Math.sin(ph) * 800], i * 3); } const g = new T.BufferGeometry(); g.setAttribute('position', new T.BufferAttribute(pos, 3)); return new T.Points(g, new T.PointsMaterial({ color: 0xffffff, size: 2.2, sizeAttenuation: false, fog: false, transparent: true, opacity: 0, depthWrite: false })); })(); scene.add(stars);
-  const moon = new T.Mesh(new T.SphereGeometry(18, 24, 16), new T.MeshBasicMaterial({ color: 0xfff6d8, fog: false, transparent: true, opacity: 0 })); moon.position.set(-300, 420, -500); scene.add(moon);
-  const cloudM = new T.MeshStandardMaterial({ color: 0xffffff, roughness: 1, fog: false, transparent: true, opacity: 0.95 }), clouds = [];
-  for (let i = 0; i < 26; i++) { const g = new T.Group(), n = 4 + (i % 4); for (let k = 0; k < n; k++) { const m = new T.Mesh(new T.SphereGeometry(10 + Math.random() * 9, 14, 10), cloudM); m.position.set((k - n / 2) * 11 + Math.random() * 6, Math.random() * 6, Math.random() * 10); m.scale.y = 0.55; g.add(m); } const a = Math.random() * Math.PI * 2, r = 260 + Math.random() * 380; g.position.set(Math.cos(a) * r, 90 + Math.random() * 60, Math.sin(a) * r); g.userData.v = 2 + Math.random() * 4; scene.add(g); clouds.push(g); }
+  const skyRig = new T.Group(); scene.add(skyRig); sky.removeFromParent(); skyNight.removeFromParent(); skyRig.add(sky, skyNight);
+  const glowTex = (inner, outer, soft = 0.5) => ZA.tex((c, w, h) => { const g = c.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2); g.addColorStop(0, inner); g.addColorStop(soft, outer); g.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = g; c.fillRect(0, 0, w, h); }, 128, 128);
+  const sprite = (tex, size, o = {}) => { const sp = new T.Sprite(new T.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, fog: false, opacity: 1, blending: o.add ? T.AdditiveBlending : T.NormalBlending, color: o.color ?? 0xffffff })); sp.scale.set(size, size, 1); sp.renderOrder = o.order ?? -1; return sp; };
+  // stars: two layers (small + bright), twinkling
+  const starLayer = (n, size) => { const pos = new Float32Array(n * 3); for (let i = 0; i < n; i++) { const th = Math.random() * Math.PI * 2, ph = Math.acos(1 - Math.random() * 0.92); pos.set([Math.cos(th) * Math.sin(ph) * 790, Math.cos(ph) * 790, Math.sin(th) * Math.sin(ph) * 790], i * 3); } const g = new T.BufferGeometry(); g.setAttribute('position', new T.BufferAttribute(pos, 3)); return new T.Points(g, new T.PointsMaterial({ color: 0xffffff, size, sizeAttenuation: false, fog: false, transparent: true, opacity: 0, depthWrite: false })); };
+  const stars = starLayer(2600, 1.6), starsBig = starLayer(260, 3.2); stars.renderOrder = starsBig.renderOrder = 3; skyRig.add(stars, starsBig);   // drawn after the mist: they twinkle through it
+  // the sun (by day) and the moon (by night) — low enough to be seen from the walking camera
+  const SUN_DIR = new T.Vector3(0.3, 0.2, -0.93).normalize(), MOON_DIR = new T.Vector3(-0.36, 0.26, -0.9).normalize();
+  const sunDisc = sprite(glowTex('rgba(255,255,240,1)', 'rgba(255,236,170,1)', 0.62), 46, { order: 4 }), sunGlow = sprite(glowTex('rgba(255,236,170,0.75)', 'rgba(255,200,120,0.18)', 0.25), 280, { add: true, order: 3 });
+  sunDisc.material.toneMapped = false; sunDisc.material.color.setRGB(1.35, 1.3, 1.15);
+  sunDisc.position.copy(SUN_DIR).multiplyScalar(760); sunGlow.position.copy(sunDisc.position); skyRig.add(sunGlow, sunDisc);
+  const moonTex = ZA.tex((c, w, h) => { const g = c.createRadialGradient(w * 0.42, h * 0.4, 4, w / 2, h / 2, w / 2); g.addColorStop(0, '#fffdf2'); g.addColorStop(0.9, '#efe6c8'); g.addColorStop(1, '#d9cfae'); c.fillStyle = g; c.beginPath(); c.arc(w / 2, h / 2, w / 2 - 1, 0, Math.PI * 2); c.fill(); c.fillStyle = 'rgba(160,150,120,0.35)'; for (const [x, y, r] of [[0.36, 0.38, 0.1], [0.62, 0.3, 0.06], [0.58, 0.62, 0.12], [0.3, 0.66, 0.06], [0.7, 0.48, 0.04], [0.46, 0.52, 0.05]]) { c.beginPath(); c.arc(x * w, y * h, r * w, 0, Math.PI * 2); c.fill(); } }, 256, 256);
+  const moon = sprite(moonTex, 34, { order: 4 }), moonGlow = sprite(glowTex('rgba(210,225,255,0.55)', 'rgba(150,170,255,0.12)', 0.3), 190, { add: true, order: 3 });
+  moon.material.toneMapped = false;
+  moon.position.copy(MOON_DIR).multiplyScalar(760); moonGlow.position.copy(moon.position); skyRig.add(moonGlow, moon);
+  // mist: a seamless soft-noise texture, laid as drifting layers overhead and as banks round the horizon
+  const mistTex = ZA.tex((c, w, h) => { c.clearRect(0, 0, w, h); for (let k = 0; k < 340; k++) { const x = Math.random() * w, y = Math.random() * h, r = 18 + Math.random() * 70, a = 0.05 + Math.random() * 0.1; for (const ox of [-w, 0, w]) for (const oy of [-h, 0, h]) { const g = c.createRadialGradient(x + ox, y + oy, 0, x + ox, y + oy, r); g.addColorStop(0, `rgba(255,255,255,${a})`); g.addColorStop(1, 'rgba(255,255,255,0)'); c.fillStyle = g; c.fillRect(x + ox - r, y + oy - r, r * 2, r * 2); } } }, 512, 512);
+  mistTex.wrapS = mistTex.wrapT = T.RepeatWrapping;
+  const clouds = [], mistLayers = [], mistBanks = new T.Group(), wisps = new T.Group(); scene.add(mistBanks, wisps); clouds.push(mistBanks, wisps);
+  for (const [y, op, rep, sp] of [[78, 0.7, 3, 0.004], [104, 0.55, 2.2, 0.0026], [136, 0.42, 1.6, 0.0016]]) {
+    const tx = mistTex.clone(); tx.needsUpdate = true; tx.repeat.set(rep, rep); const m = new T.Mesh(new T.PlaneGeometry(2600, 2600), new T.MeshBasicMaterial({ map: tx, transparent: true, opacity: op, depthWrite: false, side: T.DoubleSide, fog: false }));
+    m.rotation.x = -Math.PI / 2; m.position.y = y; m.renderOrder = 1; m.userData = { sp, rep, op }; scene.add(m); mistLayers.push(m); clouds.push(m); }
+  const bankTex = glowTex('rgba(255,255,255,0.9)', 'rgba(255,255,255,0.35)', 0.45);
+  for (let k = 0; k < 90; k++) { const a = Math.random() * Math.PI * 2, r = 330 + Math.random() * 330, sz = 150 + Math.random() * 190, sp = sprite(bankTex, sz); sp.material.opacity = 0.32 + Math.random() * 0.2; sp.position.set(Math.cos(a) * r, 8 + Math.random() * 55, Math.sin(a) * r); sp.userData = { a, r, v: (Math.random() - 0.5) * 0.004 }; mistBanks.add(sp); }
+  for (let k = 0; k < 36; k++) { const sp = sprite(bankTex, 26 + Math.random() * 30); sp.material.fog = true; sp.material.opacity = 0.1 + Math.random() * 0.08; sp.renderOrder = 2; const a = Math.random() * Math.PI * 2, r = 55 + Math.random() * 110; sp.position.set(Math.cos(a) * r, 2 + Math.random() * 7, Math.sin(a) * r); sp.userData = { a, r, v: 0.01 + Math.random() * 0.02 }; wisps.add(sp); }
+  const cloudM = new T.MeshBasicMaterial({ map: mistTex, transparent: true, opacity: 0.9, depthWrite: false, fog: false });   // (the bus flight's through-the-clouds puffs)
+  let skyT = 0;
+  function updateSky(dt) {
+    skyT += Math.min(dt, 0.1);
+    const cp = camera.position; skyRig.position.copy(cp); mistBanks.position.set(cp.x, 0, cp.z); wisps.position.set(cp.x, 0, cp.z);
+    for (const m of mistLayers) { m.position.x = cp.x; m.position.z = cp.z; const u = m.userData, k = u.rep / 2600; m.material.map.offset.set(cp.x * k + skyT * u.sp, -cp.z * k + skyT * u.sp * 0.4); }
+    for (const sp of wisps.children) { sp.userData.a += sp.userData.v * dt * 0.2; sp.position.x = Math.cos(sp.userData.a) * sp.userData.r; sp.position.z = Math.sin(sp.userData.a) * sp.userData.r; }
+    const day = 1 - DN, tw = skyT * 2; stars.material.opacity = DN * 0.85; starsBig.material.opacity = DN * (0.7 + Math.sin(tw) * 0.2 + Math.sin(tw * 2.7) * 0.1);
+    sunDisc.material.opacity = day; sunGlow.material.opacity = day * 0.9; moon.material.opacity = DN; moonGlow.material.opacity = DN * 0.9;
+    const mc = new T.Color(1 - DN * 0.78, 1 - DN * 0.74, 1 - DN * 0.6); for (const m of mistLayers) { m.material.color.copy(mc); m.material.opacity = m.userData.op * (1 - DN * 0.35); } for (const sp of mistBanks.children) sp.material.color.copy(mc); for (const sp of wisps.children) sp.material.color.copy(mc); cloudM.color.copy(mc);
+  }
   // ---------- day / night ----------
   let DN = 0, DNt = 0, DNrate = 0.9, isUG = false; const C_ = (h) => new T.Color(h);
   const DAYN = { hemi: C_(0xeaf4ff), hemiG: C_(0xb08a62), sun: C_(0xfff0d8), fog: C_(0xcfe8ff) }, NIGHT = { hemi: C_(0x6b7bb8), hemiG: C_(0x23283d), sun: C_(0xa8bcff), fog: C_(0x121a33) };
@@ -115,18 +148,17 @@
   let lampT = 0;
   function applyLight(dt) {
     DN += (DNt - DN) * Math.min(1, dt * DNrate);
-    for (const cl of clouds) { cl.position.x += cl.userData.v * dt; if (cl.position.x > 700) cl.position.x = -700; }
-    cloudM.color.setRGB(1 - DN * 0.72, 1 - DN * 0.7, 1 - DN * 0.55);
+    updateSky(dt);
     if (isUG) return;
     hemi.intensity = 1.15 + (0.32 - 1.15) * DN; hemi.color.lerpColors(DAYN.hemi, NIGHT.hemi, DN); hemi.groundColor.lerpColors(DAYN.hemiG, NIGHT.hemiG, DN);
     sun.intensity = 2.4 + (0.5 - 2.4) * DN; sun.color.lerpColors(DAYN.sun, NIGHT.sun, DN); scene.fog.color.lerpColors(DAYN.fog, NIGHT.fog, DN);
-    skyNight.material.opacity = DN; stars.material.opacity = DN; moon.material.opacity = DN; renderer.toneMappingExposure = 1.05 - DN * 0.1;
+    skyNight.material.opacity = DN; renderer.toneMappingExposure = 1.05 - DN * 0.1;
     for (const m of windowMats) m.emissiveIntensity = 0.6 + DN * 1.4;
     if ((lampT -= dt) <= 0) { lampT = 0.4; const p = walker.mode === 'free' ? camera.position : walker.pos, near = (W.lamps || []).map((l) => [l, (l[0] - p.x) ** 2 + (l[2] - p.z) ** 2]).sort((a2, b2) => a2[1] - b2[1]).slice(0, lampLights.length); lampLights.forEach((l, i) => { const q = near[i]; if (q) l.position.set(q[0][0], q[0][1], q[0][2]); l.userData.on = !!q; }); }
     for (const l of lampLights) l.intensity = l.userData.on ? DN * 26 : 0;
   }
   const windowMats = [];   // the glowing window panes (brighter at night)
-  scene.fog = new T.Fog(0xcfe8ff, 220, 800);
+  scene.fog = new T.Fog(0xcfe8ff, 110, 620);   // a soft haze: the far side of the compound melts into the mist
   // distant hills
   for (let i = 0; i < 18; i++) { const a = i / 18 * Math.PI * 2, r = 330 + (i % 3) * 45, hill = new T.Mesh(new T.SphereGeometry(55 + (i % 4) * 16, 18, 10, 0, Math.PI * 2, 0, Math.PI / 2), new T.MeshStandardMaterial({ color: [0x7fb85a, 0x6aa84f, 0x8cc063][i % 3], roughness: 1 })); hill.position.set(Math.sin(a) * r, -2, Math.cos(a) * r); hill.scale.y = 0.55; scene.add(hill); }
 
@@ -224,7 +256,7 @@
     W.floors.shaft.visible = true;
     if (window.__only) for (const k of Object.keys(W.floors)) W.floors[k].visible = window.__only.includes(k);
     const ug = f === 'under' && !free;
-    isUG = ug; sky.visible = skyNight.visible = stars.visible = moon.visible = !ug; for (const cl of clouds) cl.visible = !ug; scene.fog.near = ug ? 12 : 220; scene.fog.far = ug ? 90 : 800; scene.background = ug ? new T.Color(0x0b0810) : null; lantern.intensity = ug ? 14 : 0;
+    isUG = ug; skyRig.visible = !ug; for (const cl of clouds) cl.visible = !ug; scene.fog.near = ug ? 12 : 110; scene.fog.far = ug ? 90 : 620; scene.background = ug ? new T.Color(0x0b0810) : null; lantern.intensity = ug ? 14 : 0;
     if (ug) { scene.fog.color.set(0x120c18); hemi.intensity = 0.28; hemi.color.set(0x9b8cff); sun.intensity = 0; for (const l of lampLights) l.intensity = 0; } else applyLight(10);
     $('#floorName').textContent = FLOOR_LABEL[f]; mapFloor = f; document.querySelectorAll('#map button').forEach((b) => b.classList.toggle('on', b.dataset.f === f));
   }
@@ -395,7 +427,7 @@
     DNrate = 50; setNight(true); setTimeout(() => { DNrate = 0.9; }, 300);
     // through-the-clouds puffs on the way in
     const puff = new T.MeshStandardMaterial({ color: 0xffffff, roughness: 1, fog: false, transparent: true, opacity: 0.9 }), puffs = [];
-    for (const [x, y, z] of [[-48, 132, z1 + 360], [-30, 122, z1 + 300], [-12, 112, z1 + 245], [20, 104, z1 + 200]]) for (let k = 0; k < 5; k++) { const m = new T.Mesh(new T.SphereGeometry(9 + Math.random() * 7, 14, 10), cloudM); m.position.set(x + (Math.random() - 0.5) * 22, y + (Math.random() - 0.5) * 5, z + (Math.random() - 0.5) * 16); m.scale.y = 0.6; scene.add(m); puffs.push(m); }
+    for (const [x, y, z] of [[-48, 132, z1 + 360], [-30, 122, z1 + 300], [-12, 112, z1 + 245], [20, 104, z1 + 200]]) for (let k = 0; k < 5; k++) { const m = new T.Sprite(new T.SpriteMaterial({ map: bankTex, transparent: true, depthWrite: false, fog: false, opacity: 0.55 })); m.scale.set(40 + Math.random() * 30, 26 + Math.random() * 14, 1); m.position.set(x + (Math.random() - 0.5) * 22, y + (Math.random() - 0.5) * 5, z + (Math.random() - 0.5) * 16); scene.add(m); puffs.push(m); }
     void puff;
     const R = 165, ring = [0.45, 1.15, 1.85, 2.55, 3.25, 3.95, 4.65, 5.3].map((a, k) => [Math.sin(a) * R, 64 - k * 1.5, Math.cos(a) * R]);
     const P = [[-60, 140, z1 + 430], [-30, 122, z1 + 300], [10, 106, z1 + 205], [55, 84, z1 + 120], ...ring, [-70, 46, z1 + 150], [-28, 32, z1 + 150], [lx, 20, z1 + 105], [lx, 8, z1 + 55], [lx, 1.6, z1 + 18], [lx, 0, z1 - 1]].map((v) => new T.Vector3(...v));
