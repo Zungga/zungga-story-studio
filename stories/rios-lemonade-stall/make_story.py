@@ -55,7 +55,7 @@ MIRA = lambda **k: {'at': [1.1, 0, 0.2], 'face': -0.5, **k}
 scene(1, light=HOT, actors={'rio': RIO(anim='idle', expr='happy', hold={'R': 'lemon', 'L': 'lemon'}), **crowd(0.1, 2)},
       props=[stall()],
       beats=[{'word': 'idea', 'actor': 'rio', 'anim': 'jump', 'expr': 'excited'}],
-      camera=[fixed([7, 7.5, 15], [0, 1.5, -5], [1.6, 1.9, 5.2], [0, 1.0, -0.4], speed=1, smooth=1)],
+      camera=[fixed([0.6, 8.5, 17], [0, 1.5, -5], [1.0, 1.9, 4.6], [0, 1.0, -0.4], speed=1, smooth=1)],
       sfx=[{'file': 'sparkle.wav', 'word': 'idea', 'vol': 0.5}], fx={'transition': 'white'})
 # 2 — Rio's big idea
 scene(2, voice='rio', talking='rio', light=HOT, actors={'rio': RIO(anim='cheer', expr='excited', hold={'R': 'lemon'}), 'tara': TARA(anim='idle', expr='smile'), 'mira': MIRA(anim='wave', expr='big_smile')},
@@ -63,7 +63,7 @@ scene(2, voice='rio', talking='rio', light=HOT, actors={'rio': RIO(anim='cheer',
       caption={'text': "🍋 RIO'S COOL LEMONADE 🍋", 'atWord': 'coolest', 'big': True})
 # 3 — Tara asks what to buy
 scene(3, voice='tara', talking='tara', light=HOT, actors={'rio': RIO(anim='idle', expr='smile'), 'tara': TARA(anim='think', expr='thinking'), 'mira': MIRA(anim='idle', expr='curious')},
-      props=[stall()], camera=[{'move': 'orbit', 'focus': ['tara', 'rio'], 'distance': 'mid', 'angle': -20, 'elevation': 12}])
+      props=[stall()], camera=[fixed([-0.9, 1.5, 3.2], [-0.6, 1.05, 0.0], [-1.1, 1.4, 2.5], [-0.7, 1.05, 0.0])])
 # 4 — shopping: the price cards
 scene(4, voice='narrator', light=HOT,
       actors={'rio': {'at': [4.1, 0, 0.3], 'face': 1.25, 'anim': 'point', 'expr': 'excited'}, 'tara': {'at': [3.7, 0, -0.6], 'face': 1.45, 'anim': 'idle', 'expr': 'thinking'}, 'mira': {'at': [3.5, 0, 1.0], 'face': 1.05, 'anim': 'idle', 'expr': 'smile'}},
@@ -114,7 +114,7 @@ scene(11, voice='tara', talking='tara', light=HOT, actors={'tara': {'at': [0, 0,
 scene(12, voice='rio', talking='rio', light=HOT, actors={'rio': {'at': [0, 0, 0.7], 'face': 0, 'anim': 'point', 'expr': 'excited'}, **crowd(0.0, 4)},
       props=[stall()], pause={'kind': 'look', 'seconds': 6, 'prompt': 'Where is everybody going?', 'hint': '👀 Look at the people!'},
       camera=[{'move': 'push_in', 'focus': ['rio'], 'from': 'mid', 'to': 'close', 'angle': 0, 'elevation': 5, 'untilWord': 'loud', 'untilOffset': 0.4},
-              fixed([2.2, 2.3, 4.5], [-0.8, 1.2, -6.5], [1.0, 2.0, 2.5], [-0.7, 1.3, -7.5])])
+              fixed([3.6, 2.8, 2.2], [-0.8, 0.9, -6.5], [2.8, 2.5, 0.6], [-0.7, 1.0, -7.5])])
 # 13 — yes, the park!
 scene(13, voice='narrator', light=HOT, actors={**{w: walker([-2.4 + k * 0.5, 0, -2.4 + (k % 2) * 0.6], [-0.9 + k * 0.4, 0, -9.0]) for k, w in enumerate(['appa', 'amma', 'arun', 'priya'])}, 'rio': {'at': [0, 0, 0.7], 'face': PI, 'anim': 'look_far', 'expr': 'surprised'}},
       props=[stall()], camera=[fixed([1.3, 1.9, 2.6], [-0.7, 1.3, -6.5], [0.9, 1.7, 1.9], [-0.7, 1.4, -7.5])],
@@ -169,7 +169,7 @@ scene(21, voice='rio', talking='rio', light=HOT, actors={'rio': {'at': [-0.6, 0,
 # 22 — the lesson
 scene(22, voice='narrator', light=HOT, actors={'rio': {'at': [-0.6, 0, -6.65], 'face': 0, 'anim': 'give', 'expr': 'big_smile'}, 'priya': {'at': [-0.3, 0, -5.2], 'face': PI, 'anim': 'idle', 'expr': 'happy'}, 'arun': {'at': [0.5, 0, -5.3], 'face': PI - 0.4, 'anim': 'idle', 'expr': 'smile'}},
       props=[stall(STALL_B), {'id': 'big_lemon_sign', 'at': [0.9, 0, -5.6], 'rot': [0, -0.3, 0]}] + cups(3, STALL_B),
-      camera=[fixed([4.5, 3.4, 0.5], [-0.6, 1.0, -6.2], [3.0, 2.6, -1.2], [-0.6, 1.0, -6.3])],
+      camera=[fixed([2.4, 3.2, -1.2], [-0.6, 1.0, -6.2], [1.7, 2.5, -2.4], [-0.6, 1.0, -6.3])],
       cards=[{'style': 'lesson', 'word': 'Remember', 'text': '1️⃣ Count what you SPEND', 'size': 50}, {'style': 'lesson', 'word': 'sell#2', 'y': 470, 'text': '2️⃣ Sell where your CUSTOMERS are', 'size': 50}])
 # 23 — YOUR mission
 scene(23, voice='rio', talking='rio', light=HOT, actors={'rio': {'at': [-0.6, 0, -5.0], 'face': 0, 'anim': 'point', 'expr': 'excited'}},
@@ -184,7 +184,7 @@ scene(23, voice='rio', talking='rio', light=HOT, actors={'rio': {'at': [-0.6, 0,
 scene(24, voice='narrator', light={'sunAngle': 60, 'sunHeight': 0.6, 'sunColor': '#ffd7a8', 'ambient': 0.55},
       actors={'rio': {'at': [-0.6, 0, -6.65], 'face': 0.9, 'anim': 'idle', 'expr': 'shocked'}, 'tara': {'at': [-1.5, 0, -5.6], 'face': 1.2, 'anim': 'idle', 'expr': 'worried', 'hold': {'L': 'notebook'}}, 'mira': {'at': [0.4, 0, -5.4], 'face': 1.6, 'anim': 'idle', 'expr': 'surprised'}},
       props=[stall(STALL_B), {'id': 'rival_stall', 'at': [5.2, 0, -6.0], 'rot': [0, -0.5, 0], 'showWord': 'new'}, {'id': 'zungga_logo', 'endCard': True, 'show': 0.88}],
-      camera=[fixed([-3.2, 1.6, -2.2], [5.2, 1.4, -6.0], [-1.0, 1.5, -3.4], [5.2, 1.5, -6.0], untilWord='five', untilOffset=0.3), {'move': 'push_in', 'focus': ['rio'], 'from': 'mid', 'to': 'close', 'zoom': 0.8, 'angle': 40, 'elevation': 6}],
+      camera=[fixed([-3.2, 1.6, -2.2], [5.2, 1.4, -6.0], [-1.0, 1.5, -3.4], [5.2, 1.5, -6.0], untilWord='five', untilOffset=0.3), {'move': 'push_in', 'focus': ['rio'], 'from': 'mid', 'to': 'close', 'zoom': 0.9, 'angle': 0, 'elevation': 10}],
       caption={'text': 'NEXT TIME: ₹10 vs ₹5! 😱', 'atWord': 'What', 'big': True}, fx={'shake': {'amount': 0.35, 'from': 0.55, 'to': 0.65}},
       sfx=[{'file': 'whoosh.wav', 'word': 'new', 'vol': 0.5}, {'file': 'thunder.wav', 'word': 'five', 'vol': 0.18}])
 
