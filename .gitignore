@@ -43,3 +43,4 @@ voice-casting/*/*.wav
 !selected-voices/uncle/*.wav
 selected-voices/narrator-viral/
 !stories/rios-lemonade-stall/voice/*.wav
+__pycache__/
