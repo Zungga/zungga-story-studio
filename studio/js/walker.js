@@ -47,11 +47,13 @@
     dom.addEventListener('wheel', (e) => { camDist = clamp(camDist * (e.deltaY > 0 ? 1.1 : 0.91), 0.45, 3.2); e.preventDefault(); }, { passive: false });
 
     let forced = null, act = null, cine = null;   // cine(dt) → { pos, look, fov? } overrides the camera (gate moment, bus flight)   // test hook: { f, r, run }
+    let touchIn = null;   // on-screen joystick (phones): { f, r, run } added to the keys
     const input = () => {
       if (forced) return forced;
-      const f = (keys.has('KeyW') || keys.has('ArrowUp') ? 1 : 0) - (keys.has('KeyS') || keys.has('ArrowDown') ? 1 : 0);
-      const r = (keys.has('KeyD') || keys.has('ArrowRight') ? 1 : 0) - (keys.has('KeyA') || keys.has('ArrowLeft') ? 1 : 0);
-      return { f, r, run: keys.has('ShiftLeft') || keys.has('ShiftRight') };
+      let f = (keys.has('KeyW') || keys.has('ArrowUp') ? 1 : 0) - (keys.has('KeyS') || keys.has('ArrowDown') ? 1 : 0);
+      let r = (keys.has('KeyD') || keys.has('ArrowRight') ? 1 : 0) - (keys.has('KeyA') || keys.has('ArrowLeft') ? 1 : 0), run = keys.has('ShiftLeft') || keys.has('ShiftRight');
+      if (touchIn) { f = clamp(f + touchIn.f, -1, 1); r = clamp(r + touchIn.r, -1, 1); run = run || !!touchIn.run; }
+      return { f, r, run };
     };
     const setMode = (m) => { if (mode !== m) { mode = m; onMode && onMode(m); } };
 
@@ -217,7 +219,9 @@
       cam: CAM, CAM_DEFAULTS: CAM0, setCam(o) { Object.assign(CAM, o); },
       act(clip, secs, done) { act = { clip, t: secs, done }; speed = 0; vel.set(0, 0, 0); }, get acting() { return !!act; }, paused: false,
       setCine(fn) { cine = fn; if (!fn) camInit = true; },
-      setInput(i) { forced = i; }, setCamYaw(y) { camYaw = y; }, setHeading(y) { yaw = y; steer = 0; }, jump() { jumpQueued = true; }, use() { useQueued = true; },
+      setInput(i) { forced = i; }, setTouch(i) { touchIn = i; },
+      vkey(code, down) { if (down) { keys.add(code); if (code === 'Space') jumpQueued = true; } else keys.delete(code); },   // on-screen buttons press real keys
+ setCamYaw(y) { camYaw = y; }, setHeading(y) { yaw = y; steer = 0; }, jump() { jumpQueued = true; }, use() { useQueued = true; },
     };
     return api;
   }

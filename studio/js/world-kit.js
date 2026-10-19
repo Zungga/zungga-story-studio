@@ -218,7 +218,8 @@
           const col = dg.col(w, h, t + 0.1, 0, 0, 0);
           const D = { open: 0, want: 0, kind, auto, x: wx, z: wz, y: oy + y, col, pivot, leaf, w,
             update(dt, player) {
-              if (D.auto && player) { const w2 = Math.hypot(player.x - wx, player.z - wz) < range && Math.abs(player.y - D.y) < 2 ? 1 : 0; if (w2 !== D.want) { if (onChange) onChange(w2, D); if (typeof dispatchEvent === 'function' && player) dispatchEvent(new CustomEvent('zworld-door', { detail: { open: w2, x: wx, y: D.y, z: wz, kind } })); } D.want = w2; }
+              if (D.holdUntil && performance.now() < D.holdUntil) D.want = 1;   // held open (the bus gates while the bus passes)
+              else if (D.auto && player) { const w2 = Math.hypot(player.x - wx, player.z - wz) < range && Math.abs(player.y - D.y) < 2 ? 1 : 0; if (w2 !== D.want) { if (onChange) onChange(w2, D); if (typeof dispatchEvent === 'function' && player) dispatchEvent(new CustomEvent('zworld-door', { detail: { open: w2, x: wx, y: D.y, z: wz, kind } })); } D.want = w2; }
               D.open = clamp(D.open + Math.sign(D.want - D.open) * dt * (kind === 'vault' ? 0.5 : 1.8), 0, 1);
               if (kind === 'slide') leaf.position.x = D.open * w * 0.98; else if (kind === 'vault') { pivot.rotation.y = -D.open * 1.7; leaf.rotation.z = D.open * 3; } else pivot.rotation.y = -D.open * (kind === 'shelf' ? 1.35 : 1.5) * swing;
               col.on = D.open < 0.6;

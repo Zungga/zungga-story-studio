@@ -34,7 +34,22 @@
   #camBtn { position: fixed; bottom: 14px; right: 340px; z-index: 6; border: 0; border-radius: 12px; padding: 9px 14px; background: #fff; color: var(--p); font: 600 14px Fredoka, system-ui; cursor: pointer; box-shadow: 0 6px 20px rgba(30, 20, 60, 0.25); }
   #camPanel { position: fixed; right: 14px; top: 312px; width: 340px; background: var(--panel); border-radius: 16px; box-shadow: 0 12px 40px rgba(30, 20, 60, 0.3); padding: 12px 14px; z-index: 7; display: none; }
   #camPanel .r { display: grid; grid-template-columns: 1fr 130px 46px; align-items: center; gap: 6px; font-size: 13px; padding: 2px 0; } #camPanel input[type=range] { width: 100%; accent-color: #7c3aed; } #camPanel .v { text-align: right; color: var(--muted); font-size: 12px; }
-  body.cine .hud, body.cine button, body.cine #fps { display: none !important; }
+  /* phones / tablets: a thumb joystick, a jump button, the action prompt is a big tap button, smaller panels */
+  #c { touch-action: none; }
+  #prompt { pointer-events: auto; cursor: pointer; }
+  #skip { pointer-events: auto; cursor: pointer; }
+  #joy, #jumpBtn { display: none; }
+  body.touch #joy { display: block; position: fixed; left: 22px; bottom: 26px; width: 128px; height: 128px; border-radius: 50%; background: rgba(255, 255, 255, 0.28); border: 2px solid rgba(255, 255, 255, 0.7); z-index: 7; touch-action: none; box-shadow: 0 6px 20px rgba(30, 20, 60, 0.18); }
+  #knob { position: absolute; left: 39px; top: 39px; width: 50px; height: 50px; border-radius: 50%; background: rgba(124, 58, 237, 0.9); box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3); }
+  body.touch #jumpBtn { display: block; position: fixed; right: 24px; bottom: 34px; width: 72px; height: 72px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.8); background: rgba(124, 58, 237, 0.85); color: #fff; font: 700 15px Fredoka, system-ui; z-index: 7; touch-action: none; }
+  body.touch #keys, body.touch #camBtn, body.touch #mixBtn, body.touch #fps { display: none !important; }
+  body.touch #map { transform: scale(0.52); transform-origin: top right; }
+  body.touch #where { min-width: 0; padding: 6px 10px; } body.touch #where b { font-size: 15px; } body.touch #where small { font-size: 11px; }
+  body.touch #toast { font-size: 17px; white-space: normal; max-width: 86vw; text-align: center; padding: 8px 16px; }
+  body.touch #nightBtn { padding: 7px 11px; font-size: 13px; top: 70px; }
+  body.touch #menuBtn { bottom: auto; top: 108px; left: 14px; right: auto; padding: 7px 11px; font-size: 13px; }
+  body.touch #prompt { bottom: 180px; font-size: 16px; background: #7c3aed; color: #fff; padding: 12px 20px; border-radius: 16px; max-width: 80vw; text-align: center; box-shadow: 0 8px 24px rgba(60, 20, 120, 0.4); }
+  body.cine .hud, body.cine button, body.cine #fps, body.cine #joy { display: none !important; }
   #skip { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 9; display: none; padding: 8px 16px; border-radius: 999px; background: rgba(20, 12, 40, 0.55); color: #fde68a; font: 600 14px Fredoka, system-ui; letter-spacing: 0.3px; }
   body.cine #skip { display: block; }
   #fade { position: fixed; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 10; transition: opacity 1.2s; }
@@ -55,6 +70,7 @@
 <button id="camBtn">🎥 Camera</button>
 <button id="nightBtn">🌙 Night</button>
 <div id="skip">Press Space to skip ⏭</div>
+<div id="joy"><div id="knob"></div></div><button id="jumpBtn">Jump</button>
 <div id="fade"></div>
 <div id="camPanel"></div>
 <div id="mixer"></div>
@@ -90,6 +106,7 @@
 (async () => {
   'use strict';
   const T = THREE, $ = (s) => document.querySelector(s), q = new URLSearchParams(location.search), L = ZFactory.layout;
+  const TOUCH = q.get('touch') === '1' || (matchMedia('(pointer: coarse)').matches && navigator.maxTouchPoints > 0);
   await new Promise((r) => setTimeout(r, 30));
   // ---------- renderer / scene ----------
   const canvas = $('#c'), renderer = new T.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
@@ -175,7 +192,7 @@
   const kid = ZCharacters.toon({ ...ZCharacters.TOON_PRESETS.hero }); kid.group.traverse((o) => { if (o.isMesh) { o.castShadow = true; } }); scene.add(kid.group);
   const startArea = q.get('at');
   const walker = ZWalker.create({ world: W, camera, dom: canvas, char: kid, start: { x: L.ground.entrance.outer.x + 4, y: 0.05, z: L.ground.entrance.outer.z + 9, yaw: Math.PI },
-    onArea: (a) => onArea(a), onPrompt: (p) => { const el = $('#prompt'); el.style.display = p ? 'block' : 'none'; if (p) el.innerHTML = `<kbd>E</kbd> ${p}`; }, onMode: (m) => { if (m === 'swim') { toast('Swimming!'); audio.play('splash', 0.9); } } });
+    onArea: (a) => onArea(a), onPrompt: (p) => { const el = $('#prompt'); el.style.display = p ? 'block' : 'none'; if (p) el.innerHTML = TOUCH ? `👆 ${p}` : `<kbd>E</kbd> ${p}`; }, onMode: (m) => { if (m === 'swim') { toast('Swimming!'); audio.play('splash', 0.9); } } });
 
   // ---------- sounds of every place (made live; start on the first click / key) ----------
   const audio = ZWorldAudio.create();
@@ -203,6 +220,7 @@
   // ---------- camera: move the view in every way, save it as the default (studio/assets/mix.json → camera) ----------
   const CAM_UI = [['back', 'Distance behind', 1.5, 14, 0.1, 'm'], ['up', 'Height', 0.3, 8, 0.05, 'm'], ['look', 'Look at height', 0.2, 3, 0.05, 'm'], ['ahead', 'Look ahead', 0, 10, 0.1, 'm'], ['side', 'Side offset (− left / + right)', -3, 3, 0.05, 'm'], ['orbit', 'Angle around the kid', -180, 180, 1, '°'], ['stiff', 'Follow speed', 1, 20, 0.5, ''], ['fov', 'Field of view', 30, 95, 1, '°']];
   if (MIX.camera) walker.setCam(MIX.camera);
+  if (TOUCH) { const fit = () => { const port = innerHeight > innerWidth; walker.setCam({ ...(MIX.camera || {}), side: port ? 0 : (MIX.camera?.side ?? 3) * 0.6, fov: port ? 72 : (MIX.camera?.fov ?? 63) }); }; fit(); addEventListener('resize', fit); }   // phones: the kid centred in portrait, a wider view
   function renderCam() {
     $('#camPanel').innerHTML = `<b style="font-size:16px">Camera</b><div style="font-size:12px;color:#6b6480">Move the sliders while walking. Save makes this the default view.</div>` + CAM_UI.map(([k, label, min, max, st, u]) => `<div class="r"><span>${label}</span><input type="range" min="${min}" max="${max}" step="${st}" value="${walker.cam[k]}" data-k="${k}"><span class="v">${(+walker.cam[k]).toFixed(st < 1 ? 1 : 0)}${u}</span></div>`).join('')
       + `<div class="btns"><button id="camSave">Save as default</button><button class="ghost" id="camReset">Reset</button><button class="ghost" id="camClose">Close</button></div><div id="camMsg" style="font-size:12px;color:#6b6480;margin-top:6px"></div>`;
@@ -380,6 +398,18 @@
   if (q.get('ceil') === '0') W.ceilings.forEach((m) => { m.visible = false; });
   if (q.get('only')) { const keep = q.get('only').split(','); setTimeout(() => { for (const k of Object.keys(W.floors)) W.floors[k].visible = keep.includes(k); }, 50); window.__only = keep; }
   if (q.get('cam')) { const [px, py, pz, lx, ly, lz] = q.get('cam').split(',').map(Number); walker.view([px, py, pz], [lx, ly, lz]); applyFloor(floorOf(py), true); }
+  // ---------- phones / tablets: joystick (walk + turn, push far = run), Jump, tap the prompt = E, tap to skip ----------
+  $('#prompt').addEventListener('click', () => walker.use());
+  if (TOUCH) {
+    document.body.classList.add('touch'); $('#skip').textContent = 'Tap here to skip ⏭';
+    const joy = $('#joy'), knob = $('#knob'), R = 50; let jid = null;
+    const setJ = (e) => { const b = joy.getBoundingClientRect(); let dx = e.clientX - (b.left + b.width / 2), dy = e.clientY - (b.top + b.height / 2); const m = Math.hypot(dx, dy); if (m > R) { dx *= R / m; dy *= R / m; } knob.style.transform = `translate(${dx}px, ${dy}px)`;
+      const nx = dx / R, ny = dy / R, dz = (v) => (Math.abs(v) < 0.18 ? 0 : v); walker.setTouch({ f: dz(-ny), r: dz(nx) * 0.85, run: Math.hypot(nx, ny) > 0.93 && -ny > 0.6 }); };
+    joy.addEventListener('pointerdown', (e) => { jid = e.pointerId; joy.setPointerCapture(e.pointerId); setJ(e); e.preventDefault(); });
+    joy.addEventListener('pointermove', (e) => { if (e.pointerId === jid) setJ(e); });
+    const endJ = (e) => { if (e.pointerId !== jid) return; jid = null; knob.style.transform = ''; walker.setTouch(null); }; joy.addEventListener('pointerup', endJ); joy.addEventListener('pointercancel', endJ);
+    const jb = $('#jumpBtn'); jb.addEventListener('pointerdown', (e) => { walker.vkey('Space', true); e.preventDefault(); }); for (const ev of ['pointerup', 'pointercancel', 'pointerleave']) jb.addEventListener(ev, () => walker.vkey('Space', false));
+  }
   // ---------- the school bus: arriving from the island (?from=island&back=…) and riding back ----------
   const backURL = q.get('back') || (STUDIO ? null : '../../index.html?play&from=factory');   // on the resume site the bus always goes back to the island
   const hooks = [];   // per-frame extras (golden gate, bus flight)
@@ -394,7 +424,7 @@
     busCol = W.frame('ground', BUS.laneX, BUS.stopZ, 0).col(2.8, 3.2, 9.8, 0, 0, 0);   // the parked bus is solid
     W.interacts.unshift({ test: (p) => !busBusy && Math.abs(p.x - (BUS.laneX + 2.2)) < 2.2 && Math.abs(p.z - (BUS.stopZ + 1.2)) < 3 && p.y < 2, label: () => 'Ride the school bus back to the island', fn: () => dispatchEvent(new CustomEvent('zworld-bus')) });
   }
-  const gatesOpen = (sec) => { const until = performance.now() + sec * 1000; (function g() { for (const D of W.busGate || []) D.want = 1; if (performance.now() < until) requestAnimationFrame(g); })(); };
+  const gatesOpen = (sec) => { const until = performance.now() + sec * 1000; for (const D of W.busGate || []) { D.holdUntil = Math.max(D.holdUntil || 0, until); D.want = 1; } };
   // ---------- the sky-high school bus: it flies (island → factory: night flight, circles the factory, lands at dawn; and back) ----------
   let rig = null, busTrail = null;
   if (bus) {
@@ -412,7 +442,7 @@
   }
   function trail(on, dt) { if (!busTrail) return; busTrail.visible = on; if (!on) return; const a = busTrail.geometry.attributes.position, tp = a.array, n = tp.length / 3; for (let k = 0; k < n; k++) tp[k * 3 + 1] -= dt * 0.6; const k = busTrail.userData.i = (busTrail.userData.i + 1) % n, back = new T.Vector3(0, 1.2, 4.6).applyEuler(rig.rotation).add(rig.position); tp[k * 3] = back.x + (Math.random() - 0.5) * 1.6; tp[k * 3 + 1] = back.y + (Math.random() - 0.5) * 1.2; tp[k * 3 + 2] = back.z + (Math.random() - 0.5) * 1.6; a.needsUpdate = true; }
   const cine = (on) => { document.body.classList.toggle('cine', on); walker.paused = on; if (!on) walker.setCine(null); };
-  let skipNow = false; addEventListener('keydown', (e) => { if (e.code === 'Space' && document.body.classList.contains('cine')) { skipNow = true; e.preventDefault(); e.stopPropagation(); } }, true);
+  let skipNow = false; $('#skip').addEventListener('click', () => { skipNow = true; }); addEventListener('keydown', (e) => { if (e.code === 'Space' && document.body.classList.contains('cine')) { skipNow = true; e.preventDefault(); e.stopPropagation(); } }, true);
   // the parked bus drops the kid + friends off (friends wait by the fountain: the golden gate is for pass holders)
   function dropOff() {
     const stopZ = BUS.stopZ, doorX = BUS.laneX + 1.9; busCol.on = true; busBusy = false; cine(false);
@@ -434,7 +464,7 @@
     const curve = new T.CatmullRomCurve3(P, false, 'centripetal', 0.5), cl = curve.getLength();
     const chord = [0]; for (let k = 1; k < P.length; k++) chord.push(chord[k - 1] + P[k].distanceTo(P[k - 1])); const sAt = (k) => chord[k] / chord[chord.length - 1], sC0 = sAt(4), sC1 = sAt(11);
     const TF = Math.max(34, Math.min(42, cl / 52)), TR = 5.5, ground = new T.Vector3(lx - 9, 2.4, stopZ - 11), cp = new T.Vector3(), lk = new T.Vector3(), up = new T.Vector3(0, 1, 0);
-    let t = 0, dawn = false, done = false, prevDir = new T.Vector3(0, 0, -1);
+    let t = 0, dawn = false, gateOn = false, done = false, prevDir = new T.Vector3(0, 0, -1);
     rig.userData.headL.intensity = 40; rig.userData.glowL.intensity = 6;
     walker.setCine(() => ({ pos: cp, look: lk, fov: 60 }));
     hooks.push(function fly(dt) {
@@ -444,8 +474,9 @@
         const turn = Math.atan2(prevDir.x * dir.z - prevDir.z * dir.x, prevDir.dot(dir)) / Math.max(dt, 1e-3); prevDir.copy(dir); const bank = Math.max(-0.45, Math.min(0.45, -turn * 0.9)) * (1 - smooth((t - TF + 6) / 5));
         poseBus(p, dir, bank, dt); trail(true, dt);
       } else {   // touched down: roll gently to the stop, nose to the factory
-        const r = Math.min(1, (t - TF) / TR), e = 1 - (1 - r) * (1 - r); poseBus(new T.Vector3(lx, 0, (z1 - 1) + (stopZ - (z1 - 1)) * e), new T.Vector3(0, 0, -1), 0, dt); trail(false, dt); if (r > 0.05) gatesOpen(2);
+        const r = Math.min(1, (t - TF) / TR), e = 1 - (1 - r) * (1 - r); poseBus(new T.Vector3(lx, 0, (z1 - 1) + (stopZ - (z1 - 1)) * e), new T.Vector3(0, 0, -1), 0, dt); trail(false, dt);
       }
+      if (!gateOn && t > TF - 9) { gateOn = true; gatesOpen(9 + TR + 4); }   // the gates swing open before the bus comes down the road
       if (!dawn && t > TF - 13) { dawn = true; DNrate = 0.22; setNight(false); setTimeout(() => { DNrate = 0.9; }, 14000); }
       // camera: chase → orbiting outside the ring (the lit factory below) → chase → standing at the stop watching it land
       const side = new T.Vector3().crossVectors(up, dir).normalize(), chaseP = rig.position.clone().addScaledVector(dir, -15).addScaledVector(up, 4.5).addScaledVector(side, 6.5), chaseL = rig.position.clone().addScaledVector(dir, 8);
