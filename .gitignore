@@ -4,7 +4,6 @@
 settings.local.json
 *.key
 # exported videos and local scratch (keep copies locally / in cloud storage, not in git)
-exports/
 *.webm
 *.mp4
 node_modules/
